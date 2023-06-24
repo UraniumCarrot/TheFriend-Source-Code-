@@ -22,6 +22,7 @@ namespace TheFriend.Creatures;
 
 public class PebblesLL : DaddyLongLegs
 {
+    // this asshole doesnt wanna work right and i hate it
     public static void Apply()
     {
         PebblesLLGraphics.Apply();
