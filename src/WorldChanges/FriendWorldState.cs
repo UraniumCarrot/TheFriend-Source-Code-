@@ -37,7 +37,7 @@ public class FriendWorldState
     {
         // General world hooks
         //On.Region.ctor += Region_ctor;
-        //On.Room.SlugcatGamemodeUniqueRoomSettings += Room_SlugcatGamemodeUniqueRoomSettings;
+        On.Room.SlugcatGamemodeUniqueRoomSettings += Room_SlugcatGamemodeUniqueRoomSettings;
         //On.RoomSettings.Load += RoomSettings_Load;
         //On.Region.GetRegionFullName += Region_GetRegionFullName;
         //On.Region.GetProperRegionAcronym += Region_GetProperRegionAcronym;
@@ -177,6 +177,25 @@ public class FriendWorldState
         return orig(regionAcro, slugcatIndex);
     } // Changes region's name in character select screen
     #endregion
+    public static void Room_SlugcatGamemodeUniqueRoomSettings(On.Room.orig_SlugcatGamemodeUniqueRoomSettings orig, Room self, RainWorldGame game)
+    {
+        orig(self, game);
+        if (game.IsStorySession && SolaceWorldstate)
+        {
+            if (self.world.region.name == "SH")
+            {
+                if (self.roomSettings.DangerType == RoomRain.DangerType.Flood)
+                    self.roomSettings.RainIntensity = 0f;
+            }
+            self.roomSettings.wetTerrain = false;
+            self.roomSettings.CeilingDrips = 0f;
+            /*if (self.world.region.name != "UG" && 
+                self.world.region.name != "SS" && 
+                self.world.region.name != "RM" && 
+                self.world.region.name != "SB") 
+                self.roomSettings.DangerType = MoreSlugcatsEnums.RoomRainDangerType.Blizzard;*/
+        }
+    } // Default room settings
     public static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
     {
         orig(self);
@@ -192,25 +211,6 @@ public class FriendWorldState
         if (game != null) FamineWorld.HasFamines(game);
         orig(self, game, playerCharacter, singleRoomWorld, worldName, region, setupValues);
     }
-    public static void Room_SlugcatGamemodeUniqueRoomSettings(On.Room.orig_SlugcatGamemodeUniqueRoomSettings orig, Room self, RainWorldGame game)
-    {
-        orig(self, game);
-        if (game.IsStorySession && SolaceWorldstate)
-        {
-            if (self.world.region.name == "SH")
-            {
-                if (self.roomSettings.DangerType == RoomRain.DangerType.Flood)
-                    self.roomSettings.RainIntensity = 0f;
-            }
-            self.roomSettings.wetTerrain = false;
-            self.roomSettings.CeilingDrips = 0f;
-            if (self.world.region.name != "UG" && 
-                self.world.region.name != "SS" && 
-                self.world.region.name != "RM" && 
-                self.world.region.name != "SB") 
-                self.roomSettings.DangerType = MoreSlugcatsEnums.RoomRainDangerType.Blizzard;
-        }
-    } // Default room settings
 
     public static void Region_ctor(On.Region.orig_ctor orig, Region self, string name, int firstRoomIndex, int regionNumber, SlugcatStats.Name storyIndex) // Adjusts region parameters
     {

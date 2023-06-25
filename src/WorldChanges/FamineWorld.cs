@@ -26,7 +26,6 @@ public class FamineWorld
     {
         On.SlugcatStats.NourishmentOfObjectEaten += SlugcatStats_NourishmentOfObjectEaten;
         On.Player.ObjectEaten += Player_ObjectEaten;
-        //On.Player.EatMeatUpdate += Player_EatMeatUpdate;
         IL.Player.EatMeatUpdate += Player_EatMeatUpdate;
 
         On.CentipedeGraphics.ctor += CentipedeGraphics_ctor;

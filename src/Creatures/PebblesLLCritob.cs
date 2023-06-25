@@ -36,7 +36,7 @@ public class PebblesLLCritob : Critob
     };
     public override CreatureTemplate CreateTemplate()
     {
-        CreatureTemplate s = new CreatureFormula(CreatureTemplate.Type.DaddyLongLegs, base.Type, "PebblesLongLegs")
+        CreatureTemplate s = new CreatureFormula(CreatureTemplate.Type.BrotherLongLegs, base.Type, "PebblesLongLegs")
         {
             DefaultRelationship = new(CreatureTemplate.Relationship.Type.Ignores, 1f),
             HasAI = true

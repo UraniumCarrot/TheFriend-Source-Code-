@@ -67,7 +67,6 @@ namespace TheFriend
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
             // Misc class hooks
-            //SolaceSaveData.Apply();
             FriendWorldState.Apply();
             FriendCrawl.Apply();
             DragonCrafts.Apply();
@@ -194,6 +193,7 @@ namespace TheFriend
         {
             MachineConnector.SetRegisteredOI("thefriend", new Options());
             Futile.atlasManager.LoadAtlas("atlases/friendsprites");
+            Futile.atlasManager.LoadAtlas("atlases/friendlegs");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull2");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull3");
         }
@@ -370,6 +370,7 @@ namespace TheFriend
         {
             orig(self, sLeaser, rCam, timeStacker, camPos);
             var head = sLeaser.sprites[3];
+            var legs = sLeaser.sprites[4];
             self.player.GetPoacher().glanceDir = Mathf.RoundToInt(head.scaleX);
             self.player.GetPoacher().pointDir0 = sLeaser.sprites[5].rotation;
             self.player.GetPoacher().pointDir1 = sLeaser.sprites[6].rotation;
@@ -384,6 +385,7 @@ namespace TheFriend
                 if (!self.RenderAsPup)
                 {
                     if (!head.element.name.Contains("Friend") && head.element.name.StartsWith("HeadA")) head.SetElementByName("Friend" + head.element.name);
+                    if (!legs.element.name.Contains("Friend") && legs.element.name.StartsWith("LegsA")) legs.SetElementByName("Friend" + legs.element.name);
                 }
             }
             if (self.player.slugcatStats.name == DragonName)
@@ -862,6 +864,15 @@ namespace TheFriend
         // Implement SuperJump
         public void Player_Jump(On.Player.orig_Jump orig, Player self)
         {
+            if (self.animation != ind.Roll && 
+                !self.standing && 
+                self.slugcatStats.name == FriendName && 
+                Mathf.Abs(self.firstChunk.vel.x) > 3)
+            { 
+                if (self.bodyChunks[1].contactPoint.y == 0 || 
+                    self.input.Count(i => i.jmp) == 9) 
+                    return; 
+            }
             orig(self);
             if (SuperJump.TryGet(self, out var power))
             {

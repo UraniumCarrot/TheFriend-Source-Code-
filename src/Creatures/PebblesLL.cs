@@ -22,12 +22,32 @@ namespace TheFriend.Creatures;
 
 public class PebblesLL : DaddyLongLegs
 {
-    // this asshole doesnt wanna work right and i hate it
     public static void Apply()
     {
         PebblesLLGraphics.Apply();
         On.AbstractCreature.ctor += AbstractCreature_ctor;
         IL.DaddyLongLegs.ctor += DaddyLongLegs_ctor;
+        IL.Spear.Update += Spear_Update;
+    }
+
+    public static void Spear_Update(MonoMod.Cil.ILContext il)
+    {
+        try
+        {
+            var c = new ILCursor(il);
+            ILLabel label = null;
+            c.GotoNext(i => i.MatchIsinst<Deer>(),
+                       i => i.MatchBrtrue(out label));
+            c.GotoPrev(i => i.MatchLdarg(0));
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate((Spear spear) => 
+            {
+                return spear.stuckInObject is PebblesLL ? true : false;
+            }
+            );
+            c.Emit(OpCodes.Brtrue, label);
+        }
+        catch(Exception e) { Debug.Log("Solace: IL hook SpearUpdatePLLStab failed!" + e); }
     }
 
     public static void DaddyLongLegs_ctor(MonoMod.Cil.ILContext il)
@@ -41,7 +61,7 @@ public class PebblesLL : DaddyLongLegs
                 c.EmitDelegate((int length, DaddyLongLegs self) => self.Template.type == CreatureTemplateType.PebblesLL ? 3 : length);
             }
         }
-        catch(Exception e) { Debug.Log("Solace: IL hook PebblesLongLegsCount failed!" + e); }
+        catch(Exception e) { Debug.Log("Solace: IL hook PLLTentaCount failed!" + e); }
     }
 
     public static void AbstractCreature_ctor(On.AbstractCreature.orig_ctor orig, AbstractCreature self, World world, CreatureTemplate creatureTemplate, Creature realizedCreature, WorldCoordinate pos, EntityID ID)
@@ -61,5 +81,27 @@ public class PebblesLL : DaddyLongLegs
     {
         graphicsModule ??= new PebblesLLGraphics(this);
         graphicsModule.Reset();
+    }
+    public override void Update(bool eu)
+    {
+        base.Update(eu);
+        State.alive = true;
+        if (dead == true) dead = false;
+        for (int i = 0; i < tentacles.Length; i++)
+            if ((State as DaddyState).tentacleHealth[i] < 1f) (State as DaddyState).tentacleHealth[i] += 0.005f;
+    }
+    public override void Die()
+    {
+        killTag = null;
+        base.Die();
+    }
+    public override void Violence(BodyChunk source, Vector2? directionAndMomentum, BodyChunk hitChunk, Appendage.Pos hitAppendage, DamageType type, float damage, float stunBonus)
+    {
+        if (hitAppendage != null) 
+        { 
+            damage = 0;
+            tentacles[hitAppendage.appendage.appIndex].stun = (type == DamageType.Explosion || type == DamageType.Blunt) ? 200 : 20;
+        }
+        base.Violence(source, directionAndMomentum, hitChunk, hitAppendage, type, damage, stunBonus);
     }
 }

@@ -34,9 +34,18 @@ public partial class Options : OptionInterface
     public static Configurable<bool> LizRepMeter;
     public static Configurable<bool> LizRepMeterForAll;
 
+    // Achievements
+    public static Configurable<bool> SolaceFriendOEAchievement; // Live Well
+    public static Configurable<bool> SolacePoacherOEAchievement; // A New Beginning
+    public static Configurable<bool> SolaceFriendBadAscensionAchievement; // Betrayal
+    public static Configurable<bool> SolaceFriendGoodAscensionAchievement; // Allegiance
+    public static Configurable<bool> SolacePoacherBadAscensionAchievement; // Trapped
+    public static Configurable<bool> SolacePoacherGoodAscensionAchievement; // Forgiveness
+    public static Configurable<bool> SolacePebblesAchievement; // Alone No More
+    public static Configurable<bool> SolacePebblesStolenEnlightenmentAchievement; // Broken Mind
+
     public Options()
     {
-        //SolaceData();
         FriendAutoCrouch = this.config.Bind<bool>("FriendAutoCrouch", true, new ConfigAcceptableList<bool>(true, false));
         PoleCrawl = this.config.Bind<bool>("PoleCrawl", true, new ConfigAcceptableList<bool>(true, false));
         FriendUnNerf = this.config.Bind<bool>("FriendUnNerf", false, new ConfigAcceptableList<bool>(true, false));
@@ -59,6 +68,16 @@ public partial class Options : OptionInterface
         LizRideAll = this.config.Bind<bool>("LizRideAll", false, new ConfigAcceptableList<bool>(true, false));
         LizRepMeter = this.config.Bind<bool>("LizRepMeter", false, new ConfigAcceptableList<bool>(true, false));
         LizRepMeterForAll = this.config.Bind<bool>("LizRepMeterForAll", false, new ConfigAcceptableList<bool>(true, false));
+
+        // Achievements
+        SolaceFriendOEAchievement = this.config.Bind<bool>("SolaceFriendOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePoacherOEAchievement = this.config.Bind<bool>("SolacePoacherOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolaceFriendBadAscensionAchievement = this.config.Bind<bool>("SolaceFriendBadAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolaceFriendGoodAscensionAchievement = this.config.Bind<bool>("SolaceFriendGoodAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePoacherBadAscensionAchievement = this.config.Bind<bool>("SolacePoacherBadAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePoacherGoodAscensionAchievement = this.config.Bind<bool>("SolacePoacherGoodAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePebblesAchievement = this.config.Bind<bool>("SolacePebblesAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePebblesStolenEnlightenmentAchievement = this.config.Bind<bool>("SolacePebblesStolenEnlightenmentAchievement", false, new ConfigAcceptableList<bool>(true, false));
     }
 
     // Greyout-able boxes and labels
@@ -89,20 +108,24 @@ public partial class Options : OptionInterface
         var opTab0 = new OpTab(this, "General");
         var opTab1 = new OpTab(this, "Characters");
         var opTab2 = new OpTab(this, "Experimental");
+        var opTab3 = new OpTab(this, "Achievements");
+        var opTab4 = new OpTab(this, "Memorial");
         OpContainer genCont = new OpContainer(Vector2.zero);
         opTab0.AddItems(genCont);
         OpContainer charCont = new OpContainer(Vector2.zero);
         opTab1.AddItems(charCont);
+        OpContainer achieveCont = new OpContainer(Vector2.zero);
+        opTab1.AddItems(achieveCont);
 
         base.Initialize();
-        Tabs = new[] { opTab0, opTab1, opTab2 };
+        Tabs = new[] { opTab0, opTab1, opTab2, opTab3, opTab4 };
 
         var labelMod = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - General Settings"), true);
-        var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.1"));
+        var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.2"));
         var labelMod1 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Character Settings"), true);
-        var labelVersion1 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.1"));
+        var labelVersion1 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.2"));
         var labelMod2 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Experimental Settings"), true);
-        var labelVersion2 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.1"));
+        var labelVersion2 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.2"));
 
         // General
         #region General

@@ -76,7 +76,7 @@ public class PebblesLLGraphics : DaddyGraphics
     public static void DaddyDeadLeg_DrawSprite(On.DaddyGraphics.DaddyDeadLeg.orig_DrawSprite orig, DaddyDeadLeg self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
-        if (self.owner.daddy.Template.type == CreatureTemplateType.PebblesLL) { self.bumps[7].pos = self.bumps[5].pos; }
+        if (self.owner.daddy.Template.type == CreatureTemplateType.PebblesLL) { self.bumps[7].pos = self.bumps[3].pos; }
     }
     public static void DaddyDeadLeg_ApplyPalette(On.DaddyGraphics.DaddyDeadLeg.orig_ApplyPalette orig, DaddyDeadLeg self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
