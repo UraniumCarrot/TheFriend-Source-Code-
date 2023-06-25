@@ -112,7 +112,7 @@ internal class DragonCrafts
     public static void Player_SpitUpCraftedObject(On.Player.orig_SpitUpCraftedObject orig, Player self)
     {
         if (self.slugcatStats.name != Plugin.DragonName) { orig(self); return; }
-        int vargrasp = (self?.grasps[1]?.grabbed is FirecrackerPlant || self?.grasps[1]?.grabbed is Spear || self?.grasps[1]?.grabbed is BoomMine) ? 1 : 0;
+        int vargrasp = (self?.grasps[1]?.grabbed is FirecrackerPlant || self?.grasps[1]?.grabbed is BoomMine) ? 1 : 0;
         var vargraspmat = self?.grasps[vargrasp]?.grabbed;
         var obj0 = self.grasps[0]?.grabbed?.abstractPhysicalObject;
         var obj1 = self.grasps[1]?.grabbed?.abstractPhysicalObject;
@@ -131,7 +131,7 @@ internal class DragonCrafts
                 try
                 {
                     int lumps = (vargraspmat as FirecrackerPlant).lumps.Length;
-                    Debug.Log("Solace: TearFirecracker using a plant with " + lumps + " lumps.");
+                    Debug.Log("Solace: TearFirecracker using a plant with " + lumps + " lumps. Using hand " + vargrasp);
                     TearFirecracker(self, lumps);
                     return;
                 }
@@ -183,6 +183,7 @@ internal class DragonCrafts
                 }
 
                 // Create and grab resulting object
+                if (result == null) Debug.Log("Solace: Uh oh! Recipe created a null object! Doom incoming?!");
                 self.room.PlaySound(sound, self.firstChunk, loop: false, volume, 1f);
                 self.room.AddObject(effect);
                 self.room.abstractRoom.AddEntity(result);
@@ -192,14 +193,13 @@ internal class DragonCrafts
                     self.SlugcatGrab(result.realizedObject, self.FreeHand());
                 }
 
-                if (result == null) Debug.Log("Solace: Uh oh! Recipe created a null object! Doom incoming?!");
                 else Debug.Log("Solace: Dragoncraft success! Combined " + obj0.type + " with " + obj1.type + " to make " + result.type + "!");
                 return;
             }
             else
             {
                 CraftFail(self);
-                Debug.Log("Solace: Dragoncraft failure! These items have no recipe! Working as intended. Generic.");
+                Debug.Log("Solace: Dragoncraft failure! These items have no recipe for Poacher! Working as intended. Generic.");
                 return;
             }
         }
