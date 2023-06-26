@@ -120,6 +120,7 @@ internal class DragonCrafts
 
         if (self.slugcatStats.name == Plugin.DragonName)
         {
+            if (resultEx != LittleCrackerFisob.LittleCracker) self.GetPoacher().isMakingPoppers = false;
             if (resultEx == ObjType.Spear && !(obj0.type == ObjType.Rock && obj1.type == ObjType.Rock))
             {
                 Debug.Log("Solace: SpearCrafting method begin!");
@@ -130,8 +131,10 @@ internal class DragonCrafts
             {
                 try
                 {
-                    int lumps = (vargraspmat as FirecrackerPlant).lumps.Length;
-                    Debug.Log("Solace: TearFirecracker using a plant with " + lumps + " lumps. Using hand " + vargrasp);
+                    //int lumps = (vargraspmat as FirecrackerPlant).lumps.Length;
+                    self.GetPoacher().isMakingPoppers = true;
+                    int lumps = (vargraspmat as FirecrackerPlant).lumpsPopped.Count(i => i == false);
+                    Debug.Log("Solace: TearFirecracker using a plant with " + lumps + " lumps (originally " + (vargraspmat as FirecrackerPlant).lumps.Length + "). Using hand " + vargrasp);
                     TearFirecracker(self, lumps);
                     return;
                 }
@@ -278,10 +281,10 @@ internal class DragonCrafts
         try
         {
             Debug.Log("TearFirecracker started");
-            int count = 0;
             int grasp = (self?.grasps[1]?.grabbed is FirecrackerPlant) ? 1 : 0;
-            AbstractPhysicalObject result0 = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, self.room.game.GetNewID());
+            //AbstractPhysicalObject result0 = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, self.room.game.GetNewID());
             var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject;
+            FirecrackerPlant plant = mat as FirecrackerPlant;
 
             if (self != null &&
                 self.room != null &&
@@ -293,6 +296,27 @@ internal class DragonCrafts
                 self.grasps[grasp].grabbed.abstractPhysicalObject != null &&
                 self.grasps[grasp].grabbed.abstractPhysicalObject.realizedObject != null)
             {
+                for (int i = plant.lumps.Length-1; i >= 0; i--)
+                {
+                    if (plant.lumpsPopped[i]) continue;
+
+                    self.room.PlaySound(SoundID.Seed_Cob_Open, self.firstChunk, loop: false, 1f, 1f);
+                    AbstractPhysicalObject result = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, self.room.game.GetNewID());
+                    self.room.abstractRoom.AddEntity(result);
+                    result.RealizeInRoom();
+                    plant.lumpsPopped[i] = true;
+                    if (i == 0)
+                    {
+                        self.ReleaseGrasp(grasp);
+                        mat.RemoveFromRoom();
+                        self?.room?.abstractRoom?.RemoveEntity(self?.grasps[grasp]?.grabbed?.abstractPhysicalObject);
+                        self.SlugcatGrab(result?.realizedObject, grasp);
+                        Debug.Log("Solace: Firecracker destroyed, final popper torn off");
+                        break;
+                    }
+                    break;
+                }
+                /*
                 self.ReleaseGrasp(grasp); // Remove original firecracker
                 mat.RemoveFromRoom();
                 self?.room?.abstractRoom?.RemoveEntity(self?.grasps[grasp]?.grabbed?.abstractPhysicalObject);
@@ -313,10 +337,9 @@ internal class DragonCrafts
                 self.SlugcatGrab(result0?.realizedObject, grasp);
 
                 Debug.Log("TearFirecracker ended, created " + count + " poppers!");
-                return;
+                return;*/
             }
             return;
-
         }
         catch (Exception e) { Debug.Log("Solace: Exception caught in TearFirecracker" + e); }
     }

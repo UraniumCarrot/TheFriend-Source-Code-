@@ -25,6 +25,7 @@ public static class PoacherClass
         public bool isPoacher;
         public bool IsSkullVisible;
         public bool IsInIntro;
+        public bool isMakingPoppers;
 
         // General player variables
         public bool JustGotMoonMark;

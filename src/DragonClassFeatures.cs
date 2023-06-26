@@ -20,14 +20,26 @@ public class DragonClassFeatures
         On.Creature.LoseAllGrasps += Creature_LoseAllGrasps;
         On.HUD.TextPrompt.UpdateGameOverString += TextPrompt_UpdateGameOverString;
     }
+    public class AbstractPoacherBelt : AbstractPhysicalObject.AbstractObjectStick
+    {
+        public AbstractPhysicalObject self
+        {
+            get { return A; }
+            set { A = value; }
+        }
+        public AbstractPhysicalObject plant
+        {
+            get { return B; }
+            set { B = value; }
+        }
+        public AbstractPoacherBelt(AbstractPhysicalObject self, AbstractPhysicalObject plant) : base(self, plant) { }
+    }
 
     public static void TextPrompt_UpdateGameOverString(On.HUD.TextPrompt.orig_UpdateGameOverString orig, TextPrompt self, global::Options.ControlSetup.Preset controllerType)
     {
-        Debug.Log("Solace: TextPrompt.UpdateGameOverString trying to run orig...");
         orig(self, controllerType);
         var pl = self?.hud?.owner as Creature;
-        Debug.Log("Solace: TextPrompt.UpdateGameOverString orig ran!");
-        if ((self?.hud?.owner as Player)?.room?.game?.StoryCharacter == Plugin.DragonName)
+        if (pl?.room?.game?.StoryCharacter == Plugin.DragonName && !pl.room.game.IsArenaSession)
         {
             Debug.Log("Solace: TextPrompt.UpdateGameOverString hook is trying to run!");
             self.gameOverString += ", or find a way to survive";

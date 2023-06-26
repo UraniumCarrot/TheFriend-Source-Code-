@@ -22,12 +22,8 @@ public static class DragonRideCWT
         public bool IsRideable;
         public Player rider;
 
-        // Young lizard data
-        public AbstractCreature mother;
-
         public DragonRide()
         {
-            this.mother = null;
             this.IsBeingRidden = false;
             this.IsRideable = false;
             this.seat0 = Vector2.zero;

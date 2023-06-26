@@ -239,7 +239,7 @@ public class Hooks
             var breedParams = (temp.breedParameters as LizardBreedParams)!;
             temp.type = type;
             temp.name = "YoungLizard";
-            breedParams.baseSpeed = 4.1f;
+            breedParams.baseSpeed = 10f;
             breedParams.terrainSpeeds[1] = new(1f, 1f, 1f, 1f);
             breedParams.terrainSpeeds[2] = new(1f, 1f, 1f, 1f);
             breedParams.terrainSpeeds[3] = new(1f, 1f, 1f, 1f);

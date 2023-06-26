@@ -539,6 +539,10 @@ namespace TheFriend
                     }
                 }
             }
+            if (self.slugcatStats.name == DragonName)
+            {
+                if (self.craftingObject && self.GetPoacher().isMakingPoppers && self.grasps.Count(i => i.grabbed is FirecrackerPlant) == 1 && self.swallowAndRegurgitateCounter < 70) self.swallowAndRegurgitateCounter = 70;
+            }
         }
         // Lizard mount will not be hit by owner's weapons
         public bool Weapon_HitThisObject(On.Weapon.orig_HitThisObject orig, Weapon self, PhysicalObject obj)
@@ -570,14 +574,17 @@ namespace TheFriend
         // Lizard grabability
         public Player.ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
         {
-            if (LizRide() && obj is Lizard liz)
+            if (obj is Lizard liz)
             {
-                if (liz.GetLiz() != null && liz.GetLiz().IsRideable)
+                if (LizRide() && liz.Template.type != CreatureTemplateType.YoungLizard)
                 {
-                    if (liz?.Template?.type != CreatureTemplateType.MotherLizard && liz?.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Attacks && liz?.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Eats && liz?.AI?.friendTracker?.friend != null && liz?.AI?.friendTracker?.friendRel?.like < 0.5f && !liz.dead && !liz.Stunned) return Player.ObjectGrabability.CantGrab;
-                    if ((liz.GetLiz().IsBeingRidden || self.GetPoacher().grabCounter > 0 || liz?.AI?.LikeOfPlayer(liz?.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) < 0) && !liz.dead && !liz.Stunned) return Player.ObjectGrabability.CantGrab;
-                    self.GetPoacher().grabCounter = 15;
-                    return Player.ObjectGrabability.OneHand;
+                    if (liz.GetLiz() != null && liz.GetLiz().IsRideable)
+                    {
+                        if (liz?.Template?.type != CreatureTemplateType.MotherLizard && liz?.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Attacks && liz?.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Eats && liz?.AI?.friendTracker?.friend != null && liz?.AI?.friendTracker?.friendRel?.like < 0.5f && !liz.dead && !liz.Stunned) return Player.ObjectGrabability.CantGrab;
+                        if ((liz.GetLiz().IsBeingRidden || self.GetPoacher().grabCounter > 0 || liz?.AI?.LikeOfPlayer(liz?.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) < 0) && !liz.dead && !liz.Stunned) return Player.ObjectGrabability.CantGrab;
+                        self.GetPoacher().grabCounter = 15;
+                        return Player.ObjectGrabability.OneHand;
+                    }
                 }
                 else if (liz.Template.type == CreatureTemplateType.YoungLizard)
                 {
@@ -624,6 +631,7 @@ namespace TheFriend
             // Poacher
             if (self.slugcatStats.name == DragonName)
             {
+                if (self.input[0].y < 1 || !self.input[0].pckp) self.GetPoacher().isMakingPoppers = false;
                 self.Hypothermia += self.HypothermiaGain * (PoacherFreezeFaster() ? 1.2f : 0.2f);
                 FamineWorld.PoacherEats(self);
                 if (self.dangerGraspTime > 0)
