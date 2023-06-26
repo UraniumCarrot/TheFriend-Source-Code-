@@ -61,7 +61,7 @@ public class PebblesLL : DaddyLongLegs
                 c.EmitDelegate((int length, DaddyLongLegs self) => self.Template.type == CreatureTemplateType.PebblesLL ? 3 : length);
             }
         }
-        catch(Exception e) { Debug.Log("Solace: IL hook PLLTentaCount failed!" + e); }
+        catch(Exception e) { Debug.Log("Solace: IL hook PLLTentaSet failed!" + e); }
     }
 
     public static void AbstractCreature_ctor(On.AbstractCreature.orig_ctor orig, AbstractCreature self, World world, CreatureTemplate creatureTemplate, Creature realizedCreature, WorldCoordinate pos, EntityID ID)

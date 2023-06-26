@@ -28,6 +28,7 @@ using TheFriend.Creatures;
 using TheFriend.Objects.BoulderObject;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.BoomMineObject;
+using TheFriend.PoacherThings;
 using BepInEx.Logging;
 using System.Net;
 using SlugBase;
@@ -67,6 +68,7 @@ namespace TheFriend
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
             // Misc class hooks
+            FirecrackerFix.Apply();
             FriendWorldState.Apply();
             FriendCrawl.Apply();
             DragonCrafts.Apply();

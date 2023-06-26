@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using HUD;
@@ -9,6 +10,7 @@ using JollyCoop;
 using Menu;
 using RWCustom;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TheFriend;
 
@@ -90,3 +92,4 @@ public class DragonClassFeatures
         else return orig(self, source, dmg, chunk, appPos, direction);
     }
 }
+

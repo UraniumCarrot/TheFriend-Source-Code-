@@ -156,12 +156,6 @@ internal class DragonCrafts
                 CosmeticSprite effect; // Cosmetic visual
                 effect = null;
 
-                for (int i = 0; i < 2; i++) // Remove materials
-                {
-                    self.grasps[i].grabbed.RemoveFromRoom();
-                    self.room.abstractRoom.RemoveEntity(self.grasps[i].grabbed.abstractPhysicalObject);
-                    self.ReleaseGrasp(i);
-                }
                 switch (resultEx.value) // Define resulting object from recipe
                 {
                     case nameof(ObjType.Spear):
@@ -171,6 +165,12 @@ internal class DragonCrafts
                         break;
 
                     case nameof(ObjType.ScavengerBomb):
+                        if (((vargraspmat as FirecrackerPlant).lumps.Length - (vargraspmat as FirecrackerPlant).lumpsPopped.Count(i => i == true) < 6) || (vargraspmat as FirecrackerPlant).lumps.Length <= 5) 
+                        { 
+                            CraftFail(self);
+                            Debug.Log("Solace: Dragoncraft failure! Tried to make a scavenger bomb without a full firecracker. Working as intended.");
+                            return;
+                        }
                         result = new AbstractPhysicalObject(self.room.world, resultEx, null, self.abstractCreature.pos, self.room.game.GetNewID());
                         sound = SoundID.Firecracker_Burn;
                         volume = 0.2f;
@@ -184,7 +184,12 @@ internal class DragonCrafts
                         effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), color: new Color(1f, 0.4f, 0.3f), null, 7, 17);
                         break;
                 }
-
+                for (int i = 0; i < 2; i++) // Remove materials
+                {
+                    self.grasps[i].grabbed.RemoveFromRoom();
+                    self.room.abstractRoom.RemoveEntity(self.grasps[i].grabbed.abstractPhysicalObject);
+                    self.ReleaseGrasp(i);
+                }
                 // Create and grab resulting object
                 if (result == null) Debug.Log("Solace: Uh oh! Recipe created a null object! Doom incoming?!");
                 self.room.PlaySound(sound, self.firstChunk, loop: false, volume, 1f);
@@ -311,7 +316,7 @@ internal class DragonCrafts
                         mat.RemoveFromRoom();
                         self?.room?.abstractRoom?.RemoveEntity(self?.grasps[grasp]?.grabbed?.abstractPhysicalObject);
                         self.SlugcatGrab(result?.realizedObject, grasp);
-                        Debug.Log("Solace: Firecracker destroyed, final popper torn off");
+                        Debug.Log("Solace: Final popper torn off, plant destroyed");
                         break;
                     }
                     break;
