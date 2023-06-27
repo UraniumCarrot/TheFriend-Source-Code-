@@ -16,6 +16,7 @@ namespace TheFriend.PoacherThings;
 
 public class FirecrackerFix
 {
+    // Code mostly done by Slime_Cubed, i have no idea what a lot of it means
     static readonly ConditionalWeakTable<AbstractPhysicalObject, StrongBox<int>> _lumpsLeft = new();
     static int lumps;
     const string lumpsLeft = "SOLACE_LUMPSLEFT_";

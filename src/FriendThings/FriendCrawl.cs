@@ -7,6 +7,7 @@ using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using RWCustom;
 using UnityEngine;
+using TheFriend.SlugcatThings;
 
 namespace TheFriend.FriendThings;
 // FriendCrawl code kindly given to me by Noir, thank you so much Noir!!! DO NOT use this code without his permission.
@@ -33,6 +34,7 @@ internal class FriendCrawl
         //Adjusting draw positions slightly
         if (self.player.animation == Player.AnimationIndex.StandOnBeam && self.player.input[0].y < 1)
         {
+            self.player.GetPoacher().poleCrawlState = true;
             if (self.player.input[0].x != 0)
             {
                 self.drawPositions[0, 0].y = Mathf.Lerp(self.drawPositions[0, 1].y + 5, self.drawPositions[0, 0].y + 5, 1f);
@@ -112,7 +114,7 @@ internal class FriendCrawl
             }
 
         }
-
+        else self.player.GetPoacher().poleCrawlState = false;
     }
     public static bool SlugcatHand_EngageInMovement(On.SlugcatHand.orig_EngageInMovement orig, SlugcatHand self)
     {

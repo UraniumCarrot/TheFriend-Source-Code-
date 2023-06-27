@@ -8,6 +8,7 @@ using SlugBase;
 using MoreSlugcats;
 using TheFriend.WorldChanges;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 
@@ -379,6 +380,35 @@ public class SlugcatGameplay
                 self.GetPoacher().longjump = false;
             }
         }
+        if (self.slugcatStats.name != FriendName) return;
+
+        // Friend pole leap
+        if (self.GetPoacher().polejump)
+        {
+            if (self.GetPoacher().upwardpolejump)
+            {
+                self.bodyChunks[0].vel.y += 21;
+                self.bodyChunks[0].vel.x += self.flipDirection*1.5f;
+                self.bodyChunks[1].vel.x += self.flipDirection*1.5f;
+            }
+            else
+            {
+                self.bodyChunks[0].vel.y += 10;
+                self.bodyChunks[0].vel.x += (self.flipDirection * 9) + (self.input[0].x * 2);
+                self.bodyChunks[1].vel.x += (self.flipDirection * 9) + (self.input[0].x * 2);
+                self.GetPoacher().upwardpolejump = false;
+            }
+            self.animation = ind.RocketJump;
+            self.room.PlaySound(SoundID.Slugcat_Super_Jump, self.firstChunk);
+            self.room.PlaySound(SoundID.Slugcat_Skid_On_Ground_Init, self.firstChunk);
+
+            self.room.AddObject(new WaterDrip(self.bodyChunks[1].pos + new Vector2(0f, -self.bodyChunks[1].rad + 1f), Custom.DegToVec(self.slideDirection * Mathf.Lerp(30f, 70f, Random.value)) * Mathf.Lerp(6f, 11f, Random.value), false));
+
+            self.GetPoacher().polejump = false;
+        }
+        if (self.GetPoacher().DoingAPoleJump && !self.GetPoacher().upwardpolejump && self.input[0].y > 0) { self.animation = ind.None; self.standing = true; }
+        else if (self.GetPoacher().upwardpolejump) self.standing = false;
+        if (self.feetStuckPos != null || self.animation != ind.RocketJump) { self.GetPoacher().DoingAPoleJump = false; self.GetPoacher().upwardpolejump = false; }
     }
     public static void Player_Jump(On.Player.orig_Jump orig, Player self)
     { // Friend improved jumps
@@ -395,8 +425,8 @@ public class SlugcatGameplay
         if (Plugin.SuperJump.TryGet(self, out var power))
         {
             if (Plugin.FriendUnNerf() == true) self.jumpBoost += 3f;
-            else if (self.bodyMode == bod.Crawl) self.jumpBoost *= 1f + power / 2;
-            else self.jumpBoost += power + 0.25f;
+            else if (self.bodyMode == bod.Crawl) self.jumpBoost *= 1f + (power / 2);
+            else self.jumpBoost += (power + 0.25f) * (self.animation == ind.StandOnBeam ? 0 : 1);
 
             if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch() == true))
             {
@@ -405,7 +435,7 @@ public class SlugcatGameplay
         }
     }
     public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
-    { // Attempted ledgegrab fix
+    { // Attempted ledgegrab fix, and increased polewalk speed
         orig(self);
         if (self.slugcatStats.name == FriendName)
         {
@@ -430,8 +460,10 @@ public class SlugcatGameplay
     }
     public static void Player_checkInput(On.Player.orig_checkInput orig, Player self)
     { // Friend leap mechanics
+        var timer = self.GetPoacher().poleSuperJumpTimer;
         orig(self);
         if (self.slugcatStats.name != FriendName) return;
+
         if (self.GetPoacher().longjump && self.input[0].y == 0) self.GetPoacher().WantsUp = false;
         if (self.GetPoacher().longjump && self.input[0].y > 0)
         {
@@ -446,5 +478,44 @@ public class SlugcatGameplay
             self.GetPoacher().WantsUp = false;
         }
         if (!self.GetPoacher().longjump) self.GetPoacher().WantsUp = false;
+
+        // Friend pole leap mechanics
+        if (self.animation == ind.StandOnBeam && self.GetPoacher().poleCrawlState)
+        {
+            if (self.input[0].y > 0) self.GetPoacher().YesIAmLookingUpStopThinkingOtherwise = true;
+            else self.GetPoacher().YesIAmLookingUpStopThinkingOtherwise = false;
+            if (self.input[0].y > 0) self.GetPoacher().upwardpolejump = true;
+            else self.GetPoacher().upwardpolejump = false;
+            if (timer >= 20)
+            {
+                for (int i = 0; i < self.input.Length; i++)
+                {
+                    self.input[i].x = 0;
+                    if (self.input[i].y >= 0) 
+                    { 
+                        self.input[i].y = 0; 
+                    }
+                }
+            }
+
+
+            if (self.input[0].jmp && timer < 20) { self.GetPoacher().LetGoOfPoleJump = false; }
+            else if (!self.input[0].jmp) { self.GetPoacher().LetGoOfPoleJump = true; }
+            if (!self.GetPoacher().LetGoOfPoleJump)
+            {
+                if (self.input[0].x == 0) self.input[0].jmp = false;
+                if (timer < 20) 
+                {
+                    if (self.input[0].x != 0 || self.input[0].y != 0) self.GetPoacher().poleSuperJumpTimer = 0;
+                    else self.GetPoacher().poleSuperJumpTimer++; 
+                }
+            }
+            if (self.GetPoacher().LetGoOfPoleJump) 
+            {
+                if (timer >= 20) { self.GetPoacher().polejump = true; self.GetPoacher().DoingAPoleJump = true; self.Jump(); }
+                self.GetPoacher().poleSuperJumpTimer = 0;
+            }
+        }
+        else { self.GetPoacher().poleSuperJumpTimer = 0; self.GetPoacher().LetGoOfPoleJump = false; }
     }
 }

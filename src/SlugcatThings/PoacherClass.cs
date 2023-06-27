@@ -41,8 +41,15 @@ public static class PoacherClass
         public int glanceDir;
 
         // Friend variables
+        public bool poleCrawlState;
         public bool longjump;
+        public bool polejump;
+        public bool upwardpolejump;
+        public bool DoingAPoleJump;
+        public bool LetGoOfPoleJump;
+        public bool YesIAmLookingUpStopThinkingOtherwise;
         public bool WantsUp;
+        public int poleSuperJumpTimer;
         public bool HighJumped;
         public Overseer Iggy; // Yellow / 1
         public Overseer Wiggy; // Blue / 0

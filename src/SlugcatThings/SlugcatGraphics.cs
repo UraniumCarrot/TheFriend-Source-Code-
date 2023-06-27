@@ -58,13 +58,28 @@ public class SlugcatGraphics
         orig(self);
         if (self.player.slugcatStats.name == FriendName)
         {
-            if ((self.player.bodyMode == bod.Crawl || self.player.standing || self.player.bodyMode == bod.Stand) && !self.player.GetPoacher().isRidingLizard && self.player.bodyMode != bod.Default)
+            if ((self.player.bodyMode == bod.Crawl || self.player.standing || self.player.bodyMode == bod.Stand) && !self.player.GetPoacher().isRidingLizard && self.player.bodyMode != bod.Default && self.player.GetPoacher().poleSuperJumpTimer < 20)
             {
                 self.tail[self.tail.Length - 1].vel.y += (self.player.standing || self.player.bodyMode == bod.Stand) ? 0.9f : 1f;
                 self.tail[self.tail.Length - 3].vel.y -= (self.player.bodyMode != bod.Crawl && Mathf.Abs(self.player.firstChunk.vel.x) > 3.2f) ? 2.5f : 0f;
-                if (self.player.GetPoacher().WantsUp) self.tail[self.tail.Length - 1].vel.y += 0.2f;
+                if (self.player.GetPoacher().WantsUp) { self.tail[self.tail.Length - 1].vel.y += 0.2f; self.lookDirection += new Vector2(0, 1f); }
             }
             if (self.player.GetPoacher().WantsUp) self.head.vel.y += 1;
+
+            if (self.player.animation == ind.StandOnBeam && self.player.GetPoacher().poleSuperJumpTimer >= 20)
+            {
+                if (self.player.input[0].y > 0 ||
+                    self.player.GetPoacher().upwardpolejump ||
+                    self.player.GetPoacher().WantsUp ||
+                    self.player.GetPoacher().YesIAmLookingUpStopThinkingOtherwise)
+                {
+                    self.lookDirection += new Vector2(0, 0.5f); 
+                    self.tail[self.tail.Length - 1].vel.y += 0.4f;
+                    self.head.vel.y += 1;
+                }
+                self.tail[self.tail.Length - 1].vel.y += 1f;
+                self.tail[self.tail.Length - 1].vel.x += self.player.flipDirection * -0.8f;
+            }
         }
     }
     
