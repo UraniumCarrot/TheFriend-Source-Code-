@@ -53,9 +53,15 @@ internal class FriendCrawl
                 self.head.pos.y = Mathf.Lerp(self.head.lastPos.y + 2.5f, self.head.pos.y + 2.5f, 1f);
                 self.head.pos.x = Mathf.Lerp(self.head.lastPos.x + 1 * flpDirNeg, self.head.pos.x + 1 * flpDirNeg, 1f);
             }
+            
+            //Damping
+            if (self.player.input[0].x == 0)
+            {
+                //The last number is the modifier - the bigger the number, the less floppage
+                self.player.bodyChunks[0].vel = Vector2.Lerp(self.player.bodyChunks[0].vel, Vector2.zero, self.player.bodyChunks[0].vel.magnitude * self.player.bodyChunks[0].vel.magnitude * 0.006f);
+            }
 
             //Forcing bodychunks to rotate so the player is aligned horizontally
-
             switch (angle)
             {
                 case > 0 and < 90: //Left Down->Middle
