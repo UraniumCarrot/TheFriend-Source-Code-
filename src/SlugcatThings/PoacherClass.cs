@@ -51,6 +51,9 @@ public static class PoacherClass
         public bool WantsUp;
         public int poleSuperJumpTimer;
         public bool HighJumped;
+        public int CrawlTurnCounter;
+        public int AfterCrawlTurnCounter;
+        public Player.AnimationIndex LastAnimation;
         public Overseer Iggy; // Yellow / 1
         public Overseer Wiggy; // Blue / 0
         public bool TriedSpawningOverseerInThisRoom;

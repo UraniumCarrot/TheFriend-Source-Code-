@@ -76,6 +76,7 @@ namespace TheFriend
             FirecrackerFix.Apply();
             FriendWorldState.Apply();
             FriendCrawl.Apply();
+            FriendCrawlTurn.Apply();
             DragonCrafts.Apply();
             SLOracleHandler.Apply();
             FamineWorld.Apply();
