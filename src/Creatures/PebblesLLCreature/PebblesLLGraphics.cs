@@ -13,16 +13,16 @@ using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.PebblesLLCreature;
 
 public class PebblesLLGraphics : DaddyGraphics
 {
     public static void Apply()
     {
-       On.DaddyGraphics.DaddyTubeGraphic.ApplyPalette += DaddyTubeGraphic_ApplyPalette;
-       On.DaddyGraphics.DaddyDeadLeg.ApplyPalette += DaddyDeadLeg_ApplyPalette;
-       On.DaddyGraphics.DaddyDeadLeg.DrawSprite += DaddyDeadLeg_DrawSprite;
-       On.DaddyGraphics.DaddyDangleTube.ApplyPalette += DaddyDangleTube_ApplyPalette;
+        On.DaddyGraphics.DaddyTubeGraphic.ApplyPalette += DaddyTubeGraphic_ApplyPalette;
+        On.DaddyGraphics.DaddyDeadLeg.ApplyPalette += DaddyDeadLeg_ApplyPalette;
+        On.DaddyGraphics.DaddyDeadLeg.DrawSprite += DaddyDeadLeg_DrawSprite;
+        On.DaddyGraphics.DaddyDangleTube.ApplyPalette += DaddyDangleTube_ApplyPalette;
     }
     public PebblesLLGraphics(PhysicalObject ow) : base(ow)
     {
@@ -90,19 +90,19 @@ public class PebblesLLGraphics : DaddyGraphics
             }
             for (int j = 0; j < self.bumps.Length; j++)
             {
-                if (self.bumps[j].pos.y < 0.5f) sLeaser.sprites[self.firstSprite + 1 + j].color = Color.Lerp(color, palette.blackColor, self.OnTubeEffectColorFac(self.bumps[j].pos.y)*0.4f);
+                if (self.bumps[j].pos.y < 0.5f) sLeaser.sprites[self.firstSprite + 1 + j].color = Color.Lerp(color, palette.blackColor, self.OnTubeEffectColorFac(self.bumps[j].pos.y) * 0.4f);
             }
         }
     }
     public static void DaddyTubeGraphic_ApplyPalette(On.DaddyGraphics.DaddyTubeGraphic.orig_ApplyPalette orig, DaddyTubeGraphic self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
-        Color color = new Color(1f,0.3f,0.9f);
+        Color color = new Color(1f, 0.3f, 0.9f);
         if (self.owner.daddy.Template.type == CreatureTemplateType.PebblesLL)
         {
             for (int i = 0; i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length; i++)
             {
-                if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length/2) (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.01f - 0.1f);
+                if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length / 2) (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.01f - 0.1f);
             }
         }
     }

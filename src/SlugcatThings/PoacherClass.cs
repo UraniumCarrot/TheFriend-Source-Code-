@@ -6,10 +6,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using static TheFriend.PoacherClass;
+using static TheFriend.SlugcatThings.PoacherClass;
 using Color = UnityEngine.Color;
 
-namespace TheFriend;
+namespace TheFriend.SlugcatThings;
 public static class PoacherClass
 {
     // Technically this class is meant to hold variables used only for Poacher, but there's nothing barring me from using it with players in general. So i will. :)
@@ -51,8 +51,8 @@ public static class PoacherClass
 
         public Poacher()
         {
-            this.isPoacher = false;
-            this.isRidingLizard = false;
+            isPoacher = false;
+            isRidingLizard = false;
         }
     }
     public static readonly ConditionalWeakTable<Player, Poacher> CWT = new();

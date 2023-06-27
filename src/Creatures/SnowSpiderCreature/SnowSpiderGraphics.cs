@@ -11,7 +11,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.SnowSpiderCreature;
 
 public class SnowSpiderGraphics : BigSpiderGraphics
 {
@@ -25,7 +25,7 @@ public class SnowSpiderGraphics : BigSpiderGraphics
     public static float originalBodyThickness;
     public SnowSpiderGraphics(PhysicalObject ow) : base(ow)
     {
-        originalBodyThickness = 1.2f + (Random.value * 3) / 9;
+        originalBodyThickness = 1.2f + Random.value * 3 / 9;
         bug = ow as SnowSpider;
         tailEnd = new GenericBodyPart(this, 3f, 0.5f, 0.99f, bug.bodyChunks[1]);
         lastDarkness = -1f;
@@ -33,7 +33,7 @@ public class SnowSpiderGraphics : BigSpiderGraphics
         mandibles = new GenericBodyPart[2];
         for (int i = 0; i < mandibles.GetLength(0); i++)
         {
-            mandibles[i] = new GenericBodyPart(this, 1f, 0.5f, 0.9f, base.owner.bodyChunks[0]);
+            mandibles[i] = new GenericBodyPart(this, 1f, 0.5f, 0.9f, owner.bodyChunks[0]);
         }
         legs = new Limb[2, 4];
         legFlips = new float[2, 4, 2];
@@ -115,7 +115,7 @@ public class SnowSpiderGraphics : BigSpiderGraphics
     public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         base.ApplyPalette(sLeaser, rCam, palette);
-        blackColor = Color.Lerp(Color.white, palette.blackColor, palette.darkness*1.5f);
+        blackColor = Color.Lerp(Color.white, palette.blackColor, palette.darkness * 1.5f);
         bodycolor = blackColor;
         for (int i = 0; i < sLeaser.sprites.Length; i++) sLeaser.sprites[i].color = blackColor;
         for (int j = 0; j < 2; j++)
@@ -171,16 +171,16 @@ public class SnowSpiderGraphics : BigSpiderGraphics
     // Hooks
     public static Vector2 BigSpiderGraphics_ScaleAttachPos(On.BigSpiderGraphics.orig_ScaleAttachPos orig, BigSpiderGraphics self, int scl, float timeStacker)
     {
-       if (self is SnowSpiderGraphics)
-       {
-            float num = Mathf.Lerp(self.lastFlip, self.flip, timeStacker) * (0.25f);
+        if (self is SnowSpiderGraphics)
+        {
+            float num = Mathf.Lerp(self.lastFlip, self.flip, timeStacker) * 0.25f;
             float num2 = Mathf.InverseLerp(0.2f, 0f, self.scaleStuckPositions[scl].y);
-            Vector2 vector = Vector2.Lerp(self.bug.bodyChunks[1].lastPos, self.bug.bodyChunks[1].pos, timeStacker) + Custom.RNV() * UnityEngine.Random.value * 3.5f * Mathf.Lerp(self.lastMandiblesCharge, self.mandiblesCharge, timeStacker);
+            Vector2 vector = Vector2.Lerp(self.bug.bodyChunks[1].lastPos, self.bug.bodyChunks[1].pos, timeStacker) + Custom.RNV() * Random.value * 3.5f * Mathf.Lerp(self.lastMandiblesCharge, self.mandiblesCharge, timeStacker);
             vector = Vector2.Lerp(vector, Vector2.Lerp(self.bug.bodyChunks[0].lastPos, self.bug.bodyChunks[0].pos, timeStacker), Mathf.InverseLerp(0.5f, 1f, self.scaleStuckPositions[scl].y) * 0.7f);
             Vector2 vector2 = Custom.DirVec(vector, Vector2.Lerp(self.bug.bodyChunks[0].lastPos, self.bug.bodyChunks[0].pos, timeStacker));
-            return Vector2.Lerp(vector, Vector2.Lerp(self.tailEnd.lastPos, self.tailEnd.pos, timeStacker), num2 * 0.6f) + Custom.PerpendicularVector(vector2) * (self.scaleStuckPositions[scl].x - 0.5f * num) * Mathf.Pow(Mathf.Clamp01(Mathf.Sin(self.scaleStuckPositions[scl].y * (float)Math.PI)), 2f) * (14f) + vector2 * Mathf.Lerp(-1f, 1f, self.scaleStuckPositions[scl].y) * (14f) * Mathf.Pow(1f - num2, 2f);
-       }
-       return orig(self, scl, timeStacker);
+            return Vector2.Lerp(vector, Vector2.Lerp(self.tailEnd.lastPos, self.tailEnd.pos, timeStacker), num2 * 0.6f) + Custom.PerpendicularVector(vector2) * (self.scaleStuckPositions[scl].x - 0.5f * num) * Mathf.Pow(Mathf.Clamp01(Mathf.Sin(self.scaleStuckPositions[scl].y * (float)Math.PI)), 2f) * 14f + vector2 * Mathf.Lerp(-1f, 1f, self.scaleStuckPositions[scl].y) * 14f * Mathf.Pow(1f - num2, 2f);
+        }
+        return orig(self, scl, timeStacker);
     }
     public static void BigSpider_Violence(On.BigSpider.orig_Violence orig, BigSpider self, BodyChunk source, Vector2? directionAndMomentum, BodyChunk hitChunk, PhysicalObject.Appendage.Pos hitAppendage, Creature.DamageType type, float damage, float stunBonus)
     {
@@ -198,7 +198,7 @@ public class SnowSpiderGraphics : BigSpiderGraphics
             }
             for (int i = 0; i < 5; i++)
             {
-                SporeCloud cloud = new SporeCloud(self.firstChunk.pos, Custom.RNV() * Random.value * 2f - new Vector2(0,1), bodycolor, damage > 0.5 ? 0.8f : 0.45f, null, i % 20, smallInsects);
+                SporeCloud cloud = new SporeCloud(self.firstChunk.pos, Custom.RNV() * Random.value * 2f - new Vector2(0, 1), bodycolor, damage > 0.5 ? 0.8f : 0.45f, null, i % 20, smallInsects);
                 cloud.nonToxic = true;
                 self.room.AddObject(cloud);
                 Debug.Log("Solace: Cloud spawned for SnowSpider");

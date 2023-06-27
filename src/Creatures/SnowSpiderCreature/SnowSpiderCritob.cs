@@ -13,7 +13,7 @@ using Fisobs.Sandbox;
 using UnityEngine;
 using Fisobs.Properties;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.SnowSpiderCreature;
 
 public class SnowSpiderCritob : Critob
 {
@@ -35,7 +35,7 @@ public class SnowSpiderCritob : Critob
     };
     public override CreatureTemplate CreateTemplate()
     {
-        CreatureTemplate s = new CreatureFormula(CreatureTemplate.Type.BigSpider, base.Type, "SnowSpider")
+        CreatureTemplate s = new CreatureFormula(CreatureTemplate.Type.BigSpider, Type, "SnowSpider")
         {
             DefaultRelationship = new(CreatureTemplate.Relationship.Type.Ignores, 1f),
             HasAI = true,

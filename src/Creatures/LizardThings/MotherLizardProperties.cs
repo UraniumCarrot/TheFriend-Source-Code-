@@ -12,7 +12,7 @@ using SlugBase;
 using Fisobs.Core;
 using Fisobs.Items;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.LizardThings;
 public class MotherLizardProperties : ItemProperties
 {
     public readonly Lizard motherLizard;

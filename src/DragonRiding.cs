@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RWCustom;
 using UnityEngine;
 using MoreSlugcats;
+using TheFriend.SlugcatThings;
 
 namespace TheFriend;
 

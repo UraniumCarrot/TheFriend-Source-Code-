@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
 using Fisobs.Properties;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.PebblesLLCreature;
 
 public class PebblesLLAI : DaddyAI
 {

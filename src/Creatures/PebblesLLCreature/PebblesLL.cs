@@ -18,7 +18,7 @@ using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System.Security.Cryptography;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.PebblesLLCreature;
 
 public class PebblesLL : DaddyLongLegs
 {
@@ -30,7 +30,7 @@ public class PebblesLL : DaddyLongLegs
         IL.Spear.Update += Spear_Update;
     }
 
-    public static void Spear_Update(MonoMod.Cil.ILContext il)
+    public static void Spear_Update(ILContext il)
     {
         try
         {
@@ -40,19 +40,19 @@ public class PebblesLL : DaddyLongLegs
                        i => i.MatchBrtrue(out label));
             c.GotoPrev(i => i.MatchLdarg(0));
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate((Spear spear) => 
+            c.EmitDelegate((Spear spear) =>
             {
                 return spear.stuckInObject is PebblesLL ? true : false;
             }
             );
             c.Emit(OpCodes.Brtrue, label);
         }
-        catch(Exception e) { Debug.Log("Solace: IL hook SpearUpdatePLLStab failed!" + e); }
+        catch (Exception e) { Debug.Log("Solace: IL hook SpearUpdatePLLStab failed!" + e); }
     }
 
-    public static void DaddyLongLegs_ctor(MonoMod.Cil.ILContext il)
+    public static void DaddyLongLegs_ctor(ILContext il)
     {
-        try 
+        try
         {
             var c = new ILCursor(il);
             if (c.TryGotoNext(MoveType.After, x => x.MatchNewarr<DaddyTentacle>()) && c.TryGotoNext(x => x.MatchNewarr<DaddyTentacle>()))
@@ -61,20 +61,20 @@ public class PebblesLL : DaddyLongLegs
                 c.EmitDelegate((int length, DaddyLongLegs self) => self.Template.type == CreatureTemplateType.PebblesLL ? 3 : length);
             }
         }
-        catch(Exception e) { Debug.Log("Solace: IL hook PLLTentaSet failed!" + e); }
+        catch (Exception e) { Debug.Log("Solace: IL hook PLLTentaSet failed!" + e); }
     }
 
     public static void AbstractCreature_ctor(On.AbstractCreature.orig_ctor orig, AbstractCreature self, World world, CreatureTemplate creatureTemplate, Creature realizedCreature, WorldCoordinate pos, EntityID ID)
     {
         orig(self, world, creatureTemplate, realizedCreature, pos, ID);
-        if (creatureTemplate.type == CreatureTemplateType.PebblesLL) self.ID = new EntityID(-1,5);
+        if (creatureTemplate.type == CreatureTemplateType.PebblesLL) self.ID = new EntityID(-1, 5);
     }
 
     public PebblesLL(AbstractCreature acrit, World world) : base(acrit, acrit.world)
     {
         graphicsSeed = 1;
-        effectColor = new Color(0,0,1);
-        eyeColor = new Color(0,0,1);
+        effectColor = new Color(0, 0, 1);
+        eyeColor = new Color(0, 0, 1);
         colorClass = true;
     }
     public override void InitiateGraphicsModule()
@@ -97,10 +97,10 @@ public class PebblesLL : DaddyLongLegs
     }
     public override void Violence(BodyChunk source, Vector2? directionAndMomentum, BodyChunk hitChunk, Appendage.Pos hitAppendage, DamageType type, float damage, float stunBonus)
     {
-        if (hitAppendage != null) 
-        { 
+        if (hitAppendage != null)
+        {
             damage = 0;
-            tentacles[hitAppendage.appendage.appIndex].stun = (type == DamageType.Explosion || type == DamageType.Blunt) ? 200 : 20;
+            tentacles[hitAppendage.appendage.appIndex].stun = type == DamageType.Explosion || type == DamageType.Blunt ? 200 : 20;
         }
         base.Violence(source, directionAndMomentum, hitChunk, hitAppendage, type, damage, stunBonus);
     }

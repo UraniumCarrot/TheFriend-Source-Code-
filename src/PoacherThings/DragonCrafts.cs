@@ -10,8 +10,9 @@ using System.Linq;
 using ObjType = AbstractPhysicalObject.AbstractObjectType;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.BoomMineObject;
+using TheFriend.SlugcatThings;
 
-namespace TheFriend;
+namespace TheFriend.PoacherThings;
 internal class DragonCrafts
 {
     #region Crafting dictionary
@@ -98,7 +99,7 @@ internal class DragonCrafts
         {
             base.Update(eu);
             pos = spear.firstChunk.pos;
-            if (!(spear.bugSpear) || spear.room == null || spear != spear.abstractPhysicalObject.realizedObject || spear.room != loadedRoom || loadedRoom != room.abstractRoom.realizedRoom) base.Destroy();
+            if (!spear.bugSpear || spear.room == null || spear != spear.abstractPhysicalObject.realizedObject || spear.room != loadedRoom || loadedRoom != room.abstractRoom.realizedRoom) base.Destroy();
         }
     }
     #endregion
@@ -112,7 +113,7 @@ internal class DragonCrafts
     public static void Player_SpitUpCraftedObject(On.Player.orig_SpitUpCraftedObject orig, Player self)
     {
         if (self.slugcatStats.name != Plugin.DragonName) { orig(self); return; }
-        int vargrasp = (self?.grasps[1]?.grabbed is FirecrackerPlant || self?.grasps[1]?.grabbed is BoomMine) ? 1 : 0;
+        int vargrasp = self?.grasps[1]?.grabbed is FirecrackerPlant || self?.grasps[1]?.grabbed is BoomMine ? 1 : 0;
         var vargraspmat = self?.grasps[vargrasp]?.grabbed;
         var obj0 = self.grasps[0]?.grabbed?.abstractPhysicalObject;
         var obj1 = self.grasps[1]?.grabbed?.abstractPhysicalObject;
@@ -138,7 +139,7 @@ internal class DragonCrafts
                     TearFirecracker(self, lumps);
                     return;
                 }
-                catch(Exception e) { Debug.Log("Solace: Exception caught in Player.SpitUpCraftedObject " + e); }
+                catch (Exception e) { Debug.Log("Solace: Exception caught in Player.SpitUpCraftedObject " + e); }
             }
             else if (resultEx == BoomMineFisob.BoomMine)
             {
@@ -165,8 +166,8 @@ internal class DragonCrafts
                         break;
 
                     case nameof(ObjType.ScavengerBomb):
-                        if (((vargraspmat as FirecrackerPlant).lumps.Length - (vargraspmat as FirecrackerPlant).lumpsPopped.Count(i => i == true) < 6) || (vargraspmat as FirecrackerPlant).lumps.Length <= 5) 
-                        { 
+                        if ((vargraspmat as FirecrackerPlant).lumps.Length - (vargraspmat as FirecrackerPlant).lumpsPopped.Count(i => i == true) < 6 || (vargraspmat as FirecrackerPlant).lumps.Length <= 5)
+                        {
                             CraftFail(self);
                             Debug.Log("Solace: Dragoncraft failure! Tried to make a scavenger bomb without a full firecracker. Working as intended.");
                             return;
@@ -248,8 +249,8 @@ internal class DragonCrafts
     }
     public static void MineCrafting2(Player self)
     {
-        int grasp = (self?.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine) ? 0 : 1;
-        int result = (self?.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine) ? 1 : 0;
+        int grasp = self?.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine ? 0 : 1;
+        int result = self?.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine ? 1 : 0;
 
         int? upgrade;
         int red = 1;
@@ -260,7 +261,7 @@ internal class DragonCrafts
         {
             Lantern or LittleCracker => red,
             PuffBall or Mushroom => green,
-            JellyFish or FlareBomb  => blue,
+            JellyFish or FlareBomb => blue,
             _ => null
         };
         if (upgrade == null) { CraftFail(self); Debug.Log("Solace: Item cannot be used to upgrade mine!"); return; }
@@ -286,7 +287,7 @@ internal class DragonCrafts
         try
         {
             Debug.Log("TearFirecracker started");
-            int grasp = (self?.grasps[1]?.grabbed is FirecrackerPlant) ? 1 : 0;
+            int grasp = self?.grasps[1]?.grabbed is FirecrackerPlant ? 1 : 0;
             //AbstractPhysicalObject result0 = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, self.room.game.GetNewID());
             var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject;
             FirecrackerPlant plant = mat as FirecrackerPlant;
@@ -301,7 +302,7 @@ internal class DragonCrafts
                 self.grasps[grasp].grabbed.abstractPhysicalObject != null &&
                 self.grasps[grasp].grabbed.abstractPhysicalObject.realizedObject != null)
             {
-                for (int i = plant.lumps.Length-1; i >= 0; i--)
+                for (int i = plant.lumps.Length - 1; i >= 0; i--)
                 {
                     if (plant.lumpsPopped[i]) continue;
 
@@ -354,8 +355,8 @@ internal class DragonCrafts
         SoundID sound = null;
         float volume = 1f;
 
-        int grasp = (self?.grasps[1]?.grabbed is not Spear) ? 1 : 0;
-        int speargrasp = (self?.grasps[1]?.grabbed is Spear) ? 1 : 0;
+        int grasp = self?.grasps[1]?.grabbed is not Spear ? 1 : 0;
+        int speargrasp = self?.grasps[1]?.grabbed is Spear ? 1 : 0;
         var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject;
         AbstractSpear spear = self?.grasps[speargrasp]?.grabbed.abstractPhysicalObject as AbstractSpear;
         bool electricSet = false;
@@ -377,7 +378,7 @@ internal class DragonCrafts
                     case FlareBomb:
                         electricCharge += 1;
                         break;
-                    case JellyFish: 
+                    case JellyFish:
                         electricCharge = 3;
                         break;
 
@@ -390,13 +391,13 @@ internal class DragonCrafts
             case false:
                 switch (mat)
                 {
-                    case Rock and not LittleCracker: 
-                        electricSet = true; 
+                    case Rock and not LittleCracker:
+                        electricSet = true;
                         electricCharge = 0;
                         sound = SoundID.Spear_Bounce_Off_Creauture_Shell;
                         effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, color: new Color(1f, 1f, 1f), null, 20, 50);
                         break;
-                    case LittleCracker: 
+                    case LittleCracker:
                         hueSet = 0.5f;
                         sound = SoundID.Firecracker_Burn;
                         volume = 0.2f;

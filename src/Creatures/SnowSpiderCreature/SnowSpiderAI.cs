@@ -12,11 +12,11 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.SnowSpiderCreature;
 
 public class SnowSpiderAI : BigSpiderAI
 {
-    public SnowSpiderAI(AbstractCreature crit, World world) : base(crit, world) 
+    public SnowSpiderAI(AbstractCreature crit, World world) : base(crit, world)
     {
     }
     public override void Update()

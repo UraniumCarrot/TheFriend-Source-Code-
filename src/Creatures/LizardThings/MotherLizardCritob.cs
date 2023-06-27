@@ -13,7 +13,7 @@ using Fisobs.Sandbox;
 using UnityEngine;
 using Fisobs.Properties;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.LizardThings;
 public class MotherLizardCritob : Critob
 {
     public MotherLizardCritob() : base(CreatureTemplateType.MotherLizard)

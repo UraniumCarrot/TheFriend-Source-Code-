@@ -108,8 +108,7 @@ public partial class Options : OptionInterface
         var opTab0 = new OpTab(this, "General");
         var opTab1 = new OpTab(this, "Characters");
         var opTab2 = new OpTab(this, "Experimental");
-        var opTab3 = new OpTab(this, "Achievements");
-        var opTab4 = new OpTab(this, "Memorial");
+        var opTab3 = new OpTab(this, "Memorial");
         OpContainer genCont = new OpContainer(Vector2.zero);
         opTab0.AddItems(genCont);
         OpContainer charCont = new OpContainer(Vector2.zero);
@@ -118,14 +117,14 @@ public partial class Options : OptionInterface
         opTab1.AddItems(achieveCont);
 
         base.Initialize();
-        Tabs = new[] { opTab0, opTab1, opTab2, opTab3, opTab4 };
+        Tabs = new[] { opTab0, opTab1, opTab2, opTab3 };
 
         var labelMod = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - General Settings"), true);
-        var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.2"));
+        var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.3"));
         var labelMod1 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Character Settings"), true);
-        var labelVersion1 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.2"));
+        var labelVersion1 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.3"));
         var labelMod2 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Experimental Settings"), true);
-        var labelVersion2 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.2"));
+        var labelVersion2 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.3"));
 
         // General
         #region General
@@ -207,6 +206,9 @@ public partial class Options : OptionInterface
         LizRepMeterAllBox = new OpCheckBox(LizRepMeterForAll, new Vector2(50, 600 - 250)) { description = Translate("Displays lizard reputation in the current region for all slugcats") };
         var LizRepAllLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Universal Lizard Meter"), FLabelAlignment.Center);
         #endregion
+        // Memorial
+        #region Memorial
+        #endregion
 
         Tabs[0].AddItems( // General
             labelMod,
@@ -265,6 +267,8 @@ public partial class Options : OptionInterface
             LizRepLabel,
             LizRepMeterAllBox,
             LizRepAllLabel
+            );
+        Tabs[3].AddItems( // Memorial
             );
 
     }

@@ -8,7 +8,7 @@ using Mono.Cecil.Cil;
 using RWCustom;
 using UnityEngine;
 
-namespace TheFriend;
+namespace TheFriend.FriendThings;
 // FriendCrawl code kindly given to me by Noir, thank you so much Noir!!! DO NOT use this code without his permission.
 internal class FriendCrawl
 {
@@ -126,10 +126,10 @@ internal class FriendCrawl
             self.mode = Limb.Mode.HuntAbsolutePosition;
             self.huntSpeed = 12f;
             self.quickness = 0.7f;
-            if ((self.limbNumber == 0 || (Mathf.Abs((self.owner as PlayerGraphics).hands[0].pos.x - self.owner.owner.bodyChunks[0].pos.x) < 10f && (self.owner as PlayerGraphics).hands[0].reachedSnapPosition)) && !Custom.DistLess(self.owner.owner.bodyChunks[0].pos, self.absoluteHuntPos, 29f))
+            if ((self.limbNumber == 0 || Mathf.Abs((self.owner as PlayerGraphics).hands[0].pos.x - self.owner.owner.bodyChunks[0].pos.x) < 10f && (self.owner as PlayerGraphics).hands[0].reachedSnapPosition) && !Custom.DistLess(self.owner.owner.bodyChunks[0].pos, self.absoluteHuntPos, 29f))
             {
                 Vector2 absoluteHuntPos = self.absoluteHuntPos;
-                self.FindGrip(self.owner.owner.room, self.connection.pos + new Vector2((float)(self.owner.owner as Player).flipDirection * 20f, 0f), self.connection.pos + new Vector2((float)(self.owner.owner as Player).flipDirection * 20f, 0f), 100f, new Vector2(self.owner.owner.bodyChunks[0].pos.x + (float)(self.owner.owner as Player).flipDirection * 28f, self.owner.owner.room.MiddleOfTile(self.owner.owner.bodyChunks[0].pos).y - 10f), 2, 1, false);
+                self.FindGrip(self.owner.owner.room, self.connection.pos + new Vector2((self.owner.owner as Player).flipDirection * 20f, 0f), self.connection.pos + new Vector2((self.owner.owner as Player).flipDirection * 20f, 0f), 100f, new Vector2(self.owner.owner.bodyChunks[0].pos.x + (self.owner.owner as Player).flipDirection * 28f, self.owner.owner.room.MiddleOfTile(self.owner.owner.bodyChunks[0].pos).y - 10f), 2, 1, false);
                 if (self.absoluteHuntPos != absoluteHuntPos)
                 {
                 }

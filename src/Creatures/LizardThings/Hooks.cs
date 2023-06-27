@@ -24,8 +24,9 @@ using JollyCoop;
 using TheFriend.WorldChanges;
 using SlugBase.Features;
 using System.Drawing;
+using TheFriend.SlugcatThings;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.LizardThings;
 public class Hooks
 {
     public static void Apply()
@@ -421,7 +422,7 @@ public class Hooks
                 {
                     if (relationship.type == CreatureTemplate.Relationship.Type.Afraid) relationship.type = CreatureTemplate.Relationship.Type.Attacks;
                     if (relationship.type == CreatureTemplate.Relationship.Type.Eats && !self.lizard.room.game.IsArenaSession && (
-                        (self?.creature?.personality.sympathy >= 0.75f && self?.creature?.world?.game?.session?.creatureCommunities?.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.creature.world.region.regionNumber, 0) > 0.5f) ||
+                        self?.creature?.personality.sympathy >= 0.75f && self?.creature?.world?.game?.session?.creatureCommunities?.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.creature.world.region.regionNumber, 0) > 0.5f ||
                         self?.lizard?.AI?.LikeOfPlayer(self?.lizard?.AI?.tracker?.RepresentationForCreature(trackedcreature?.abstractCreature, true)) > 0)
                         )
                         relationship.type = CreatureTemplate.Relationship.Type.Ignores;
@@ -451,7 +452,7 @@ public class Hooks
             {
                 self.LizardState.health = Mathf.Min(0.5f, self.LizardState.health + 0.001f);
             }
-            if (self?.grabbedBy?.Count > 0 && (self?.grabbedBy[0]?.grabber is Player player) && self?.grabbedBy[0]?.grabber is not null)
+            if (self?.grabbedBy?.Count > 0 && self?.grabbedBy[0]?.grabber is Player player && self?.grabbedBy[0]?.grabber is not null)
             {
                 if (self?.Template?.type == CreatureTemplateType.YoungLizard)
                 {
@@ -465,7 +466,7 @@ public class Hooks
                 }
             }
         }
-        catch(Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update GeneralLizardCode " + e); }
+        catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update GeneralLizardCode " + e); }
         if (self.GetLiz() != null && self?.GetLiz()?.IsBeingRidden == true)
         {
             if (self?.graphicsModule != null) (self?.graphicsModule as LizardGraphics)?.BringSpritesToFront();
@@ -485,7 +486,7 @@ public class Hooks
                 }
                 else if (self != null) self.GetLiz().lastOutsideTerrainPos = self.firstChunk.pos;
             }
-            catch(Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update LizardRideTerrainPositionReset" + e); }
+            catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update LizardRideTerrainPositionReset" + e); }
         }
         else if (self?.Template?.type == CreatureTemplateType.MotherLizard) for (int i = 0; i < self?.bodyChunks?.Length; i++) self.bodyChunks[i].mass = 10;
         try
@@ -501,7 +502,7 @@ public class Hooks
                 }
             }
         }
-        catch(Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update WormGrassRepulse " + e); }
+        catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update WormGrassRepulse " + e); }
     }
     #endregion
     #region misc data
@@ -539,14 +540,14 @@ public class Hooks
                 else if (creature is Player player0 && player0?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)
                     return true;
             }
-            catch(Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.AlreadyTrackingCreature playerCode " + e); }
+            catch (Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.AlreadyTrackingCreature playerCode " + e); }
         }
         return orig(self, creature);
     }
     public static void WormGrassPatch_InteractWithCreature(On.WormGrass.WormGrassPatch.orig_InteractWithCreature orig, WormGrass.WormGrassPatch self, WormGrass.WormGrassPatch.CreatureAndPull creatureAndPull)
     {
-        if (!(creatureAndPull?.creature is Player player && (player?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)) || 
-            !(creatureAndPull?.creature?.grabbedBy?.Count > 0 && creatureAndPull?.creature?.grabbedBy[0]?.grabber is Player pl && (pl?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true))) 
+        if (!(creatureAndPull?.creature is Player player && (player?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)) ||
+            !(creatureAndPull?.creature?.grabbedBy?.Count > 0 && creatureAndPull?.creature?.grabbedBy[0]?.grabber is Player pl && (pl?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)))
             orig(self, creatureAndPull);
     }
     public static void WormGrassPatch_Update(On.WormGrass.WormGrassPatch.orig_Update orig, WormGrass.WormGrassPatch self)
@@ -562,7 +563,7 @@ public class Hooks
                     if (player?.GetPoacher()?.isRidingLizard == true && (player?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
                 }
             }
-            catch(Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.Update playerCode " + e); }
+            catch (Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.Update playerCode " + e); }
             try
             {
                 if (crit is not null && crit?.grabbedBy?.Count > 0 && self?.trackedCreatures[i]?.creature?.grabbedBy[0]?.grabber is Player pl)
@@ -578,7 +579,7 @@ public class Hooks
                     if (plr?.GetPoacher()?.dragonSteed != null && (plr?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || plr?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
                 }*/
             }
-            catch(Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.Update itemCode " + e); }
+            catch (Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.Update itemCode " + e); }
         }
     }
     #endregion
@@ -636,8 +637,8 @@ public class Hooks
         orig(self, sLeaser, rCam, timeStacker, camPos);
         if (self.lGraphics.lizard.Template.type == CreatureTemplateType.MotherLizard && self is LongShoulderScales)
         {
-            var x = (self.graphic == 6) ? 1.5f : 1.5f;
-            for (int i = (self.startSprite + self.scalesPositions.Length - 1); i >= (self.startSprite); i--)
+            var x = self.graphic == 6 ? 1.5f : 1.5f;
+            for (int i = self.startSprite + self.scalesPositions.Length - 1; i >= self.startSprite; i--)
             {
                 sLeaser.sprites[i].scaleX *= x;
                 if (self.colored) sLeaser.sprites[i + self.scalesPositions.Length].scaleX *= x;
@@ -649,29 +650,29 @@ public class Hooks
         orig(self, ow);
         if (self.lizard.Template.type == CreatureTemplateType.MotherLizard)
         {
-            bool rCol = (Random.value > 0.5f) ? true : false;
+            bool rCol = Random.value > 0.5f ? true : false;
             var state = Random.state;
             Random.InitState(self.lizard.abstractCreature.ID.RandomSeed);
             float r1 = Random.value;
             var num = self.startOfExtraSprites + self.extraSprites;
 
             var shoulder = new LongShoulderScales(self, num);
-            shoulder.graphic = (r1 > 0.5f) ? 6 : 2;
-            shoulder.graphicHeight /= (r1 > 0.5f) ? 3.5f : 2f;
-            shoulder.numberOfSprites = (rCol == true) ? shoulder.scalesPositions.Length * 2 : shoulder.scalesPositions.Length;
-            shoulder.colored = (rCol == true) ? true : false;
+            shoulder.graphic = r1 > 0.5f ? 6 : 2;
+            shoulder.graphicHeight /= r1 > 0.5f ? 3.5f : 2f;
+            shoulder.numberOfSprites = rCol == true ? shoulder.scalesPositions.Length * 2 : shoulder.scalesPositions.Length;
+            shoulder.colored = rCol == true ? true : false;
             shoulder.rigor = 10f;
             num = self.AddCosmetic(num, shoulder);
 
             var scale = new SpineSpikes(self, num);
-            scale.graphic = (r1 > 0.5f) ? 6 : 2;
-            scale.sizeRangeMin = (r1 > 0.5f) ? 0.6f : 0.8f;
-            scale.sizeRangeMax = (r1 > 0.5f) ? 2.6f : 3f;
+            scale.graphic = r1 > 0.5f ? 6 : 2;
+            scale.sizeRangeMin = r1 > 0.5f ? 0.6f : 0.8f;
+            scale.sizeRangeMax = r1 > 0.5f ? 2.6f : 3f;
             scale.spineLength = Mathf.Lerp(0.7f, 0.95f, Random.value) * self.BodyAndTailLength;
             scale.sizeSkewExponent = Random.value;
             if (scale.bumps > 15) scale.bumps = 15;
-            scale.colored = (rCol == true) ? 1 : 0;
-            scale.numberOfSprites = (scale.colored > 0) ? scale.bumps * 2 : scale.bumps;
+            scale.colored = rCol == true ? 1 : 0;
+            scale.numberOfSprites = scale.colored > 0 ? scale.bumps * 2 : scale.bumps;
             num = self.AddCosmetic(num, scale);
             Random.state = state;
         }
@@ -718,7 +719,7 @@ public class Hooks
         orig(self, sLeaser, rCam);
         if (self.lizard.Template.type == CreatureTemplateType.MotherLizard)
         {
-            Array.Resize<FSprite>(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
+            Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
             if (self.lizard.GetLiz() != null) self.lizard.GetLiz().hybridHead = sLeaser.sprites.Length - 1;
             if (self.lizard.GetLiz() != null) sLeaser.sprites[self.lizard.GetLiz().hybridHead] = new FSprite("LizardHead3.0");
             self.AddToContainer(sLeaser, rCam, null);

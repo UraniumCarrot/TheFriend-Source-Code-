@@ -9,10 +9,11 @@ using HUD;
 using JollyCoop;
 using Menu;
 using RWCustom;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace TheFriend;
+namespace TheFriend.PoacherThings;
 
 public class DragonClassFeatures
 {
@@ -54,19 +55,19 @@ public class DragonClassFeatures
     }
     public static bool Player_SpearStick(On.Player.orig_SpearStick orig, Player self, Weapon source, float dmg, BodyChunk chunk, PhysicalObject.Appendage.Pos appPos, Vector2 direction)
     {
-        if (self.slugcatStats.name == Plugin.DragonName) 
+        if (self.slugcatStats.name == Plugin.DragonName)
         {
             if (self.dead) return true;
             if (self.bodyMode == Player.BodyModeIndex.Stunned) return true;
             if (self.standing)
             {
-                if ((Mathf.Abs(self.firstChunk.vel.x) > 2f && Mathf.Abs(direction.x) > 2f) && Mathf.Sign(direction.x) == Mathf.Sign(self.firstChunk.vel.x)) 
+                if (Mathf.Abs(self.firstChunk.vel.x) > 2f && Mathf.Abs(direction.x) > 2f && Mathf.Sign(direction.x) == Mathf.Sign(self.firstChunk.vel.x))
                 {
                     if (source is ExplosiveSpear) self.Stun(100);
                     else self.Stun(25);
-                    self.firstChunk.vel += (source.firstChunk.vel * source.firstChunk.mass / self.firstChunk.mass) / 2;
+                    self.firstChunk.vel += source.firstChunk.vel * source.firstChunk.mass / self.firstChunk.mass / 2;
                     self.GetPoacher().flicker = Custom.IntClamp(200 / 3, 3, 15);
-                    return false; 
+                    return false;
                 }
                 else { self.firstChunk.vel += source.firstChunk.vel * source.firstChunk.mass / self.firstChunk.mass; return true; }
             }
@@ -75,7 +76,7 @@ public class DragonClassFeatures
                 if (self.bodyMode == Player.BodyModeIndex.Crawl || self.animation == Player.AnimationIndex.BellySlide)
                 {
                     if (source is ExplosiveSpear) self.Stun(50);
-                    self.firstChunk.vel += (source.firstChunk.vel * source.firstChunk.mass / self.firstChunk.mass) / 3;
+                    self.firstChunk.vel += source.firstChunk.vel * source.firstChunk.mass / self.firstChunk.mass / 3;
                     self.GetPoacher().flicker = Custom.IntClamp(200 / 3, 3, 15);
                     return false;
                 }

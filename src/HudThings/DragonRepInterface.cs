@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace TheFriend;
+namespace TheFriend.HudThings;
 
 public static class DragonRepInterface
 {
@@ -19,7 +19,7 @@ public static class DragonRepInterface
     public static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam) // Forces new hud to work
     {
         orig(self, cam);
-        if (Plugin.LizRep() && (((self.owner as Player).room.world.game.StoryCharacter == Plugin.FriendName || (self.owner as Player).room.world.game.StoryCharacter == Plugin.DragonName) || Plugin.LizRepAll())) self.AddPart(new DragonUI(self, self.fContainers[1], self.owner as Player));
+        if (Plugin.LizRep() && ((self.owner as Player).room.world.game.StoryCharacter == Plugin.FriendName || (self.owner as Player).room.world.game.StoryCharacter == Plugin.DragonName || Plugin.LizRepAll())) self.AddPart(new DragonUI(self, self.fContainers[1], self.owner as Player));
     }
 
     public class DragonUI : HudPart
@@ -39,10 +39,10 @@ public static class DragonRepInterface
 
         public DragonUI(HUD.HUD hud, FContainer fContainer, Player player) : base(hud)
         {
-            custPos = ((hud.rainMeter.circles[0].sprite.scale == 0) && 
-                (player.room.game.StoryCharacter == Plugin.FriendName || 
-                player.room.game.StoryCharacter == Plugin.DragonName || 
-                player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint)) ? new Vector2(-35, 25) : new Vector2(-40, 30);
+            custPos = hud.rainMeter.circles[0].sprite.scale == 0 &&
+                (player.room.game.StoryCharacter == Plugin.FriendName ||
+                player.room.game.StoryCharacter == Plugin.DragonName ||
+                player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint) ? new Vector2(-35, 25) : new Vector2(-40, 30);
             pos = hud.karmaMeter.pos + custPos;
             lastPos = pos;
             circles = new HUDCircle[3];

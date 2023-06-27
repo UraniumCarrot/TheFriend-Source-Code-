@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using RWCustom;
-using static TheFriend.PoacherClass;
+using static TheFriend.SlugcatThings.PoacherClass;
 
 namespace TheFriend;
 

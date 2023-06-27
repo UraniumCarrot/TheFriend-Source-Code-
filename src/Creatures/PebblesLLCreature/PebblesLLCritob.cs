@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
 using Fisobs.Properties;
 
-namespace TheFriend.Creatures;
+namespace TheFriend.Creatures.PebblesLLCreature;
 
 public class PebblesLLCritob : Critob
 {
@@ -36,7 +36,7 @@ public class PebblesLLCritob : Critob
     };
     public override CreatureTemplate CreateTemplate()
     {
-        CreatureTemplate s = new CreatureFormula(CreatureTemplate.Type.BrotherLongLegs, base.Type, "PebblesLongLegs")
+        CreatureTemplate s = new CreatureFormula(CreatureTemplate.Type.BrotherLongLegs, Type, "PebblesLongLegs")
         {
             DefaultRelationship = new(CreatureTemplate.Relationship.Type.Ignores, 1f),
             HasAI = true

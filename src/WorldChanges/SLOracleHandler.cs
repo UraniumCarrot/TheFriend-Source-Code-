@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using RWCustom;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using TheFriend.SlugcatThings;
 
 namespace TheFriend.WorldChanges;
 
