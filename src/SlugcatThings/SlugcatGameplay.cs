@@ -411,8 +411,12 @@ public class SlugcatGameplay
         if (self.feetStuckPos != null || self.animation != ind.RocketJump) { self.GetPoacher().DoingAPoleJump = false; self.GetPoacher().upwardpolejump = false; }
     }
     public static void Player_Jump(On.Player.orig_Jump orig, Player self)
-    { // Friend improved jumps
-        if (self.animation != ind.Roll &&
+    { 
+        var crawlFlip = !self.standing && self.slideCounter > 0 && self.slideCounter < 10;
+        
+        // Friend improved jumps
+        if (!crawlFlip &&
+            self.animation != ind.Roll &&
             !self.standing &&
             self.slugcatStats.name == FriendName &&
             Mathf.Abs(self.firstChunk.vel.x) > 3)
@@ -421,19 +425,62 @@ public class SlugcatGameplay
                 self.input.Count(i => i.jmp) == 9)
                 return;
         }
-        orig(self);
-        if (Plugin.SuperJump.TryGet(self, out var power))
-        {
-            if (Plugin.FriendUnNerf() == true) self.jumpBoost += 3f;
-            else if (self.bodyMode == bod.Crawl) self.jumpBoost *= 1f + (power / 2);
-            else self.jumpBoost += (power + 0.25f) * (self.animation == ind.StandOnBeam ? 0 : 1);
 
-            if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch() == true))
+        // Whiplash crawlturn jump
+        if (self.SlugCatClass == FriendName && crawlFlip)
+        {
+            var flipDirNeg = self.flipDirection * -1;
+            
+            self.animation = ind.Flip;
+            self.room.AddObject(new ExplosionSpikes(self.room, self.bodyChunks[1].pos + new Vector2(0.0f, -self.bodyChunks[1].rad), 8, 7f, 5f, 5.5f, 40f, new Color(1f, 1f, 1f, 0.5f)));
+            int num3 = 1;
+            for (int index = 1; index < 4 && !self.room.GetTile(self.bodyChunks[0].pos + new Vector2(index * -flipDirNeg * 15f, 0.0f)).Solid && !self.room.GetTile(self.bodyChunks[0].pos + new Vector2(index * -flipDirNeg * 15f, 20f)).Solid; ++index)
+              num3 = index;
+            self.bodyChunks[0].pos += new Vector2(flipDirNeg * (float) -(num3 * 15.0 + 8.0), 14f);
+            self.bodyChunks[1].pos += new Vector2(flipDirNeg * (float) -(num3 * 15.0 + 2.0), 0.0f);
+            self.bodyChunks[0].vel = new Vector2(flipDirNeg * -7f, 10f);
+            self.bodyChunks[1].vel = new Vector2(flipDirNeg * -7f, 11f);
+            self.flipFromSlide = true;
+            self.whiplashJump = false;
+            self.jumpBoost = 0.0f;
+            self.room.PlaySound(SoundID.Slugcat_Sectret_Super_Wall_Jump, self.mainBodyChunk, false, 1f, 1f);
+            
+            if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch()))
             {
                 self.standing = false;
             }
+            
+            #region whiplash grab
+            if (self.pickUpCandidate == null || !self.CanIPickThisUp(self.pickUpCandidate) || self.grasps[0] != null && self.grasps[1] != null || self.Grabability(self.pickUpCandidate) != Player.ObjectGrabability.OneHand && self.Grabability(self.pickUpCandidate) != Player.ObjectGrabability.BigOneHand)
+              return;
+            int graspUsed = self.grasps[0] == null ? 0 : 1;
+            for (int index = 0; index < self.pickUpCandidate.grabbedBy.Count; ++index)
+            {
+              self.pickUpCandidate.grabbedBy[index].grabber.GrabbedObjectSnatched(self.pickUpCandidate.grabbedBy[index].grabbed, self);
+              self.pickUpCandidate.grabbedBy[index].grabber.ReleaseGrasp(self.pickUpCandidate.grabbedBy[index].graspUsed);
+            }
+            self.SlugcatGrab(self.pickUpCandidate, graspUsed);
+            if (self.pickUpCandidate is PlayerCarryableItem)
+              (self.pickUpCandidate as PlayerCarryableItem).PickedUp(self);
+            if (self.pickUpCandidate.graphicsModule == null)
+              return;
+            self.pickUpCandidate.graphicsModule.BringSpritesToFront();
+            #endregion
+            
+            return;
+        }
+        
+        orig(self);
+        if (Plugin.SuperJump.TryGet(self, out var power))
+        {
+            if (Plugin.FriendUnNerf()) self.jumpBoost += 3f;
+            else if (self.bodyMode == bod.Crawl) self.jumpBoost *= 1f + (power / 2);
+            else self.jumpBoost += (power + 0.25f) * (self.animation == ind.StandOnBeam ? 0 : 1);
 
-
+            if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch()))
+            {
+                self.standing = false;
+            }
 
         }
     }
