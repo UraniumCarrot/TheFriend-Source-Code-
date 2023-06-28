@@ -1,43 +1,20 @@
 ﻿using System;
 using BepInEx;
-using UnityEngine;
 using SlugBase.Features;
 using static SlugBase.Features.FeatureTypes;
-using IL.MoreSlugcats;
-using RWCustom;
-using MoreSlugcats;
-using System.Linq;
 using System.Security.Permissions;
-using System.Runtime.CompilerServices;
-using HUD;
-using JollyCoop;
-using System.Globalization;
-using CoralBrain;
-using System.Collections.Generic;
-using System.IO;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using Fisobs.Core;
-using On;
 using System.Security;
-using System.Runtime.InteropServices.WindowsRuntime;
-using MonoMod;
-using IL;
 using TheFriend.WorldChanges;
-using TheFriend.Creatures;
 using TheFriend.Objects.BoulderObject;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.PoacherThings;
 using BepInEx.Logging;
-using System.Net;
-using SlugBase;
-using SlugBase.DataTypes;
 using ind = Player.AnimationIndex;
 using bod = Player.BodyModeIndex;
-using JollyColorMode = Options.JollyColorMode;
-using Vector2 = UnityEngine.Vector2;
-using System.Numerics;
 using TheFriend.Creatures.PebblesLLCreature;
 using TheFriend.Creatures.LizardThings;
 using TheFriend.Creatures.SnowSpiderCreature;
@@ -57,9 +34,9 @@ namespace TheFriend
     {
         public const string MOD_ID = "thefriend";
 
-        public static PlayerFeature<float> SuperJump = PlayerFloat("friend/super_jump");
-        public static PlayerFeature<float> SuperCrawl = PlayerFloat("friend/super_crawl");
-        public static PlayerFeature<bool> SuperSlide = PlayerBool("friend/super_slide");
+        public static readonly PlayerFeature<float> SuperJump = PlayerFloat("friend/super_jump");
+        public static readonly PlayerFeature<float> SuperCrawl = PlayerFloat("friend/super_crawl");
+        public static readonly PlayerFeature<bool> SuperSlide = PlayerBool("friend/super_slide");
         public static readonly PlayerFeature<bool> FriendHead = PlayerBool("friend/friendhead");
         public static readonly PlayerFeature<bool> IsFriendChar = PlayerBool("friend/is_the_friend");
         public static readonly PlayerFeature<bool> CustomTail = PlayerBool("friend/fancytail");
@@ -103,7 +80,7 @@ namespace TheFriend
                 cursor.Emit(OpCodes.Ldarg_0);
                 cursor.EmitDelegate((Player player) =>
                 {
-                    if (player is Player)
+                    if (player != null)
                     {
                         return 14f;
                     }
@@ -188,7 +165,7 @@ namespace TheFriend
             cursor.Emit(OpCodes.Ldarg_0);
             cursor.EmitDelegate<Func<Player, bool>>(player =>
             {
-                return (IsFriendChar.TryGet(player, out var isFriend) && isFriend && !(player.bodyChunks[1].ContactPoint.y == -1) && !(player.bodyMode == Player.BodyModeIndex.Crawl || player.standing));
+                return (IsFriendChar.TryGet(player, out var isFriend) && isFriend && player.bodyChunks[1].ContactPoint.y != -1 && !(player.bodyMode == Player.BodyModeIndex.Crawl || player.standing));
             });
             cursor.Emit(OpCodes.Or);
         }
@@ -198,104 +175,86 @@ namespace TheFriend
         public static readonly SlugcatStats.Name DragonName = new SlugcatStats.Name("FriendDragonslayer", false); // Makes Poacher's campaign more accessible to me
 
         #region options
-        // Options code
+        // Friend Settings
         public static bool FriendAutoCrouch()
         {
-            if (Options.FriendAutoCrouch.Value == true) return true;
-            else return false;
+            return Options.FriendAutoCrouch.Value;
         }
         public static bool PoleCrawl()
         {
-            if (Options.PoleCrawl.Value == true) return true;
-            else return false;
+            return Options.PoleCrawl.Value;
         }
         public static bool FriendUnNerf()
         {
-            if (Options.FriendUnNerf.Value == true) return true;
-            else return false;
+            return Options.FriendUnNerf.Value;
         }
         public static bool FriendBackspear()
         {
-            if (Options.FriendBackspear.Value == true) return true;
-            else return false;
+            return Options.FriendBackspear.Value;
         }
         public static bool FriendRepLock()
         {
-            if (Options.FriendRepLock.Value == true) return true;
-            else return false;
+            return Options.FriendRepLock.Value;
         }
-
+        // Poacher Settings
         public static bool PoacherBackspear()
         {
-            if (Options.PoacherBackspear.Value == true) return true;
-            else return false;
+            return Options.PoacherBackspear.Value;
         }
         public static bool PoacherPupActs()
         {
-            if (Options.PoacherPupActs.Value == true) return true;
-            else return false;
+            return Options.PoacherPupActs.Value;
         }
         public static bool PoacherFreezeFaster()
         {
-            if (Options.PoacherFreezeFaster.Value == true) return true;
-            else return false;
+            return Options.PoacherFreezeFaster.Value;
         }
         public static bool PoacherFoodParkour()
         {
-            if (Options.PoacherFoodParkour.Value == true) return true;
-            else return false;
+            return Options.PoacherFoodParkour.Value;
         }
-
+        // Famine Settings
         public static bool NoFamine()
         {
-            if (Options.NoFamine.Value == true) return true;
-            else return false;
+            return Options.NoFamine.Value;
         }
         public static bool ExpeditionFamine()
         {
-            if (Options.ExpeditionFamine.Value == true) return true;
-            else return false;
+            return Options.ExpeditionFamine.Value;
         }
         public static bool FaminesForAll()
         {
-            if (Options.FaminesForAll.Value == true) return true;
-            else return false;
+            return Options.FaminesForAll.Value;
         }
-
+        // Lizard Reputation Settings
         public static bool LizRep()
         {
-            if (Options.LizRepMeter.Value == true) return true;
-            else return false;
+            return Options.LizRepMeter.Value;
         }
         public static bool LizRepAll()
         {
-            if (Options.LizRepMeterForAll.Value == true) return true;
-            else return false;
+            return Options.LizRepMeterForAll.Value;
         }
         public static bool LizRide()
         {
-            if (Options.LizRide.Value == true) return true;
-            else return false;
+            return Options.LizRide.Value;
         }
         public static bool LizRideAll()
         {
-            if (Options.LizRideAll.Value == true) return true;
-            else return false;
+            return Options.LizRideAll.Value;
         }
         public static bool LocalLizRep()
         {
-            if (Options.LocalizedLizRep.Value == true) return true;
-            else return false;
+            return Options.LocalizedLizRep.Value;
         }
         public static bool LocalLizRepAll()
         {
-            if (Options.LocalizedLizRepForAll.Value == true) return true;
-            else return false;
+            return Options.LocalizedLizRepForAll.Value;
         }
+        // Misc Hud Settings
         public static bool ShowCycleTimer()
         {
-            if (Options.SolaceBlizzTimer.Value == true) return true;
-            else return false;
+            return Options.SolaceBlizzTimer.Value;
         }
         #endregion
     }
