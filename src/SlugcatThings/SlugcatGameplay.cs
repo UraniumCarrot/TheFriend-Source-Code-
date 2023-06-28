@@ -432,6 +432,9 @@ public class SlugcatGameplay
             {
                 self.standing = false;
             }
+
+
+
         }
     }
     public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)

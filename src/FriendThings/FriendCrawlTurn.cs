@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace TheFriend.FriendThings;
 // Hiiii it's a me, Noir - please don't use this code without my permission also!
-internal class FriendCrawlTurn
+public class FriendCrawlTurn
 {
     public static void Apply()
     {
@@ -17,7 +17,7 @@ internal class FriendCrawlTurn
         On.Player.UpdateBodyMode += PlayerOnUpdateBodyMode;
     }
 
-    private static void PlayerOnUpdateAnimation(ILContext il)
+    public static void PlayerOnUpdateAnimation(ILContext il)
     {
         try
         {
@@ -86,7 +86,7 @@ internal class FriendCrawlTurn
         return true;
     }
 
-    private static void PlayerOnMovementUpdate(On.Player.orig_MovementUpdate orig, Player self, bool eu)
+    public static void PlayerOnMovementUpdate(On.Player.orig_MovementUpdate orig, Player self, bool eu)
     {
         orig(self, eu);
         if (self.SlugCatClass != Plugin.FriendName) return;
@@ -106,7 +106,7 @@ internal class FriendCrawlTurn
         friendData.LastAnimation = self.animation;
     }
 
-    private static void PlayerOnUpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
+    public static void PlayerOnUpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     {
         orig(self);
         if (self.SlugCatClass != Plugin.FriendName) return; 

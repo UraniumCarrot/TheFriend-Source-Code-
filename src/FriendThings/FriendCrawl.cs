@@ -11,7 +11,7 @@ using TheFriend.SlugcatThings;
 
 namespace TheFriend.FriendThings;
 // FriendCrawl code kindly given to me by Noir, thank you so much Noir!!! DO NOT use this code without his permission.
-internal class FriendCrawl
+public class FriendCrawl
 {
     public static void Apply()
     {
