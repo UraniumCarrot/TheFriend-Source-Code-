@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using IL;
-using On;
 using RWCustom;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -27,7 +20,7 @@ public class SnowSpiderGraphics : BigSpiderGraphics
     {
         originalBodyThickness = 1.2f + Random.value * 3 / 9;
         bug = ow as SnowSpider;
-        tailEnd = new GenericBodyPart(this, 3f, 0.5f, 0.99f, bug.bodyChunks[1]);
+        tailEnd = new GenericBodyPart(this, 3f, 0.5f, 0.99f, bug?.bodyChunks[1]);
         lastDarkness = -1f;
         legLength = 65f;
         mandibles = new GenericBodyPart[2];

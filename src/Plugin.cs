@@ -21,6 +21,7 @@ using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
+using TheFriend.SaveThings;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -50,6 +51,8 @@ namespace TheFriend
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
             // Hooks
+            SolaceSaveData.Apply();
+            YoungLizardAI.Apply();
             FirecrackerFix.Apply();
             FriendWorldState.Apply();
             FriendCrawl.Apply();
@@ -165,7 +168,14 @@ namespace TheFriend
             cursor.Emit(OpCodes.Ldarg_0);
             cursor.EmitDelegate<Func<Player, bool>>(player =>
             {
-                return (IsFriendChar.TryGet(player, out var isFriend) && isFriend && player.bodyChunks[1].ContactPoint.y != -1 && !(player.bodyMode == Player.BodyModeIndex.Crawl || player.standing));
+                return (IsFriendChar.TryGet(player, out var isFriend) && 
+                        isFriend && 
+                        player.bodyChunks[1].ContactPoint.y != -1 && 
+                        !(player.bodyMode == Player.BodyModeIndex.Crawl || 
+                          player.standing)) 
+                       || 
+                       (player.grasps[0]?.grabbed is LittleCracker ||
+                        (player.grasps[0]?.grabbed == null && player.grasps[1]?.grabbed is LittleCracker));
             });
             cursor.Emit(OpCodes.Or);
         }

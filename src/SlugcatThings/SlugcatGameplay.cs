@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RWCustom;
 using SlugBase;
 using MoreSlugcats;
@@ -46,9 +43,15 @@ public class SlugcatGameplay
     public static void Player_GrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
     { // Makes player ride lizard
         orig(self, eu);
+        if (self == null) return;
         for (int i = 0; i < 2; i++)
         {
-            if (self?.grasps[i]?.grabbed is Lizard liz && liz.GetLiz() != null && liz.GetLiz().IsRideable && !liz.dead && !liz.Stunned && liz?.AI?.LikeOfPlayer(liz?.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) > 0)
+            if (self.grasps[i]?.grabbed is Lizard liz && 
+                liz.GetLiz() != null && 
+                liz.GetLiz().IsRideable && 
+                !liz.dead && 
+                !liz.Stunned && 
+                liz.AI?.LikeOfPlayer(liz.AI?.tracker?.RepresentationForCreature(self.abstractCreature, true)) > 0)
             {
                 if (!liz.GetLiz().boolseat0)
                 {
@@ -97,17 +100,31 @@ public class SlugcatGameplay
         {
             if (Plugin.LizRide() && liz.Template.type != CreatureTemplateType.YoungLizard)
             {
-                if (liz.GetLiz() != null && liz.GetLiz().IsRideable)
+                if (liz.GetLiz().IsRideable)
                 {
-                    if (liz?.Template?.type != CreatureTemplateType.MotherLizard && liz?.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Attacks && liz?.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Eats && liz?.AI?.friendTracker?.friend != null && liz?.AI?.friendTracker?.friendRel?.like < 0.5f && !liz.dead && !liz.Stunned) return Player.ObjectGrabability.CantGrab;
-                    if ((liz.GetLiz().IsBeingRidden || self.GetPoacher().grabCounter > 0 || liz?.AI?.LikeOfPlayer(liz?.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) < 0) && !liz.dead && !liz.Stunned) return Player.ObjectGrabability.CantGrab;
+                    if (liz.Template?.type != CreatureTemplateType.MotherLizard && 
+                        liz.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Attacks && 
+                        liz.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Eats && 
+                        liz.AI?.friendTracker?.friend != null && 
+                        liz.AI?.friendTracker?.friendRel?.like < 0.5f && 
+                        !liz.dead && 
+                        !liz.Stunned) 
+                        return Player.ObjectGrabability.CantGrab;
+                    if ((liz.GetLiz().IsBeingRidden || 
+                         self.GetPoacher().grabCounter > 0 || 
+                         liz.AI?.LikeOfPlayer(liz.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) < 0) && 
+                        !liz.dead && 
+                        !liz.Stunned) 
+                        return Player.ObjectGrabability.CantGrab;
                     self.GetPoacher().grabCounter = 15;
                     return Player.ObjectGrabability.OneHand;
                 }
             }
             else if (liz.Template.type == CreatureTemplateType.YoungLizard)
             {
-                for (int i = 0; i < self?.grasps?.Count(); i++) if ((self?.grasps[i]?.grabbed as Creature)?.Template?.type == CreatureTemplateType.YoungLizard) return Player.ObjectGrabability.CantGrab;
+                for (int i = 0; i < self?.grasps?.Length; i++) 
+                    if ((self.grasps[i]?.grabbed as Creature)?.Template?.type == CreatureTemplateType.YoungLizard) 
+                        return Player.ObjectGrabability.CantGrab;
                 return Player.ObjectGrabability.OneHand;
             }
             return orig(self, obj);
@@ -118,8 +135,10 @@ public class SlugcatGameplay
     public static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
-        if (self == null || self.room == null) { Debug.Log("Solace: Player returned null, cancelling PlayerUpdate code"); return; }
+        if (self?.room == null) { Debug.Log("Solace: Player returned null, cancelling PlayerUpdate code"); return; }
 
+        var coord = self.abstractCreature.pos;
+        //Debug.Log("Your room coordinate is: room " + coord.room + ", x " + coord.x + ", y " + coord.y + ", abstractNode " + coord.abstractNode);
         // Moon mark
         if (self.GetPoacher().JustGotMoonMark && !self.GetPoacher().MoonMarkPassed)
         {
@@ -159,26 +178,29 @@ public class SlugcatGameplay
         }
         if (self.GetPoacher().isRidingLizard && (self.GetPoacher().dragonSteed as Lizard).GetLiz() != null)
         {
-            var liz = self?.GetPoacher()?.dragonSteed as Lizard;
+            var liz = self.GetPoacher()?.dragonSteed as Lizard;
             try
             {
                 self.standing = true;
-                if (liz.animation != Lizard.Animation.Lounge &&
-                    liz.animation != Lizard.Animation.PrepareToLounge &&
-                    liz.animation != Lizard.Animation.ShootTongue &&
-                    liz.animation != Lizard.Animation.Spit &&
-                    liz.animation != Lizard.Animation.HearSound &&
-                    liz.animation != Lizard.Animation.PreyReSpotted &&
-                    liz.animation != Lizard.Animation.PreySpotted &&
-                    liz.animation != Lizard.Animation.ThreatReSpotted &&
-                    liz.animation != Lizard.Animation.ThreatSpotted) liz.JawOpen = 0;
-                DragonRiding.DragonRiderSafety(self, self.GetPoacher().dragonSteed, (self.GetPoacher().dragonSteed as Lizard).GetLiz().seat0);
-                if ((self?.input[0].y < 0 && self.input[0].pckp) ||
-                    (self?.GetPoacher()?.dragonSteed as Lizard).AI?.LikeOfPlayer((self?.GetPoacher()?.dragonSteed as Lizard).AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) <= 0 ||
-                    self.dead ||
-                    self.Stunned ||
-                    (self?.room != self?.GetPoacher()?.dragonSteed?.room && self.room != null))
-                    DragonRiding.DragonRideReset(self.GetPoacher().dragonSteed, self);
+                if (liz != null)
+                {
+                    if (liz.animation != Lizard.Animation.Lounge &&
+                        liz.animation != Lizard.Animation.PrepareToLounge &&
+                        liz.animation != Lizard.Animation.ShootTongue &&
+                        liz.animation != Lizard.Animation.Spit &&
+                        liz.animation != Lizard.Animation.HearSound &&
+                        liz.animation != Lizard.Animation.PreyReSpotted &&
+                        liz.animation != Lizard.Animation.PreySpotted &&
+                        liz.animation != Lizard.Animation.ThreatReSpotted &&
+                        liz.animation != Lizard.Animation.ThreatSpotted) liz.JawOpen = 0;
+                    DragonRiding.DragonRiderSafety(self, self.GetPoacher().dragonSteed, (self.GetPoacher().dragonSteed as Lizard).GetLiz().seat0);
+                    if ((self.input[0].y < 0 && self.input[0].pckp) ||
+                        (self.GetPoacher().dragonSteed as Lizard)?.AI?.LikeOfPlayer((self.GetPoacher().dragonSteed as Lizard)?.AI?.tracker?.RepresentationForCreature(self.abstractCreature, true)) <= 0 ||
+                        self.dead ||
+                        self.Stunned ||
+                        (self.room != self.GetPoacher()?.dragonSteed?.room && self.room != null))
+                        DragonRiding.DragonRideReset(self.GetPoacher().dragonSteed, self);
+                }
             }
             catch (Exception e) { Debug.Log("Solace: Exception occurred in Player.Update LizRide" + e); }
 
@@ -191,7 +213,7 @@ public class SlugcatGameplay
 
             for (int i = 0; i < 2; i++)
             {
-                if (self?.grasps[i]?.grabbed is Spear && !(self?.grasps[0]?.grabbed == self?.grasps[1]?.grabbed)) hand = i;
+                if (self?.grasps[i]?.grabbed is Spear && self?.grasps[0]?.grabbed != self?.grasps[1]?.grabbed) hand = i;
             }
             try
             {
@@ -238,12 +260,12 @@ public class SlugcatGameplay
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    if (self?.grasps[i] != null && self?.grasps[i]?.grabbed != null && self?.grasps[i]?.grabbed is Weapon)
+                    if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Weapon)
                     {
-                        float rotation = (i == 1) ? self.GetPoacher().pointDir1 + 90 : self.GetPoacher().pointDir0 + 90f;
+                        float rotation = i == 1 ? self.GetPoacher().pointDir1 + 90 : self.GetPoacher().pointDir0 + 90f;
                         Vector2 vec = Custom.DegToVec(rotation);
-                        (self?.grasps[i]?.grabbed as Weapon).setRotation = vec; //new Vector2(self.input[0].x*10, self.input[0].y*10);
-                        (self?.grasps[i]?.grabbed as Weapon).rotationSpeed = 0f;
+                        (self.grasps[i]?.grabbed as Weapon).setRotation = vec; //new Vector2(self.input[0].x*10, self.input[0].y*10);
+                        (self.grasps[i]?.grabbed as Weapon).rotationSpeed = 0f;
                     }
                 }
             }
@@ -257,7 +279,7 @@ public class SlugcatGameplay
         if (self.slugcatStats.name == DragonName)
         {
             if (obj is Creature crit && crit is not Hazer && crit is not VultureGrub && crit is not Snail && crit is not SmallNeedleWorm && crit is not TubeWorm) return orig(self, obj);
-            else if (obj is MoreSlugcats.DandelionPeach || obj is DangleFruit)
+            else if (obj is DandelionPeach || obj is DangleFruit)
             {
                 if (!Plugin.PoacherFoodParkour()) return false;
                 else return true;
@@ -266,7 +288,7 @@ public class SlugcatGameplay
         }
         else return orig(self, obj);
     }
-    public static void DandelionPeach_Update(On.MoreSlugcats.DandelionPeach.orig_Update orig, MoreSlugcats.DandelionPeach self, bool eu)
+    public static void DandelionPeach_Update(On.MoreSlugcats.DandelionPeach.orig_Update orig, DandelionPeach self, bool eu)
     { // Poacher food parkour
         orig(self, eu);
         if (!Plugin.PoacherFoodParkour()) return;
@@ -318,7 +340,7 @@ public class SlugcatGameplay
     }
     public static bool SlugcatStats_SlugcatCanMaul(On.SlugcatStats.orig_SlugcatCanMaul orig, SlugcatStats.Name slugcatNum)
     { // Friend maul
-        if (SlugBase.SlugBaseCharacter.TryGet(slugcatNum, out var chara) && Plugin.MaulEnabled.TryGet(chara, out var canMaul) && canMaul)
+        if (SlugBaseCharacter.TryGet(slugcatNum, out var chara) && Plugin.MaulEnabled.TryGet(chara, out var canMaul) && canMaul)
             return true;
         else
             return orig(slugcatNum);
@@ -328,16 +350,16 @@ public class SlugcatGameplay
         orig(self, abstractCreature, world);
         try
         {
-            if (self.slugcatStats.name == FriendName && Plugin.FriendBackspear() == true && self != null)
+            if (self.slugcatStats.name == FriendName && Plugin.FriendBackspear())
             {
                 self.spearOnBack = new Player.SpearOnBack(self);
             }
-            if (self.slugcatStats.name == DragonName && self != null)
+            if (self.slugcatStats.name == DragonName)
             {
                 self.setPupStatus(true);
                 self.GetPoacher().isPoacher = true;
                 self.GetPoacher().IsSkullVisible = true;
-                if (Plugin.PoacherBackspear() == true) self.spearOnBack = new Player.SpearOnBack(self);
+                if (Plugin.PoacherBackspear()) self.spearOnBack = new Player.SpearOnBack(self);
             }
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
@@ -362,7 +384,7 @@ public class SlugcatGameplay
                     self.dynamicRunSpeed[1] += boost - 1f;
                 }
             }
-            if (self.GetPoacher().longjump == true && self.superLaunchJump == 0)
+            if (self.GetPoacher().longjump && self.superLaunchJump == 0)
             {
                 if (self.GetPoacher().WantsUp)
                 {
@@ -490,7 +512,7 @@ public class SlugcatGameplay
         if (self.slugcatStats.name == FriendName)
         {
             if (self.animation == ind.LedgeGrab && self.input[0].y < 1) { self.standing = false; self.bodyMode = bod.Crawl; }
-            if (self.animation == ind.StandOnBeam && self.input[0].y < 1 && Plugin.PoleCrawl() == true)
+            if (self.animation == ind.StandOnBeam && self.input[0].y < 1 && Plugin.PoleCrawl())
             {
                 self.dynamicRunSpeed[0] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;
                 self.dynamicRunSpeed[1] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;
@@ -505,8 +527,8 @@ public class SlugcatGameplay
     public static void SlugcatStats_ctor(On.SlugcatStats.orig_ctor orig, SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
     { // Friend unnerfs
         orig(self, slugcat, malnourished);
-        if (slugcat == FriendName && Plugin.FriendUnNerf() == true) self.poleClimbSpeedFac = 6f;
-        if (slugcat == FriendName && Plugin.FriendUnNerf() == true) self.runspeedFac = 0.8f;
+        if (slugcat == FriendName && Plugin.FriendUnNerf()) self.poleClimbSpeedFac = 6f;
+        if (slugcat == FriendName && Plugin.FriendUnNerf()) self.runspeedFac = 0.8f;
     }
     public static void Player_checkInput(On.Player.orig_checkInput orig, Player self)
     { // Friend leap mechanics

@@ -32,9 +32,6 @@
         <Reference Include="..\lib\MonoMod.Utils.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\SlugBase.dll">
-          <Private>false</Private>
-        </Reference>
         <Reference Include="..\lib\UnityEngine.CoreModule.dll">
           <Private>false</Private>
         </Reference>
@@ -43,6 +40,9 @@
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
           <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="SlugBase">
+          <HintPath>..\..\..\..\..\Downloads\SlugBase.dll</HintPath>
         </Reference>
     </ItemGroup>
     

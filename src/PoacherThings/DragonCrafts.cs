@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using RWCustom;
 using MoreSlugcats;
-using UnityEngine.PlayerLoop;
 using System;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using ObjType = AbstractPhysicalObject.AbstractObjectType;
 using TheFriend.Objects.LittleCrackerObject;
@@ -13,7 +11,7 @@ using TheFriend.Objects.BoomMineObject;
 using TheFriend.SlugcatThings;
 
 namespace TheFriend.PoacherThings;
-internal class DragonCrafts
+public class DragonCrafts
 {
     #region Crafting dictionary
     static Dictionary<(ObjType, ObjType), ObjType> craftingResults = new();
@@ -232,8 +230,8 @@ internal class DragonCrafts
                 Debug.Log("Solace: Mine recipe item destroyed");
             }
         }
-        AbstractPhysicalObject result;
-        result = new BoomMineAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
+
+        AbstractPhysicalObject result = new BoomMineAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
         self.room.PlaySound(SoundID.Gate_Clamp_Lock, self.mainBodyChunk, false, 0.5f, 3f + Random.value);
         self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, color: new Color(1f, 1f, 1f), null, 20, 50));
         self.room.abstractRoom.AddEntity(result);
@@ -288,7 +286,6 @@ internal class DragonCrafts
         {
             Debug.Log("TearFirecracker started");
             int grasp = self?.grasps[1]?.grabbed is FirecrackerPlant ? 1 : 0;
-            //AbstractPhysicalObject result0 = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, self.room.game.GetNewID());
             var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject;
             FirecrackerPlant plant = mat as FirecrackerPlant;
 
@@ -322,28 +319,6 @@ internal class DragonCrafts
                     }
                     break;
                 }
-                /*
-                self.ReleaseGrasp(grasp); // Remove original firecracker
-                mat.RemoveFromRoom();
-                self?.room?.abstractRoom?.RemoveEntity(self?.grasps[grasp]?.grabbed?.abstractPhysicalObject);
-                Debug.Log("Firecracker destroyed");
-
-                for (int h = 0; h < lumps - 1; h++) // Create firecracker poppers on the floor
-                {
-                    AbstractPhysicalObject result = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, self.room.game.GetNewID());
-                    count += 1;
-                    self.room.abstractRoom.AddEntity(result);
-                    result.RealizeInRoom();
-                }
-
-                count += 1; // Adding one more firecracker, this one goes in Player's hand
-                self.room.PlaySound(SoundID.Seed_Cob_Open, self.firstChunk, loop: false, 1f, 1f);
-                self.room.abstractRoom.AddEntity(result0);
-                result0.RealizeInRoom();
-                self.SlugcatGrab(result0?.realizedObject, grasp);
-
-                Debug.Log("TearFirecracker ended, created " + count + " poppers!");
-                return;*/
             }
             return;
         }

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Menu.Remix.MixedUI;
-using RWCustom;
+﻿using Menu.Remix.MixedUI;
 using UnityEngine;
 
 namespace TheFriend;
 
-public partial class Options : OptionInterface
+public class Options : OptionInterface
 {
     public static Configurable<bool> NoFamine;
     public static Configurable<bool> FaminesForAll;
@@ -46,38 +40,38 @@ public partial class Options : OptionInterface
 
     public Options()
     {
-        FriendAutoCrouch = this.config.Bind<bool>("FriendAutoCrouch", true, new ConfigAcceptableList<bool>(true, false));
-        PoleCrawl = this.config.Bind<bool>("PoleCrawl", true, new ConfigAcceptableList<bool>(true, false));
-        FriendUnNerf = this.config.Bind<bool>("FriendUnNerf", false, new ConfigAcceptableList<bool>(true, false));
-        FriendBackspear = this.config.Bind<bool>("FriendBackspear", false, new ConfigAcceptableList<bool>(true, false));
-        FriendRepLock = this.config.Bind<bool>("FriendRepLock", true, new ConfigAcceptableList<bool>(true, false));
+        FriendAutoCrouch = config.Bind("FriendAutoCrouch", true, new ConfigAcceptableList<bool>(true, false));
+        PoleCrawl = config.Bind("PoleCrawl", true, new ConfigAcceptableList<bool>(true, false));
+        FriendUnNerf = config.Bind("FriendUnNerf", false, new ConfigAcceptableList<bool>(true, false));
+        FriendBackspear = config.Bind("FriendBackspear", false, new ConfigAcceptableList<bool>(true, false));
+        FriendRepLock = config.Bind("FriendRepLock", true, new ConfigAcceptableList<bool>(true, false));
 
-        PoacherPupActs = this.config.Bind<bool>("PoacherPupActs", true, new ConfigAcceptableList<bool>(true, false));
-        PoacherBackspear = this.config.Bind<bool>("PoacherBackspear", false, new ConfigAcceptableList<bool>(true, false));
-        PoacherFreezeFaster = this.config.Bind<bool>("PoacherFreezeFaster", false, new ConfigAcceptableList<bool>(true, false));
-        PoacherFoodParkour = this.config.Bind<bool>("PoacherFoodParkour", true, new ConfigAcceptableList<bool>(true, false));
+        PoacherPupActs = config.Bind("PoacherPupActs", true, new ConfigAcceptableList<bool>(true, false));
+        PoacherBackspear = config.Bind("PoacherBackspear", false, new ConfigAcceptableList<bool>(true, false));
+        PoacherFreezeFaster = config.Bind("PoacherFreezeFaster", false, new ConfigAcceptableList<bool>(true, false));
+        PoacherFoodParkour = config.Bind("PoacherFoodParkour", true, new ConfigAcceptableList<bool>(true, false));
 
-        ExpeditionFamine = this.config.Bind<bool>("ExpeditionFamine", false, new ConfigAcceptableList<bool>(true, false));
-        NoFamine = this.config.Bind<bool>("NoFamine", false, new ConfigAcceptableList<bool>(true, false));
-        FaminesForAll = this.config.Bind<bool>("FaminesForAll", false, new ConfigAcceptableList<bool>(true, false));
-        LocalizedLizRep = this.config.Bind<bool>("LocalizedLizRep", true, new ConfigAcceptableList<bool>(true, false));
-        LocalizedLizRepForAll = this.config.Bind<bool>("LocalizedLizRepForAll", false, new ConfigAcceptableList<bool>(true, false));
-        SolaceBlizzTimer = this.config.Bind<bool>("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
+        ExpeditionFamine = config.Bind("ExpeditionFamine", false, new ConfigAcceptableList<bool>(true, false));
+        NoFamine = config.Bind("NoFamine", false, new ConfigAcceptableList<bool>(true, false));
+        FaminesForAll = config.Bind("FaminesForAll", false, new ConfigAcceptableList<bool>(true, false));
+        LocalizedLizRep = config.Bind("LocalizedLizRep", true, new ConfigAcceptableList<bool>(true, false));
+        LocalizedLizRepForAll = config.Bind("LocalizedLizRepForAll", false, new ConfigAcceptableList<bool>(true, false));
+        SolaceBlizzTimer = config.Bind("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
 
-        LizRide = this.config.Bind<bool>("LizRide", false, new ConfigAcceptableList<bool>(true, false));
-        LizRideAll = this.config.Bind<bool>("LizRideAll", false, new ConfigAcceptableList<bool>(true, false));
-        LizRepMeter = this.config.Bind<bool>("LizRepMeter", false, new ConfigAcceptableList<bool>(true, false));
-        LizRepMeterForAll = this.config.Bind<bool>("LizRepMeterForAll", false, new ConfigAcceptableList<bool>(true, false));
+        LizRide = config.Bind("LizRide", false, new ConfigAcceptableList<bool>(true, false));
+        LizRideAll = config.Bind("LizRideAll", false, new ConfigAcceptableList<bool>(true, false));
+        LizRepMeter = config.Bind("LizRepMeter", false, new ConfigAcceptableList<bool>(true, false));
+        LizRepMeterForAll = config.Bind("LizRepMeterForAll", false, new ConfigAcceptableList<bool>(true, false));
 
         // Achievements
-        SolaceFriendOEAchievement = this.config.Bind<bool>("SolaceFriendOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
-        SolacePoacherOEAchievement = this.config.Bind<bool>("SolacePoacherOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
-        SolaceFriendBadAscensionAchievement = this.config.Bind<bool>("SolaceFriendBadAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
-        SolaceFriendGoodAscensionAchievement = this.config.Bind<bool>("SolaceFriendGoodAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
-        SolacePoacherBadAscensionAchievement = this.config.Bind<bool>("SolacePoacherBadAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
-        SolacePoacherGoodAscensionAchievement = this.config.Bind<bool>("SolacePoacherGoodAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
-        SolacePebblesAchievement = this.config.Bind<bool>("SolacePebblesAchievement", false, new ConfigAcceptableList<bool>(true, false));
-        SolacePebblesStolenEnlightenmentAchievement = this.config.Bind<bool>("SolacePebblesStolenEnlightenmentAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolaceFriendOEAchievement = config.Bind("SolaceFriendOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePoacherOEAchievement = config.Bind("SolacePoacherOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolaceFriendBadAscensionAchievement = config.Bind("SolaceFriendBadAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolaceFriendGoodAscensionAchievement = config.Bind("SolaceFriendGoodAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePoacherBadAscensionAchievement = config.Bind("SolacePoacherBadAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePoacherGoodAscensionAchievement = config.Bind("SolacePoacherGoodAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePebblesAchievement = config.Bind("SolacePebblesAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        SolacePebblesStolenEnlightenmentAchievement = config.Bind("SolacePebblesStolenEnlightenmentAchievement", false, new ConfigAcceptableList<bool>(true, false));
     }
 
     // Greyout-able boxes and labels
@@ -94,14 +88,23 @@ public partial class Options : OptionInterface
     public override void Update()
     {
         base.Update();
-        if (NoFamineBox.value == "true") { AllFamineBox.greyedOut = true; ExpeditionFamineBox.greyedOut = true; }
-        else { AllFamineBox.greyedOut = false; ExpeditionFamineBox.greyedOut = false; }
-        if (LizRideBox.value == "false") LizRideAllBox.greyedOut = true;
-        else LizRideAllBox.greyedOut = false;
-        if (LizRepMeterBox.value == "false") LizRepMeterAllBox.greyedOut = true;
-        else LizRepMeterAllBox.greyedOut = false;
-        if (LocalLizRepBox.value == "false") LocalLizRepAllBox.greyedOut = true;
-        else LocalLizRepAllBox.greyedOut = false;
+
+        if (NoFamineBox.value == "true")
+        {
+            AllFamineBox.greyedOut = true; 
+            ExpeditionFamineBox.greyedOut = true;
+        }
+        else
+        {
+            AllFamineBox.greyedOut = false; 
+            ExpeditionFamineBox.greyedOut = false;
+        }
+        
+        LizRideAllBox.greyedOut = LizRideBox.value == "false";
+        
+        LizRepMeterAllBox.greyedOut = LizRepMeterBox.value == "false";
+        
+        LocalLizRepAllBox.greyedOut = LocalLizRepBox.value == "false";
     }
     public override void Initialize()
     {
@@ -129,11 +132,11 @@ public partial class Options : OptionInterface
         // General
         #region General
         NoFamineBox = new OpCheckBox(NoFamine, new Vector2(50, 600 - 100)) { description = Translate("Famine mechanics and changes are disabled when checked") };
-        var NoFamineLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Famines Disabled"), FLabelAlignment.Center);
+        var NoFamineLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Famines Disabled"));
         AllFamineBox = new OpCheckBox(FaminesForAll, new Vector2(50, 600 - 150)) { description = Translate("Famine mechanics and changes are given to every character") };
-        var AllFamineLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Famines For All"), FLabelAlignment.Center);
+        var AllFamineLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Famines For All"));
         ExpeditionFamineBox = new OpCheckBox(ExpeditionFamine, new Vector2(50, 600 - 200)) { description = Translate("Forces famines to appear in Expedition Mode") };
-        var ExpeditionFamineLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Expedition Famines"), FLabelAlignment.Center);
+        var ExpeditionFamineLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Expedition Famines"));
 
         var FamineLabel = new OpLabel(new Vector2(295, 600 - 236), Vector2.zero, Translate("Famines"), FLabelAlignment.Center, true);
         FSprite line0 = new FSprite("pixel");
@@ -145,30 +148,30 @@ public partial class Options : OptionInterface
         var RepLabel = new OpLabel(new Vector2(295, 600 - 242 - 23), Vector2.zero, Translate("Reputation"), FLabelAlignment.Center, true);
 
         LocalLizRepBox = new OpCheckBox(LocalizedLizRep, new Vector2(50, 600 - 236 - 60)) { description = Translate("Lizard reputation is localized for Solace slugcats when checked. May break things if disabled!") };
-        var LocalLizRepLabel = new OpLabel(new(50, 600 - 236 - 78), Vector2.zero, Translate("Local Lizard Rep"), FLabelAlignment.Center);
+        var LocalLizRepLabel = new OpLabel(new(50, 600 - 236 - 78), Vector2.zero, Translate("Local Lizard Rep"));
         LocalLizRepAllBox = new OpCheckBox(LocalizedLizRepForAll, new Vector2(50, 600 - 236 - 110)) { description = Translate("Lizard reputation is localized for every character") };
-        var LocalLizRepAllLabel = new OpLabel(new(50, 600 - 236 - 128), Vector2.zero, Translate("Local Liz Rep For All"), FLabelAlignment.Center);
+        var LocalLizRepAllLabel = new OpLabel(new(50, 600 - 236 - 128), Vector2.zero, Translate("Local Liz Rep For All"));
         var SolaceTimerBox = new OpCheckBox(SolaceBlizzTimer, new Vector2(50, 600 - 236 - 160)) { description = Translate("Forces the rain timer to be visible for Solace slugcats and Saint") };
-        var SolaceTimerLabel = new OpLabel(new(50, 600 - 236 - 178), Vector2.zero, Translate("Rain Timer"), FLabelAlignment.Center);
+        var SolaceTimerLabel = new OpLabel(new(50, 600 - 236 - 178), Vector2.zero, Translate("Rain Timer"));
 
 
         #endregion
         // Characters
         #region Characters
         var FriendAutoCrouchBox = new OpCheckBox(FriendAutoCrouch, new Vector2(50, 600 - 100)) { description = Translate("Makes Friend crouch automatically after a standing jump") };
-        var FriendAutoCrouchLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Automatic Crouch"), FLabelAlignment.Center);
+        var FriendAutoCrouchLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Automatic Crouch"));
 
         var FriendPoleCrawlBox = new OpCheckBox(PoleCrawl, new Vector2(50, 600 - 150)) { description = Translate("Allows Friend to crawl along the tops of poles like Noir Catto does. Noir Catto not required to work. Thank you Noir for giving this to me!") };
-        var FriendPoleCrawlLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Pole Crawl"), FLabelAlignment.Center);
+        var FriendPoleCrawlLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Pole Crawl"));
         
         var FriendUnNerfBox = new OpCheckBox(FriendUnNerf, new Vector2(50, 600 - 200)) { description = Translate("Changes various Friend stats to be as they were earlier in the mod's development") };
-        var FriendUnNerfLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Legacy Movement"), FLabelAlignment.Center);
+        var FriendUnNerfLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Legacy Movement"));
 
         var FriendBackspearBox = new OpCheckBox(FriendBackspear, new Vector2(50, 600 - 250)) { description = Translate("Allows Friend to use a backspear like they could earlier in the mod's development") };
-        var FriendBackspearLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Backspear Enable"), FLabelAlignment.Center);
+        var FriendBackspearLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Backspear Enable"));
 
         var FriendRepLockBox = new OpCheckBox(FriendRepLock, new Vector2(150, 600 - 100)) { description = Translate("Stops changes to lizard reputation happening on cycle 0 for Friend. Lizard reputation may break if disabled") };
-        var FriendRepLockLabel = new OpLabel(new(150, 600 - 118), Vector2.zero, Translate("Cycle 0 Rep Lock"), FLabelAlignment.Center);
+        var FriendRepLockLabel = new OpLabel(new(150, 600 - 118), Vector2.zero, Translate("Cycle 0 Rep Lock"));
 
 
         var FriendLabel = new OpLabel(new Vector2(295, 311), Vector2.zero, Translate("Friend"), FLabelAlignment.Center, true);
@@ -181,30 +184,30 @@ public partial class Options : OptionInterface
         var PoacherLabel = new OpLabel(new Vector2(295, 282), Vector2.zero, Translate("Poacher"), FLabelAlignment.Center, true);
 
         var PoacherPupActsBox = new OpCheckBox(PoacherPupActs, new Vector2(50, 600 - 350)) { description = Translate("Allows Poacher to behave like a pup. Kind of subtle.") };
-        var PoacherPupActsLabel = new OpLabel(new(50, 600 - 368), Vector2.zero, Translate("Pup Behaviors"), FLabelAlignment.Center);
+        var PoacherPupActsLabel = new OpLabel(new(50, 600 - 368), Vector2.zero, Translate("Pup Behaviors"));
 
         var PoacherBackspearBox = new OpCheckBox(PoacherBackspear, new Vector2(50, 600 - 400)) { description = Translate("Allows Poacher to use a backspear as was planned early in their development") };
-        var PoacherBackspearLabel = new OpLabel(new(50, 600 - 418), Vector2.zero, Translate("Backspear Enable"), FLabelAlignment.Center);
+        var PoacherBackspearLabel = new OpLabel(new(50, 600 - 418), Vector2.zero, Translate("Backspear Enable"));
 
         var PoacherFreezeBox = new OpCheckBox(PoacherFreezeFaster, new Vector2(50, 600 - 450)) { description = Translate("Makes Poacher get cold as fast as they did in earlier versions of the mod") };
-        var PoacherFreezeLabel = new OpLabel(new(50, 600 - 468), Vector2.zero, Translate("Legacy Hypothermia"), FLabelAlignment.Center);
+        var PoacherFreezeLabel = new OpLabel(new(50, 600 - 468), Vector2.zero, Translate("Legacy Hypothermia"));
 
         var PoacherFoodBox = new OpCheckBox(PoacherFoodParkour, new Vector2(50, 600 - 500)) { description = Translate("Allows some food items to affect Poacher's movement") };
-        var PoacherFoodLabel = new OpLabel(new(50, 600 - 518), Vector2.zero, Translate("Heavy Foods"), FLabelAlignment.Center);
+        var PoacherFoodLabel = new OpLabel(new(50, 600 - 518), Vector2.zero, Translate("Heavy Foods"));
         #endregion
         // Experimental
         #region Experimental
         LizRideBox = new OpCheckBox(LizRide, new Vector2(50, 600 - 100)) { description = Translate("Allows mother lizards to be ridden if lizard rep is high enough") };
-        var LizRideLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Lizard Riding"), FLabelAlignment.Center);
+        var LizRideLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Lizard Riding"));
 
         LizRideAllBox = new OpCheckBox(LizRideAll, new Vector2(50, 600 - 150)) { description = Translate("Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)") };
-        var LizRideAllLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Universal Lizard Riding"), FLabelAlignment.Center);
+        var LizRideAllLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Universal Lizard Riding"));
 
         LizRepMeterBox = new OpCheckBox(LizRepMeter, new Vector2(50, 600 - 200)) { description = Translate("Displays lizard reputation in the current region for Solace slugcats") };
-        var LizRepLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Lizard Rep Meter"), FLabelAlignment.Center);
+        var LizRepLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Lizard Rep Meter"));
 
         LizRepMeterAllBox = new OpCheckBox(LizRepMeterForAll, new Vector2(50, 600 - 250)) { description = Translate("Displays lizard reputation in the current region for all slugcats") };
-        var LizRepAllLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Universal Lizard Meter"), FLabelAlignment.Center);
+        var LizRepAllLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Universal Lizard Meter"));
         #endregion
         // Memorial
         #region Memorial
@@ -270,6 +273,5 @@ public partial class Options : OptionInterface
             );
         Tabs[3].AddItems( // Memorial
             );
-
     }
 }

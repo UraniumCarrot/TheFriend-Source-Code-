@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using IL;
-using On;
-using RWCustom;
-using UnityEngine;
-using Color = UnityEngine.Color;
-using Random = UnityEngine.Random;
+﻿using Color = UnityEngine.Color;
 using Vector2 = UnityEngine.Vector2;
 
 namespace TheFriend.Creatures.PebblesLLCreature;
@@ -43,28 +31,29 @@ public class PebblesLLGraphics : DaddyGraphics
         Color color = new Color(1f, 0.3f, 0.9f);
         if (self.owner.daddy.Template.type == CreatureTemplateType.PebblesLL)
         {
-            for (int i = 0; i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length; i++)
+            var tri = sLeaser.sprites[self.firstSprite] as TriangleMesh;
+            for (int i = 0; tri != null && i < tri.vertices.Length; i++)
             {
                 //if (self?.Bcon?.chunk?.pos.y > 0) (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.Lerp(palette.blackColor, color, i * 0.05f);
                 //if (self?.Acon?.chunk?.pos.y > 0) (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.05f);
-                if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length * 0.25f)
+                if (i < tri.vertices.Length * 0.25f)
                 {
-                    (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.red;
+                    tri.verticeColors[i] = Color.red;
                 }
-                else if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length * 0.5f)
+                else if (i < (tri.vertices.Length * 0.5f))
                 {
-                    (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.green;
+                    tri.verticeColors[i] = Color.green;
                 }
-                else if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length * 0.75f)
+                else if (i < tri.vertices.Length * 0.75f)
                 {
-                    (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.blue;
+                    tri.verticeColors[i] = Color.blue;
                     // No changes needed
                 }
-                else if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length)
+                else if (i < tri.vertices.Length)
                 {
                     //(sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.yellow;
-                    if (self?.Acon?.chunk?.pos.y > 0) (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.1f);
-                    else (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = color;
+                    if (self.Acon?.chunk?.pos.y > 0) tri.verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.1f);
+                    else tri.verticeColors[i] = color;
                 }
 
 
@@ -82,11 +71,12 @@ public class PebblesLLGraphics : DaddyGraphics
     {
         orig(self, sLeaser, rCam, palette);
         Color color = new Color(1f, 0.3f, 0.9f);
+        var tri = sLeaser.sprites[self.firstSprite] as TriangleMesh;
         if (self.owner.daddy.Template.type == CreatureTemplateType.PebblesLL)
         {
-            for (int i = 0; i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length; i++)
+            for (int i = 0; tri != null && i < tri.vertices.Length; i++)
             {
-                if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length / 2) (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.01f - 0.1f);
+                if (i < tri.vertices.Length / 2) tri.verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.01f - 0.1f);
             }
             for (int j = 0; j < self.bumps.Length; j++)
             {
@@ -98,11 +88,12 @@ public class PebblesLLGraphics : DaddyGraphics
     {
         orig(self, sLeaser, rCam, palette);
         Color color = new Color(1f, 0.3f, 0.9f);
+        var tri = sLeaser.sprites[self.firstSprite] as TriangleMesh;
         if (self.owner.daddy.Template.type == CreatureTemplateType.PebblesLL)
         {
-            for (int i = 0; i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length; i++)
+            for (int i = 0; tri != null && i < tri.vertices.Length; i++)
             {
-                if (i < (sLeaser.sprites[self.firstSprite] as TriangleMesh).vertices.Length / 2) (sLeaser.sprites[self.firstSprite] as TriangleMesh).verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.01f - 0.1f);
+                if (i < tri.vertices.Length / 2) tri.verticeColors[i] = Color.Lerp(color, palette.blackColor, i * 0.01f - 0.1f);
             }
         }
     }

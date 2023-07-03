@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MonoMod.Cil;
-using Mono.Cecil.Cil;
-using RWCustom;
+﻿using RWCustom;
 using UnityEngine;
 using TheFriend.SlugcatThings;
 

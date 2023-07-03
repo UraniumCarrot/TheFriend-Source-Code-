@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using HUD;
-using JollyCoop;
-using Menu;
+﻿using HUD;
 using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace TheFriend.PoacherThings;
 
@@ -42,7 +32,7 @@ public class DragonClassFeatures
     {
         orig(self, controllerType);
         var pl = self?.hud?.owner as Creature;
-        if (pl?.room?.game?.StoryCharacter == Plugin.DragonName && !pl.room.game.IsArenaSession)
+        if (pl != null && pl.room?.game?.StoryCharacter == Plugin.DragonName && !pl.room.game.IsArenaSession)
         {
             Debug.Log("Solace: TextPrompt.UpdateGameOverString hook is trying to run!");
             self.gameOverString += ", or find a way to survive";
@@ -63,8 +53,7 @@ public class DragonClassFeatures
             {
                 if (Mathf.Abs(self.firstChunk.vel.x) > 2f && Mathf.Abs(direction.x) > 2f && Mathf.Sign(direction.x) == Mathf.Sign(self.firstChunk.vel.x))
                 {
-                    if (source is ExplosiveSpear) self.Stun(100);
-                    else self.Stun(25);
+                    self.Stun(source is ExplosiveSpear ? 100 : 25);
                     self.firstChunk.vel += source.firstChunk.vel * source.firstChunk.mass / self.firstChunk.mass / 2;
                     self.GetPoacher().flicker = Custom.IntClamp(200 / 3, 3, 15);
                     return false;

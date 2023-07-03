@@ -2,13 +2,8 @@
 using SlugBase.Features;
 using SlugBase;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using JollyCoop;
 using RWCustom;
-using HUD;
-using System.Threading.Tasks;
 using UnityEngine;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
@@ -35,18 +30,19 @@ public class SlugcatGraphics
     public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)
     { // Spear pointing while riding a lizard
         orig(self, actuallyViewed, eu);
+        if (self == null) return;
         try
         {
-            if (self != null && self.GetPoacher().dragonSteed != null && self.GetPoacher().isRidingLizard)
+            if (self.GetPoacher().dragonSteed != null && self.GetPoacher().isRidingLizard)
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    if (self?.grasps[i] != null && self?.grasps[i]?.grabbed != null && self?.grasps[i]?.grabbed is Weapon)
+                    if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Weapon)
                     {
                         float rotation = (i == 1) ? self.GetPoacher().pointDir1 + 90 : self.GetPoacher().pointDir0 + 90f;
                         Vector2 vec = Custom.DegToVec(rotation);
-                        (self?.grasps[i]?.grabbed as Weapon).setRotation = vec; //new Vector2(self.input[0].x*10, self.input[0].y*10);
-                        (self?.grasps[i]?.grabbed as Weapon).rotationSpeed = 0f;
+                        (self.grasps[i]?.grabbed as Weapon).setRotation = vec; //new Vector2(self.input[0].x*10, self.input[0].y*10);
+                        (self.grasps[i]?.grabbed as Weapon).rotationSpeed = 0f;
                     }
                 }
             }
@@ -87,9 +83,9 @@ public class SlugcatGraphics
     { // Poacher hypothermia color fix
         if (self.owner is Player player && player.slugcatStats.name == DragonName)
         {
-            Color b = new Color(0f, 0f, 0f, 0f);
+            //Color b = new Color(0f, 0f, 0f, 0f);
             float hypothermia = (self.owner.abstractPhysicalObject as AbstractCreature).Hypothermia;
-            b = ((!(hypothermia < 1f)) ? Color.Lerp(new Color(0.8f, 0.8f, 1f), new Color(0.15f, 0.15f, 0.3f), hypothermia - 1f) : Color.Lerp(oldCol, new Color(0.8f, 0.8f, 1f), hypothermia));
+            Color b = !(hypothermia < 1f) ? Color.Lerp(new Color(0.8f, 0.8f, 1f), new Color(0.15f, 0.15f, 0.3f), hypothermia - 1f) : Color.Lerp(oldCol, new Color(0.8f, 0.8f, 1f), hypothermia);
             return Color.Lerp(oldCol, b, 0.92f);
         }
         return orig(self, oldCol);
@@ -181,7 +177,7 @@ public class SlugcatGraphics
     {
         if (SlugBaseCharacter.TryGet(player.slugcatStats.name, out SlugBaseCharacter chara) && chara.Features.TryGet(PlayerFeatures.CustomColors, out ColorSlot[] customColor))
         {
-            if (customColor.Length > 3 && player.GetPoacher().isPoacher == true)
+            if (customColor.Length > 3 && player.GetPoacher().isPoacher)
             {
                 player.GetPoacher().customColor = customColor[2].GetColor(playerNumber);
                 player.GetPoacher().customColor2 = customColor[3].GetColor(playerNumber);

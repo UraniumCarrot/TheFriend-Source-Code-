@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RWCustom;
-using DevInterface;
 using MoreSlugcats;
-using Fisobs.Core;
-using Fisobs.Creatures;
-using Fisobs.Sandbox;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
-using Fisobs.Properties;
 
 namespace TheFriend.Creatures.SnowSpiderCreature;
 
@@ -31,7 +20,7 @@ public class SnowSpider : BigSpider
         base.Update(eu);
         try
         {
-            if (this != null && room != null && !dead)
+            if (room != null && !dead)
             {
                 foreach (IProvideWarmth heat in room.blizzardHeatSources)
                 {
@@ -48,7 +37,7 @@ public class SnowSpider : BigSpider
                 State.health -= 0.0014705883f;
                 State.health = Mathf.Min(1f, State.health + (Submersion >= 0.1f ? 0 : HypothermiaExposure * 0.008f));
             }
-            if (graphicsModule != null) (graphicsModule as SnowSpiderGraphics).bodyThickness = SnowSpiderGraphics.originalBodyThickness + State.health;
+            if (graphicsModule is SnowSpiderGraphics gr) gr.bodyThickness = SnowSpiderGraphics.originalBodyThickness + State.health;
         }
         catch (Exception) { Debug.Log("Solace: Harmless exception occurred in SnowSpider.Update"); }
     }

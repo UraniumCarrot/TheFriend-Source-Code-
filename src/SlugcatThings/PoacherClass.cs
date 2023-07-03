@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using static TheFriend.SlugcatThings.PoacherClass;
+﻿using System.Runtime.CompilerServices;
 using Color = UnityEngine.Color;
 
 namespace TheFriend.SlugcatThings;
@@ -35,6 +27,7 @@ public static class PoacherClass
         public float pointDir0;
         public float pointDir1;
         public int spearRotationTimer;
+        public bool RainTimerExists;
         public DragonRiding.AbstractDragonRider rideStick;
         public Creature dragonSteed;
         public int grabCounter;

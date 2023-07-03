@@ -1,22 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RWCustom;
-using DevInterface;
-using MoreSlugcats;
-using Fisobs.Core;
-using Fisobs.Creatures;
-using Fisobs.Sandbox;
 using UnityEngine;
-using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
-using Fisobs.Properties;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
-using System.Security.Cryptography;
 
 namespace TheFriend.Creatures.PebblesLLCreature;
 
@@ -40,11 +26,7 @@ public class PebblesLL : DaddyLongLegs
                        i => i.MatchBrtrue(out label));
             c.GotoPrev(i => i.MatchLdarg(0));
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate((Spear spear) =>
-            {
-                return spear.stuckInObject is PebblesLL ? true : false;
-            }
-            );
+            c.EmitDelegate((Spear spear) => spear.stuckInObject is PebblesLL);
             c.Emit(OpCodes.Brtrue, label);
         }
         catch (Exception e) { Debug.Log("Solace: IL hook SpearUpdatePLLStab failed!" + e); }

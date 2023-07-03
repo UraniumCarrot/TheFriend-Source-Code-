@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using IL;
-using On;
-using RWCustom;
-using MoreSlugcats;
-using UnityEngine;
-using Random = UnityEngine.Random;
-using Vector2 = UnityEngine.Vector2;
+﻿using RWCustom;
 
 namespace TheFriend.Creatures.SnowSpiderCreature;
 

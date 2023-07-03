@@ -1,29 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Drawing.Text;
-using System.Runtime.CompilerServices;
-using Fisobs.Creatures;
-using IL;
 using LizardCosmetics;
-using Mono.Cecil.Cil;
-using MonoMod;
-using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
 using MoreSlugcats;
-using On;
 using RWCustom;
-using Noise;
-using SlugBase.DataTypes;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
-using System.Linq;
-using TheFriend.Objects.BoomMineObject;
-using JollyCoop;
-using TheFriend.WorldChanges;
-using SlugBase.Features;
-using System.Drawing;
 using TheFriend.SlugcatThings;
 
 namespace TheFriend.Creatures.LizardThings;
@@ -372,7 +354,10 @@ public class Hooks
     {
         orig(self, chunk);
         if (self.Template.type != CreatureTemplateType.YoungLizard) return;
-        if (chunk.owner is Creature crit && (crit.Template.type == CreatureTemplate.Type.Hazer || crit.Template.type == CreatureTemplate.Type.VultureGrub || crit.Template.type == CreatureTemplate.Type.Fly))
+        if (chunk.owner is Creature crit && 
+            (crit.Template.type == CreatureTemplate.Type.Hazer || 
+             crit.Template.type == CreatureTemplate.Type.VultureGrub || 
+             crit.Template.type == CreatureTemplate.Type.Fly))
         {
             crit.Die();
         }
@@ -384,53 +369,65 @@ public class Hooks
         try
         {
             if (dRelation == null) return relationship;
-            if (dRelation?.trackerRep == null) return relationship;
-            if (dRelation?.trackerRep?.representedCreature == null) return relationship;
-            if (dRelation?.trackerRep?.representedCreature?.realizedCreature == null) return relationship;
+            if (dRelation.trackerRep == null) return relationship;
+            if (dRelation.trackerRep?.representedCreature == null) return relationship;
+            if (dRelation.trackerRep?.representedCreature?.realizedCreature == null) return relationship;
             if (trackedcreature == null) return relationship;
 
             if (self?.lizard?.Template?.type == CreatureTemplateType.YoungLizard)
             {
-                if ((trackedcreature?.Template?.type == CreatureTemplate.Type.Slugcat || trackedcreature?.Template?.type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC) && trackedcreature != null && (relationship.type == CreatureTemplate.Relationship.Type.Attacks || relationship.type == CreatureTemplate.Relationship.Type.Eats))
+                if ((trackedcreature.Template?.type == CreatureTemplate.Type.Slugcat || 
+                     trackedcreature.Template?.type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC) && 
+                    (relationship.type == CreatureTemplate.Relationship.Type.Attacks || 
+                     relationship.type == CreatureTemplate.Relationship.Type.Eats))
                 {
-                    relationship.type = CreatureTemplate.Relationship.Type.Afraid;
-                    if (self?.creature?.personality.aggression >= 0.7f || self?.creature?.personality.bravery >= 0.7f)
-                    {
+                    if (self?.creature?.personality.aggression >= 0.7f || 
+                        self?.creature?.personality.bravery >= 0.7f)
                         relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                    }
+                    else
+                        relationship.type = CreatureTemplate.Relationship.Type.Afraid;
                 }
-                if (trackedcreature is Lizard liz && liz != null && liz?.Template?.type == CreatureTemplateType.YoungLizard && (relationship.type == CreatureTemplate.Relationship.Type.Attacks || relationship.type == CreatureTemplate.Relationship.Type.Eats || relationship.type == CreatureTemplate.Relationship.Type.AgressiveRival))
-                {
+                if (trackedcreature is Lizard liz && liz.Template?.type == CreatureTemplateType.YoungLizard && 
+                    (relationship.type == CreatureTemplate.Relationship.Type.Attacks || 
+                     relationship.type == CreatureTemplate.Relationship.Type.Eats || 
+                     relationship.type == CreatureTemplate.Relationship.Type.AgressiveRival))
                     relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                }
-                if (trackedcreature is Lizard liza && liza != null && relationship.type == CreatureTemplate.Relationship.Type.Attacks || relationship.type == CreatureTemplate.Relationship.Type.Eats || relationship.type == CreatureTemplate.Relationship.Type.Afraid)
+                
+                if (trackedcreature is Lizard && relationship.type == CreatureTemplate.Relationship.Type.Attacks || 
+                    relationship.type == CreatureTemplate.Relationship.Type.Eats || 
+                    relationship.type == CreatureTemplate.Relationship.Type.Afraid)
                 {
                     if (relationship.type == CreatureTemplate.Relationship.Type.Attacks)
-                    {
                         relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                    }
-                    if (relationship.type == CreatureTemplate.Relationship.Type.Afraid && (self.creature.personality.aggression >= 0.7f || self.creature.personality.bravery >= 0.7f))
-                    {
+                    
+                    if (relationship.type == CreatureTemplate.Relationship.Type.Afraid && 
+                        (self.creature.personality.aggression >= 0.7f || 
+                         self.creature.personality.bravery >= 0.7f))
                         relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                    }
                 }
                 return relationship;
             }
-            if (self?.lizard?.Template?.type == CreatureTemplateType.MotherLizard)
+            if (self?.lizard?.Template?.type == CreatureTemplateType.MotherLizard && self?.lizard != null)
             {
-                if ((trackedcreature?.Template?.type == CreatureTemplate.Type.Slugcat || trackedcreature?.Template?.type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC) && trackedcreature != null)
+                if ((trackedcreature.Template?.type == CreatureTemplate.Type.Slugcat || 
+                     trackedcreature.Template?.type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC))
                 {
-                    if (relationship.type == CreatureTemplate.Relationship.Type.Afraid) relationship.type = CreatureTemplate.Relationship.Type.Attacks;
-                    if (relationship.type == CreatureTemplate.Relationship.Type.Eats && !self.lizard.room.game.IsArenaSession && (
-                        self?.creature?.personality.sympathy >= 0.75f && self?.creature?.world?.game?.session?.creatureCommunities?.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.creature.world.region.regionNumber, 0) > 0.5f ||
-                        self?.lizard?.AI?.LikeOfPlayer(self?.lizard?.AI?.tracker?.RepresentationForCreature(trackedcreature?.abstractCreature, true)) > 0)
+                    if (relationship.type == CreatureTemplate.Relationship.Type.Afraid) 
+                        relationship.type = CreatureTemplate.Relationship.Type.Attacks;
+                    if (relationship.type == CreatureTemplate.Relationship.Type.Eats && 
+                        !self.lizard.room.game.IsArenaSession && 
+                        ( self.creature?.personality.sympathy >= 0.75f && 
+                          self.creature?.world?.game?.session?.creatureCommunities?.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.creature.world.region.regionNumber, 0) > 0.5f ||
+                         self.lizard?.AI?.LikeOfPlayer(self.lizard?.AI?.tracker?.RepresentationForCreature(trackedcreature.abstractCreature, true)) > 0)
                         )
                         relationship.type = CreatureTemplate.Relationship.Type.Ignores;
                 }
-                if (trackedcreature is Lizard liz && liz != null && liz?.Template?.type == CreatureTemplateType.YoungLizard && relationship.type == CreatureTemplate.Relationship.Type.Attacks)
-                {
+                if (trackedcreature is Lizard liz && 
+                    liz != null && 
+                    liz?.Template?.type == CreatureTemplateType.YoungLizard && 
+                    relationship.type == CreatureTemplate.Relationship.Type.Attacks)
                     relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                }
+                
                 return relationship;
             }
             return relationship;
@@ -442,24 +439,27 @@ public class Hooks
     {
         try { orig(self, eu); }
         catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update orig " + e); }
+        if (self == null) return;
         try
         {
-            if (self?.GetLiz() != null)
+            if (self.GetLiz() != null)
             {
                 self.GetLiz().seat0 = Vector2.Lerp(self.bodyChunks[1].pos, self.bodyChunks[0].pos, 0.5f) + new Vector2(0, 15);
             }
-            if (!self.dead && self?.LizardState?.health > 0f && self?.Template?.type == CreatureTemplateType.YoungLizard)
+            if (!self.dead && self.LizardState?.health > 0f && self.Template?.type == CreatureTemplateType.YoungLizard)
             {
                 self.LizardState.health = Mathf.Min(0.5f, self.LizardState.health + 0.001f);
             }
-            if (self?.grabbedBy?.Count > 0 && self?.grabbedBy[0]?.grabber is Player player && self?.grabbedBy[0]?.grabber is not null)
+            if (self.grabbedBy?.Count > 0 && self.grabbedBy[0]?.grabber is Player player && self.grabbedBy[0]?.grabber is not null)
             {
-                if (self?.Template?.type == CreatureTemplateType.YoungLizard)
+                if (self.Template?.type == CreatureTemplateType.YoungLizard)
                 {
                     self.grabbedAttackCounter = 0;
                     self.JawOpen = 0;
                 }
-                if ((self?.Template?.type == CreatureTemplateType.MotherLizard || self.GetLiz().IsRideable) && self?.AI?.LikeOfPlayer(self?.AI?.tracker?.RepresentationForCreature(player?.abstractCreature, true)) > 0)
+                if ((self.Template?.type == CreatureTemplateType.MotherLizard || 
+                     self.GetLiz().IsRideable) && 
+                    self.AI?.LikeOfPlayer(self.AI?.tracker?.RepresentationForCreature(player?.abstractCreature, true)) > 0)
                 {
                     self.grabbedAttackCounter = 0;
                     self.JawOpen = 0;
@@ -637,7 +637,7 @@ public class Hooks
         orig(self, sLeaser, rCam, timeStacker, camPos);
         if (self.lGraphics.lizard.Template.type == CreatureTemplateType.MotherLizard && self is LongShoulderScales)
         {
-            var x = self.graphic == 6 ? 1.5f : 1.5f;
+            var x = 1.5f;
             for (int i = self.startSprite + self.scalesPositions.Length - 1; i >= self.startSprite; i--)
             {
                 sLeaser.sprites[i].scaleX *= x;

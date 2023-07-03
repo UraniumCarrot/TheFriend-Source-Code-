@@ -1,14 +1,6 @@
-﻿using JetBrains.Annotations;
-using System;
-using RWCustom;
-using MoreSlugcats;
-using IL;
-using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 
@@ -34,7 +26,7 @@ public class FirecrackerFix
         int amount = self.lumpsPopped.Count(i => i == false);
         if (GetLumpsLeft(self.abstractPhysicalObject) != amount) SetLumpsLeft(self.abstractPhysicalObject, amount);
     }
-    public static void FirecrackerPlant_ctor(MonoMod.Cil.ILContext il)
+    public static void FirecrackerPlant_ctor(ILContext il)
     { // Forces the plant to have the lumps amount set by above if lumps isnt default
         var c = new ILCursor(il);
         if (c.TryGotoNext(MoveType.After, x => x.MatchNewarr<FirecrackerPlant.Part>()) && c.TryGotoNext(x => x.MatchNewarr<FirecrackerPlant.Part>()))

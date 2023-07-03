@@ -1,12 +1,8 @@
 ﻿using HUD;
 using MoreSlugcats;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+using SlugBase.SaveData;
+using TheFriend.SlugcatThings;
 
 namespace TheFriend.HudThings;
 
@@ -19,46 +15,62 @@ public static class DragonRepInterface
     public static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam) // Forces new hud to work
     {
         orig(self, cam);
-        if (Plugin.LizRep() && ((self.owner as Player).room.world.game.StoryCharacter == Plugin.FriendName || (self.owner as Player).room.world.game.StoryCharacter == Plugin.DragonName || Plugin.LizRepAll())) self.AddPart(new DragonUI(self, self.fContainers[1], self.owner as Player));
+        if (Plugin.LizRep() && 
+            ((self.owner as Player)?.room.world.game.StoryCharacter == Plugin.FriendName || 
+             (self.owner as Player)?.room.world.game.StoryCharacter == Plugin.DragonName || 
+             Plugin.LizRepAll())) 
+            self.AddPart(new DragonUI(self, self.fContainers[1], self.owner as Player));
     }
 
     public class DragonUI : HudPart
     {
         public Vector2 pos;
         public Vector2 lastPos;
-        public Vector2 custPos; // = (!Plugin.ShowCycleTimer()) ? : new Vector2(-40,30);
+        public Vector2 custPos;
 
         public int remainVisibleCounter;
+
         public float fade;
         public float lastFade;
         public float reputation;
+        public Player owner;
 
         public HUDCircle[] circles;
         public FSprite dragonSprite;
         public FSprite friendSprite;
+        public FSprite motherSprite;
 
         public DragonUI(HUD.HUD hud, FContainer fContainer, Player player) : base(hud)
         {
-            custPos = hud.rainMeter.circles[0].sprite.scale == 0 &&
+            owner = player;
+            custPos = !player.GetPoacher().RainTimerExists &&
                 (player.room.game.StoryCharacter == Plugin.FriendName ||
                 player.room.game.StoryCharacter == Plugin.DragonName ||
-                player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint) ? new Vector2(-35, 25) : new Vector2(-40, 30);
+                player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint) ? new Vector2(-33, 23) : new Vector2(-40, 30);
             pos = hud.karmaMeter.pos + custPos;
             lastPos = pos;
             circles = new HUDCircle[3];
             dragonSprite = new FSprite("DragonSlayerB");
             friendSprite = new FSprite("FriendB");
+            motherSprite = new FSprite("MotherB");
             for (int i = 0; i < circles.Length; i++) circles[i] = new HUDCircle(hud, HUDCircle.SnapToGraphic.smallEmptyCircle, fContainer, 0);
             fContainer.AddChild(dragonSprite);
             fContainer.AddChild(friendSprite);
+            fContainer.AddChild(motherSprite);
             fade = hud.karmaMeter.fade;
             lastFade = fade;
         }
         public override void Update()
         {
-            if (hud.owner as Player != null && (hud.owner as Player).room != null)
+            if (hud.owner is Player pl && (hud.owner as Player)?.room != null)
             {
-                reputation = (hud.owner as Player).room.game.session.creatureCommunities.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, (hud.owner as Player).room.world.region.regionNumber, 0);
+                reputation = pl.room.game.session.creatureCommunities.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, pl.room.world.region.regionNumber, 0);
+                pl.room.world.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MotherKilled", out int YoMommaDead);
+                if (pl.room.world.region.IsRoomInRegion(YoMommaDead) && YoMommaDead != 0)
+                {
+                    motherSprite.isVisible = true; // Mother
+                }
+                else motherSprite.isVisible = false;
             }
 
             lastPos = pos;
@@ -87,15 +99,29 @@ public static class DragonRepInterface
             friendSprite.scale = 0.5f;
             friendSprite.x = hud.karmaMeter.pos.x + custPos.x;
             friendSprite.y = hud.karmaMeter.pos.y + custPos.y;
+            
+            motherSprite.scale = 0.5f;
+            motherSprite.x = hud.karmaMeter.pos.x + custPos.x;
+            motherSprite.y = hud.karmaMeter.pos.y + custPos.y;
 
-            if (reputation >= -0.5 && reputation <= 0.5) circles[2].visible = true; // Monk
-            else circles[2].visible = false;
-            if (reputation < -0.5) dragonSprite.isVisible = true; // Dragonslayer
-            else dragonSprite.isVisible = false;
-            if (reputation > 0.5) friendSprite.isVisible = true; // Friend
-            else friendSprite.isVisible = false;
-            if (Mathf.Abs(reputation) == 1) circles[1].visible = true; // Max/Min
+            if (!motherSprite.isVisible)
+            {
+                if (reputation >= -0.5 && reputation <= 0.5) circles[2].visible = true; // Monk
+                else circles[2].visible = false;
+                if (reputation < -0.5) dragonSprite.isVisible = true; // Dragonslayer
+                else dragonSprite.isVisible = false;
+                if (reputation > 0.5) friendSprite.isVisible = true; // Friend
+                else friendSprite.isVisible = false;
+            }
+            if (Mathf.Abs(reputation) == 1 || motherSprite.isVisible) circles[1].visible = true; // Max/Min
             else circles[1].visible = false;
+            if (motherSprite.isVisible)
+            {
+                circles[2].visible = false;
+                dragonSprite.isVisible = false;
+                friendSprite.isVisible = false;
+                circles[1].forceColor = new Color(1f,0.8f,0.8f);
+            }
         }
         public override void Draw(float timeStacker)
         {
@@ -110,6 +136,10 @@ public static class DragonRepInterface
             friendSprite.x = circles[0].lastPos.x;
             friendSprite.y = circles[0].lastPos.y;
             friendSprite.alpha = circles[0].fade;
+            
+            motherSprite.x = circles[0].lastPos.x;
+            motherSprite.y = circles[0].lastPos.y;
+            motherSprite.alpha = circles[0].fade;
         }
 
         public override void ClearSprites()
@@ -117,6 +147,7 @@ public static class DragonRepInterface
             base.ClearSprites();
             if (dragonSprite != null) dragonSprite.RemoveFromContainer();
             if (friendSprite != null) friendSprite.RemoveFromContainer();
+            if (motherSprite != null) motherSprite.RemoveFromContainer();
         }
 
         public Vector2 DrawPos(float timeStacker)
