@@ -1,4 +1,5 @@
-﻿using HUD;
+﻿using System.Collections.Generic;
+using HUD;
 using MoreSlugcats;
 using UnityEngine;
 using SlugBase.SaveData;
@@ -43,10 +44,13 @@ public static class DragonRepInterface
         public DragonUI(HUD.HUD hud, FContainer fContainer, Player player) : base(hud)
         {
             owner = player;
-            custPos = !player.GetPoacher().RainTimerExists &&
+            Vector2 reinforcedPos = !hud.karmaMeter.showAsReinforced ? Vector2.zero : new Vector2(10,10);
+            custPos = (!player.GetPoacher().RainTimerExists &&
                 (player.room.game.StoryCharacter == Plugin.FriendName ||
                 player.room.game.StoryCharacter == Plugin.DragonName ||
-                player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint) ? new Vector2(-33, 23) : new Vector2(-40, 30);
+                player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint) 
+                ? 
+                new Vector2(-33, 23) : new Vector2(-40, 30)) + reinforcedPos;
             pos = hud.karmaMeter.pos + custPos;
             lastPos = pos;
             circles = new HUDCircle[3];
@@ -65,12 +69,10 @@ public static class DragonRepInterface
             if (hud.owner is Player pl && (hud.owner as Player)?.room != null)
             {
                 reputation = pl.room.game.session.creatureCommunities.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, pl.room.world.region.regionNumber, 0);
-                pl.room.world.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MotherKilled", out int YoMommaDead);
-                if (pl.room.world.region.IsRoomInRegion(YoMommaDead) && YoMommaDead != 0)
-                {
+                /*pl.room.world.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegion", out List<int> regionsKilledIn);
+                if (regionsKilledIn.Contains(pl.room.world.RegionNumber))
                     motherSprite.isVisible = true; // Mother
-                }
-                else motherSprite.isVisible = false;
+                else motherSprite.isVisible = false;*/
             }
 
             lastPos = pos;
@@ -120,7 +122,6 @@ public static class DragonRepInterface
                 circles[2].visible = false;
                 dragonSprite.isVisible = false;
                 friendSprite.isVisible = false;
-                circles[1].forceColor = new Color(1f,0.8f,0.8f);
             }
         }
         public override void Draw(float timeStacker)
@@ -139,7 +140,8 @@ public static class DragonRepInterface
             
             motherSprite.x = circles[0].lastPos.x;
             motherSprite.y = circles[0].lastPos.y;
-            motherSprite.alpha = circles[0].fade;
+            motherSprite.alpha = circles[0].fade * Random.Range(0.7f,1f);
+            circles[1].fade = motherSprite.isVisible ? motherSprite.alpha : circles[0].fade;
         }
 
         public override void ClearSprites()

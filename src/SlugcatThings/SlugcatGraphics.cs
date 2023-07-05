@@ -212,7 +212,6 @@ public class SlugcatGraphics
         self.player.GetPoacher().pointDir0 = sLeaser.sprites[5].rotation;
         self.player.GetPoacher().pointDir1 = sLeaser.sprites[6].rotation;
 
-
         if (self.player.GetPoacher().dragonSteed != null)
         {
             sLeaser.sprites[4].isVisible = false;

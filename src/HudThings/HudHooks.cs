@@ -1,5 +1,9 @@
-﻿using HUD;
+﻿using System.Linq;
+using HUD;
+using Menu;
+using On.MoreSlugcats;
 using TheFriend.SlugcatThings;
+using UnityEngine;
 
 namespace TheFriend.HudThings;
 
@@ -8,20 +12,33 @@ public class HudHooks
     public static void Apply()
     {
         On.Menu.SleepAndDeathScreen.GetDataFromGame += SleepAndDeathScreen_GetDataFromGame;
+        On.MoreSlugcats.CollectiblesTracker.ctor += CollectiblesTrackerOnctor;
         On.HUD.RainMeter.Draw += RainMeter_Draw;
         On.HUD.RainMeter.ctor += RainMeter_ctor;
         On.HUD.RainMeter.Update += RainMeter_Update;
     }
+    
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
-
+    //ublic static int CollTrackerInd;
+    
+    public static void CollectiblesTrackerOnctor(CollectiblesTracker.orig_ctor orig, MoreSlugcats.CollectiblesTracker self, Menu.Menu menu, MenuObject owner, Vector2 pos, FContainer container, SlugcatStats.Name saveslot)
+    {
+        orig(self, menu, owner, pos, container, saveslot);
+        //CollTrackerInd = menu.pages[0].subObjects.IndexOf(self);
+    }
     public static void SleepAndDeathScreen_GetDataFromGame(On.Menu.SleepAndDeathScreen.orig_GetDataFromGame orig, Menu.SleepAndDeathScreen self, Menu.KarmaLadderScreen.SleepDeathScreenDataPackage package)
     { // Improved sleep screen
         orig(self, package);
-        if (self.IsSleepScreen && (package.characterStats.name == FriendName || package.characterStats.name == DragonName))
+        if (self.IsSleepScreen || self.IsDeathScreen || self.IsStarveScreen)
         {
-            if (self.soundLoop != null) self.soundLoop.Destroy();
-            self.mySoundLoopID = MoreSlugcats.MoreSlugcatsEnums.MSCSoundID.Sleep_Blizzard_Loop;
+            if ((package.characterStats.name == FriendName || package.characterStats.name == DragonName) && self.IsSleepScreen)
+            {
+                if (self.soundLoop != null) self.soundLoop.Destroy();
+                self.mySoundLoopID = MoreSlugcats.MoreSlugcatsEnums.MSCSoundID.Sleep_Blizzard_Loop;
+            }
+            if (self.pages[0].subObjects.FirstOrDefault(i => i is MoreSlugcats.CollectiblesTracker) is not MoreSlugcats.CollectiblesTracker tracker) return;
+            self.pages[0].subObjects.Add(new MotherKillTracker(self, self.pages[0],new Vector2(self.manager.rainWorld.options.ScreenSize.x - 50f + (1366f - self.manager.rainWorld.options.ScreenSize.x) / 2f, self.manager.rainWorld.options.ScreenSize.y - 15f),package.saveState,self.container, tracker));
         }
     } 
     public static void RainMeter_Update(On.HUD.RainMeter.orig_Update orig, RainMeter self)

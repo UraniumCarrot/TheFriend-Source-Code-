@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RWCustom;
 using SlugBase;
 using MoreSlugcats;
+using SlugBase.SaveData;
 using TheFriend.WorldChanges;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -136,7 +138,7 @@ public class SlugcatGameplay
     {
         orig(self, eu);
         if (self?.room == null) { Debug.Log("Solace: Player returned null, cancelling PlayerUpdate code"); return; }
-
+        
         var coord = self.abstractCreature.pos;
         //Debug.Log("Your room coordinate is: room " + coord.room + ", x " + coord.x + ", y " + coord.y + ", abstractNode " + coord.abstractNode);
         // Moon mark
@@ -274,6 +276,7 @@ public class SlugcatGameplay
     }
     public static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
     { // Allows Poacher to carry things that they couldn't usually
+        if (self.room.abstractRoom.name == "SU_VR1") return orig(self,obj);
         if (obj is Creature young && young.Template.type == CreatureTemplateType.YoungLizard) return false;
         else if (obj is Lizard mother && mother.GetLiz() != null && mother.GetLiz().IsRideable) return true;
         if (self.slugcatStats.name == DragonName)
@@ -291,6 +294,7 @@ public class SlugcatGameplay
     public static void DandelionPeach_Update(On.MoreSlugcats.DandelionPeach.orig_Update orig, DandelionPeach self, bool eu)
     { // Poacher food parkour
         orig(self, eu);
+        if (self.room.abstractRoom.name == "SU_VR1") return;
         if (!Plugin.PoacherFoodParkour()) return;
         if (self.grabbedBy.Count > 0)
         {
@@ -308,6 +312,7 @@ public class SlugcatGameplay
     public static void LanternMouse_Update(On.LanternMouse.orig_Update orig, LanternMouse self, bool eu)
     { // Fixes Poacher unable to use lantern mice
         orig(self, eu);
+        if (self.room.abstractRoom.name == "SU_VR1") return;
         if (self.grabbedBy.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)

@@ -20,6 +20,7 @@ public static class PoacherClass
         public bool isMakingPoppers;
 
         // General player variables
+        public bool HatedHere;
         public bool JustGotMoonMark;
         public bool MoonMarkPassed;
         public int MarkExhaustion;

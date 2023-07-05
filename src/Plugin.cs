@@ -51,6 +51,7 @@ namespace TheFriend
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
             // Hooks
+            MotherKillTracker.Apply();
             SolaceSaveData.Apply();
             YoungLizardAI.Apply();
             FirecrackerFix.Apply();
