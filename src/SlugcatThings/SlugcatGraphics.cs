@@ -3,6 +3,8 @@ using SlugBase.Features;
 using SlugBase;
 using System;
 using System.Linq;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RWCustom;
 using UnityEngine;
 using bod = Player.BodyModeIndex;
@@ -24,6 +26,7 @@ public class SlugcatGraphics
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
         On.GraphicsModule.HypothermiaColorBlend += GraphicsModule_HypothermiaColorBlend;
     }
+
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
 

@@ -21,6 +21,8 @@ using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
+using TheFriend.Objects;
+using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.SaveThings;
 
 #pragma warning disable CS0618
@@ -30,7 +32,7 @@ using TheFriend.SaveThings;
 
 namespace TheFriend
 {
-    [BepInPlugin(MOD_ID, "The Friend", "0.2.0.3")]
+    [BepInPlugin(MOD_ID, "The Friend", "0.3.0")]
     class Plugin : BaseUnityPlugin
     {
         public const string MOD_ID = "thefriend";
@@ -51,6 +53,7 @@ namespace TheFriend
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
             // Hooks
+            UpdateDeleteCWT.Apply();
             MotherKillTracker.Apply();
             SolaceSaveData.Apply();
             YoungLizardAI.Apply();

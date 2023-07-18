@@ -75,7 +75,7 @@ public class DragonCrafts
     public static void Weapon_NewRoom(On.Weapon.orig_NewRoom orig, Weapon self, Room newRoom)
     {
         orig(self, newRoom);
-        if (self is Spear spear && spear.bugSpear && spear != null)
+        if (self is Spear spear && spear.bugSpear)
         {
             spear.room.AddObject(new SpearHeatSource(spear, spear.firstChunk.pos));
         }

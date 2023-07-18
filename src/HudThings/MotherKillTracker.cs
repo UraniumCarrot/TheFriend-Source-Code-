@@ -25,7 +25,7 @@ public class MotherKillTracker : PositionedMenuObject
         if (!currentSave.miscWorldSaveData.GetSlugBaseData()
                 .TryGet("MothersKilledInRegionStr", out List<string> regionsKilledInStr))
             return;
-        Color col = new Color(0.2f, 0.1f, 0.15f);
+        Color col = new Color(0.5f, 0.1f, 0.15f);
 
         this.tracker = tracker;
         this.currentSave = currentSave;
@@ -34,35 +34,28 @@ public class MotherKillTracker : PositionedMenuObject
 
         for (int a = 0; a < regionsKilledInStr.Count; a++)
         {
-            circleSprites[a] = new FSprite("Circle20");
+            int ind = tracker.displayRegions.IndexOf(regionsKilledInStr[a]);
+            circleSprites[a] = new FSprite("MonkA");
             container.AddChild(circleSprites[a]);
-            circleSprites[a].MoveBehindOtherNode(tracker.regionIcons[a]);
+            circleSprites[a].MoveBehindOtherNode(tracker.regionIcons[ind]);
 
-            for (int b = 0; b < tracker.displayRegions.Count; b++)
-            {
-                if (!regionsKilledInStr.Contains(tracker.displayRegions[b])) break;
-                circleSprites[b].isVisible = true;
-                circleSprites[b].x = tracker.regionIcons[b].x;
-                circleSprites[b].y = tracker.regionIcons[b].y;
-                circleSprites[b].color = Color.red;
-                circleSprites[b].scale = 0.5f;
-                Debug.Log($"circleSprites[{a}] visibility is " + circleSprites[b].isVisible + ", represented is " + regionsKilledInStr[a] + ", list length is " + regionsKilledInStr.Count);
-            }
+            circleSprites[a].isVisible = true;
+            circleSprites[a].color = col;
+            circleSprites[a].scale = 0.6f;
         }
-        /*
-        for (int i = 0; i < circleSprites.Length; i++)
+    }
+    public override void GrafUpdate(float timeStacker)
+    {
+        base.GrafUpdate(timeStacker);
+        if (!circleSprites.Any(i => i.x == 0)) return;
+        if (!currentSave.miscWorldSaveData.GetSlugBaseData()
+                .TryGet("MothersKilledInRegionStr", out List<string> regionsKilledInStr))
+            return;
+        for (int a = 0; a < regionsKilledInStr.Count; a++)
         {
-            circleSprites[i] = new FSprite("Circle20");
-            container.AddChild(circleSprites[i]);
-            circleSprites[i].MoveBehindOtherNode(tracker.regionIcons[i]);
-            circleSprites[i].isVisible = regionsKilledInStr[i] == tracker.displayRegions[i];
-            // Code above this point works fine
-            
-            circleSprites[i].x = tracker.regionIcons[i].x;
-            circleSprites[i].y = tracker.regionIcons[i].y;
-            circleSprites[i].color = Color.red;
-            circleSprites[i].scale = 0.5f;
-            Debug.Log($"circleSprites[{i}] visibility is " + circleSprites[i].isVisible + ", represented is " + regionsKilledInStr[i] + ", list length is " + regionsKilledInStr.Count);
-        }*/
+            int ind = tracker.displayRegions.IndexOf(regionsKilledInStr[a]);
+            circleSprites[a].x = tracker.regionIcons[ind].x;
+            circleSprites[a].y = tracker.regionIcons[ind].y;
+        }
     }
 }

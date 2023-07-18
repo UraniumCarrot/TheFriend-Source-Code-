@@ -123,11 +123,11 @@ public class Options : OptionInterface
         Tabs = new[] { opTab0, opTab1, opTab2, opTab3 };
 
         var labelMod = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - General Settings"), true);
-        var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.3"));
+        var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.3.0"));
         var labelMod1 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Character Settings"), true);
-        var labelVersion1 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.3"));
+        var labelVersion1 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.3.0"));
         var labelMod2 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Experimental Settings"), true);
-        var labelVersion2 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.2.0.3"));
+        var labelVersion2 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.3.0"));
 
         // General
         #region General

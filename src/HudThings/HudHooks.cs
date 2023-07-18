@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using HUD;
 using Menu;
 using On.MoreSlugcats;
+using SlugBase.SaveData;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
@@ -37,8 +39,12 @@ public class HudHooks
                 if (self.soundLoop != null) self.soundLoop.Destroy();
                 self.mySoundLoopID = MoreSlugcats.MoreSlugcatsEnums.MSCSoundID.Sleep_Blizzard_Loop;
             }
-            if (self.pages[0].subObjects.FirstOrDefault(i => i is MoreSlugcats.CollectiblesTracker) is not MoreSlugcats.CollectiblesTracker tracker) return;
-            self.pages[0].subObjects.Add(new MotherKillTracker(self, self.pages[0],new Vector2(self.manager.rainWorld.options.ScreenSize.x - 50f + (1366f - self.manager.rainWorld.options.ScreenSize.x) / 2f, self.manager.rainWorld.options.ScreenSize.y - 15f),package.saveState,self.container, tracker));
+
+            if (package.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegionStr", out List<string> killedInRegion) && killedInRegion.Any())
+            {
+                if (self.pages[0].subObjects.FirstOrDefault(i => i is MoreSlugcats.CollectiblesTracker) is not MoreSlugcats.CollectiblesTracker tracker) return;
+                self.pages[0].subObjects.Add(new MotherKillTracker(self, self.pages[0],new Vector2(self.manager.rainWorld.options.ScreenSize.x - 50f + (1366f - self.manager.rainWorld.options.ScreenSize.x) / 2f, self.manager.rainWorld.options.ScreenSize.y - 15f),package.saveState,self.container, tracker));
+            }
         }
     } 
     public static void RainMeter_Update(On.HUD.RainMeter.orig_Update orig, RainMeter self)

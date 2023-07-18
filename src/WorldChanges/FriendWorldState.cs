@@ -36,11 +36,7 @@ public class FriendWorldState
     public static void Apply()
     {
         // General world hooks
-        //On.Region.ctor += Region_ctor;
         On.Room.SlugcatGamemodeUniqueRoomSettings += Room_SlugcatGamemodeUniqueRoomSettings;
-        //On.RoomSettings.Load += RoomSettings_Load;
-        //On.Region.GetRegionFullName += Region_GetRegionFullName;
-        //On.Region.GetProperRegionAcronym += Region_GetProperRegionAcronym;
         On.WorldLoader.ctor_RainWorldGame_Name_bool_string_Region_SetupValues += WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues;
 
         // Shaded Citadel hooks
@@ -51,12 +47,9 @@ public class FriendWorldState
         On.ScavengerAbstractAI.InitGearUp += ScavengerAbstractAI_InitGearUp;
         On.FireFly.ctor += FireFly_ctor;
         On.CreatureCommunities.InfluenceLikeOfPlayer += CreatureCommunities_InfluenceLikeOfPlayer;
-
-        // Guide Overseer hooks
-        //On.WorldLoader.GeneratePopulation += WorldLoader_GeneratePopulation;
-       // On.OverseerAbstractAI.SetAsPlayerGuide += OverseerAbstractAI_SetAsPlayerGuide;
-        //On.WorldLoader.OverseerSpawnConditions += WorldLoader_OverseerSpawnConditions;
+        On.CreatureCommunities.LikeOfPlayer += CreatureCommunitiesOnLikeOfPlayer;
     }
+    
     #region deprecated code
     public static bool solaceGenPop;
     public static void WorldLoader_GeneratePopulation(On.WorldLoader.orig_GeneratePopulation orig, WorldLoader self, bool fresh)
@@ -295,10 +288,16 @@ public class FriendWorldState
                 return;
             }
             if (commID == CreatureCommunities.CommunityID.Lizards && (SolaceWorldstate || Plugin.LocalLizRepAll()))
-                interCommunityBleed = 1f;
+                interCommunityBleed = 0f;
 
             orig(self, commID, region, playerNumber, influence, interRegionBleed, interCommunityBleed);
         }
         catch (Exception e) { Debug.Log("Solace: Something bad happened! CreatureCommunities.InfluenceLikeOfPlayer broke!" + e); }
-    } // Localized reputation
+    } // Localized lizard reputation
+    public static float CreatureCommunitiesOnLikeOfPlayer(On.CreatureCommunities.orig_LikeOfPlayer orig, CreatureCommunities self, CreatureCommunities.CommunityID commid, int region, int playernumber)
+    {
+        if (!Plugin.LocalLizRep()) return orig(self, commid, region, playernumber);
+        if ((SolaceWorldstate || Plugin.LocalLizRepAll()) && commid == CreatureCommunities.CommunityID.All) return 0f;
+        else return orig(self, commid, region, playernumber);
+    } // Explode the ALL community likeofplayer because it ruins everything
 }

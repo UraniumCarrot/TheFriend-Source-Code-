@@ -5,6 +5,7 @@ using On.MoreSlugcats;
 using RWCustom;
 using SlugBase.SaveData;
 using TheFriend.SlugcatThings;
+using TheFriend.WorldChanges;
 using UnityEngine;
 
 namespace TheFriend.SaveThings;
@@ -23,7 +24,8 @@ public class SolaceSaveData
     {
         orig(self);
         if (self.session == null || 
-            self.world == null) 
+            self.world == null || 
+            !self.IsStorySession) 
             return;
         for (int i = 0; i < self.Players.Count; i++)
         {
@@ -42,6 +44,9 @@ public class SolaceSaveData
                 comm.SetLikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.world.RegionNumber, player.playerState.playerNumber,-1);
                 comm.InfluenceLikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.world.RegionNumber, player.playerState.playerNumber, -1,1,0);
             }
+
+            if (!Plugin.LocalLizRep()) return;
+            if (FriendWorldState.SolaceWorldstate || Plugin.LocalLizRepAll()) comm.SetLikeOfPlayer(CreatureCommunities.CommunityID.All, -1,player.playerState.playerNumber, 0);
         }
     }
 
@@ -62,7 +67,7 @@ public class SolaceSaveData
 
             count += 1;
             if (!regionsKilledIn.Contains(region)) regionsKilledIn.Add(region);
-            if (!regionsKilledInStr.Contains(name)) regionsKilledInStr.Add(name);
+            if (!regionsKilledInStr.Contains(name)) regionsKilledInStr.Add(name.ToLower());
 
             self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().Set("MotherKillCount", count);
             self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().Set("MothersKilledInRegion",regionsKilledIn);

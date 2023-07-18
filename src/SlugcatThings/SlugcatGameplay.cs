@@ -5,6 +5,7 @@ using RWCustom;
 using SlugBase;
 using MoreSlugcats;
 using SlugBase.SaveData;
+using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.WorldChanges;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -132,6 +133,7 @@ public class SlugcatGameplay
             return orig(self, obj);
         }
         if (self.slugcatStats.name == DragonName && self.GetPoacher().IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
+        if (obj is FakePlayerEdible edible) return edible.grabability;
         return orig(self, obj);
     }
     public static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
@@ -276,7 +278,10 @@ public class SlugcatGameplay
     }
     public static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
     { // Allows Poacher to carry things that they couldn't usually
-        if (self.room.abstractRoom.name == "SU_VR1") return orig(self,obj);
+        if (self.room.abstractRoom.name == "VR1" || 
+            self.room.abstractRoom.name == "PUMP03" || 
+            self.room.abstractRoom.name == "PS1") 
+            return orig(self,obj);
         if (obj is Creature young && young.Template.type == CreatureTemplateType.YoungLizard) return false;
         else if (obj is Lizard mother && mother.GetLiz() != null && mother.GetLiz().IsRideable) return true;
         if (self.slugcatStats.name == DragonName)
@@ -294,15 +299,18 @@ public class SlugcatGameplay
     public static void DandelionPeach_Update(On.MoreSlugcats.DandelionPeach.orig_Update orig, DandelionPeach self, bool eu)
     { // Poacher food parkour
         orig(self, eu);
-        if (self.room.abstractRoom.name == "SU_VR1") return;
         if (!Plugin.PoacherFoodParkour()) return;
-        if (self.grabbedBy.Count > 0)
+        if (self.room.abstractRoom.name == "VR1" || 
+            self.room.abstractRoom.name == "PUMP03" || 
+            self.room.abstractRoom.name == "PS1") 
+            return;
+        if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
             {
                 if (self.grabbedBy[i].grabber is Player player && player.slugcatStats.name == DragonName)
                 {
-                    if (player.animation == ind.None && player.bodyMode != bod.Stand) { self.firstChunk.mass = 0.34f; }
+                    if (player.animation == ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.firstChunk.mass = 0.34f; }
                     else self.firstChunk.mass = 0f;
                 }
             }
@@ -312,14 +320,17 @@ public class SlugcatGameplay
     public static void LanternMouse_Update(On.LanternMouse.orig_Update orig, LanternMouse self, bool eu)
     { // Fixes Poacher unable to use lantern mice
         orig(self, eu);
-        if (self.room.abstractRoom.name == "SU_VR1") return;
-        if (self.grabbedBy.Count > 0)
+        if (self.room.abstractRoom.name == "VR1" || 
+            self.room.abstractRoom.name == "PUMP03" || 
+            self.room.abstractRoom.name == "PS1") 
+            return;
+        if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
             {
                 if (self.grabbedBy[i].grabber is Player player && player.slugcatStats.name == DragonName)
                 {
-                    if (player.animation == ind.None && player.bodyMode != bod.Stand) { self.bodyChunks[0].mass = 0.2f; self.bodyChunks[1].mass = 0.2f; }
+                    if (player.animation != ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.bodyChunks[0].mass = 0.2f; self.bodyChunks[1].mass = 0.2f; }
                     else { self.bodyChunks[0].mass = 0f; self.bodyChunks[1].mass = 0f; }
                 }
             }
@@ -330,13 +341,17 @@ public class SlugcatGameplay
     { // Poacher food parkour
         orig(self, eu);
         if (!Plugin.PoacherFoodParkour()) return;
-        if (self.grabbedBy.Count > 0)
+        if (self.room.abstractRoom.name == "VR1" || 
+            self.room.abstractRoom.name == "PUMP03" || 
+            self.room.abstractRoom.name == "PS1") 
+            return;
+        if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
             {
                 if (self.grabbedBy[i].grabber is Player player && player.slugcatStats.name == DragonName)
                 {
-                    if (player.animation == ind.None && player.bodyMode != bod.Stand) { self.firstChunk.mass = 0.2f; }
+                    if (player.animation == ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.firstChunk.mass = 0.2f; }
                     else self.firstChunk.mass = 0f;
                 }
             }
