@@ -1,0 +1,52 @@
+Palette: 23
+corruptionEffectColor: 0,0,1
+corruptionEyeColor: 0,0,1
+waterColorOverride: 0.04, 0.67, 0.59
+batDepleteCyclesMin: 2
+batDepleteCyclesMax: 7
+batDepleteCyclesMaxIfLessThanTwoLeft: 3
+batDepleteCyclesMaxIfLessThanFiveLeft: 4
+pupSpawnChance: 0.0
+overseersSpawnChance: 0.0
+overseersMin: 0
+overseersMax: 4
+earlyCycleChance: 0.0
+earlyCycleFloodChance: 0.0
+Subregion: Rotten God
+Subregion: Rotten God (Five Pebbles)
+Subregion: Rotten God (Decaying Modules)
+Subregion: Corpse
+Subregion: Rotten God (Infected Channels)
+Subregion: Rotten God (Dead Heart)
+playerGuideOverseerSpawnChance: 0.0
+Room Setting Templates: Corrupt, Lympathic, Linear, Dead
+Room_Attr: GATE_SS_UW: Overseer-Forbidden,
+Room_Attr: RM_D08: Overseer-Forbidden,
+Room_Attr: RM_S04: Overseer-Forbidden,
+Room_Attr: RM_E08: Overseer-Forbidden,
+Room_Attr: RM_D07: Overseer-Forbidden,
+Room_Attr: RM_AI: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,Overseer-Like,
+Room_Attr: RM_E06: Overseer-Forbidden,
+Room_Attr: RM_C08: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_LAB13: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_D02: DaddyLongLegs-Avoid,BrotherLongLegs-Avoid,Overseer-Forbidden,
+Room_Attr: RM_LAB8: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,Overseer-Forbidden,
+Room_Attr: RM_I03: Overseer-Forbidden,
+Room_Attr: RM_C07: Overseer-Forbidden,
+Room_Attr: RM_A11: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_D04: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_LS1: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_LS2: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_LSROOT: DaddyLongLegs-Avoid,BrotherLongLegs-Avoid,
+Room_Attr: RM_LCHEADER: DaddyLongLegs-Like,BrotherLongLegs-Like,
+Room_Attr: RM_LCBLOCKAGE: DaddyLongLegs-Avoid,BrotherLongLegs-Avoid,
+Room_Attr: RM_LCAMBUSH: DaddyLongLegs-Avoid,BrotherLongLegs-Like,
+Room_Attr: RM_LCEDGE: DaddyLongLegs-Avoid,BrotherLongLegs-Avoid,
+Room_Attr: RM_LCMANUFOLD: DaddyLongLegs-Like,BrotherLongLegs-Like,
+Room_Attr: RM_LCMEMEXIT: DaddyLongLegs-Stay,BrotherLongLegs-Stay,
+Room_Attr: RM_LCUPSIDE: DaddyLongLegs-Stay,BrotherLongLegs-Stay,
+Room_Attr: RM_CONSTRUCT: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_ASSEMBLY: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_LCFINAL: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,
+Room_Attr: RM_GSB1: DaddyLongLegs-Stay,BrotherLongLegs-Stay,
+Room_Attr: RM_GSB2: DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,

@@ -1,0 +1,16 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RumbleIntensity: 0.4021739
+WaveSpeed: 0.7896732
+WaveLength: 0.6051634
+WaveAmplitude: 0.04999999
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Grime: 0
+BkgDroneVolume: 0
+Effects: FireFlies-0.1086956-20-20, 
+PlacedObjects: FlareBomb><319.4943><279.8001><0~0~2~3, FlareBomb><487.0927><277.6266><0~0~2~3, FlareBomb><398.3883><384.5841><0~0~2~3, FlareBomb><812.1982><200.723><0~0~2~3, GhostSpot><665.0596><479.5613><, Filter><348.7491><334.2><0~100~28~160~Spear, SnowSource><773.315><611.9391><Radial~650~214~50~86.60254~1~0, SnowSource><23.92395><552.4012><Radial~227~24~227~47.60254~1~0, SnowSource><253.6191><302.3393><Radial~0~100~50~86.60254~1~0, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><846.4982><621.55><0.4673913><1, SPOT><AM_WIN-MedWind.ogg><764.5566><250.8011><0.4891304><0.8826087><584.5566><502.8011><-292.3553><-35.35535><0><0.5130436, 
+FadePalette: 0, 0.08695652
+WetTerrain: OFF

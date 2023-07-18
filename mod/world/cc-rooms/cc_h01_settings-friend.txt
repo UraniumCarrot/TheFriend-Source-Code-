@@ -1,0 +1,19 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 1
+RumbleIntensity: 1
+WaveSpeed: 0.2909226
+WaveLength: 0.8954613
+WaveAmplitude: 2.094222E-07
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.3043478
+Grime: 0.3804348
+BkgDroneVolume: 0.2869565
+Palette: 0
+EffectColorA: 10
+Effects: Fog-0.4021739-20-20, Flies-0-30-30, Coldness-1-40-40, Dustpuffs-1-50-50, 
+PlacedObjects: SnowSource><865.0397><171.2105><Radial~1274~728~50~86.60254~0.4565217~1, SnowSource><-150.6227><358.592><Radial~1272~-345~50~86.60254~0.3913043~1, SnowSource><2767.375><337.6563><Radial~-1282~-520~-347~117.6025~0.5652174~1, 
+AmbientSounds: SPOT><AM_WIN-StrongWnd2.ogg><779.95><218.5051><0.3695652><1.195652><3483.95><250.5051><-229.3553><32.64465><0><0.8826088, SPOT><AM_WIN-MedWind.ogg><779.332><100.8914><0.2391304><1><5070.332><231.8914><-157.3553><90.64465><0><0.654348, OMNI><AM_ENV-LightWind.ogg><711.424><492.3486><0><1, OMNI><AM_ENV-WinterHum.ogg><712.856><418.0804><0.3152174><1, 
+FadePalette: 15, 0.7608696, 0.7717391, 0.7717391, 0.7717391, 0.7608696, 0.75, 0.7608696
+WetTerrain: OFF

@@ -1,0 +1,11 @@
+{
+	"id": "slugcat end - poacher",
+	"scene_folder": "slugbase/scenes/slugcat end - poacher",
+	"images": [
+		{"name": "poacher - flat", "pos": [0, 0], "depth": -1.0, "flatmode": true},
+		{"name": "poacher c", "pos": [0, 120], "depth": 3.3, "shader": "Basic"},
+		{"name": "poacher b", "pos": [0, 120], "depth": 2.5, "shader": "Basic"},
+		{"name": "poacher a", "pos": [0, 120], "depth": 2, "shader": "Basic"}
+	],
+	"idle_depths": [2.9],
+}

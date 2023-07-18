@@ -1,0 +1,17 @@
+CeilingDrips: 0
+RainIntensity: 0
+RumbleIntensity: 0
+WaveSpeed: 0.51
+WaveLength: 1
+WaveAmplitude: 0.0001
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+WaterReflectionAlpha: 0.9782609
+Palette: 9
+EffectColorA: 0
+EffectColorB: 11
+Effects: SilenceWater-0.4782609-24-134, Fog-0-281-79, FireFlies-0.2065217-299-143, 
+PlacedObjects: LightSource><1770.708><568.0545><0.1847826~EffectColor2~-1857~-610~-484~-213.3975~0~0~None~0~0, LightSource><1746.95><565.2553><0.2717391~EffectColor2~131~-157~-373~-376.3975~0~1~None~0~0, LightSource><2288.279><438.9479><0.25~EffectColor2~240~-56~245~-36.39746~0~1~None~0~0, LightSource><2284.054><452.7919><0.07608695~EffectColor2~868~-457~248~-173.3975~0~0~None~0~0, DeadTokenStalk><2332.104><426.3627><-29~3, DeadTokenStalk><2234.423><389.3988><11~34, DeadTokenStalk><2317.098><386.6296><-29~39, GoldToken><2251.566><366.5775><17~53~-237~102~0~UG~White|Yellow|Red|Rivulet|Artificer|Spear|Gourmand~0~0~0~0~0~0~0, Vine><1774.186><556.8106><312~-324, 
+AmbientSounds: SPOT><AM_ENV-LushNight.ogg><826.1176><461.1499><0.1195652><1><3027.118><413.1499><-303.3553><-210.3553><0><1, SPOT><AM_ENV-CricketsWnd.ogg><651.8565><520.6107><0.2173913><1><3148.856><390.6107><-729.3553><-463.3553><0><1, 
+FadePalette: 10, 0.9891304, 0.9782609, 0.9673913
+WetTerrain: OFF

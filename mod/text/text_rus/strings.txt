@@ -1,0 +1,82 @@
+Symbol|Символ
+Skull|Череп
+POACHER|БРАКОНЬЕР
+FRIEND|ДРУГ
+THE FRIEND|ДРУГ
+Friend|Друг
+THE POACHER|БРАКОНЬЕР
+Poacher|Браконьер
+Solace|Solace 
+thefriend-description|Сразитесь с зимним штормом в роли двух новых нестандартных слизнекотов, Друга и Браконьера! Оба расположены между Ручьём и Святым. Бета, кампании запланированы, но в основном не реализованы.
+The Friend|Друг
+Beastly in nature yet with a soft heart, you defy the order of life and find alliance among predators. <LINE> In the frozen wastes you call home, you search for those in need of companionship.|Звериный по натуре, но с мягким сердцем, вы бросаете вызов порядку жизни и находите союз среди хищников. <LINE> В ледяных пустошах, которые вы называете домом, вы ищете тех, кто нуждается в компании.
+The Poacher|Браконьер
+Small, weak, yet crafty; set deadly traps to snare and kill your preferred prey.<LINE>Though the cold suits you poorly, you will find new purpose in your pursuits.|Маленький, слабый, но хитрый; устанавливайте смертельные ловушки, чтобы заманить в ловушку и убить любимую добычу.<LINE>Хотя холод вам не подходит, вы найдете новую цель для своих занятий.
+Rotten God|Гнилой Бог
+The Mountain|Гора
+Dark Bog|Тёмное болото
+Cliffside|Обрыв
+World's Ceiling|Потолок мира
+Rotten God (Five Pebbles)|Гнилой Бог (Пять Галек)
+Rotten God (Decaying Modules)|Гнилой Бог (Разлагающиеся модули)
+Corpse|Труп
+Rotten God (Infected Channels)|Гнилой Бог (Зараженные каналы)
+Rotten God (Dead Heart)|Гнилой Бог (Мёртвое сердце)
+Bedrock|Коренная порода
+Mudslide|Оползень
+
+Rain World: Solace Config - Character Settings|Rain World: Solace Config - Настройки персонажей
+Version 0.2.0.1|Версия 0.2.0.1
+Heavy Foods|Тяжёлая пища
+Legacy Hypothermia|Старая гипотермия
+Backspear Enable|Копьё на спине
+Pup Behaviors|Поведение слизнекотят
+
+Automatic Crouch|Автоматическое приседание
+Pole Crawl|Лазанье но столбам
+Legacy Movement|Старое передвижение
+Cycle 0 Rep Lock|Блокировка репутации в цикле 0
+
+Rain World: Solace Config - General Settings|Rain World: Solace Config - Общие настройки
+Famines Disabled|Голод отключён
+Famines For All|Голод для всех
+Expedition Famines|Голод в экспедиции
+Local Lizard Rep|Локальная репутация ящериц
+Local Liz Rep For All|Локальная репутация ящериц для всех
+Famines|Голод
+Reputation|Репутация
+
+Rain World: Solace Config - Experimental Settings|Rain World: Solace Config - Экспериментальные настройки
+Lizard Riding|Езда на ящерицах
+Universal Lizard Riding|Универсальная езда на ящерицах
+Lizard Rep Meter|Шкала репутации ящериц
+Universal Lizard Meter|Универсальная шкала репутации ящериц
+
+General|Общее
+Characters|Персонажи
+Experimental|Экспериментальное
+
+Famine mechanics and changes are disabled when checked|Механика голода и изменения отключены, если отмечено
+Famine mechanics and changes are given to every character|Механика голода и изменения даны каждому персонажу
+Forces famines to appear in Expedition Mode|Заставляет голод появляться в режиме экспедиции
+Lizard reputation is localized for Solace slugcats when checked. May break things if disabled!|Репутация ящерицы локализована для слизнекотов Solace, если отмечено. Может сломать вещи, если отключён!
+Lizard reputation is localized for every character|Репутация ящерицы локализована для каждого персонажа
+
+Makes Friend crouch automatically after a standing jump|Заставляет Друга автоматически приседать после прыжка с места
+Allows Friend to crawl along the tops of poles like Noir Catto does. Noir Catto not required to work. Thank you Noir for giving this to me!|Позволяет Другу ползать по вершинам столбов, как это делает Noir Catto. Noir Catto не требуется для работы. Спасибо, Noir, за то, что дал мне это!
+Changes various Friend stats to be as they were earlier in the mod's development|Изменяет различные характеристики Друга, чтобы они были такими, какими они были ранее при разработке мода
+Allows Friend to use a backspear like they could earlier in the mod's development|Позволяет Другу использовать копьё на спине, как он мог раньше при разработке мода
+Stops changes to lizard reputation happening on cycle 0 for Friend. Lizard reputation may break if disabled|Останавливает изменения репутации ящериц, происходящие в цикле 0 для Друга. Репутация ящериц может испортиться, если
+отключить
+
+Allows Poacher to behave like a pup. Kind of subtle.|Позволяет Браконьеру вести себя как слизнекотёнок. Как-то тонко.
+Allows Poacher to use a backspear as was planned early in their development|Позволяет Браконьеру использовать копьё на спине, как и планировалось в начале при разработке.
+Makes Poacher get cold as fast as they did in earlier versions of the mod|Заставляет Браконьера замерзать так же быстро, как и в более ранних версиях мода
+Allows some food items to affect Poacher's movement|Позволяет некоторой пище влиять на движение Браконьера.
+
+Allows mother lizards to be ridden if lizard rep is high enough|Позволяет ездить на ящерице-матери, если репутация ящериц достаточно высока
+Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)|Позволяет ездить верхом на всех ящерицах, если они приручены (кроме детёнышей и матерей)
+Displays lizard reputation in the current region for Solace slugcats|Отображает репутацию ящериц в текущем регионе для слизнекотов Solace
+Displays lizard reputation in the current region for all slugcats|Отображает репутацию ящериц в текущем регионе для всех слизнекотов
+
+Game Over - Press PAUSE BUTTON to restart, or find a way to survive|Игра окончена — нажми «ПАУЗА», чтобы перезапустить или найти способ выжить

@@ -1,0 +1,17 @@
+Template: SH_SettingsTemplate_DarkSun
+DangerType: Blizzard
+CeilingDrips: 0
+RumbleIntensity: 0
+WaveSpeed: 0.7429348
+WaveLength: 0.6285326
+WaveAmplitude: 0.04999999
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.4130435
+RandomItemDensity: 0.173913
+RandomItemSpearChance: 0.3630434
+Effects: Fog-0.6521739-22-73, BkgOnlyLightning-0.1195652-24-130, LightBurn-0.2934783-26-16, Bloom-0.5978261-279-13, FireFlies-0.09782609-284-71, RockFlea-0.5760869-278-124, 
+PlacedObjects: LightSource><1422.437><418.5601><0.1086956~White~1570~-290~58~-315.3975~1~0~None~0~0, LightSource><2595.407><439.6263><0.2173913~White~-504~159~-200~-287.3975~1~0~None~0~0, InsectGroup><1438.399><453.3837><-94~135~42~-229~RedSwarmer~0.1521739, InsectGroup><2316.162><462.8204><0~100~0~0~RedSwarmer~0.1630435, LightSource><3229.958><397.3044><0.1413043~White~809~-225~50~86.60254~1~0~None~0~0, 
+AmbientSounds: DIR><AM_RAIN-Rumbles.ogg><790.687><548.9291><0.1195652><0.7847826><90.19421><0, OMNI><MSC-ShadowGully.ogg><789.2864><641.1967><0.4565217><0.6673913, OMNI><AM_ENV-LushNight.ogg><616.0541><641.2902><0.2826087><0.9413043, SPOT><AM_WIN-NiceWnd.ogg><800.1059><434.8887><0.2717391><1><2486.106><682.8887><42.64465><-125.3553><0><0.2739132, SPOT><AM_WIN-NiceWnd.ogg><809.55><317.4998><0.2608696><1><1463.55><692.4998><56.64465><-94.35529><0><0.328261, 
+FadePalette: 9, 0.3152174, 0.2173913, 0.1413043, 0.09782609
+WetTerrain: OFF

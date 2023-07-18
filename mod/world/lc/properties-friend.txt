@@ -1,0 +1,109 @@
+Palette: 6
+batDepleteCyclesMin: 2
+batDepleteCyclesMax: 7
+batDepleteCyclesMaxIfLessThanTwoLeft: 3
+batDepleteCyclesMaxIfLessThanFiveLeft: 4
+overseersSpawnChance: 21.0
+overseersMin: 8
+overseersMax: 12
+scavsDelayInitialMin: 8800
+scavsDelayInitialMax: 11200
+scavsDelayRepeatMin: 8300
+scavsDelayRepeatMax: 10900
+earlyCycleChance: 0.0
+earlyCycleFloodChance: 0.0
+playerGuideOverseerSpawnChance: 0.5
+pupSpawnChance: 0.01
+ghostRelKarmaReq: 4
+Subregion: Necropolis
+Subregion: The Peak
+Subregion: Dermis
+Subregion: Abandoned Post
+Room Setting Templates: Outside, Inside, Tower
+Room_Attr: GATE_UW_LC: MirosBird-Forbidden,Scavenger-Forbidden,ScavengerElite-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_B04: Slugcat-Forbidden,PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Snail-Forbidden,Vulture-Forbidden,LanternMouse-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,JetFish-Forbidden,BigEel-Forbidden,Deer-Forbidden,TubeWorm-Forbidden,DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,MirosBird-Forbidden,TempleGuard-Forbidden,Centipede-Forbidden,RedCentipede-Forbidden,Centiwing-Forbidden,SmallCentipede-Forbidden,Scavenger-Forbidden,Overseer-Forbidden,VultureGrub-Forbidden,EggBug-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Forbidden,KingVulture-Forbidden,Hazer-Forbidden,MirosVulture-Forbidden,ScavengerElite-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_splitpath: Vulture-Forbidden,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Forbidden,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_shelter_above: Vulture-Forbidden,MirosBird-Forbidden,Scavenger-Forbidden,KingVulture-Forbidden,ScavengerElite-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_entrancezone: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Avoid,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_cramped: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Avoid,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_C12: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Avoid,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_deepslumsuh: Vulture-Avoid,MirosBird-Forbidden,Overseer-Stay,KingVulture-Avoid,Inspector-Forbidden,
+Room_Attr: LC_C05: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,Overseer-Stay,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_scavtreasury: Vulture-Avoid,MirosBird-Forbidden,KingVulture-Avoid,Inspector-Forbidden,
+Room_Attr: LC_longslum: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Like,KingVulture-Avoid,ScavengerElite-Like,Inspector-Forbidden,
+Room_Attr: LC_floorpipes: CyanLizard-Stay,Vulture-Avoid,MirosBird-Forbidden,Scavenger-Stay,KingVulture-Avoid,ScavengerElite-Like,Inspector-Forbidden,
+Room_Attr: LC_betweenwalls: Vulture-Avoid,MirosBird-Forbidden,KingVulture-Avoid,Inspector-Forbidden,
+Room_Attr: LC_A04: Vulture-Like,MirosBird-Forbidden,Scavenger-Like,KingVulture-Like,ScavengerElite-Like,Inspector-Forbidden,
+Room_Attr: LC_A05: Vulture-Forbidden,MirosBird-Forbidden,KingVulture-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_C07: MirosBird-Forbidden,Scavenger-Avoid,Overseer-Stay,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_C10: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_rooftophop: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_tallestconnection: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_towerCLIMB: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_THECLIMB: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Avoid,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_capbase: Vulture-Forbidden,MirosBird-Forbidden,Scavenger-Forbidden,KingVulture-Forbidden,ScavengerElite-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_highestpoint: Vulture-Forbidden,MirosBird-Forbidden,Scavenger-Forbidden,KingVulture-Forbidden,ScavengerElite-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_tallbreak: MirosBird-Forbidden,Scavenger-Avoid,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_C03: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_tallSlums: Vulture-Like,MirosBird-Forbidden,Scavenger-Like,Overseer-Stay,KingVulture-Like,ScavengerElite-Like,Inspector-Forbidden,
+Room_Attr: LC_slumtowers: Vulture-Like,MirosBird-Forbidden,Overseer-Stay,KingVulture-Like,Inspector-Forbidden,
+Room_Attr: LC_longori: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_gatehouse01: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_gatehouse02: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_gatehouse03: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_girderwalk: Vulture-Like,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Like,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_S03: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_downwards: Vulture-Like,MirosBird-Forbidden,KingVulture-Like,Inspector-Forbidden,
+Room_Attr: LC_streets: Vulture-Like,MirosBird-Forbidden,Scavenger-Like,KingVulture-Like,ScavengerElite-Like,Inspector-Forbidden,
+Room_Attr: LC_S01: Vulture-Forbidden,MirosBird-Forbidden,KingVulture-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_fence: MirosBird-Forbidden,Scavenger-Stay,ScavengerElite-Stay,Inspector-Forbidden,
+Room_Attr: LC_crash: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_ruin01: Vulture-Forbidden,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Forbidden,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_ruin02: Vulture-Forbidden,MirosBird-Forbidden,Scavenger-Avoid,KingVulture-Forbidden,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_ruin03: Vulture-Avoid,MirosBird-Forbidden,Overseer-Stay,KingVulture-Avoid,Inspector-Forbidden,
+Room_Attr: LC_templegate: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Avoid,Overseer-Stay,KingVulture-Avoid,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_A02: Slugcat-Forbidden,PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Snail-Forbidden,Vulture-Forbidden,LanternMouse-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,JetFish-Forbidden,BigEel-Forbidden,Deer-Forbidden,TubeWorm-Forbidden,DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,MirosBird-Forbidden,TempleGuard-Forbidden,Centipede-Forbidden,RedCentipede-Forbidden,Centiwing-Forbidden,SmallCentipede-Forbidden,Scavenger-Avoid,Overseer-Forbidden,VultureGrub-Forbidden,EggBug-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Forbidden,KingVulture-Forbidden,Hazer-Forbidden,MirosVulture-Forbidden,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_02A: Vulture-Forbidden,MirosBird-Forbidden,Scavenger-Avoid,Overseer-Stay,KingVulture-Forbidden,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_SUBWAY01: MirosBird-Stay,Overseer-Stay,Inspector-Forbidden,
+Room_Attr: LC_SUBWAY02: MirosBird-Stay,Overseer-Stay,Inspector-Forbidden,
+Room_Attr: LC_station01: MirosBird-Forbidden,Overseer-Stay,Inspector-Forbidden,
+Room_Attr: LC_SUBWAY03: MirosBird-Stay,Inspector-Forbidden,
+Room_Attr: LC_SUBWAY04: MirosBird-Stay,Scavenger-Avoid,Overseer-Stay,Inspector-Forbidden,
+Room_Attr: LC_S06: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_C08: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Avoid,Overseer-Stay,KingVulture-Avoid,ScavengerElite-Avoid,Inspector-Forbidden,
+Room_Attr: LC_ShelterTrain1: Vulture-Forbidden,MirosBird-Forbidden,KingVulture-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_stripmallNEW: Vulture-Avoid,MirosBird-Forbidden,Scavenger-Like,Overseer-Stay,KingVulture-Avoid,ScavengerElite-Like,Inspector-Forbidden,
+Room_Attr: LC_mallentrance: Vulture-Avoid,MirosBird-Forbidden,Overseer-Stay,KingVulture-Avoid,Inspector-Forbidden,
+Room_Attr: LC_templeentrance: MirosBird-Forbidden,Scavenger-Like,Inspector-Avoid,
+Room_Attr: LC_S05: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_templeshaft: MirosBird-Forbidden,Scavenger-Avoid,
+Room_Attr: LC_LAB02: MirosBird-Forbidden,Scavenger-Like,Inspector-Like,
+Room_Attr: LC_corner: MirosBird-Forbidden,Scavenger-Avoid,
+Room_Attr: LC_junction: MirosBird-Forbidden,Scavenger-Like,Inspector-Like,
+Room_Attr: LC_LAB01: MirosBird-Forbidden,Scavenger-Like,Inspector-Like,
+Room_Attr: LC_midlab: MirosBird-Forbidden,Scavenger-Like,Inspector-Like,
+Room_Attr: LC_LAB03: MirosBird-Forbidden,Scavenger-Like,
+Room_Attr: LC_LAB04: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Avoid,
+Room_Attr: LC_LAB05: MirosBird-Forbidden,Inspector-Avoid,
+Room_Attr: LC_LAB06: MirosBird-Stay,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_topdoor: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_topshaft: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Avoid,
+Room_Attr: LC_toplab: MirosBird-Forbidden,Scavenger-Like,Inspector-Avoid,
+Room_Attr: LC_templetoll: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_westdome: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_FINAL: StandardGroundCreature-Forbidden,Slugcat-Forbidden,LizardTemplate-Forbidden,PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,CyanLizard-Forbidden,Fly-Forbidden,Leech-Forbidden,SeaLeech-Forbidden,Snail-Forbidden,Vulture-Forbidden,GarbageWorm-Forbidden,LanternMouse-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Spider-Forbidden,JetFish-Forbidden,BigEel-Forbidden,Deer-Forbidden,TubeWorm-Forbidden,DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,TentaclePlant-Forbidden,PoleMimic-Forbidden,MirosBird-Forbidden,TempleGuard-Forbidden,Centipede-Forbidden,RedCentipede-Forbidden,Centiwing-Forbidden,SmallCentipede-Forbidden,Scavenger-Forbidden,Overseer-Forbidden,VultureGrub-Forbidden,EggBug-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Forbidden,KingVulture-Forbidden,Hazer-Forbidden,MirosVulture-Forbidden,SpitLizard-Forbidden,EelLizard-Forbidden,MotherSpider-Forbidden,TerrorLongLegs-Forbidden,AquaCenti-Forbidden,HunterDaddy-Forbidden,FireBug-Forbidden,StowawayBug-Forbidden,ScavengerElite-Forbidden,Inspector-Forbidden,Yeek-Forbidden,BigJelly-Forbidden,SlugNPC-Forbidden,JungleLeech-Forbidden,
+Room_Attr: LC_dome: MirosBird-Forbidden,Scavenger-Like,Inspector-Forbidden,
+Room_Attr: LC_eastdome: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_topexit: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_S04: MirosBird-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_tophall: MirosBird-Forbidden,Scavenger-Like,Inspector-Forbidden,
+Room_Attr: LC_elevatorupper: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_elevatorcab: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_elevatorlower: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Forbidden,
+Room_Attr: LC_elevatorentrance: MirosBird-Forbidden,Scavenger-Avoid,Inspector-Avoid,
+Room_Attr: LC_PIPES01: MirosBird-Forbidden,Scavenger-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_PIPES02: MirosBird-Forbidden,Scavenger-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_PIPES03: MirosBird-Forbidden,Scavenger-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_PIPES04: MirosBird-Forbidden,Scavenger-Forbidden,Inspector-Forbidden,
+Room_Attr: LC_PIPES05: MirosBird-Forbidden,Scavenger-Forbidden,Inspector-Forbidden,
+Room_Attr: OffScreenDen_LC: MirosBird-Forbidden,Inspector-Forbidden,

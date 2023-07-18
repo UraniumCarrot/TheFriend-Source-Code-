@@ -1,0 +1,22 @@
+[MERGE]
+CONDITIONAL LINKS
+//shaded side
+Friend : SH_B12 : SH_E03 : SH_E03RIV
+Friend : SH_E03 : SH_B12 : DISCONNECTED
+Friend : SH_E03RIV : 1 : SH_B12
+//gate side
+Friend : SH_D03 : SH_H01 : SH_H01RIV
+Friend : SH_H01 : SH_D03 : DISCONNECTED
+Friend : SH_H01RIV : 1 : SH_D03
+//Only show on saint
+Friend : EXCLUSIVEROOM : SH_E03RIV
+Friend : EXCLUSIVEROOM : SH_E01RIV
+Friend : EXCLUSIVEROOM : SH_E04RIV
+Friend : EXCLUSIVEROOM : SH_H01RIV
+//Hidden on saint
+Friend : HIDEROOM : SH_E03
+Friend : HIDEROOM : SH_E01
+Friend : HIDEROOM : SH_E04
+Friend : HIDEROOM : SH_H01
+END CONDITIONAL LINKS
+[ENDMERGE]

@@ -1,0 +1,78 @@
+Palette: 10
+albinos: true
+waterColorOverride: 0.11, 0.51, 0.19
+batDepleteCyclesMin: 2
+batDepleteCyclesMax: 7
+batDepleteCyclesMaxIfLessThanTwoLeft: 3
+batDepleteCyclesMaxIfLessThanFiveLeft: 4
+overseersSpawnChance: 0.1
+overseersMin: 1
+overseersMax: 4
+pupSpawnChance: 0.25
+Subregion: Barren Conduits
+Subregion: Desolate Canal
+Subregion: ???
+Room Setting Templates: Pipes, Surface, Sewer, Filter
+playerGuideOverseerSpawnChance: 0.8
+Room_Attr: GATE_HI_VS: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: GATE_SL_VS: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: GATE_SB_VS: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B01: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A02: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_S04: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B02: Centipede-Like,RedCentipede-Like,SmallCentipede-Like,
+Room_Attr: VS_C04: Centipede-Like,RedCentipede-Like,SmallCentipede-Like,
+Room_Attr: VS_S01: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A03: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B03: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C01: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_D01: Centipede-Like,RedCentipede-Like,SmallCentipede-Like,
+Room_Attr: VS_A05: Centipede-Like,RedCentipede-Like,SmallCentipede-Like,
+Room_Attr: VS_A14: Centipede-Like,RedCentipede-Like,SmallCentipede-Like,
+Room_Attr: VS_B04: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C02: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A04: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B07: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B08: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C03: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C05: Centipede-Like,RedCentipede-Like,SmallCentipede-Like,
+Room_Attr: VS_B09: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A06: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C06: Centipede-Like,RedCentipede-Like,SmallCentipede-Like,
+Room_Attr: VS_A07: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_S05: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B11: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A08: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C07: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B12: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_F01: Vulture-Avoid,CicadaA-Avoid,CicadaB-Avoid,Centiwing-Avoid,KingVulture-Avoid,MirosVulture-Avoid,
+Room_Attr: VS_C09: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_D04: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A13: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_S07: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B16: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_D02: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_S02: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B05: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_E01: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_D03: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A09: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A10: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B13: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_S06: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B14: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A11: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_A12: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B15: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C08: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C10: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C11: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_C12: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_E02: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B17: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_F02: BlackLizard-Like,Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Like,RedCentipede-Like,Centiwing-Forbidden,SmallCentipede-Like,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_E06: Vulture-Avoid,CicadaA-Avoid,CicadaB-Avoid,Centiwing-Avoid,KingVulture-Avoid,MirosVulture-Avoid,
+Room_Attr: VS_S08: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_H01: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_B06: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,
+Room_Attr: VS_S03: Vulture-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,MirosVulture-Forbidden,

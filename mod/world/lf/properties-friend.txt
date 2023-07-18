@@ -1,0 +1,57 @@
+Palette: 14
+batDepleteCyclesMin: 2
+batDepleteCyclesMax: 7
+batDepleteCyclesMaxIfLessThanTwoLeft: 3
+batDepleteCyclesMaxIfLessThanFiveLeft: 4
+overseersSpawnChance: 0.8
+overseersMin: 0
+overseersMax: 6
+Subregion: Desolate Fields
+playerGuideOverseerSpawnChance: 0.4
+pupSpawnChance: 0.12
+Broken Shelters: Red: LF_S07
+Broken Shelters: Spear: LF_S07
+Broken Shelters: Saint: LF_S07
+Broken Shelters: Artificer: LF_S07
+Room Setting Templates: Underground, Farms
+Room_Attr: LF_C05: SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_A07: SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_F02: Vulture-Like,Centiwing-Stay,SmallNeedleWorm-Stay,BigNeedleWorm-Stay,KingVulture-Like,
+Room_Attr: LF_A04: PinkLizard-Avoid,CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Forbidden,RedCentipede-Avoid,Centiwing-Forbidden,SmallCentipede-Like,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_A06: CicadaA-Forbidden,CicadaB-Forbidden,Centipede-Avoid,RedCentipede-Avoid,Centiwing-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_E04: Vulture-Like,Deer-Stay,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Like,
+Room_Attr: LF_A03: PinkLizard-Avoid,CicadaA-Forbidden,CicadaB-Forbidden,SmallCentipede-Stay,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_H01: Vulture-Avoid,Deer-Stay,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Avoid,
+Room_Attr: LF_A15: SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_A05: YellowLizard-Avoid,CyanLizard-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Centiwing-Avoid,SmallCentipede-Like,BigSpider-Avoid,SpitterSpider-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_J01: Vulture-Avoid,Deer-Stay,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,KingVulture-Avoid,
+Room_Attr: LF_C03: BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_D03: Vulture-Like,SmallNeedleWorm-Stay,BigNeedleWorm-Stay,KingVulture-Like,
+Room_Attr: LF_E03: Vulture-Like,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Like,
+Room_Attr: LF_D06: SmallCentipede-Like,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_S01: SmallCentipede-Forbidden,
+Room_Attr: LF_E01: Vulture-Like,KingVulture-Like,
+Room_Attr: LF_D01: Vulture-Like,KingVulture-Like,
+Room_Attr: LF_B02: SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_A17: SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_C01: Vulture-Like,KingVulture-Like,
+Room_Attr: LF_B03: Centipede-Like,RedCentipede-Like,
+Room_Attr: LF_B05: GreenLizard-Avoid,Centipede-Like,RedCentipede-Like,
+Room_Attr: LF_D04: GreenLizard-Avoid,
+Room_Attr: LF_S05: GreenLizard-Forbidden,SpitLizard-Forbidden,
+Room_Attr: LF_A11: GreenLizard-Forbidden,CicadaA-Avoid,CicadaB-Avoid,Centipede-Avoid,RedCentipede-Avoid,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_A13: GreenLizard-Forbidden,CicadaA-Avoid,CicadaB-Avoid,Centipede-Avoid,RedCentipede-Avoid,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_A12: GreenLizard-Forbidden,CicadaA-Avoid,CicadaB-Avoid,Centipede-Avoid,RedCentipede-Avoid,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_B01: Vulture-Like,Centipede-Forbidden,RedCentipede-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,KingVulture-Like,
+Room_Attr: LF_D07: Vulture-Like,Deer-Stay,Centipede-Forbidden,RedCentipede-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,KingVulture-Like,
+Room_Attr: LF_C02: Vulture-Like,KingVulture-Like,
+Room_Attr: LF_H02: Vulture-Like,Deer-Stay,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Like,
+Room_Attr: LF_E05: Vulture-Like,Deer-Stay,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Like,
+Room_Attr: LF_B04: CicadaA-Forbidden,CicadaB-Forbidden,SmallCentipede-Like,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,
+Room_Attr: LF_D08: YellowLizard-Stay,CyanLizard-Stay,CicadaA-Forbidden,CicadaB-Forbidden,SmallCentipede-Like,BigSpider-Like,SpitterSpider-Like,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_S03: CyanLizard-Forbidden,
+Room_Attr: LF_M01: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Vulture-Forbidden,Centipede-Avoid,Scavenger-Avoid,
+Room_Attr: LF_M02: Scavenger-Avoid,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_M03: Scavenger-Avoid,BigSpider-Avoid,SpitterSpider-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_M04: Scavenger-Avoid,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: LF_M05: Scavenger-Avoid,BigSpider-Forbidden,SpitterSpider-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,

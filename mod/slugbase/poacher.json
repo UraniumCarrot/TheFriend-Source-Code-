@@ -1,0 +1,34 @@
+{
+	"id": "FriendDragonslayer",
+	"name": "The Poacher",
+	"description": "Small, weak, yet crafty; set deadly traps to snare and kill your preferred prey.<LINE>Though the cold suits you poorly, you will find new purpose in your pursuits.",
+	
+	"features": {
+		"color":"9b5c6c", 
+		"custom_colors": [
+			{ "name": "Body", "story": "9b5c6c", "arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ] },
+			{ "name": "Eyes", "story": "6d3868", "arena": [ "8D8CC5", "993800", "871740", "BBB6BC" ] },
+			{ "name": "Skull", "story": "735a7f", "arena": [ "3884FF", "58E800", "840039", "DCDBFF" ] },
+			{ "name": "Symbol", "story": "811b1f", "arena": [ "A8FFFF", "C6E500", "4C0021", "5155A3" ] }
+		],
+		"weight": [ 0.32, 0.25 ],
+		"diet": {
+			"base": "White",
+			"meat": 1,
+			"plants": 1,
+		},
+		"friend/fancytail": false,
+		"friend/friendhead": false,
+		"friend/is_the_friend": false,
+		
+		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
+		"story_regions": ["RM","UG","-DS","-CL","SH"],
+		"throw_skill": 0,
+		"start_room": "SU_S05",
+		"select_menu_scene": "slugcat - frienddragonslayer",
+		"select_menu_scene_ascended": "slugcat end - poacher",
+		"sleep_scene": "sleep scene - frienddragonslayer",
+		"food_min": 2,
+		"food_max": 3
+	}
+}

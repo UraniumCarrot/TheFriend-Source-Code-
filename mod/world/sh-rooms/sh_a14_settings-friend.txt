@@ -1,0 +1,18 @@
+Template: SH_SettingsTemplate_DarkSun
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 1
+RumbleIntensity: 0
+WaveSpeed: 0.5940181
+WaveLength: 0.7029909
+WaveAmplitude: 0.04999999
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.1630435
+BkgDroneVolume: 0
+Palette: 0
+Effects: LightBurn-0.173913-37-112, Coldness-1-35-59, 
+PlacedObjects: DangleFruit><86.42456><532.0648><-314~-121~2~3, DangleFruit><111.0509><469.0193><-300~-195~2~3, DangleFruit><447.0512><532.2281><-74~-564~2~3, CustomDecal><652.442><326.1941><-34~60~223~91~229~-2~-19~-367.0002~0.2934783~1~0~WhiteJunkScribble~0.3369565~0~0.5760869~1~0.07608695~1~0.6086956~0.3152174, SnowSource><681.2894><282.9896><Radial~245~190~-572.0002~-318.3975~0.4130435~1, SnowSource><408.0901><113.9286><Radial~345~48~-31~-62.39746~0.5~0.4782609, SnowSource><1051.955><443.8052><Radial~104~159~-383~-107.3975~0.6956522~0.3804348, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><716.5507><564.9832><0.5543478><0.7847826, SPOT><AM_WIN-SubWnd.ogg><267.3777><110.0961><0.4456522><1><982.3777><617.0961><-343.3553><10.64465><0><0.5239132, OMNI><AM_ENV-LightWind.ogg><712.3002><637.7578><0.2717391><0.8043478, 
+FadePalette: 10, 0.3586957
+WetTerrain: OFF

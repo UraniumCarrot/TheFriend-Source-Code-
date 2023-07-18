@@ -1,0 +1,18 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0.6413044
+RumbleIntensity: 0.5652174
+WaveSpeed: 0.5121123
+WaveLength: 0.8336177
+WaveAmplitude: 0.03206524
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Grime: 0
+BkgDroneVolume: 0
+Palette: 33
+Effects: FireFlies-0.2065217-20-20, VoidSpawn-0.09782609-26-83, 
+PlacedObjects: SnowSource><158.4482><578.0266><Radial~215~87~50~86.60254~1~0, SnowSource><354.0945><217.6763><Radial~70~118~-219~93.60254~1~0, SnowSource><681.303><613.0342><Radial~-5~83~50~86.60254~1~0, SnowSource><527.3632><608.6649><Radial~0~65~50~86.60254~1~0, SnowSource><618.8356><182.8638><Radial~190~91~50~86.60254~1~0, SnowSource><1011.141><231.1674><Radial~-95~188~50~86.60254~1~0, SnowSource><1865.942><345.8085><Radial~747~241~50~86.60254~1~0, SnowSource><2673.464><243.6968><Radial~0~100~50~86.60254~1~0, SnowSource><2854.716><627.0529><Radial~182~22~50~86.60254~1~0, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><826.3891><645.3937><0.5108696><0.7847826, OMNI><AM_WIN-SubWnd.ogg><833.8414><565.6282><0.4891304><1, SPOT><AM_WIN-StrongWnd2.ogg><778.8><218.5031><0.3586957><1><1737.8><463.5031><-240.3553><112.6447><0><0.5130436, SPOT><AM_ENV-LightWind.ogg><93.68451><497.5771><0.4782609><0.7065217><546.6845><450.5771><-172.3553><-101.3553><0><0.252174, 
+FadePalette: 10, 0.4130435, 0.4130435, 0.4130435
+WetTerrain: OFF

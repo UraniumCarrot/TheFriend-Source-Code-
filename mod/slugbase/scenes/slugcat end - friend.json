@@ -1,0 +1,11 @@
+{
+	"id": "slugcat end - friend",
+	"scene_folder": "slugbase/scenes/slugcat end - friend",
+	"images": [
+		{"name": "friend - flat", "pos": [0, 0], "depth": -1.0, "flatmode": true},
+		{"name": "friend bkg", "pos": [60, 180], "depth": 3, "shader": "Basic"},
+		{"name": "friend b", "pos": [60, 180], "depth": 2.2, "shader": "Basic"},
+		{"name": "friend a", "pos": [60, 180], "depth": 2, "shader": "Basic"}
+	],
+	"idle_depths": [2.9],
+}

@@ -1,0 +1,16 @@
+CeilingDrips: 0
+RainIntensity: 0
+RumbleIntensity: 0
+WaveSpeed: 0.51
+WaveLength: 1
+WaveAmplitude: 0.0001
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Palette: 10
+EffectColorA: 13
+EffectColorB: 11
+Effects: HeatWave-0.1956522-279-16, Fog-0-281-72, FireFlies-0.3695652-274-130, SilenceWater-0.2826087-16-142, 
+PlacedObjects: LightSource><235.8087><528.1915><0.3804348~EffectColor2~193~-118~50~86.60254~0~1~None~0~0, LightSource><233.1089><581.8918><0.5434783~EffectColor2~1002~-483~92~-46.39746~0~0~None~0~0, LightSource><442.7931><1273.555><0.326087~EffectColor2~217~-163~50~86.60254~0~1~None~0~0, LightSource><421.7988><1316.694><0.3043478~EffectColor2~795~-417~130~-122.3975~0~0~None~0~0, LightSource><842.6754><1860.404><0.2934783~EffectColor2~157~178~-422~-16.39746~0~1~None~0~0, LightSource><844.124><1841.095><0.2826087~EffectColor2~-797~-329~-729~143.6025~0~0~None~0~0, InsectGroup><619.0753><627.6853><228~268~0~0~FireFly~0.7065217, Vine><2058.95><530.504><38~181, Vine><2411.44><963.312><-40~-230, Vine><994.3717><808.8466><-77~-462, 
+AmbientSounds: OMNI><AM_SUB-BlankState.ogg><659.2057><563.6951><0.3043478><1, OMNI><AM_IND-Utility02.ogg><837.3013><645.9775><0><1, OMNI><SO_IND-HeatDuct.ogg><834.5117><568.3004><0><1, OMNI><AM_ENV-CricketsWnd.ogg><848.3835><496.3511><0.3043478><1, SPOT><AM_ENV-LushNight.ogg><680.9252><436.1855><0.3804348><1><3242.925><1117.186><-1267.355><-658.3553><0><1, SPOT><AM_WIN-SubWnd.ogg><848.2><386.7477><0.423913><1><678.2><1051.748><-394.3553><131.6447><0><1, SPOT><SO_WAT-ProperDrips.ogg><861.4493><263.2662><0.5><1><1207.449><1649.266><-796.3553><543.6447><0><1, SPOT><SO_WAT-RunningWater.ogg><681.7563><278.9499><0.1304348><1><3600.756><714.95><-164.3553><180.6447><0><1, SPOT><AM_WIN-WndTone.ogg><796.179><133.0894><0.3043478><1><2414.179><813.0894><-333.3553><31.64465><0><0.7304349, 
+FadePalette: 9, 0.06521739, 0.07608695, 0.07608695, 0.08695652, 0.08695652, 0.06521739
+WetTerrain: OFF

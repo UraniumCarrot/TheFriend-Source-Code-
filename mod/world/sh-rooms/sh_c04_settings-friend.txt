@@ -1,0 +1,20 @@
+Template: NONE
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0
+RumbleIntensity: 0
+WaveSpeed: 0.5
+WaveLength: 1
+WaveAmplitude: 5.605194E-45
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Grime: 0.08695652
+BkgDroneVolume: 0
+Palette: 18
+EffectColorA: 18
+EffectColorB: 0
+PlacedObjects: LightSource><726.6572><735.9612><0.2717391~EffectColor1~191~69~53~-184.3975~0~0~None~0~0, LightSource><473.1404><785.3924><0.2717391~EffectColor1~170~45~50~86.60254~0~0~None~0~0, LightSource><234.4499><744.0027><0.2717391~EffectColor1~180~-93~50~86.60254~0~0~None~0~0, 
+AmbientSounds: SPOT><AM_ENV-CityTone.ogg><783.2568><41.05011><0.4891304><0.9217392><471.2568><1532.05><-402.3553><-51.35535><0><0.7413045, SPOT><AM_WIN-MedWind.ogg><828.3107><566.1906><0.3586957><0.8630434><505.3107><2071.27><-348.3553><-33.35535><0><0.6326088, SPOT><Weird Deep Hole.wav><734.1849><384.3264><0.1630435><1><491.1849><644.3264><-327.3553><-72.35535><0><0.4152175, OMNI><AM_ENV-CityTone.ogg><835.0945><648.6257><0.5><1, OMNI><SO_WAT-LilDrips.ogg><655.7642><650.8005><0.326087><1, 
+FadePalette: 10, 0.9347826, 0.9347826, 0.9347826
+WetTerrain: OFF

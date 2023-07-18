@@ -1,0 +1,16 @@
+DangerType: None
+CeilingDrips: 0
+RainIntensity: 0
+WaveSpeed: 0.5
+WaveLength: 1
+WaveAmplitude: 1.427507E-22
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+RandomItemDensity: 0.6956522
+RandomItemSpearChance: 0.4173912
+Palette: 11
+Effects: VoidSpawn-0.1413043-20-20, SilenceWater-0.4782609-20-81, HeatWave-0.6521739-19-138, 
+PlacedObjects: FlareBomb><1293.947><283.7177><0~0~2~3, FlareBomb><1383.949><220.7301><0~0~2~3, RedToken><1279.873><474.0922><-7~66~148~38~0~SH~Saint~0~0~1~0, DeadTokenStalk><1242.855><582.1118><20~-21, DeadTokenStalk><1258.143><504.3901><13~36, DeadTokenStalk><1341.15><503.1181><-25~32, SnowSource><124.1745><611.0648><Column~116~24~50~86.60254~0.6195652~1, Vine><1336.562><540.8187><499~-2, 
+AmbientSounds: SPOT><SO_WAT-OpenFlow.ogg><837.371><472.6529><0.4347826><0.8630434><1848.371><335.6529><-416.3553><-64.35529><0><0.4369566, SPOT><SO_WAT-LightFlow.ogg><783.5528><355.4666><0.5326087><1><1745.553><492.4666><-154.3553><-167.3553><0><0.3826088, SPOT><SO_WAT-Splashes.ogg><817.0422><208.0545><0.3152174><1><1523.042><138.0545><-217.3553><-2.355347><0><0.4804349, OMNI><SO_WAT-DripTap.ogg><832.8775><608.4041><0.2282609><1, OMNI><Deep Weird Wind.wav><656.7449><608.55><0.08695652><1, 
+FadePalette: 10, 0.9239131, 0.8260869
+WetTerrain: OFF

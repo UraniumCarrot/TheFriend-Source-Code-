@@ -1,0 +1,18 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0.6521739
+RumbleIntensity: 0.1630435
+WaveSpeed: 0.5077182
+WaveLength: 0.8330975
+WaveAmplitude: 0.03260868
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Grime: 0
+BkgDroneVolume: 0
+Palette: 18
+Effects: FireFlies-0.1413043-20-20, 
+PlacedObjects: WhiteToken><600.8467><1187.879><2~-86~0~0~0~Chatlog_Broadcast3~Yellow|Red|Rivulet|Saint~0~1~0~0, DataPearl><579.1623><1100.867><83~-118~0~0~BroadcastMisc~1, Filter><548.0675><1108.082><22~40~-335~86~White|Artificer|Spear|Gourmand, LillyPuck><434.4167><111.3895><143~-117~2~3, LillyPuck><540.3398><112.3213><314~-5.0103~2~3, LillyPuck><650.1784><113.3132><215~-93.76623~2~3, Filter><686.3779><139.0916><-7~87~-397~163~White|Red|Artificer|Spear|Gourmand, Filter><489.6978><156.2206><0~100~-183~176~Red|Artificer|Spear|Gourmand, SnowSource><273.8012><570.2721><Radial~402~83~50~86.60254~0.7717391~0.3478261, SnowSource><429.621><426.3471><Radial~437~175~50~86.60254~0.2608696~0, SnowSource><832.8878><257.3986><Radial~148~86~50~86.60254~1~0, SnowSource><851.1681><618.6725><Radial~169~35~50~86.60254~0.2934783~0, SnowSource><277.1318><1244.677><Radial~384~201~50~86.60254~1~1, SnowSource><625.9648><1434.303><Radial~108~33~50~86.60254~1~1, SnowSource><726.7869><912.3721><Radial~347~142~50~86.60254~0.2279663~0, LightBeam><-274.5943><708.0847><67~835~855~896~715~-83~996.001~-309.9481~0.6035336~1~0~0~None~0~0, LightSource><661.097><1465.621><0.4130435~White~222~-6~61~-188.3975~0~0~None~0~0, LightSource><510.7365><1150.2><0.4130435~White~557~279~50~86.60254~0~0~None~0~0, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><768.525><568.9484><0.4673913><0.9217392, SPOT><AM_WIN-MedWind.ogg><589.9238><566.8489><0.4891304><0.9217392><-163.0762><1186.849><-7.355339><-402.3553><0><0.5565219, SPOT><SO_NAT-LilDrips.ogg><96.56866><506.6656><0.2282609><1><174.5687><144.6656><-253.3553><-59.35535><0><0.4369565, SPOT><SO_WAT-LilDrips.ogg><99.51807><394.9492><0.3152174><1><713.5181><136.9492><-236.3553><-56.35534><0><0.4586956, DIR><AM_WIN-SubWnd.ogg><790.073><208.8431><0.3913043><1><12.74823><0, 
+FadePalette: 10, 0.8478261, 0.9673913
+WetTerrain: OFF

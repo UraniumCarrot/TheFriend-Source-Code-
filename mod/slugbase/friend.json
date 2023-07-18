@@ -1,0 +1,44 @@
+{
+	"id": "Friend",
+	"name": "The Friend",
+	"description": "Beastly in nature yet with a soft heart, you defy the order of life and find alliance among predators. <LINE> In the frozen wastes you call home, you search for those in need of companionship.",
+	
+	"features": {
+		"color":"a3dfff", 
+		"custom_colors": [
+			{ "name": "Body", "story": "a3dfff", "arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ] },
+			{ "name": "Eyes", "story": "101010", "arena": [ "101010", "101010", "101010", "BBB6BC" ] }
+		],
+		"weight": 1.3,
+		"alignments": {
+			"lizards": { "like": 1, "strength": 1 },
+			"scavengers": { "like": -0.75, "strength": 1}
+		},
+		"diet": {
+			"corpses": 0.25,
+			"meat": 1,
+			"plants": 1,
+		},
+		"friend/fancytail": true,
+		"friend/friendhead": true,
+		"friend/super_jump": 0.5,
+		"friend/super_crawl": 3.5,
+		"friend/super_slide": true,
+		"friend/maul": true,
+		"friend/is_the_friend": true,
+		
+		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
+		"story_regions": ["RM","UG","-DS","-CL","SH"],
+		"karma": 2,
+		"tunnel_speed": 2.0, 
+		"climb_speed": 1.5, 
+		"walk_speed": 0.92,
+		"throw_skill": 2,
+		"start_room": "SU_S04",
+		"select_menu_scene": "slugcat - friend",
+		"select_menu_scene_ascended": "slugcat end - friend",
+		"sleep_scene": "sleep scene - friend",
+		"food_min": 3,
+		"food_max": 7
+	}
+}

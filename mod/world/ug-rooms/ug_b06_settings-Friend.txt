@@ -1,0 +1,18 @@
+CeilingDrips: 0
+RainIntensity: 0
+RumbleIntensity: 0
+WaveSpeed: 0.51
+WaveLength: 1
+WaveAmplitude: 0.0001
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.09782609
+Grime: 0.1847826
+Palette: 4
+EffectColorA: 1
+EffectColorB: 2
+Effects: HeatWave-0.173913-269-76, Fog-0.2282609-275-20, FireFlies-0.4891304-269-131, Coldness-1-262-186, 
+PlacedObjects: BlueToken><723.152><566.3257><-1~67~-285~93~1~Snail~White|Yellow|Red|Rivulet|Artificer|Spear|Gourmand~0~0~0~0~0~0~0, DeadTokenStalk><804.1979><563.0289><-2~64, SteamPipe><1379.438><1165.818><-15~-12, SteamPipe><1547.051><1140.77><-1~-67, SteamPipe><1546.315><1138.939><-11~-33, LanternOnStick><1484.616><1100.398><32~-94, Vine><428.182><1322.083><211~27, 
+AmbientSounds: SPOT><AM_IND-ElectricHum01.ogg><655.8192><522.5623><0.2065217><1><41.81915><476.5623><-69.35535><-21.35535><0><0.1978262, OMNI><SO_IND-HeatDuct.ogg><835.5117><571.3004><0.07608695><1, OMNI><AM_IND-Utility02.ogg><837.3013><645.9775><0.07608695><1, SPOT><SO_WAT-OpenFlow.ogg><662.8391><396.1188><0.3586957><1><550.8391><784.1188><436.6447><332.6447><0><0.4369566, SPOT><SO_WAT-RunningWater.ogg><837.6992><447.2316><0.326087><0.6086956><539.6992><467.2316><-9.355347><-176.3553><0><0.7304349, SPOT><SO_WAT-Splashes.ogg><851.1049><326.9203><0.3152174><1><533.1049><789.9203><-110.3553><-424.3553><0><0.5673915, SPOT><AM_SUB-BlankState.ogg><661.3887><274.0838><0.1847826><1><-163.6113><1386.084><846.6447><-136.3553><0><1, SPOT><AM_ENV-CricketsWnd.ogg><850.1503><202.632><0.3695652><1><11.15027><1496.632><315.6447><-424.3553><0><1, OMNI><AM_ENV-LushNight.ogg><491.1703><562.3951><0.2065217><1, SPOT><AM_ENV-NatWind.ogg><489.0936><448.5733><0.2826087><1><1796.094><1154.573><-171.3553><-65.35535><0><0.6760871, 
+FadePalette: 10, 0.7065217, 0.7608696, 0.2826087
+WetTerrain: OFF

@@ -1,0 +1,14 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0
+WaveSpeed: 0.5
+WaveLength: 1
+WaveAmplitude: 1.214505E-10
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Grime: 0
+PlacedObjects: VoidSpawnEgg><435.5234><308.8013><0~0~2~3~3, CustomDecal><507.9052><237.8739><-1~140~201~127~158~-16~-355~-33~0.2391304~1~0~Miros_Bird_Warning~0.5326087~0.09782609~0.5434783~0.09782609~0.1304348~0.09782609~0.7282609~0.09782609, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><839.627><641.9077><0.3478261><0.9217392, OMNI><SO_WAT-LilDrips.ogg><655.0596><638.5611><0.1956522><1, 
+FadePalette: 0, 0.1086956
+WetTerrain: OFF

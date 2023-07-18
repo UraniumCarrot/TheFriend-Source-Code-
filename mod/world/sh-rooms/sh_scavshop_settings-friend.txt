@@ -1,0 +1,17 @@
+Template: SH_SettingsTemplate_DarkSun
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 1
+RumbleIntensity: 0.7608696
+WaveSpeed: 0.6224371
+WaveLength: 0.6887814
+WaveAmplitude: 0.04999984
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.423913
+Palette: 10
+Effects: LightBurn-0.4565217-16-20, 
+PlacedObjects: LightSource><298.9321><427.0828><0.02173912~Environment~1038~-380~358~-396.3975~1~1~None~0~0, TradeOutpost><744.5414><333.8044><331~4, LightSource><741.55><412.9965><0.2717391~Environment~-691~-374~50~86.60254~1~0~None~0~0, SnowSource><363.1727><418.6844><Radial~118~37~50~86.60254~1~0, SnowSource><1072.187><604.0723><Radial~367~16~50~86.60254~1~0, SnowSource><608.8918><539.8589><Radial~189~53~50~86.60254~1~0, SnowSource><630.6473><759.6716><Radial~354~-32~50~86.60254~1~0, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><855.8068><656.0518><0.2065217><0.8826087, OMNI><AM_WIN-SubWnd.ogg><682.6971><654.5339><0.2826087><1, 
+FadePalette: 41, 0.1847826
+WetTerrain: OFF

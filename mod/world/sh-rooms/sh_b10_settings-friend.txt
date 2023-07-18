@@ -1,0 +1,18 @@
+Template: NONE
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0
+WaveSpeed: 0.5
+WaveLength: 1
+WaveAmplitude: 5.605194E-45
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Grime: 0.06521739
+BkgDroneVolume: 0
+Palette: 10
+Effects: Flies-0.173913-20-20, VoidSpawn-0.1521739-18-83, HeatWave-0.5434783-16-135, 
+PlacedObjects: WaterNut><1080.686><223.5732><-182~314~2~3, WaterNut><1106.178><214.5905><-283~39~2~3, WaterNut><1058.53><211.6977><-159~245~2~3, ReliableSpear><1591.671><332.8969><, Filter><1097.672><249.5658><0~100~78~45~White|Yellow|Rivulet|Saint, LillyPuck><986.6113><159.4162><0~0~2~3, LillyPuck><278.4845><154.0506><-25~-74~2~3, LillyPuck><357.6989><158.2292><-64~-46~2~3, Filter><965.5178><146.5508><-4~55~-357~170~Red|Artificer|Spear|Gourmand, Filter><332.6388><194.894><0~100~-4~48.99998~Red|Artificer|Spear|Gourmand, ExitSymbolHidden><1006.921><607.3527><, Vine><90.80621><322.9506><378~151, Vine><500.3084><476.8073><590~-174, 
+AmbientSounds: OMNI><SO_WAT-OpenFlow.ogg><866.8964><580.6138><0.423913><1, SPOT><SO_WAT-RunningWater.ogg><599.429><590.8392><0.3913043><1><449.429><132.8392><-162.3553><-35.35535><0><0.3717393, SPOT><SO_WAT-Pour.ogg><863.1979><465.4715><0.3804348><1><667.1979><147.4715><-71.35535><-46.35535><0><0.3608697, SPOT><SO_WAT-RunningWater.ogg><604.9356><478.4393><0.3586957><1><863.9355><128.4393><-86.35534><-97.35535><0><0.5239132, SPOT><SO_NAT-LilDrips.ogg><429.6461><594.0791><0.4130435><1><1292.646><185.0791><-140.3553><-19.35535><0><0.4478262, SPOT><SO_WAT-LilDrips.ogg><427.0639><475.5605><0.5><1><1752.064><204.5605><-126.3553><-54.35535><0><0.3717393, 
+FadePalette: 9, 0.09782609, 0.09782609
+WetTerrain: OFF

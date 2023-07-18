@@ -1,0 +1,51 @@
+[MERGE]
+CONDITIONAL LINKS
+//far left side
+Friend : UW_C04 : UW_D05 : UW_D05RIV
+Friend : UW_D05 : UW_C04 : DISCONNECTED
+Friend : UW_D05RIV : 1 : UW_C04
+//left middle, exit
+Friend : UW_A03 : UW_C01 : UW_C01RIV
+Friend : UW_C01 : UW_A03 : DISCONNECTED
+Friend : UW_C01RIV : 1 : UW_A03
+//left middle, central
+Friend : UW_A03 : UW_J02 : UW_J02RIV
+Friend : UW_J02 : UW_A03 : DISCONNECTED
+Friend : UW_J02RIV : 1 : UW_A03
+//left middle, bottom
+Friend : UW_I01 : UW_J02 : UW_J02RIV
+Friend : UW_J02 : UW_I01 : DISCONNECTED
+Friend : UW_J02RIV : 2 : UW_I01
+//right middle
+Friend : UW_A11 : UW_A06 : DISCONNECTED
+Friend : UW_A06 : UW_A11 : DISCONNECTED
+//right extra
+Friend : UW_I01 : UW_A11 : UW_A11RIV
+Friend : UW_A11 : UW_I01 : DISCONNECTED
+Friend : UW_A11RIV : 1 : UW_I01
+//far right
+Friend : UW_A08 : UW_E04 : UW_E04RIV
+Friend : UW_E04 : UW_A08 : DISCONNECTED
+Friend : UW_E04RIV : 1 : UW_A08
+//Only show on riv
+Friend : EXCLUSIVEROOM : UW_D05RIV
+Friend : EXCLUSIVEROOM : UW_A04RIV
+Friend : EXCLUSIVEROOM : UW_C02RIV
+Friend : EXCLUSIVEROOM : UW_A05RIV
+Friend : EXCLUSIVEROOM : UW_C01RIV
+Friend : EXCLUSIVEROOM : UW_A06RIV
+Friend : EXCLUSIVEROOM : UW_E04RIV
+Friend : EXCLUSIVEROOM : UW_A11RIV
+Friend : EXCLUSIVEROOM : UW_J02RIV
+// hidden on riv
+Friend : HIDEROOM : UW_D05
+Friend : HIDEROOM : UW_A04
+Friend : HIDEROOM : UW_C02
+Friend : HIDEROOM : UW_A05
+Friend : HIDEROOM : UW_C01
+Friend : HIDEROOM : UW_A06
+Friend : HIDEROOM : UW_E04
+Friend : HIDEROOM : UW_A11
+Friend : HIDEROOM : UW_J02
+END CONDITIONAL LINKS
+[ENDMERGE]

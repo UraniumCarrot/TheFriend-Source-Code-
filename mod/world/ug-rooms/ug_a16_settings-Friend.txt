@@ -1,0 +1,16 @@
+DangerType: Rain
+CeilingDrips: 0
+RainIntensity: 0
+RumbleIntensity: 0
+WaveSpeed: 0.51
+WaveLength: 1
+WaveAmplitude: 0.0001
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Palette: 4
+EffectColorB: 18
+Effects: HeatWave-0.2065217-280-26, SilenceWater-0.2173913-13-134, Fog-0.5326087-282-81, WaterDepth-0.1195652-275-134, 
+PlacedObjects: CustomDecal><906.0828><250.6403><-4~194~-392~172~-400~5~-784~-432~0~0.5543478~0~OrangePink~0~0.3478261~0.8260869~0.3586957~0.4673913~0.9673913~0.8586956~0.6956522, CustomDecal><346.5713><70.08981><53~105~249~41~212~-39~-416~50~0~1~0~WhiteTag9~0.4891304~1~0.2608696~1~0.4347826~1~0~1, Hazer><73.77051><432.4489><61~58~7~10, SteamPipe><348.1984><619.9743><18~-28, SteamPipe><509.8082><638.9434><-13~-37, SteamPipe><833.8805><614.1604><-19~-33, InsectGroup><644.1855><202.1753><48~208~211.0001~-162~RockFlea~0.5, BlueToken><623.1632><198.6344><14~-73~18~105~1~JungleLeech~White|Yellow|Red|Rivulet|Artificer|Spear|Gourmand~0~0~0~0~0~0~0, DeadTokenStalk><547.6923><204.5549><28~-78, DeadTokenStalk><696.6742><214.4017><-16~-98, DeadTokenStalk><375.4333><292.8115><-14~-85, DeadTokenStalk><423.9005><266.1318><-39~-68, WallMycelia><429.63><160.84><65~118, WallMycelia><657.9481><168.0273><0~100, WallMycelia><834.8236><164.814><-6~160, Vine><383.8928><598.86><401~4, 
+AmbientSounds: SPOT><SO_NAT-LilDrips.ogg><752.8081><560.6913><0.3369565><1.117391><721.808><481.6913><-159.3553><-9.355347><0><0.4369566, SPOT><SO_WAT-LilDrips.ogg><744.5815><408.0674><0.3043478><0.8630434><152.5815><441.0674><-119.3553><-25.35535><0><0.3934784, SPOT><SO_WAT-OpenFlow.ogg><746.1608><264.6311><0.2173913><0.9217392><1060.161><478.6311><-108.3553><-136.3553><0><0.5347828, OMNI><AM_ENV-LushNight.ogg><581.5589><568.941><0.3586957><1, SPOT><AM_ENV-CricketsWnd.ogg><563.9139><453.1354><0.423913><1><-98.08612><535.1354><280.6447><-51.35535><0><0.6869566, 
+FadePalette: 11, 0.6630435
+WetTerrain: OFF

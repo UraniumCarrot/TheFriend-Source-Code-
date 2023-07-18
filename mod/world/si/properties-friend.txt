@@ -1,0 +1,48 @@
+Palette: 2
+batDepleteCyclesMin: 2
+batDepleteCyclesMax: 7
+batDepleteCyclesMaxIfLessThanTwoLeft: 3
+batDepleteCyclesMaxIfLessThanFiveLeft: 4
+overseersSpawnChance: 0.4
+overseersMin: 0
+overseersMax: 4
+Subregion: Windswept Spires
+Subregion: Frozen Mast
+playerGuideOverseerSpawnChance: 0.2
+earlyCycleChance: 0.02
+earlyCycleFloodChance: 0.0
+pupSpawnChance: 0.2
+Room Setting Templates: Outside, Inside
+Room_Attr: SI_A07: Vulture-Forbidden,RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_A06: RedCentipede-Avoid,KingVulture-Avoid,
+Room_Attr: SI_B04: RedCentipede-Avoid,
+Room_Attr: SI_B02: RedCentipede-Avoid,
+Room_Attr: SI_C07: CyanLizard-Stay,RedCentipede-Avoid,Scavenger-Avoid,KingVulture-Forbidden,ScavengerElite-Avoid,
+Room_Attr: SI_C02: CyanLizard-Like,Scavenger-Avoid,SmallNeedleWorm-Stay,BigNeedleWorm-Stay,KingVulture-Forbidden,ScavengerElite-Avoid,
+Room_Attr: SI_C01: YellowLizard-Stay,CyanLizard-Stay,RedCentipede-Avoid,Scavenger-Avoid,KingVulture-Forbidden,ScavengerElite-Avoid,
+Room_Attr: SI_C04: Vulture-Avoid,RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_D01: Vulture-Avoid,RedCentipede-Avoid,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,KingVulture-Forbidden,
+Room_Attr: SI_C03: RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_B01: RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_A20: DropBug-Like,
+Room_Attr: SI_D03: Vulture-Avoid,RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_A17: CyanLizard-Avoid,Scavenger-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,DropBug-Like,ScavengerElite-Avoid,
+Room_Attr: SI_A18: CyanLizard-Avoid,Scavenger-Avoid,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Like,ScavengerElite-Avoid,
+Room_Attr: SI_C05: CyanLizard-Forbidden,Scavenger-Avoid,KingVulture-Forbidden,ScavengerElite-Avoid,
+Room_Attr: SI_A28: CyanLizard-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Like,
+Room_Attr: SI_A27: CyanLizard-Forbidden,RedCentipede-Like,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Like,KingVulture-Forbidden,
+Room_Attr: SI_C06: CyanLizard-Forbidden,RedCentipede-Like,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Like,KingVulture-Forbidden,
+Room_Attr: SI_B10: CyanLizard-Forbidden,RedCentipede-Like,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Like,KingVulture-Forbidden,
+Room_Attr: SI_B09: RedCentipede-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,KingVulture-Forbidden,
+Room_Attr: SI_A02: RedCentipede-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,KingVulture-Forbidden,
+Room_Attr: SI_A23: RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_C08: RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_D05: CyanLizard-Forbidden,RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_B11: CyanLizard-Forbidden,RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_D06: YellowLizard-Stay,CyanLizard-Forbidden,RedCentipede-Like,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Like,KingVulture-Forbidden,
+Room_Attr: SI_B12: RedCentipede-Avoid,SmallNeedleWorm-Stay,BigNeedleWorm-Stay,KingVulture-Forbidden,
+Room_Attr: SI_B03: RedCentipede-Avoid,SmallNeedleWorm-Stay,BigNeedleWorm-Stay,KingVulture-Forbidden,
+Room_Attr: SI_C09: RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_D07: RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_B13: RedCentipede-Avoid,KingVulture-Forbidden,
+Room_Attr: SI_SAINTINTRO: Scavenger-Forbidden,ScavengerElite-Forbidden,

@@ -1,0 +1,60 @@
+Palette: 5
+batDepleteCyclesMin: 2
+batDepleteCyclesMax: 7
+batDepleteCyclesMaxIfLessThanTwoLeft: 3
+batDepleteCyclesMaxIfLessThanFiveLeft: 4
+overseersSpawnChance: 0.5
+overseersMin: 0
+overseersMax: 4
+playerGuideOverseerSpawnChance: 0.7
+scavsDelayInitialMin: 3800
+scavsDelayInitialMax: 4200
+scavsDelayRepeatMin: 8300
+scavsDelayRepeatMax: 10900
+pupSpawnChance: 0.15
+Subregion: Icy Monument
+Broken Shelters: Red: HI_S03
+Broken Shelters: Artificer: HI_S03
+Broken Shelters: Saint: HI_S03
+Broken Shelters: Spear: HI_S03
+Room Setting Templates: Outside, Inside
+Room_Attr: HI_C13: CyanLizard-Avoid,
+Room_Attr: HI_B04: CyanLizard-Avoid,Vulture-Avoid,DropBug-Avoid,KingVulture-Avoid,
+Room_Attr: HI_B12: CyanLizard-Avoid,
+Room_Attr: HI_B13: Vulture-Like,KingVulture-Like,
+Room_Attr: HI_A15: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,CyanLizard-Avoid,EggBug-Like,DropBug-Avoid,
+Room_Attr: HI_A20: CyanLizard-Avoid,EggBug-Like,DropBug-Avoid,
+Room_Attr: HI_A14: CyanLizard-Avoid,EggBug-Like,
+Room_Attr: HI_A07: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,CyanLizard-Avoid,EggBug-Like,
+Room_Attr: HI_C02: PinkLizard-Like,GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,EggBug-Like,
+Room_Attr: HI_B02: Vulture-Like,KingVulture-Like,
+Room_Attr: HI_A22: DropBug-Like,
+Room_Attr: HI_C01: PinkLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,DropBug-Like,
+Room_Attr: HI_B03: WhiteLizard-Like,Vulture-Like,DropBug-Avoid,KingVulture-Like,
+Room_Attr: HI_B08: GreenLizard-Like,EggBug-Like,DropBug-Like,
+Room_Attr: HI_C04: GreenLizard-Avoid,BlueLizard-Like,Snail-Like,
+Room_Attr: HI_A25: Snail-Like,DropBug-Like,
+Room_Attr: HI_A21: Snail-Like,DropBug-Avoid,
+Room_Attr: HI_B06: PinkLizard-Like,GreenLizard-Like,DropBug-Like,
+Room_Attr: HI_A10: Vulture-Like,DropBug-Avoid,KingVulture-Like,
+Room_Attr: HI_C11: GreenLizard-Forbidden,BlueLizard-Like,WhiteLizard-Like,CyanLizard-Like,EggBug-Like,
+Room_Attr: HI_B09: BlueLizard-Like,WhiteLizard-Like,CyanLizard-Avoid,EggBug-Like,DropBug-Like,
+Room_Attr: HI_B07: PinkLizard-Like,CyanLizard-Avoid,Vulture-Like,KingVulture-Like,
+Room_Attr: HI_B14: PinkLizard-Avoid,GreenLizard-Avoid,CyanLizard-Avoid,
+Room_Attr: HI_D01: CyanLizard-Avoid,DropBug-Like,
+Room_Attr: HI_C03: BlueLizard-Like,WhiteLizard-Like,DropBug-Like,
+Room_Attr: HI_A11: CyanLizard-Avoid,
+Room_Attr: HI_B15: CyanLizard-Avoid,Centipede-Stay,SmallCentipede-Stay,BigSpider-Like,DropBug-Avoid,
+Room_Attr: HI_A04: CyanLizard-Avoid,Vulture-Like,KingVulture-Like,
+Room_Attr: HI_A26: CyanLizard-Avoid,BigSpider-Like,DropBug-Avoid,
+Room_Attr: HI_B05: BlueLizard-Like,WhiteLizard-Like,CyanLizard-Avoid,DropBug-Like,
+Room_Attr: HI_A16: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,SpitLizard-Avoid,
+Room_Attr: HI_A17: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,SpitLizard-Avoid,
+Room_Attr: HI_A27: CyanLizard-Avoid,DropBug-Avoid,
+Room_Attr: HI_A23: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,SpitLizard-Avoid,
+Room_Attr: HI_A18: PinkLizard-Like,GreenLizard-Like,BlueLizard-Avoid,YellowLizard-Like,WhiteLizard-Avoid,BlackLizard-Like,Salamander-Like,Vulture-Like,DropBug-Avoid,KingVulture-Like,SpitLizard-Like,
+Room_Attr: HI_C05: PinkLizard-Like,GreenLizard-Like,BlueLizard-Avoid,YellowLizard-Like,WhiteLizard-Avoid,BlackLizard-Like,Salamander-Like,Vulture-Like,KingVulture-Like,SpitLizard-Like,
+Room_Attr: HI_A06: PinkLizard-Like,GreenLizard-Like,YellowLizard-Like,BlackLizard-Like,Salamander-Like,Vulture-Avoid,KingVulture-Avoid,SpitLizard-Like,
+Room_Attr: HI_A24: WhiteLizard-Avoid,CyanLizard-Avoid,
+Room_Attr: HI_S04: StandardGroundCreature-Forbidden,Slugcat-Forbidden,LizardTemplate-Forbidden,PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Fly-Forbidden,Leech-Forbidden,SeaLeech-Forbidden,Snail-Forbidden,Vulture-Forbidden,GarbageWorm-Forbidden,LanternMouse-Forbidden,CicadaA-Forbidden,CicadaB-Forbidden,Spider-Forbidden,JetFish-Forbidden,BigEel-Forbidden,Deer-Forbidden,TubeWorm-Forbidden,DaddyLongLegs-Forbidden,BrotherLongLegs-Forbidden,TentaclePlant-Forbidden,PoleMimic-Forbidden,MirosBird-Forbidden,TempleGuard-Forbidden,Centipede-Forbidden,Centiwing-Forbidden,SmallCentipede-Forbidden,Scavenger-Forbidden,Overseer-Forbidden,SpitLizard-Forbidden,
+Room_Attr: HI_A19: GreenLizard-Forbidden,CyanLizard-Avoid,SpitLizard-Forbidden,

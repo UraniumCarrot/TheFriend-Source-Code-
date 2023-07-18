@@ -1,0 +1,19 @@
+DangerType: Rain
+CeilingDrips: 0
+RainIntensity: 0
+RumbleIntensity: 0
+WaveSpeed: 0.51
+WaveLength: 1
+WaveAmplitude: 0.0001
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Grime: 0.3586957
+BkgDroneVolume: 0
+WaterReflectionAlpha: 0.5108696
+Palette: 4
+EffectColorA: 18
+EffectColorB: 21
+Effects: SilenceWater-0.2826087-20-133, 
+PlacedObjects: CustomDecal><24.84424><360.8754><26~195.6735~739.9052~214.6735~1032.905~-112~-56~-485~0.4021739~1~0~GreyBubbly~0.2934783~1~0.5~1~0.1413043~1~0.2065217~1, CustomDecal><107.7079><372.9455><13~136~345~144~364~27~609~-522~0.6413044~1~0~IRAF~1~0~0~0~0.6195652~0.5760869~0~0.5760869, SteamPipe><845.8494><521.8816><-14~-30, SteamPipe><737.1254><523.9058><31~-52, SteamPipe><735.847><527.8789><-15~-15, BlinkingFlower><500.8795><286.9024><, BlinkingFlower><539.5509><270.7693><, BlinkingFlower><550.9451><334.7939><, BlinkingFlower><370.6852><270.9392><, BlinkingFlower><393.6591><308.5718><, BlinkingFlower><316.9056><278.6244><, Vine><294.1793><455.1613><340~62, 
+FadePalette: 11, 0.4021739
+WetTerrain: OFF

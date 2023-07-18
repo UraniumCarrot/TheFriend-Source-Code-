@@ -1,0 +1,16 @@
+Template: SH_SettingsTemplate_DarkSun
+DangerType: Blizzard
+CeilingDrips: 0
+RumbleIntensity: 0
+WaveSpeed: 0.4103219
+WaveLength: 0.705161
+WaveAmplitude: 0.04999999
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.2282609
+Grime: 0.1086956
+Effects: LightBurn-0.3695652-30-30, FireFlies-0.1195652-38-84, 
+PlacedObjects: LightSource><424.304><376.8074><0.3369565~Environment~737~-414~36~-437.3975~1~0~None~0~0, LightSource><708.2314><363.0508><0.1630435~Environment~-582~135~11~-418.3975~1~0~None~0~0, DangleFruit><236.8412><491.3783><0~0~2~3, DangleFruit><286.1602><459.3802><0~0~2~3, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><857.3453><642.9258><0.423913><1, SPOT><Weird Deep Hole.wav><681.4496><594.5129><0.1956522><1><526.4496><98.51294><-233.3553><-102.3553><0><0.6869566, SPOT><AM_ENV-Outside.ogg><855.2866><526.3033><0.25><1><1850.287><584.3033><-178.3553><-201.3553><0><0.8717393, 
+FadePalette: 12, 0.09782609, 0.1195652
+WetTerrain: OFF

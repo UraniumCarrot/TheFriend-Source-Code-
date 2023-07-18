@@ -1,0 +1,28 @@
+SH_A14 : 3-Lantern Mouse-2
+SH_C03 : 4-Spider-10, 5-SnowSpider, 7-Spider-20
+SH_C01 : 4-Lantern Mouse-2, 5-Lantern Mouse-2, 6-SpitterSpider-{Winter}, 6-Tentacle Plant-{PreCycle}
+SH_B07 : 3-Spider-15, 2-BigSpider-{Winter}, 4-Spider-5
+SH_A09 : 4-Lantern Mouse, 5-SnowSpider-2
+SH_D01 : 3-YoungLizard-3
+SH_B08 : 2-BigSpider-{Winter}, 2-BigSpider-{Winter}, 2-BigSpider-{Winter}
+SH_B05 : 7-SpitterSpider-{Winter}, 7-SnowSpider
+
+SH_C03 : 7-SnowSpider
+SH_C05 : 4-SpitterSpider-{Winter}
+SH_C03 : 4-BigSpider-{Winter}
+SH_C01 : 3-SpitterSpider-{Winter}
+SH_C12 : 2-BigSpider-{Winter}
+SH_A12 : 4-BigSpider-{Winter}
+
+SH_HELPOUT : 3-Spider-15
+SH_H01RIV : 4-Small Centipede-3, 4-Centipede-{0.5}
+SH_E03RIV : 4-Bro
+SH_E04RIV : 2-Bro
+
+OFFSCREEN : 0-MirosVulture-1, 0-Scavenger-7
+
+LINEAGE : SH_A11 : 4 : NONE-0.05, SnowSpider-0.4, Black-0
+LINEAGE : SH_C08 : 2 : Black-0.2, SnowSpider-0.5, Red-0
+LINEAGE : SH_B08 : 2 : SnowSpider-0.3, NONE-0
+LINEAGE : SH_D01 : 3 : MotherLizard-1, NONE-0
+LINEAGE : SH_B04 : 5 : EggBug-0.5, NONE-0

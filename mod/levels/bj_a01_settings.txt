@@ -1,0 +1,9 @@
+Template: NONE
+CeilingDrips: 0.6956522
+Clouds: 0.5869565
+Palette: 12
+EffectColorA: 9
+EffectColorB: 12
+Effects: DarkenLights-0--1000--1000, Hue-0.5760869-20-20, HeatWave-0.7608696-22-80, 
+PlacedObjects: LightSource><477.5711><174.4106><0.1847826~EffectColor1~1~100~-110~-233.3975~0~1~None~0~0, LightSource><278.0566><311.4491><0.2608696~White~0~100~50~86.60254~0~1~None~0~0, LightSource><475.8459><534.5745><0.1413043~White~110~50~50~86.60254~0~1~None~0~0, LightSource><668.836><217.9306><0.1413043~White~0~100~43~-92.39746~0~1~None~0~0, LightBeam><69.12018><52.09007><112~660~1021~655~778~-84~-247~-58.99998~0.03043465~0~0.7826087~0~None~0~0, 
+FadePalette: 23, 0.2391304

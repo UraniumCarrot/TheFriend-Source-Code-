@@ -1,0 +1,14 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0
+WaveSpeed: 0.5
+WaveLength: 1
+WaveAmplitude: 5.605194E-45
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Palette: 33
+PlacedObjects: KarmaFlower><530.4185><169.6422><-639~388~5~7, VoidSpawnEgg><621.4292><305.8389><-700~292~2~3~0, VoidSpawnEgg><398.3546><267.0796><-481~78~2~3~0, LightBeam><-232.5862><113.6352><0~40~197~-89~779~-34~798~262~0~0~0~0~None~0~1, LightSource><537.3011><117.0208><0.2608696~Environment~25~179~278~63.60254~0~0~None~0~0, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><835.9832><639.3007><0.3478261><0.823913, OMNI><SO_WAT-DripTap.ogg><652.1797><640.1873><0.3043478><1, 
+FadePalette: 10, 0.6956522, 0.9239131
+WetTerrain: OFF

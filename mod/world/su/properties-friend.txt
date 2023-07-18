@@ -1,0 +1,74 @@
+Palette: 0
+batDepleteCyclesMin: 2
+batDepleteCyclesMax: 7
+batDepleteCyclesMaxIfLessThanTwoLeft: 3
+batDepleteCyclesMaxIfLessThanFiveLeft: 4
+batsPerActiveSwarmRoom: 7
+overseersSpawnChance: 0.8
+overseersMin: 0
+overseersMax: 4
+earlyCycleChance: 0.02
+earlyCycleFloodChance: 0.33
+playerGuideOverseerSpawnChance: 1.0
+pupSpawnChance: 0.02
+Subregion: Suburban Drifts
+Room Setting Templates: Outside, Inside
+Room_Attr: GATE_SU_HI: Vulture-Forbidden,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,KingVulture-Forbidden,
+Room_Attr: GATE_LF_SU: Vulture-Forbidden,Scavenger-Forbidden,KingVulture-Forbidden,
+Room_Attr: GATE_OE_SU: Centiwing-Forbidden,
+Room_Attr: SU_B13: Vulture-Forbidden,Centipede-Forbidden,Centiwing-Avoid,SmallCentipede-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,DropBug-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A33: Vulture-Forbidden,Centipede-Avoid,Centiwing-Avoid,SmallCentipede-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_B04: PinkLizard-Like,GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,Vulture-Avoid,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,KingVulture-Avoid,
+Room_Attr: SU_A34: PinkLizard-Avoid,GreenLizard-Like,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centipede-Avoid,Centiwing-Avoid,SmallCentipede-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A37: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_S04: PinkLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Centiwing-Avoid,
+Room_Attr: SU_A63: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centiwing-Avoid,DropBug-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_B12: PinkLizard-Avoid,GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Avoid,
+Room_Attr: SU_A17: Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A40: GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,Vulture-Forbidden,Centiwing-Avoid,DropBug-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_B07: PinkLizard-Avoid,GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Avoid,
+Room_Attr: SU_A02: PinkLizard-Avoid,Vulture-Avoid,Centiwing-Avoid,DropBug-Avoid,KingVulture-Avoid,
+Room_Attr: SU_A53: PinkLizard-Avoid,GreenLizard-Avoid,Vulture-Avoid,Centiwing-Avoid,KingVulture-Avoid,
+Room_Attr: SU_A39: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A38: PinkLizard-Avoid,Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A25: PinkLizard-Avoid,GreenLizard-Forbidden,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A24: PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,DropBug-Forbidden,KingVulture-Forbidden,
+Room_Attr: SU_A23: PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,DropBug-Forbidden,KingVulture-Forbidden,
+Room_Attr: SU_A22: PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Centiwing-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,DropBug-Forbidden,
+Room_Attr: SU_C04: Vulture-Forbidden,Centiwing-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A41: Centiwing-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: SU_A42: Centiwing-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: SU_A43: Centiwing-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: SU_A44: Centiwing-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,
+Room_Attr: SU_S01: PinkLizard-Forbidden,GreenLizard-Forbidden,BlueLizard-Forbidden,YellowLizard-Forbidden,WhiteLizard-Forbidden,RedLizard-Forbidden,BlackLizard-Forbidden,Salamander-Forbidden,Centiwing-Forbidden,
+Room_Attr: SU_A06: PinkLizard-Avoid,GreenLizard-Like,Vulture-Avoid,Centiwing-Avoid,DropBug-Like,KingVulture-Avoid,
+Room_Attr: SU_A36: PinkLizard-Avoid,Vulture-Forbidden,Centiwing-Avoid,DropBug-Like,KingVulture-Forbidden,
+Room_Attr: SU_B08: GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,
+Room_Attr: SU_B09: Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,KingVulture-Forbidden,
+Room_Attr: SU_A35: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centipede-Avoid,Centiwing-Avoid,SmallCentipede-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A20: PinkLizard-Like,Vulture-Forbidden,Centipede-Stay,Centiwing-Avoid,SmallCentipede-Stay,DropBug-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A31: Vulture-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A32: Vulture-Forbidden,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_B05: PinkLizard-Like,GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,Centiwing-Like,DropBug-Like,
+Room_Attr: SU_A07: PinkLizard-Like,GreenLizard-Like,BlueLizard-Like,YellowLizard-Like,WhiteLizard-Like,RedLizard-Like,BlackLizard-Like,Salamander-Like,CyanLizard-Avoid,Centiwing-Like,Scavenger-Like,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,
+Room_Attr: SU_A45: CyanLizard-Avoid,Vulture-Forbidden,Centiwing-Avoid,Scavenger-Avoid,SmallNeedleWorm-Forbidden,BigNeedleWorm-Forbidden,DropBug-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_C02: PinkLizard-Like,GreenLizard-Like,CyanLizard-Avoid,Centiwing-Like,Scavenger-Like,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Avoid,
+Room_Attr: SU_B06: Centiwing-Like,DropBug-Like,
+Room_Attr: SU_B11: Centiwing-Like,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,
+Room_Attr: SU_A12: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,KingVulture-Forbidden,
+Room_Attr: SU_A13: Centiwing-Like,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,
+Room_Attr: SU_B02: PinkLizard-Like,Vulture-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,KingVulture-Avoid,
+Room_Attr: SU_A29: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centipede-Avoid,SmallCentipede-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_B10: PinkLizard-Avoid,GreenLizard-Avoid,BlueLizard-Avoid,YellowLizard-Avoid,WhiteLizard-Avoid,RedLizard-Avoid,BlackLizard-Avoid,Salamander-Avoid,Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_A10: PinkLizard-Like,GreenLizard-Like,Centiwing-Avoid,
+Room_Attr: SU_B01: PinkLizard-Like,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,
+Room_Attr: SU_S03: Centiwing-Avoid,
+Room_Attr: SU_A04: PinkLizard-Like,GreenLizard-Like,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,
+Room_Attr: SU_C01: PinkLizard-Like,Centiwing-Avoid,SmallNeedleWorm-Like,BigNeedleWorm-Like,DropBug-Like,
+Room_Attr: SU_B14: Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_B14SAINT: Centiwing-Avoid,
+Room_Attr: SU_A30: Vulture-Forbidden,Centiwing-Avoid,SmallNeedleWorm-Avoid,BigNeedleWorm-Avoid,KingVulture-Forbidden,
+Room_Attr: SU_PMPSTATION01: Vulture-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,
+Room_Attr: SU_INTRO01: Vulture-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,
+Room_Attr: SU_PS1: Vulture-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,
+Room_Attr: SU_VR1: Vulture-Forbidden,Centiwing-Forbidden,KingVulture-Forbidden,

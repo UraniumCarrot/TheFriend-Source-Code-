@@ -1,0 +1,18 @@
+Template: SH_SettingsTemplate_DarkSun
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0.1521739
+WaveSpeed: 0.5001518
+WaveLength: 0.9618806
+WaveAmplitude: 0.007608694
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.01086957
+Grime: 0
+Palette: 33
+EffectColorA: 18
+Effects: Fog-0.2391304-11-130, FireFlies-0.173913-11-75, SilenceWater-0.423913-271-76, BkgOnlyLightning-0.1304348-270-15, LightBurn-0.1847826-21-21, 
+PlacedObjects: ExitSymbolHidden><492.7367><472.8004><, NoSpearStickZone><11.93372><1259.329><107~185, ReliableSpear><588.0361><1109.053><, ReliableSpear><672.1947><1127.296><, ReliableSpear><557.1456><1098.579><, ReliableSpear><637.421><1142.646><, VoidSpawnEgg><1264.058><1465.809><0~0~2~3~2, VoidSpawnEgg><812.6388><1297.356><0~0~2~3~2, VoidSpawnEgg><1077.301><1346.522><0~0~2~3~2, NoSpearStickZone><-88.83142><525.5673><158~153, LightSource><1534.343><1151.851><0.03235062~EffectColor1~-69~180~15~86.60254~0~1~None~0.173913~0, LightSource><1397.952><1160.425><0.04305831~EffectColor1~-128~130~138~-151.3975~0~1~None~0~0, LightSource><1468.558><1154.449><0.02060733~EffectColor1~4~288~73~-33.39746~0~1~Fade~0.7391304~0, FlareBomb><178.1524><405.3705><-177~58~2~6, FlareBomb><380.9781><432.3012><-124~138~2~6, FlareBomb><479.0404><376.4459><76~108~2~3, LightSource><1452.959><1151.196><0.06521739~EffectColor1~-257~-253~87~241.6025~0~0~None~0~0, Filter><425.9649><372.6969><-1~90~141~0~Spear, Filter><189.9492><391.9822><-4~58~189~278~Artificer|Spear, SnowSource><305.66><1419.39><Radial~-416~-94~125~-91.39746~1~0, SnowSource><1006.082><1336.666><Radial~312~22~50~86.60254~1~0, 
+AmbientSounds: SPOT><SO_WAT-OpenFlow.ogg><828.6948><529.2048><0.4565217><1><491.6948><342.2048><-152.3553><72.64465><0><0.7956523, OMNI><AM_ENV-CityTone.ogg><827.402><645.8799><0.3695652><1, OMNI><AM_WIN-SubWnd.ogg><650.4352><641.8256><0.2282609><0.9021739, SPOT><AM_WIN-NiceWnd.ogg><654.394><523.6112><0.2391304><1><337.394><1493.611><502.6447><-199.3553><0><0.4695654, OMNI><AM_RAIN-QuietThunder.ogg><472.3011><643.0209><0.3586957><1, 
+FadePalette: 10, 0.6086956, 0.7173913, 0.8369565, 0.9565217
+WetTerrain: OFF

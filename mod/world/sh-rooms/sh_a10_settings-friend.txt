@@ -1,0 +1,16 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 0.7934783
+RumbleIntensity: 0.4673913
+WaveSpeed: 0.5381385
+WaveLength: 0.7825612
+WaveAmplitude: 0.0396739
+SecondWaveLength: 1
+SecondWaveAmplitude: 0.0001
+Clouds: 0.875
+Grime: 0
+Effects: FireFlies-0.1956522-20-20, 
+PlacedObjects: VoidSpawnEgg><762.8048><404.2065><0~0~2~3~0, VoidSpawnEgg><596.8055><486.7032><0~0~2~3~0, SnowSource><95.72028><623.3022><Radial~431~130~50~86.60254~1~0, SnowSource><956.9331><529.1696><Radial~368~4~50~86.60254~1~0, SnowSource><488.2771><559.9481><Radial~323~111~50~86.60254~1~0, SnowSource><1023.564><115.5605><Radial~18~133~50~86.60254~1~0, SnowSource><-117.3792><75.09735><Radial~90~176~50~86.60254~1~0, SnowSource><143.5895><136.1193><Radial~0~100~50~86.60254~1~0, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><689.0716><643.9367><0.5108696><0.8043478, SPOT><AM_WIN-MedWind.ogg><19.67889><399.8395><0.423913><0.9021739><-103.3211><284.8395><-174.3553><-157.3553><0><0.2413045, SPOT><AM_WIN-MedWind.ogg><791.5502><255.2419><0.4347826><1><1106.55><281.2419><-85.35535><-144.3553><0><0.4369566, 
+FadePalette: 0, 0.1195652
+WetTerrain: OFF

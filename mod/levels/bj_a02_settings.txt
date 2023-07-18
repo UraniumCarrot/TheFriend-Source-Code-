@@ -1,0 +1,8 @@
+Template: NONE
+Clouds: 0.1521739
+Palette: 9
+EffectColorA: 18
+EffectColorB: 14
+Effects: Hue-0.1086956-20-20, Desaturation-0-20-71, Fog-1-20-125, FireFlies-0.2391304-302-133, 
+PlacedObjects: LightSource><257.4076><456.8732><0.3043478~EffectColor1~0~100~50~86.60254~0~1~None~0~0, LightSource><378.563><457.4289><0.3043478~EffectColor1~0~100~50~86.60254~0~1~None~0~0, LightSource><618.8333><458.1819><0.3043478~EffectColor1~0~100~-164~34.60254~0~1~None~0~0, LightSource><742.5515><460.9761><0.3043478~EffectColor1~0~100~50~86.60254~0~1~None~0~0, LightSource><501.1534><456.8717><0.3043478~EffectColor1~0~100~50~86.60254~0~1~None~0~0, 
+FadePalette: 56, 0.7934783
