@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BepInEx;
 using SlugBase.Features;
 using static SlugBase.Features.FeatureTypes;
@@ -21,6 +22,7 @@ using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
+using TheFriend.NoirThings;
 using TheFriend.Objects;
 using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.SaveThings;
@@ -47,12 +49,15 @@ namespace TheFriend
 
         #region hooks
         public static ManualLogSource LogSource { get; private set; }
+        public static bool RotundWorld;
         public void OnEnable()
         {
             LogSource = Logger;
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
+            On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
 
             // Hooks
+            AbstractObjectType.Apply();
             UpdateDeleteCWT.Apply();
             MotherKillTracker.Apply();
             SolaceSaveData.Apply();
@@ -71,6 +76,7 @@ namespace TheFriend
             SlugcatGameplay.Apply();
             SlugcatGraphics.Apply();
             HudHooks.Apply();
+            NoirCatto.Apply();
 
             // Misc IL
             IL.Player.ThrowObject += Player_ThrowObject;
@@ -152,6 +158,28 @@ namespace TheFriend
             Futile.atlasManager.LoadAtlas("atlases/friendlegs");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull2");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull3");
+            NoirCatto.LoadSounds();
+            NoirCatto.LoadAtlases();
+        }
+        private void RainWorldOnPostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
+        {
+            orig(self);
+            try
+            {
+                if (ModManager.ActiveMods.Any(x => x.id == "willowwisp.bellyplus"))
+                {
+                    RotundWorld = true;
+                    Logger.LogInfo("Rotund World detected! Cats gonna be chonky...");
+                }
+                else
+                {
+                    RotundWorld = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }
         }
         public static void Player_ThrowObject(ILContext il)
         {
@@ -187,6 +215,7 @@ namespace TheFriend
 
         public static readonly SlugcatStats.Name FriendName = new SlugcatStats.Name("Friend", false); // Makes Friend's campaign more accessible to me
         public static readonly SlugcatStats.Name DragonName = new SlugcatStats.Name("FriendDragonslayer", false); // Makes Poacher's campaign more accessible to me
+        public static readonly SlugcatStats.Name NoirName = new SlugcatStats.Name("NoirCatto", false);
 
         #region options
         // Friend Settings

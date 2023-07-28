@@ -1,0 +1,25 @@
+{
+  "id": "Slugcat_NoirCatto",
+  "scene_folder": "slugbase/scenes/Slugcat_NoirCatto",
+  "images": 
+  [
+      {"name": "NoirFlat", "pos": [0, -40], "depth": -1.0, "flatmode": true},
+      {"name": "NoirBg", "pos": [445, 80], "depth": 4.5, "shader": "Basic"},
+      {"name": "Dandelions3", "pos": [445, 80], "depth": 3.6, "shader": "Basic"},
+      {"name": "Noir", "pos": [445, 80], "depth": 3.0, "shader": "Basic"},
+      {"name": "Dandelions2", "pos": [445, 80], "depth": 3.0, "shader": "Basic"},
+      {"name": "Dandelions1", "pos": [445, 80], "depth": 2.6, "shader": "Basic"},
+      {"name": "FgPlants3", "pos": [445, 80], "depth": 2.4, "shader": "Basic"},      
+      {"name": "FgPlants1", "pos": [445, 80], "depth": 2.2, "shader": "Basic"},
+      {"name": "FgPlants4", "pos": [445, 80], "depth": 2.0, "shader": "Basic"},
+      {"name": "Bat1", "pos": [445, 80], "depth": 2.4, "shader": "Basic"},
+      {"name": "Bat2", "pos": [445, 80], "depth": 3.4, "shader": "Basic"},
+      {"name": "Bat3", "pos": [445, 80], "depth": 3.8, "shader": "Basic"}
+  ],
+    
+  "idle_depths": [2.3, 2.9],
+  "glow_pos": [730, 335],
+  "mark_pos": [740, 575],
+  "select_menu_pos": [-10, 100],
+  "slugcat_depth": 2.8
+}

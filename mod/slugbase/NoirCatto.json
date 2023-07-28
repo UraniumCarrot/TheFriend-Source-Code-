@@ -1,0 +1,40 @@
+{
+	"id": "NoirCatto",
+	"name": "Noir",
+	"description": "A black-and-white, curious cat, who fights with claw and tooth.",
+
+	"features": 
+	{
+		"karma_cap": 2,
+		"can_maul": true,
+		"diet": 
+		{
+			"meat": 0.75,
+			"corpses": 0.75,
+			"plants": 0.25,
+			"overrides": 
+			{
+				"Fly": 0.5,
+				"EggBugEgg": 1,
+				"FireEgg": 1,
+				
+				"DangleFruit": -1,
+				"WaterNut": -1,
+				"SlimeMold": -1,				
+				"Seed": -1,
+				"GooieDuck": -1,
+				"LillyPuck": -1,
+				"GlowWeed": -1,
+				"DandelionPeach": -1				
+			}
+		},
+		
+		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
+		"story_regions": ["RM","UG","-DS","-CL","SH"],
+		
+		"select_menu_scene": "Slugcat_NoirCatto",
+		"select_menu_scene_ascended": "Slugcat_NoirCatto_Ghost",
+		"sleep_scene": "Slugcat_NoirCatto_Sleep",
+	}
+}
+

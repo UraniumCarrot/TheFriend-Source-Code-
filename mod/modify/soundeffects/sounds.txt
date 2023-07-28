@@ -1,0 +1,9 @@
+[ADD]NoirCatto_Slash/rangeFac=0.7/dopplerFac=0.6 : NoirCattoSlash/vol=0.1/minPitch=1/maxPitch=1.25
+[ADD]NoirCatto_Meow/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeow1, NoirCattoMeow2, NoirCattoMeow3, NoirCattoMeow4, NoirCattoMeow5
+[ADD]NoirCatto_Meow1/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeow1
+[ADD]NoirCatto_Meow2/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeow2
+[ADD]NoirCatto_Meow3/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeow3
+[ADD]NoirCatto_Meow4/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeow4
+[ADD]NoirCatto_Meow5/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeow5
+[ADD]NoirCatto_MeowFrustrated/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeowFrustrated
+[ADD]NoirCatto_PurrLoop/vol=0.15 : NoirCattoPurrLoop

@@ -1,0 +1,79 @@
+using MoreSlugcats;
+using RWCustom;
+using TheFriend.SlugcatThings;
+
+namespace TheFriend.NoirThings;
+
+public partial class NoirCatto
+{
+    private static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
+    {
+        if (!self.TryGetNoir(out var noirData))
+        {
+            orig(self, grasp, eu);
+            return;
+        }
+
+        if (noirData.CanSlash) return;
+
+        Weapon thrownWeapon = null;
+        if (self.grasps[grasp].grabbed is Weapon w)
+        {
+            thrownWeapon = w; //Get held weapon before it's thrown
+        }
+
+        orig(self, grasp, eu);
+
+        switch (thrownWeapon)
+        {
+            case Spear:
+                break; //Handled in OnThrownSpear
+            case ScavengerBomb:
+                thrownWeapon.firstChunk.vel *= 0.5f;
+                break;
+            case SingularityBomb:
+                thrownWeapon.firstChunk.vel *= 0.6f;
+                break;
+            case not null:
+                thrownWeapon.exitThrownModeSpeed = 10f;
+                thrownWeapon.firstChunk.vel *= 0.65f;
+                break;
+        }
+    }
+    
+    private static void PlayerOnThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
+    {
+        orig(self, spear);
+        if (!self.TryGetNoir(out var noirData)) return;
+
+        noirData.SpearThrownAnimation = self.animation;
+
+
+        spear.exitThrownModeSpeed = 10f;
+        spear.spearDamageBonus = 0.4f;
+        if (spear.bugSpear)
+        {
+            spear.firstChunk.vel *= 0.77f;
+        }
+        else
+        {
+            spear.firstChunk.vel *= 0.5f;
+        }
+    }
+
+    private static void SpearOnUpdate(On.Spear.orig_Update orig, Spear self, bool eu)
+    {
+        if (self.thrownBy is Player pl && pl.TryGetNoir(out var noirData))
+        {
+            if (Custom.DistLess(self.thrownPos, self.firstChunk.pos, 75f) ||  noirData.SpearThrownAnimation == Player.AnimationIndex.BellySlide)
+            {
+                self.alwaysStickInWalls = true;
+            }
+            else
+            {
+                self.alwaysStickInWalls = false;
+            }
+        }
+        orig(self, eu);
+    }
+}

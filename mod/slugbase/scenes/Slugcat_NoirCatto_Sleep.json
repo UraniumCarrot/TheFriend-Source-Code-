@@ -1,0 +1,14 @@
+{
+	"id": "Slugcat_NoirCatto_Sleep",
+	"scene_folder": "slugbase/scenes/Slugcat_NoirCatto_Sleep",
+	"images": [
+		{"name": "Flat", "pos": [0, 0], "depth": -1.0, "flatmode": true},
+		{"name": "Sleep - 5", "pos": [672, 236], "depth": 5.5, "shader": "Basic"},
+		{"name": "Sleep - 4", "pos": [685, 138], "depth": 4.8, "shader": "Basic"},
+		{"name": "Sleep - 3", "pos": [740, 138], "depth": 4, "shader": "Basic"},
+		{"name": "Noir", "pos": [768, 99], "depth": 3, "shader": "Basic"},
+		{"name": "Sleep - 1", "pos": [498, -38], "depth": 1.8, "shader": "Basic"}
+	],
+	"idle_depths": [2.9],
+	"sleep scene_depth": 3.0
+}

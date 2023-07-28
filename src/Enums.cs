@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using TheFriend.NoirThings;
 
 namespace TheFriend;
 public static class CreatureTemplateType
@@ -35,6 +36,21 @@ public static class CreatureTemplateType
 
 public static class AbstractObjectType
 {
+    public static void Apply()
+    {
+        On.AbstractPhysicalObject.Realize += AbstractPhysicalObjectOnRealize;
+    }
+    private static void AbstractPhysicalObjectOnRealize(On.AbstractPhysicalObject.orig_Realize orig, AbstractPhysicalObject self)
+    {
+        orig(self);
+        if (self.type == CatSlash)
+        {
+            var absSlash = (NoirCatto.AbstractCatSlash)self;
+            self.realizedObject = new NoirCatto.CatSlash(self, self.world, absSlash.Owner, absSlash.HandUsed, absSlash.SlashType);
+        }
+    }
+
+    [AllowNull] public static AbstractPhysicalObject.AbstractObjectType CatSlash = new (nameof(CatSlash), true);
     [AllowNull] public static AbstractPhysicalObject.AbstractObjectType LittleCracker = new(nameof(LittleCracker), true);
     [AllowNull] public static AbstractPhysicalObject.AbstractObjectType Boulder = new(nameof(Boulder), true);
     [AllowNull] public static AbstractPhysicalObject.AbstractObjectType BoomMine = new(nameof(BoomMine), true);

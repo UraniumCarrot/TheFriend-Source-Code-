@@ -35,8 +35,7 @@ public class FriendCrawlTurn
         }
         catch (Exception ex)
         {
-            Plugin.LogSource.LogError(ex);
-            throw;
+            Plugin.LogSource.LogError(ex);;
         }
     }
 

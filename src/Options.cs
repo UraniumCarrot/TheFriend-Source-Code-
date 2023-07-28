@@ -1,4 +1,5 @@
 ﻿using Menu.Remix.MixedUI;
+using Menu.Remix.MixedUI.ValueTypes;
 using UnityEngine;
 
 namespace TheFriend;
@@ -12,16 +13,25 @@ public class Options : OptionInterface
     public static Configurable<bool> ExpeditionFamine;
     public static Configurable<bool> SolaceBlizzTimer;
 
+    // Friend
     public static Configurable<bool> FriendAutoCrouch;
     public static Configurable<bool> PoleCrawl;
     public static Configurable<bool> FriendBackspear;
     public static Configurable<bool> FriendUnNerf;
     public static Configurable<bool> FriendRepLock;
 
+    // Poacher
     public static Configurable<bool> PoacherPupActs;
     public static Configurable<bool> PoacherBackspear;
     public static Configurable<bool> PoacherFreezeFaster;
     public static Configurable<bool> PoacherFoodParkour;
+    
+    // Noir
+    public static Configurable<bool> NoirAltSlashConditions;
+    public static Configurable<bool> NoirUseCustomStart;
+    public static Configurable<bool> NoirAttractiveMeow;
+    public static Configurable<bool> NoirHideEars;
+    public static Configurable<KeyCode> NoirMeowKey;
 
     public static Configurable<bool> LizRide;
     public static Configurable<bool> LizRideAll;
@@ -50,6 +60,12 @@ public class Options : OptionInterface
         PoacherBackspear = config.Bind("PoacherBackspear", false, new ConfigAcceptableList<bool>(true, false));
         PoacherFreezeFaster = config.Bind("PoacherFreezeFaster", false, new ConfigAcceptableList<bool>(true, false));
         PoacherFoodParkour = config.Bind("PoacherFoodParkour", true, new ConfigAcceptableList<bool>(true, false));
+
+        NoirAltSlashConditions = config.Bind(nameof(NoirAltSlashConditions), false);
+        NoirUseCustomStart = config.Bind(nameof(NoirUseCustomStart), true);
+        NoirAttractiveMeow = config.Bind(nameof(NoirAttractiveMeow), true);
+        NoirHideEars = config.Bind(nameof(NoirHideEars), false);
+        NoirMeowKey = config.Bind(nameof(NoirMeowKey), KeyCode.LeftAlt);
 
         ExpeditionFamine = config.Bind("ExpeditionFamine", false, new ConfigAcceptableList<bool>(true, false));
         NoFamine = config.Bind("NoFamine", false, new ConfigAcceptableList<bool>(true, false));
@@ -84,6 +100,9 @@ public class Options : OptionInterface
     static OpCheckBox LizRepMeterAllBox;
     static OpCheckBox LocalLizRepBox;
     static OpCheckBox LocalLizRepAllBox;
+    // Dynamic stuff
+    static OpCheckBox NoirSlashConditionsCheckBox;
+    static OpLabel NoirSlashConditionsLabel;
 
     public override void Update()
     {
@@ -105,6 +124,11 @@ public class Options : OptionInterface
         LizRepMeterAllBox.greyedOut = LizRepMeterBox.value == "false";
         
         LocalLizRepAllBox.greyedOut = LocalLizRepBox.value == "false";
+        
+        // Noir
+        NoirSlashConditionsLabel.text = "Slash conditions: " + (NoirSlashConditionsCheckBox.GetValueBool() ?
+            "Default - Empty hands, or no directional input while holding an object" : 
+            "Alternative - Main hand must be empty");
     }
     public override void Initialize()
     {
@@ -112,6 +136,7 @@ public class Options : OptionInterface
         var opTab1 = new OpTab(this, "Characters");
         var opTab2 = new OpTab(this, "Experimental");
         var opTab3 = new OpTab(this, "Memorial");
+        var opTabNoir = new OpTab(this, "Noir"); //TODO: Merge into Solace properly
         OpContainer genCont = new OpContainer(Vector2.zero);
         opTab0.AddItems(genCont);
         OpContainer charCont = new OpContainer(Vector2.zero);
@@ -120,7 +145,7 @@ public class Options : OptionInterface
         opTab1.AddItems(achieveCont);
 
         base.Initialize();
-        Tabs = new[] { opTab0, opTab1, opTab2, opTab3 };
+        Tabs = new[] { opTab0, opTab1, opTab2, opTab3, opTabNoir };
 
         var labelMod = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - General Settings"), true);
         var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.3.0"));
@@ -273,5 +298,29 @@ public class Options : OptionInterface
             );
         Tabs[3].AddItems( // Memorial
             );
+        
+        // ^^Why even have a number of different opTab variables if you're gonna do a Tabs[num] either way :leditoroverload:
+
+
+        NoirSlashConditionsCheckBox = new OpCheckBox(NoirAltSlashConditions, 10f, 520f);
+        NoirSlashConditionsLabel = new OpLabel(40f, 520f, "Slash conditions: ") { verticalAlignment = OpLabel.LabelVAlignment.Center };
+        var offset = 75f; //yes I'm lazy
+        opTabNoir.AddItems(new UIelement[]
+        {
+            new OpLabel(10f, 550f, "Main", true),
+            NoirSlashConditionsCheckBox,
+            NoirSlashConditionsLabel,
+
+            new OpCheckBox(NoirUseCustomStart, 10f, 490f),
+            new OpLabel(40f, 490f, "Custom Start (disable if Story Mode fails to load)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+
+            new OpLabel(10f, 450f - offset, "Fun and Extras", true) { color = new Color(0.65f, 0.85f, 1f) },
+            new OpKeyBinder(NoirMeowKey, new Vector2(10f, 420f - offset), new Vector2(150f, 30f), true, OpKeyBinder.BindController.AnyController),
+            new OpLabel(166f, 420f - offset, "Meow!") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+            new OpCheckBox(NoirAttractiveMeow, 10f, 390f - offset),
+            new OpLabel(40f, 390f - offset, "Creatures react to Meows") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+            new OpCheckBox(NoirHideEars, 10f, 360f - offset),
+            new OpLabel(40f, 360f - offset, "Hide ears (eg. For use with DMS)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+        });
     }
 }

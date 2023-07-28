@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using TheFriend.NoirThings;
 using Color = UnityEngine.Color;
 
 namespace TheFriend.SlugcatThings;
@@ -61,6 +62,21 @@ public static class PoacherClass
     }
     public static readonly ConditionalWeakTable<Player, Poacher> CWT = new();
     public static Poacher GetPoacher(this Player player) => CWT.GetValue(player, _ => new());
+    
+    // Noir's CWT
+    public static readonly ConditionalWeakTable<Player, NoirCatto.NoirData> NoirDeets = new ConditionalWeakTable<Player, NoirCatto.NoirData>();
+    public static NoirCatto.NoirData GetNoir(this Player player) => NoirDeets.GetValue(player, _ => new(player));
+    public static bool TryGetNoir(this Player player, out NoirCatto.NoirData noirData)
+    {
+        if (player.SlugCatClass == Plugin.NoirName)
+        {
+            noirData = GetNoir(player);
+            return true;
+        }
+
+        noirData = null;
+        return false;
+    }
 }
 
 public static class OverseerTracking

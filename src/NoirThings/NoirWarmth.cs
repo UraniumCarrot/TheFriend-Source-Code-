@@ -1,0 +1,41 @@
+using MoreSlugcats;
+using UnityEngine;
+
+namespace TheFriend.NoirThings;
+
+public partial class NoirCatto
+{
+    public class CatFur : UpdatableAndDeletable, IProvideWarmth
+    {
+        public readonly Player Owner;
+        public CatFur(Player owner)
+        {
+            Owner = owner;
+            room = owner.room;
+        }
+
+        public Vector2 Position()
+        {
+            return Owner.firstChunk.pos;
+        }
+
+        public Room loadedRoom => Owner.room;
+        public float warmth => RainWorldGame.DefaultHeatSourceWarmth;
+        public float range => 50f;
+
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+            if (Owner.room == null || Owner.room != room) this.Destroy();
+        }
+    }
+
+    private static void RoomOnAddObject(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
+    {
+        orig(self, obj);
+        if (obj is Player pl && pl.SlugCatClass == Plugin.NoirName)
+        {
+            self.AddObject(new CatFur(pl)); // Kitty adapts to the cold
+        }
+    }
+}
