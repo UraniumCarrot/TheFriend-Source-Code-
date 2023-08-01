@@ -12,7 +12,7 @@ using MoreSlugcats;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 
-namespace TheFriend.Objects.BoomMineObject;
+namespace Solace.Objects.BoomMineObject;
 
 public class BoomMine : PlayerCarryableItem, IDrawable
 {

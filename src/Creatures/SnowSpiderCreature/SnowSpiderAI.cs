@@ -1,6 +1,6 @@
 ﻿using RWCustom;
 
-namespace TheFriend.Creatures.SnowSpiderCreature;
+namespace Solace.Creatures.SnowSpiderCreature;
 
 public class SnowSpiderAI : BigSpiderAI
 {

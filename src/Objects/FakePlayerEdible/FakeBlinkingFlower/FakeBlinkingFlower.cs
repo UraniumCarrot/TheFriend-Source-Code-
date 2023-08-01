@@ -1,7 +1,7 @@
 ﻿using MoreSlugcats;
 using UnityEngine;
 
-namespace TheFriend.Objects.FakePlayerEdible.FakeBlinkingFlower;
+namespace Solace.Objects.FakePlayerEdible.FakeBlinkingFlower;
 
 public class FakeBlinkingFlower : FakePlayerEdible
 {

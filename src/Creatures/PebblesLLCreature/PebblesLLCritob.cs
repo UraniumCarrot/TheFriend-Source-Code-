@@ -4,7 +4,7 @@ using Fisobs.Core;
 using Fisobs.Creatures;
 using Color = UnityEngine.Color;
 
-namespace TheFriend.Creatures.PebblesLLCreature;
+namespace Solace.Creatures.PebblesLLCreature;
 
 public class PebblesLLCritob : Critob
 {

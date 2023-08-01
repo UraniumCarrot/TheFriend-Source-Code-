@@ -7,7 +7,7 @@ using RWCustom;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-namespace TheFriend.Objects.BoulderObject;
+namespace Solace.Objects.BoulderObject;
 
 internal class Boulder : PlayerCarryableItem, IDrawable
 {

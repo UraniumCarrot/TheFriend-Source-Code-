@@ -19,7 +19,7 @@ using SlugBase.DataTypes;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 
-namespace TheFriend.WorldChanges;
+namespace Solace.WorldChanges;
 public class FamineWorld
 {
     public static void Apply()
@@ -50,12 +50,12 @@ public class FamineWorld
     public static int sleepCounter = 0;
     public static void PoacherEats(Player self)
     {
-        if (self.slugcatStats.name != Plugin.DragonName) return;
+        if (self.slugcatStats.name != Solace.DragonName) return;
         if (sleepCounter < 300 && self.bodyMode == Player.BodyModeIndex.Crawl && !self.input[0].AnyInput) sleepCounter++;
         if (sleepCounter >= 300) (self.graphicsModule as PlayerGraphics).blink = 5;
         if (self.bodyMode != Player.BodyModeIndex.Crawl || self.input[0].AnyInput) sleepCounter = 0;
         if (favoriteFoodTimer == 0) return;
-        if (Plugin.PoacherPupActs() == true)
+        if (Solace.PoacherPupActs() == true)
         {
             if (favoriteFoodTimer > 0 && !self.Stunned && !self.Malnourished)
             {
@@ -86,7 +86,7 @@ public class FamineWorld
     {
         orig(self,eatenobject);
 
-        if (self.slugcatStats.name != Plugin.DragonName) return;
+        if (self.slugcatStats.name != Solace.DragonName) return;
         if (eatenobject is GlowWeed) { favoriteFoodTimer = 100; Debug.Log("Poacher loves it!"); }
         if (eatenobject is Hazer) { favoriteFoodTimer = 50; }
         if (eatenobject is DangleFruit fruit && !IsDiseasedPipHandler(fruit)) { favoriteFoodTimer = 50; }
@@ -97,16 +97,16 @@ public class FamineWorld
 
     public static bool NoFamine() // Famine mechanic override, if the player wants it
     {
-        if (Plugin.NoFamine() == true) return true;
+        if (Solace.NoFamine() == true) return true;
         else return false;
     }
 
     public static bool HasFamines(RainWorldGame self)
     {
-        if ((self.StoryCharacter == Plugin.FriendName || 
-            self.StoryCharacter == Plugin.DragonName || 
-            (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
-            (self.rainWorld.ExpeditionMode && Plugin.ExpeditionFamine())) 
+        if ((self.StoryCharacter == Solace.FriendName || 
+            self.StoryCharacter == Solace.DragonName || 
+            (Solace.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
+            (self.rainWorld.ExpeditionMode && Solace.ExpeditionFamine())) 
             && !NoFamine() && !self.IsArenaSession)
         {
             FamineBool = true;
@@ -163,7 +163,7 @@ public class FamineWorld
     {
         int num = orig(slugcatIndex, eatenobject);
         var quarters1 = eatenobject.FoodPoints;
-        if (eatenobject is GlowWeed && slugcatIndex == Plugin.DragonName) num = 4;
+        if (eatenobject is GlowWeed && slugcatIndex == Solace.DragonName) num = 4;
         if (!FamineBool) return num;
         if (eatenobject is PhysicalObject obj && IsDiseasedPipHandler(obj))
         {

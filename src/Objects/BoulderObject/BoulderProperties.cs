@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Fisobs.Properties;
 
-namespace TheFriend.Objects.BoulderObject;
+namespace Solace.Objects.BoulderObject;
 
 internal class BoulderProperties : ItemProperties
 {

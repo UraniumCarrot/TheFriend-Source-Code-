@@ -7,7 +7,7 @@ using Fisobs.Sandbox;
 using UnityEngine;
 using Fisobs.Properties;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace Solace.Creatures.LizardThings;
 public class YoungLizardCritob : Critob
 {
     public YoungLizardCritob() : base(CreatureTemplateType.YoungLizard)

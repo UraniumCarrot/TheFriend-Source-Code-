@@ -6,7 +6,7 @@ using Fisobs.Core;
 using UnityEngine;
 using System.Threading.Tasks;
 
-namespace TheFriend.Objects.BoomMineObject;
+namespace Solace.Objects.BoomMineObject;
 
 public class BoomMineAbstract : AbstractPhysicalObject
 {

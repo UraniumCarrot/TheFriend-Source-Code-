@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
-using TheFriend.Objects.FakePlayerEdible;
+using Solace.Objects.FakePlayerEdible;
 
-namespace TheFriend.Objects.FakePlayerEdible;
+namespace Solace.Objects.FakePlayerEdible;
 
 public static class UpdateDeleteCWT
 {

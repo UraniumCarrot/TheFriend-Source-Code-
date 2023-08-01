@@ -6,7 +6,7 @@ using Fisobs.Creatures;
 using Fisobs.Sandbox;
 using UnityEngine;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace Solace.Creatures.LizardThings;
 public class MotherLizardCritob : Critob
 {
     public MotherLizardCritob() : base(CreatureTemplateType.MotherLizard)

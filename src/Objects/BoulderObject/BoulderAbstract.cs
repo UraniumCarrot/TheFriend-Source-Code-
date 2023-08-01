@@ -6,7 +6,7 @@ using Fisobs.Core;
 using UnityEngine;
 using System.Threading.Tasks;
 
-namespace TheFriend.Objects.BoulderObject;
+namespace Solace.Objects.BoulderObject;
 
 internal class BoulderAbstract : AbstractPhysicalObject
 {

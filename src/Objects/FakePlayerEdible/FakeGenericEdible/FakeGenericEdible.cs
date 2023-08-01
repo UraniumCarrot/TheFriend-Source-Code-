@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TheFriend.Objects.FakePlayerEdible.FakeGenericEdible;
+namespace Solace.Objects.FakePlayerEdible.FakeGenericEdible;
 
 public class FakeGenericEdible : FakePlayerEdible
 {

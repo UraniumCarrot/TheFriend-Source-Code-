@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RWCustom;
-using TheFriend.SlugcatThings;
+using Solace.SlugcatThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace TheFriend.NoirThings;
+namespace Solace.NoirThings;
 
 public partial class NoirCatto
 {

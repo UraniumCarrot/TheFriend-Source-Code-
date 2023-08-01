@@ -2,11 +2,11 @@ using System;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
-using TheFriend.SlugcatThings;
+using Solace.SlugcatThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace TheFriend.FriendThings;
+namespace Solace.FriendThings;
 // Hiiii it's a me, Noir - please don't use this code without my permission also!
 public class FriendCrawlTurn
 {
@@ -35,13 +35,13 @@ public class FriendCrawlTurn
         }
         catch (Exception ex)
         {
-            Plugin.LogSource.LogError(ex);;
+            Solace.LogSource.LogError(ex);;
         }
     }
 
     public static bool CustomCrawlTurn(Player self)
     {
-        if (self.SlugCatClass != Plugin.FriendName) return false;
+        if (self.SlugCatClass != Solace.FriendName) return false;
         if (self.animation != Player.AnimationIndex.CrawlTurn) return false;
         var friendData = self.GetPoacher();
 
@@ -88,7 +88,7 @@ public class FriendCrawlTurn
     public static void PlayerOnMovementUpdate(On.Player.orig_MovementUpdate orig, Player self, bool eu)
     {
         orig(self, eu);
-        if (self.SlugCatClass != Plugin.FriendName) return;
+        if (self.SlugCatClass != Solace.FriendName) return;
         var friendData = self.GetPoacher();
 
         if (self.animation != Player.AnimationIndex.CrawlTurn)
@@ -108,7 +108,7 @@ public class FriendCrawlTurn
     public static void PlayerOnUpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     {
         orig(self);
-        if (self.SlugCatClass != Plugin.FriendName) return; 
+        if (self.SlugCatClass != Solace.FriendName) return; 
         
         //Sparks when changing running direction, now for crawling too!
         if (self.bodyMode == Player.BodyModeIndex.Crawl)

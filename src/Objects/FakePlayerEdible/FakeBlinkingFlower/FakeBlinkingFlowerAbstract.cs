@@ -1,4 +1,4 @@
-﻿namespace TheFriend.Objects.FakePlayerEdible.FakeBlinkingFlower;
+﻿namespace Solace.Objects.FakePlayerEdible.FakeBlinkingFlower;
 
 public class FakeBlinkingFlowerAbstract : AbstractPhysicalObject
 {

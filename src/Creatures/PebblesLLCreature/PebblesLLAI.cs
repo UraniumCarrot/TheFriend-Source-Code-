@@ -1,4 +1,4 @@
-﻿namespace TheFriend.Creatures.PebblesLLCreature;
+﻿namespace Solace.Creatures.PebblesLLCreature;
 
 public class PebblesLLAI : DaddyAI
 {

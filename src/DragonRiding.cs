@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using TheFriend.SlugcatThings;
+using Solace.SlugcatThings;
 
-namespace TheFriend;
+namespace Solace;
 
 public class DragonRiding
 {

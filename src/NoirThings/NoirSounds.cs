@@ -4,7 +4,7 @@ using Noise;
 using RWCustom;
 using UnityEngine;
 
-namespace TheFriend.NoirThings;
+namespace Solace.NoirThings;
 
 public partial class NoirCatto
 {
@@ -38,7 +38,7 @@ public partial class NoirCatto
         orig(self);
 
         if (self.manager.oldProcess is not RainWorldGame game) return;
-        if (game.StoryCharacter != Plugin.NoirName) return;
+        if (game.StoryCharacter != Solace.NoirName) return;
         if (self is not Menu.SleepAndDeathScreen sleep) return;
         if (Math.Min(sleep.hud.owner.CurrentFood + sleep.hud.foodMeter.survivalLimit, sleep.hud.foodMeter.maxFood) < sleep.hud.foodMeter.maxFood) return;
         
@@ -77,10 +77,10 @@ public partial class NoirCatto
         //Meow!
         if (noirData.Cat.stun == 0 && !noirData.Cat.dead && noirData.Cat.controller is not NoirStartController)
         {
-            if (Input.GetKeyDown(Options.NoirMeowKey.Value))
+            if (Input.GetKeyDown(SolaceOptions.NoirMeowKey.Value))
             {
                 noirData.Cat.room?.PlaySound(MeowSND, noirData.Cat.firstChunk, false, 1f, noirData.MeowPitch);
-                if (Options.NoirAttractiveMeow.Value) noirData.Cat.room?.InGameNoise(new InGameNoise(noirData.Cat.firstChunk.pos, 300f, noirData.Cat, 1f));
+                if (SolaceOptions.NoirAttractiveMeow.Value) noirData.Cat.room?.InGameNoise(new InGameNoise(noirData.Cat.firstChunk.pos, 300f, noirData.Cat, 1f));
             }
         }
     }

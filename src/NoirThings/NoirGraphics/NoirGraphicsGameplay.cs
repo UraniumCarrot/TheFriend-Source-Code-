@@ -1,8 +1,8 @@
 using RWCustom;
-using TheFriend.SlugcatThings;
+using Solace.SlugcatThings;
 using UnityEngine;
 
-namespace TheFriend.NoirThings;
+namespace Solace.NoirThings;
 
 public partial class NoirCatto //Animations + drawing position adjustments are here
 {

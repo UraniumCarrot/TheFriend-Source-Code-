@@ -6,7 +6,7 @@ using Fisobs.Creatures;
 using Fisobs.Sandbox;
 using UnityEngine;
 
-namespace TheFriend.Creatures.SnowSpiderCreature;
+namespace Solace.Creatures.SnowSpiderCreature;
 
 public class SnowSpiderCritob : Critob
 {

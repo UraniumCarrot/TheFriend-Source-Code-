@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.Experimental.GlobalIllumination;
 
-namespace TheFriend.Objects.BoomMineObject;
+namespace Solace.Objects.BoomMineObject;
 
 public class BoomMineFisob : Fisob
 {

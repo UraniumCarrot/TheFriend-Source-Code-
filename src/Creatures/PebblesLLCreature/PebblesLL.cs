@@ -4,7 +4,7 @@ using Color = UnityEngine.Color;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 
-namespace TheFriend.Creatures.PebblesLLCreature;
+namespace Solace.Creatures.PebblesLLCreature;
 
 public class PebblesLL : DaddyLongLegs
 {

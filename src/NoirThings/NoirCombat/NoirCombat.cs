@@ -1,13 +1,13 @@
 using RWCustom;
 using UnityEngine;
 
-namespace TheFriend.NoirThings;
+namespace Solace.NoirThings;
 
 public partial class NoirCatto
 {
     private static PhysicalObject PlayerOnPickupCandidate(On.Player.orig_PickupCandidate orig, Player self, float favorspears)
     {
-        if (self.SlugCatClass != Plugin.NoirName) return orig(self, favorspears);
+        if (self.SlugCatClass != Solace.NoirName) return orig(self, favorspears);
 
         for (var i = 0; i < self.room.physicalObjects.Length; i++)
         {
@@ -38,7 +38,7 @@ public partial class NoirCatto
     private static void PlayerOnGrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
     {
         orig(self, eu);
-        if (self.SlugCatClass != Plugin.NoirName) return;
+        if (self.SlugCatClass != Solace.NoirName) return;
         NoirMaul(self, eu);
     }
 

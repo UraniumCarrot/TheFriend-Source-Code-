@@ -2,9 +2,9 @@
 using Menu.Remix.MixedUI.ValueTypes;
 using UnityEngine;
 
-namespace TheFriend;
+namespace Solace;
 
-public class Options : OptionInterface
+public class SolaceOptions : OptionInterface
 {
     public static Configurable<bool> NoFamine;
     public static Configurable<bool> FaminesForAll;
@@ -48,7 +48,7 @@ public class Options : OptionInterface
     public static Configurable<bool> SolacePebblesAchievement; // Alone No More
     public static Configurable<bool> SolacePebblesStolenEnlightenmentAchievement; // Broken Mind
 
-    public Options()
+    public SolaceOptions()
     {
         FriendAutoCrouch = config.Bind("FriendAutoCrouch", true, new ConfigAcceptableList<bool>(true, false));
         PoleCrawl = config.Bind("PoleCrawl", true, new ConfigAcceptableList<bool>(true, false));

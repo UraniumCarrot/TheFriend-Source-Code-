@@ -3,9 +3,9 @@ using HUD;
 using MoreSlugcats;
 using UnityEngine;
 using SlugBase.SaveData;
-using TheFriend.SlugcatThings;
+using Solace.SlugcatThings;
 
-namespace TheFriend.HudThings;
+namespace Solace.HudThings;
 
 public static class DragonRepInterface
 {
@@ -16,10 +16,10 @@ public static class DragonRepInterface
     public static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam) // Forces new hud to work
     {
         orig(self, cam);
-        if (Plugin.LizRep() && 
-            ((self.owner as Player)?.room.world.game.StoryCharacter == Plugin.FriendName || 
-             (self.owner as Player)?.room.world.game.StoryCharacter == Plugin.DragonName || 
-             Plugin.LizRepAll())) 
+        if (Solace.LizRep() && 
+            ((self.owner as Player)?.room.world.game.StoryCharacter == Solace.FriendName || 
+             (self.owner as Player)?.room.world.game.StoryCharacter == Solace.DragonName || 
+             Solace.LizRepAll())) 
             self.AddPart(new DragonUI(self, self.fContainers[1], self.owner as Player));
     }
 
@@ -46,8 +46,8 @@ public static class DragonRepInterface
             owner = player;
             Vector2 reinforcedPos = !hud.karmaMeter.showAsReinforced ? Vector2.zero : new Vector2(10,10);
             custPos = (!player.GetPoacher().RainTimerExists &&
-                (player.room.game.StoryCharacter == Plugin.FriendName ||
-                player.room.game.StoryCharacter == Plugin.DragonName ||
+                (player.room.game.StoryCharacter == Solace.FriendName ||
+                player.room.game.StoryCharacter == Solace.DragonName ||
                 player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint) 
                 ? 
                 new Vector2(-33, 23) : new Vector2(-40, 30)) + reinforcedPos;

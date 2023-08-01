@@ -4,11 +4,11 @@ using System.Linq;
 using On.MoreSlugcats;
 using RWCustom;
 using SlugBase.SaveData;
-using TheFriend.SlugcatThings;
-using TheFriend.WorldChanges;
+using Solace.WorldChanges;
+using Solace.SlugcatThings;
 using UnityEngine;
 
-namespace TheFriend.SaveThings;
+namespace Solace.SaveThings;
 
 public class SolaceSaveData
 {
@@ -45,8 +45,8 @@ public class SolaceSaveData
                 comm.InfluenceLikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.world.RegionNumber, player.playerState.playerNumber, -1,1,0);
             }
 
-            if (!Plugin.LocalLizRep()) return;
-            if (FriendWorldState.SolaceWorldstate || Plugin.LocalLizRepAll()) comm.SetLikeOfPlayer(CreatureCommunities.CommunityID.All, -1,player.playerState.playerNumber, 0);
+            if (!Solace.LocalLizRep()) return;
+            if (FriendWorldState.SolaceWorldstate || Solace.LocalLizRepAll()) comm.SetLikeOfPlayer(CreatureCommunities.CommunityID.All, -1,player.playerState.playerNumber, 0);
         }
     }
 

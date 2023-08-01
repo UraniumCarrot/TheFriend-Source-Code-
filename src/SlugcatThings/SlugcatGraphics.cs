@@ -11,7 +11,7 @@ using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 using JollyColorMode = Options.JollyColorMode;
 
-namespace TheFriend.SlugcatThings;
+namespace Solace.SlugcatThings;
 
 public class SlugcatGraphics
 {
@@ -27,8 +27,8 @@ public class SlugcatGraphics
         On.GraphicsModule.HypothermiaColorBlend += GraphicsModule_HypothermiaColorBlend;
     }
 
-    public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
-    public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
+    public static readonly SlugcatStats.Name FriendName = Solace.FriendName;
+    public static readonly SlugcatStats.Name DragonName = Solace.DragonName;
 
     public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)
     { // Spear pointing while riding a lizard
@@ -97,7 +97,7 @@ public class SlugcatGraphics
     public static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
     { // Implement CustomTail
         orig(self, ow);
-        if (Plugin.CustomTail.TryGet(self.player, out bool hasCustomTail) && hasCustomTail)
+        if (Solace.CustomTail.TryGet(self.player, out bool hasCustomTail) && hasCustomTail)
         {
             if (self.RenderAsPup)
             {
@@ -219,7 +219,7 @@ public class SlugcatGraphics
         {
             sLeaser.sprites[4].isVisible = false;
         }
-        if (Plugin.FriendHead.TryGet(self.player, out var hasFriendHead) && hasFriendHead)
+        if (Solace.FriendHead.TryGet(self.player, out var hasFriendHead) && hasFriendHead)
         {
             if (!self.RenderAsPup)
             {

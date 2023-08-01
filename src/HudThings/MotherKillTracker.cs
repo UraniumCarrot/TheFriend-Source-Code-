@@ -6,7 +6,7 @@ using MoreSlugcats;
 using SlugBase.SaveData;
 using UnityEngine;
 
-namespace TheFriend.HudThings;
+namespace Solace.HudThings;
 
 public class MotherKillTracker : PositionedMenuObject
 {
