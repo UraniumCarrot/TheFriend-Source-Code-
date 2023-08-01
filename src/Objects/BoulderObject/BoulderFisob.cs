@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.Experimental.GlobalIllumination;
 
-namespace Solace.Objects.BoulderObject;
+namespace TheFriend.Objects.BoulderObject;
 
 internal class BoulderFisob : Fisob
 {

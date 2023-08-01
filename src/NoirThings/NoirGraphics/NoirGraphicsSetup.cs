@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using RWCustom;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {

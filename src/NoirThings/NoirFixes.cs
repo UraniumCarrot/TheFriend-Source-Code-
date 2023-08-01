@@ -3,7 +3,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {
@@ -27,7 +27,7 @@ public partial class NoirCatto
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate((Spear self) =>
             {
-                if (self.thrownBy is Player pl && pl.SlugCatClass == Solace.NoirName && self.alwaysStickInWalls) //MMF? more like SMH
+                if (self.thrownBy is Player pl && pl.SlugCatClass == Plugin.NoirName && self.alwaysStickInWalls) //MMF? more like SMH
                 {
                     return true;
                 }
@@ -37,8 +37,8 @@ public partial class NoirCatto
         }
         catch (Exception ex)
         {
-            Solace.LogSource.LogError("ILHook failed - Spear Fix");
-            Solace.LogSource.LogError(ex);
+            Plugin.LogSource.LogError("ILHook failed - Spear Fix");
+            Plugin.LogSource.LogError(ex);
         }
     }
 
@@ -59,7 +59,7 @@ public partial class NoirCatto
             c.Emit(OpCodes.Ldarg_2);
             c.EmitDelegate((int karma, int karmaCap) =>
             {
-                if (Custom.rainWorld.progression.currentSaveState.saveStateNumber == Solace.NoirName)
+                if (Custom.rainWorld.progression.currentSaveState.saveStateNumber == Plugin.NoirName)
                 {
                     if (karma >= karmaCap)
                     {
@@ -76,8 +76,8 @@ public partial class NoirCatto
         }
         catch (Exception ex)
         {
-            Solace.LogSource.LogError("ILHook failed - Spawn Ghost");
-            Solace.LogSource.LogError(ex);
+            Plugin.LogSource.LogError("ILHook failed - Spawn Ghost");
+            Plugin.LogSource.LogError(ex);
         }
     }
 
@@ -98,7 +98,7 @@ public partial class NoirCatto
             c.GotoPrev(MoveType.After, i => i.MatchLdarg(0));
             c.EmitDelegate((Menu.KarmaLadderScreen self) =>
             {
-                if (self.saveState.saveStateNumber == Solace.NoirName) return true;
+                if (self.saveState.saveStateNumber == Plugin.NoirName) return true;
                 return false;
             });
             c.Emit(OpCodes.Brtrue, label);
@@ -106,8 +106,8 @@ public partial class NoirCatto
         }
         catch (Exception ex)
         {
-            Solace.LogSource.LogError("ILHook failed - Karma Ladder");
-            Solace.LogSource.LogError(ex);
+            Plugin.LogSource.LogError("ILHook failed - Karma Ladder");
+            Plugin.LogSource.LogError(ex);
         }
     }
     #endregion

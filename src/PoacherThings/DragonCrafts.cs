@@ -5,12 +5,12 @@ using System;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
 using System.Linq;
-using Solace.Objects.BoomMineObject;
-using Solace.Objects.LittleCrackerObject;
 using ObjType = AbstractPhysicalObject.AbstractObjectType;
-using Solace.SlugcatThings;
+using TheFriend.Objects.LittleCrackerObject;
+using TheFriend.Objects.BoomMineObject;
+using TheFriend.SlugcatThings;
 
-namespace Solace.PoacherThings;
+namespace TheFriend.PoacherThings;
 public class DragonCrafts
 {
     #region Crafting dictionary
@@ -67,7 +67,7 @@ public class DragonCrafts
     public static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
     {
         orig(self, spear);
-        if ((self.room.world.game.StoryCharacter == Solace.FriendName || self.room.world.game.StoryCharacter == Solace.DragonName) && spear.bugSpear)
+        if ((self.room.world.game.StoryCharacter == Plugin.FriendName || self.room.world.game.StoryCharacter == Plugin.DragonName) && spear.bugSpear)
         {
             spear.spearDamageBonus *= 0.4f;
         }
@@ -105,19 +105,19 @@ public class DragonCrafts
     #region Crafting
     public static bool Player_GraspsCanBeCrafted(On.Player.orig_GraspsCanBeCrafted orig, Player self)
     {
-        if (self.slugcatStats.name == Solace.DragonName && self.input[0].y > 0) return true;
+        if (self.slugcatStats.name == Plugin.DragonName && self.input[0].y > 0) return true;
         return orig(self);
     }
     public static void Player_SpitUpCraftedObject(On.Player.orig_SpitUpCraftedObject orig, Player self)
     {
-        if (self.slugcatStats.name != Solace.DragonName) { orig(self); return; }
+        if (self.slugcatStats.name != Plugin.DragonName) { orig(self); return; }
         int vargrasp = self?.grasps[1]?.grabbed is FirecrackerPlant || self?.grasps[1]?.grabbed is BoomMine ? 1 : 0;
         var vargraspmat = self?.grasps[vargrasp]?.grabbed;
         var obj0 = self.grasps[0]?.grabbed?.abstractPhysicalObject;
         var obj1 = self.grasps[1]?.grabbed?.abstractPhysicalObject;
         var resultEx = GetResult(obj0.type, obj1.type);
 
-        if (self.slugcatStats.name == Solace.DragonName)
+        if (self.slugcatStats.name == Plugin.DragonName)
         {
             if (resultEx != LittleCrackerFisob.LittleCracker) self.GetPoacher().isMakingPoppers = false;
             if (resultEx == ObjType.Spear && !(obj0.type == ObjType.Rock && obj1.type == ObjType.Rock))

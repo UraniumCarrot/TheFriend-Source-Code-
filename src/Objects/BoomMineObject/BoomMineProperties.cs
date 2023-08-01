@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Fisobs.Properties;
 
-namespace Solace.Objects.BoomMineObject;
+namespace TheFriend.Objects.BoomMineObject;
 
 public class BoomMineProperties : ItemProperties
 {

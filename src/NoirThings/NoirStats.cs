@@ -1,4 +1,4 @@
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {
@@ -6,7 +6,7 @@ public partial class NoirCatto
     {
         orig(self, slugcat, malnourished);
         
-        if (slugcat == Solace.NoirName)
+        if (slugcat == Plugin.NoirName)
         {
             self.generalVisibilityBonus = -0.1f;
             self.visualStealthInSneakMode = 0.6f;
@@ -27,7 +27,7 @@ public partial class NoirCatto
     private const float NoirCrawlSpeedFac = 2.5f;
     private static bool PlayerOnAllowGrabbingBatflys(On.Player.orig_AllowGrabbingBatflys orig, Player self)
     {
-        if (self.SlugCatClass == Solace.NoirName) return false;
+        if (self.SlugCatClass == Plugin.NoirName) return false;
         return orig(self);
     }
 }

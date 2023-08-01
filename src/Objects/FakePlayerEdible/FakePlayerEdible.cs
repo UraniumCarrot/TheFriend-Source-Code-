@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Solace.Objects.FakePlayerEdible;
+namespace TheFriend.Objects.FakePlayerEdible;
 
 public abstract class FakePlayerEdible : PlayerCarryableItem, IPlayerEdible
 {

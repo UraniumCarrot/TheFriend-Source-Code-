@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Solace.NoirThings;
+using TheFriend.NoirThings;
 
-namespace Solace;
+namespace TheFriend;
 public static class CreatureTemplateType
 {
     [AllowNull] public static CreatureTemplate.Type PebblesLL = new(nameof(PebblesLL), true);

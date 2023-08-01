@@ -13,22 +13,22 @@ using UnityEngine.Experimental.GlobalIllumination;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 using System.Globalization;
-using Solace.Creatures;
+using TheFriend.Creatures;
 using MonoMod.Cil;
 
-namespace Solace.WorldChanges;
+namespace TheFriend.WorldChanges;
 
 public class FriendWorldState
 {
     public static bool FaminePlayer(RainWorldGame game) // Applies actual room changes 
     {
-        if (game?.StoryCharacter == Solace.FriendName || game?.StoryCharacter == Solace.DragonName && game != null) { SolaceWorldstate = true; return true; }
+        if (game?.StoryCharacter == Plugin.FriendName || game?.StoryCharacter == Plugin.DragonName && game != null) { SolaceWorldstate = true; return true; }
         else { SolaceWorldstate = false; return false; }
     }
     public static bool SolaceWorldstate;
     public static bool FamineName(SlugcatStats.Name name) // For use in menus and region properties 
     {
-        if (name == Solace.FriendName || name == Solace.DragonName) { SolaceName = true; return true; }
+        if (name == Plugin.FriendName || name == Plugin.DragonName) { SolaceName = true; return true; }
         else { SolaceName = false; return false; }
     }
     public static bool SolaceName;
@@ -59,7 +59,7 @@ public class FriendWorldState
     }
     public static bool WorldLoader_OverseerSpawnConditions(On.WorldLoader.orig_OverseerSpawnConditions orig, WorldLoader self, SlugcatStats.Name character)
     {
-        if (character == Solace.FriendName)
+        if (character == Plugin.FriendName)
         {
             bool guideOverseerDead = (self.game.session as StoryGameSession).saveState.guideOverseerDead;
             bool angryWithPlayer = (self.game.session as StoryGameSession).saveState.miscWorldSaveData.playerGuideState.angryWithPlayer;
@@ -70,7 +70,7 @@ public class FriendWorldState
 
     public static void OverseerAbstractAI_SetAsPlayerGuide(On.OverseerAbstractAI.orig_SetAsPlayerGuide orig, OverseerAbstractAI self, int ownerOverride)
     {
-        if (self.world.game.StoryCharacter == Solace.FriendName && ownerOverride != 0 && ownerOverride != 1 && solaceGenPop) ownerOverride = 1;
+        if (self.world.game.StoryCharacter == Plugin.FriendName && ownerOverride != 0 && ownerOverride != 1 && solaceGenPop) ownerOverride = 1;
         orig(self, ownerOverride);
     }
 
@@ -149,7 +149,7 @@ public class FriendWorldState
     {
         if (SolaceWorldstate)
         {
-            playerChar = Solace.FriendName;
+            playerChar = Plugin.FriendName;
             var settings = new string[] { playerChar.value, "saint", "rivulet" };
             for (int i = 0; i < settings.Length; i++)
             {
@@ -166,7 +166,7 @@ public class FriendWorldState
     public static string Region_GetRegionFullName(On.Region.orig_GetRegionFullName orig, string regionAcro, SlugcatStats.Name slugcatIndex)
     {
         FamineName(slugcatIndex);
-        if (SolaceName) slugcatIndex = Solace.FriendName;
+        if (SolaceName) slugcatIndex = Plugin.FriendName;
         return orig(regionAcro, slugcatIndex);
     } // Changes region's name in character select screen
     #endregion
@@ -276,18 +276,18 @@ public class FriendWorldState
             if (SolaceWorldstate &&
                 commID == CreatureCommunities.CommunityID.Lizards &&
                 self.session.game.GetStorySession.saveState.cycleNumber == 0 &&
-                self.session.game.StoryCharacter == Solace.FriendName &&
+                self.session.game.StoryCharacter == Plugin.FriendName &&
                 !self.session.game.IsArenaSession &&
-                Solace.FriendRepLock())
+                Plugin.FriendRepLock())
             {
                 return;
             }
-            if (!Solace.LocalLizRep())
+            if (!Plugin.LocalLizRep())
             {
                 orig(self, commID, region, playerNumber, influence, interRegionBleed, interCommunityBleed);
                 return;
             }
-            if (commID == CreatureCommunities.CommunityID.Lizards && (SolaceWorldstate || Solace.LocalLizRepAll()))
+            if (commID == CreatureCommunities.CommunityID.Lizards && (SolaceWorldstate || Plugin.LocalLizRepAll()))
                 interCommunityBleed = 0f;
 
             orig(self, commID, region, playerNumber, influence, interRegionBleed, interCommunityBleed);
@@ -296,8 +296,8 @@ public class FriendWorldState
     } // Localized lizard reputation
     public static float CreatureCommunitiesOnLikeOfPlayer(On.CreatureCommunities.orig_LikeOfPlayer orig, CreatureCommunities self, CreatureCommunities.CommunityID commid, int region, int playernumber)
     {
-        if (!Solace.LocalLizRep()) return orig(self, commid, region, playernumber);
-        if ((SolaceWorldstate || Solace.LocalLizRepAll()) && commid == CreatureCommunities.CommunityID.All) return 0f;
+        if (!Plugin.LocalLizRep()) return orig(self, commid, region, playernumber);
+        if ((SolaceWorldstate || Plugin.LocalLizRepAll()) && commid == CreatureCommunities.CommunityID.All) return 0f;
         else return orig(self, commid, region, playernumber);
     } // Explode the ALL community likeofplayer because it ruins everything
 }

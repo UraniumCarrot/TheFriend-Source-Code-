@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using RWCustom;
-using static Solace.SlugcatThings.PoacherClass;
+using static TheFriend.SlugcatThings.PoacherClass;
 
-namespace Solace;
+namespace TheFriend;
 
 public static class DragonRideCWT
 {

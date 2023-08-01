@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fisobs.Core;
-using Solace.Objects.BoomMineObject;
+using TheFriend.Objects.BoomMineObject;
 using UnityEngine;
 
-namespace Solace.Objects.BoomMineObject;
+namespace TheFriend.Objects.BoomMineObject;
 
 public class BoomMineIcon : Icon
 {

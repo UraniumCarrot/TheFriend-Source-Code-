@@ -6,7 +6,7 @@ using Fisobs.Core;
 using UnityEngine;
 using System.Threading.Tasks;
 
-namespace Solace.Objects.LittleCrackerObject;
+namespace TheFriend.Objects.LittleCrackerObject;
 
 public class LittleCrackerAbstract : AbstractPhysicalObject
 {

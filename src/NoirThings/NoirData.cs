@@ -1,9 +1,9 @@
 using System.Linq;
 using RWCustom;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public abstract partial class NoirCatto // Noir master class
 {
@@ -175,7 +175,7 @@ public abstract partial class NoirCatto // Noir master class
             {
                 if (Cat.input[0].thrw && !Cat.input[1].thrw)
                 {
-                    if (!SolaceOptions.NoirAltSlashConditions.Value)
+                    if (!Options.NoirAltSlashConditions.Value)
                     {
                         if (GraspsAllNull ||
                             GraspsAnyNull && (CanSlashInpt || !Cat.IsObjectThrowable(Cat.grasps[0]?.grabbed) || !Cat.IsObjectThrowable(Cat.grasps[1]?.grabbed)))
@@ -219,7 +219,7 @@ public abstract partial class NoirCatto // Noir master class
             if (Cat.animation == Player.AnimationIndex.BellySlide || rjumpTimer >= 15) MovementBonus = 2;
             else MovementBonus = 0;
 
-            if (Solace.RotundWorld)
+            if (Plugin.RotundWorld)
             {
                 RotundnessBonus = (int)((Cat.bodyChunks[1].mass - DefaultFirstChunkMass) * 15f);
             }
@@ -240,7 +240,7 @@ public abstract partial class NoirCatto // Noir master class
                     Cat.animation = Player.AnimationIndex.RocketJump;
                     JumpInitiated = true;
                 }
-
+                
                 if (Cat.bodyChunks[1].lastContactPoint == new IntVector2(0, 0) && Cat.bodyChunks[1].contactPoint != new IntVector2(0, 0) || !WasOnAnyBeam() && OnAnyBeam())
                 {
                     Jumping = false;
@@ -254,7 +254,7 @@ public abstract partial class NoirCatto // Noir master class
                 }
             }
 
-            if (Solace.RotundWorld)
+            if (Plugin.RotundWorld)
             {
                 MeowPitch = 1f - (Cat.bodyChunks[1].mass - DefaultFirstChunkMass) * 0.65f;
                 if (MeowPitch < 0.15f) MeowPitch = 0.15f;

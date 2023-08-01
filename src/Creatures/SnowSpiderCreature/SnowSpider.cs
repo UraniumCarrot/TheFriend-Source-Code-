@@ -4,7 +4,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
 
-namespace Solace.Creatures.SnowSpiderCreature;
+namespace TheFriend.Creatures.SnowSpiderCreature;
 
 public class SnowSpider : BigSpider
 {

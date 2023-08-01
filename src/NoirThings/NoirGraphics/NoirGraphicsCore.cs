@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using RWCustom;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto //Sprite replacement and layer management is here
 {
@@ -96,7 +96,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
             }
             #endregion
 
-            if (SolaceOptions.NoirHideEars.Value) //For.. DMS?
+            if (Options.NoirHideEars.Value) //For.. DMS?
             {
                 foreach (var sprNum in EarSpr)
                 {
@@ -190,7 +190,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
     private static void PlayerGraphicsOnApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
     {
         orig(self, sleaser, rcam, palette);
-        if (self.player.SlugCatClass != Solace.NoirName) return;
+        if (self.player.SlugCatClass != Plugin.NoirName) return;
 
         //Recolor Noir to a more white
         for (var index = 0; index < sleaser.sprites.Length; ++index)

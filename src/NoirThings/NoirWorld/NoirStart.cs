@@ -1,9 +1,9 @@
 using System.Linq;
 using RWCustom;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {
@@ -23,7 +23,7 @@ public partial class NoirCatto
             {
                 if (player.realizedCreature is Player realPlayer)
                 {
-                    if (realPlayer.SlugCatClass == Solace.NoirName)
+                    if (realPlayer.SlugCatClass == Plugin.NoirName)
                     {
                         return realPlayer;
                     }

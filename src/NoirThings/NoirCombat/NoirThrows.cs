@@ -1,9 +1,8 @@
 using MoreSlugcats;
 using RWCustom;
-using Solace.SlugcatThings;
-using UnityEngine;
+using TheFriend.SlugcatThings;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {

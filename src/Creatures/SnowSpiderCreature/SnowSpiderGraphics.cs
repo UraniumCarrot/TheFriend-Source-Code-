@@ -4,7 +4,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 
-namespace Solace.Creatures.SnowSpiderCreature;
+namespace TheFriend.Creatures.SnowSpiderCreature;
 
 public class SnowSpiderGraphics : BigSpiderGraphics
 {

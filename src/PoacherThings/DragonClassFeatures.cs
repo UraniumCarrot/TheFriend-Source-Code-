@@ -1,9 +1,9 @@
 ﻿using HUD;
 using RWCustom;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace Solace.PoacherThings;
+namespace TheFriend.PoacherThings;
 
 public class DragonClassFeatures
 {
@@ -32,7 +32,7 @@ public class DragonClassFeatures
     {
         orig(self, controllerType);
         var pl = self?.hud?.owner as Creature;
-        if (pl != null && pl.room?.game?.StoryCharacter == Solace.DragonName && !pl.room.game.IsArenaSession)
+        if (pl != null && pl.room?.game?.StoryCharacter == Plugin.DragonName && !pl.room.game.IsArenaSession)
         {
             Debug.Log("Solace: TextPrompt.UpdateGameOverString hook is trying to run!");
             self.gameOverString += ", or find a way to survive";
@@ -40,12 +40,12 @@ public class DragonClassFeatures
     }
     public static void Creature_LoseAllGrasps(On.Creature.orig_LoseAllGrasps orig, Creature self)
     {
-        if (self is Player player && player.slugcatStats.name == Solace.DragonName && self.State.alive && (!self.Stunned || (self as Player).dangerGraspTime > 0)) return;
+        if (self is Player player && player.slugcatStats.name == Plugin.DragonName && self.State.alive && (!self.Stunned || (self as Player).dangerGraspTime > 0)) return;
         else orig(self);
     }
     public static bool Player_SpearStick(On.Player.orig_SpearStick orig, Player self, Weapon source, float dmg, BodyChunk chunk, PhysicalObject.Appendage.Pos appPos, Vector2 direction)
     {
-        if (self.slugcatStats.name == Solace.DragonName)
+        if (self.slugcatStats.name == Plugin.DragonName)
         {
             if (self.dead) return true;
             if (self.bodyMode == Player.BodyModeIndex.Stunned) return true;

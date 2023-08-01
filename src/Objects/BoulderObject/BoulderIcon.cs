@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Fisobs.Core;
 using UnityEngine;
 
-namespace Solace.Objects.BoulderObject;
+namespace TheFriend.Objects.BoulderObject;
 
 internal class BoulderIcon : Icon
 {

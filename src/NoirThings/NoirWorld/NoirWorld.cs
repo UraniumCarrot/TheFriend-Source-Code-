@@ -1,6 +1,6 @@
 using RWCustom;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {
@@ -9,7 +9,7 @@ public partial class NoirCatto
     {
         orig(self);
 
-        if (self.saveStateNumber != Solace.NoirName) return;
+        if (self.saveStateNumber != Plugin.NoirName) return;
         if (self.cycleNumber == 0)
         {
             self.denPosition = StartingRoom;
@@ -21,7 +21,7 @@ public partial class NoirCatto
         orig(self, manager);
 
         if (!self.IsStorySession) return;
-        if (self.StoryCharacter != Solace.NoirName) return;
+        if (self.StoryCharacter != Plugin.NoirName) return;
         var session = self.GetStorySession;
 
         if (session.saveState.cycleNumber == 0)
@@ -37,7 +37,7 @@ public partial class NoirCatto
 
                 startRoom ??= player.Room.realizedRoom;
             }
-            if (SolaceOptions.NoirUseCustomStart.Value && startRoom != null)
+            if (Options.NoirUseCustomStart.Value && startRoom != null)
             {
                 startRoom.AddObject(new NoirStart());
             }

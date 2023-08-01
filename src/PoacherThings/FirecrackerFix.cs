@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 
-namespace Solace.PoacherThings;
+namespace TheFriend.PoacherThings;
 
 public class FirecrackerFix
 {

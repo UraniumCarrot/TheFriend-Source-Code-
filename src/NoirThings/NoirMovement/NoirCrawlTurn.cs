@@ -2,11 +2,11 @@ using System;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {
@@ -95,8 +95,8 @@ public partial class NoirCatto
         }
         catch (Exception ex)
         {
-            Solace.LogSource.LogError("ILHook failed - Noir's CrawlTurn");
-            Solace.LogSource.LogError(ex);
+            Plugin.LogSource.LogError("ILHook failed - Noir's CrawlTurn");
+            Plugin.LogSource.LogError(ex);
         }
     }
     private static bool CustomCrawlTurn(Player self)

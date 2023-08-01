@@ -4,10 +4,10 @@ using HUD;
 using Menu;
 using On.MoreSlugcats;
 using SlugBase.SaveData;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace Solace.HudThings;
+namespace TheFriend.HudThings;
 
 public class HudHooks
 {
@@ -20,8 +20,8 @@ public class HudHooks
         On.HUD.RainMeter.Update += RainMeter_Update;
     }
     
-    public static readonly SlugcatStats.Name FriendName = Solace.FriendName;
-    public static readonly SlugcatStats.Name DragonName = Solace.DragonName;
+    public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
+    public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
     //ublic static int CollTrackerInd;
     
     public static void CollectiblesTrackerOnctor(CollectiblesTracker.orig_ctor orig, MoreSlugcats.CollectiblesTracker self, Menu.Menu menu, MenuObject owner, Vector2 pos, FContainer container, SlugcatStats.Name saveslot)
@@ -71,7 +71,7 @@ public class HudHooks
         {
             for (int i = 0; i < self.circles.Length; i++)
             {
-                if (Solace.ShowCycleTimer()) { self.circles[i].Draw(timeStacker);
+                if (Plugin.ShowCycleTimer()) { self.circles[i].Draw(timeStacker);
                     (owner as Player).GetPoacher().RainTimerExists = true; }
                 else self.circles[i].sprite.scale = 0;
             }
@@ -79,7 +79,7 @@ public class HudHooks
         if (owner is Player pla && 
             (pla.slugcatStats.name == FriendName || 
              pla.slugcatStats.name == DragonName) &&
-            self.hud.map.RegionName != "HR" && !Solace.ShowCycleTimer()) // if showing timer is false
+            self.hud.map.RegionName != "HR" && !Plugin.ShowCycleTimer()) // if showing timer is false
         {
             pla.GetPoacher().RainTimerExists = false;
             for (int i = 0; i < self.circles.Length; i++)

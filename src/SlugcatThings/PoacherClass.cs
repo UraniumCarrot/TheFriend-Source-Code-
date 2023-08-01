@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using Solace.NoirThings;
+using TheFriend.NoirThings;
 using Color = UnityEngine.Color;
 
-namespace Solace.SlugcatThings;
+namespace TheFriend.SlugcatThings;
 public static class PoacherClass
 {
     // Technically this class is meant to hold variables used only for Poacher, but there's nothing barring me from using it with players in general. So i will. :)
@@ -68,7 +68,7 @@ public static class PoacherClass
     public static NoirCatto.NoirData GetNoir(this Player player) => NoirDeets.GetValue(player, _ => new(player));
     public static bool TryGetNoir(this Player player, out NoirCatto.NoirData noirData)
     {
-        if (player.SlugCatClass == Solace.NoirName)
+        if (player.SlugCatClass == Plugin.NoirName)
         {
             noirData = GetNoir(player);
             return true;

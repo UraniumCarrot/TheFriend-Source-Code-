@@ -1,7 +1,7 @@
 using RWCustom;
 using UnityEngine;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {

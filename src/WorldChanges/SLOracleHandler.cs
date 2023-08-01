@@ -5,10 +5,10 @@ using RWCustom;
 using SlugBase.SaveData;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 using MoreSlugcatsEnums = IL.MoreSlugcats.MoreSlugcatsEnums;
 
-namespace Solace.WorldChanges;
+namespace TheFriend.WorldChanges;
 
 public class SLOracleHandler
 {

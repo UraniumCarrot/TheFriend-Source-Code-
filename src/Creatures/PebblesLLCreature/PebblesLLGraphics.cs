@@ -1,7 +1,7 @@
 ﻿using Color = UnityEngine.Color;
 using Vector2 = UnityEngine.Vector2;
 
-namespace Solace.Creatures.PebblesLLCreature;
+namespace TheFriend.Creatures.PebblesLLCreature;
 
 public class PebblesLLGraphics : DaddyGraphics
 {

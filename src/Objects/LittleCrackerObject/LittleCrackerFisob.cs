@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.Experimental.GlobalIllumination;
 
-namespace Solace.Objects.LittleCrackerObject;
+namespace TheFriend.Objects.LittleCrackerObject;
 
 public class LittleCrackerFisob : Fisob
 {

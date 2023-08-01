@@ -10,7 +10,7 @@ using UnityEngine.PlayerLoop;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 
-namespace Solace.Objects.LittleCrackerObject;
+namespace TheFriend.Objects.LittleCrackerObject;
 
 public class LittleCracker : Rock
 {

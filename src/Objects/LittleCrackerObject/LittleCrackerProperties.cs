@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Fisobs.Properties;
 
-namespace Solace.Objects.LittleCrackerObject;
+namespace TheFriend.Objects.LittleCrackerObject;
 
 public class LittleCrackerProperties : ItemProperties
 {

@@ -1,6 +1,6 @@
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 
-namespace Solace.NoirThings;
+namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {

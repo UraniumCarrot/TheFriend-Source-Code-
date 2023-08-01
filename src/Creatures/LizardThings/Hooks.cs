@@ -6,9 +6,9 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
-using Solace.SlugcatThings;
+using TheFriend.SlugcatThings;
 
-namespace Solace.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings;
 public class Hooks
 {
     public static void Apply()
@@ -331,13 +331,13 @@ public class Hooks
     public static void Lizard_ctor(On.Lizard.orig_ctor orig, Lizard self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (Solace.LizRideAll() && self.Template.type != CreatureTemplateType.YoungLizard && self.Template.type != CreatureTemplateType.MotherLizard) self.GetLiz().IsRideable = true;
+        if (Plugin.LizRideAll() && self.Template.type != CreatureTemplateType.YoungLizard && self.Template.type != CreatureTemplateType.MotherLizard) self.GetLiz().IsRideable = true;
         if (self.Template.type == CreatureTemplateType.MotherLizard)
         {
             var state = Random.state;
             Random.InitState(abstractCreature.ID.RandomSeed);
             self.effectColor = Custom.HSL2RGB(Custom.WrappedRandomVariation(0.9f, 0.1f, 0.6f), 1f, Custom.ClampedRandomVariation(0.85f, 0.15f, 0.2f));
-            if (Solace.LizRide()) self.GetLiz().IsRideable = true;
+            if (Plugin.LizRide()) self.GetLiz().IsRideable = true;
             Random.state = state;
         }
         else if (self.Template.type == CreatureTemplateType.YoungLizard)

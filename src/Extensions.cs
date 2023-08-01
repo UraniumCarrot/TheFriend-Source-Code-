@@ -1,6 +1,6 @@
 using System;
 
-namespace Solace;
+namespace TheFriend;
 
 public static class Extensions
 {

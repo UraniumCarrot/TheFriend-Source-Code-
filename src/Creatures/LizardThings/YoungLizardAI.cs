@@ -6,7 +6,7 @@ using MoreSlugcats;
 using RWCustom;
 using UnityEngine;
 
-namespace Solace.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings;
 
 public class YoungLizardAI : LizardAI
 {

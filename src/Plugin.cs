@@ -8,34 +8,34 @@ using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using Fisobs.Core;
 using System.Security;
+using TheFriend.WorldChanges;
+using TheFriend.Objects.BoulderObject;
+using TheFriend.Objects.LittleCrackerObject;
+using TheFriend.Objects.BoomMineObject;
+using TheFriend.PoacherThings;
 using BepInEx.Logging;
-using Solace.Creatures.LizardThings;
-using Solace.Creatures.PebblesLLCreature;
-using Solace.Creatures.SnowSpiderCreature;
-using Solace.FriendThings;
-using Solace.HudThings;
-using Solace.NoirThings;
-using Solace.Objects.BoomMineObject;
-using Solace.Objects.BoulderObject;
-using Solace.Objects.FakePlayerEdible;
-using Solace.Objects.LittleCrackerObject;
-using Solace.PoacherThings;
-using Solace.SaveThings;
-using Solace.SlugcatThings;
-using Solace.WorldChanges;
 using ind = Player.AnimationIndex;
 using bod = Player.BodyModeIndex;
-using Solace.Objects;
+using TheFriend.Creatures.PebblesLLCreature;
+using TheFriend.Creatures.LizardThings;
+using TheFriend.Creatures.SnowSpiderCreature;
+using TheFriend.FriendThings;
+using TheFriend.SlugcatThings;
+using TheFriend.HudThings;
+using TheFriend.NoirThings;
+using TheFriend.Objects;
+using TheFriend.Objects.FakePlayerEdible;
+using TheFriend.SaveThings;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 #pragma warning restore CS0618
 
-namespace Solace
+namespace TheFriend
 {
     [BepInPlugin(MOD_ID, "The Friend", "0.3.0")]
-    class Solace : BaseUnityPlugin
+    class Plugin : BaseUnityPlugin
     {
         public const string MOD_ID = "thefriend";
 
@@ -153,7 +153,7 @@ namespace Solace
         }
         public void LoadResources(RainWorld rainWorld)
         {
-            MachineConnector.SetRegisteredOI("thefriend", new SolaceOptions());
+            MachineConnector.SetRegisteredOI("thefriend", new Options());
             Futile.atlasManager.LoadAtlas("atlases/friendsprites");
             Futile.atlasManager.LoadAtlas("atlases/friendlegs");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull2");
@@ -221,83 +221,83 @@ namespace Solace
         // Friend Settings
         public static bool FriendAutoCrouch()
         {
-            return SolaceOptions.FriendAutoCrouch.Value;
+            return Options.FriendAutoCrouch.Value;
         }
         public static bool PoleCrawl()
         {
-            return SolaceOptions.PoleCrawl.Value;
+            return Options.PoleCrawl.Value;
         }
         public static bool FriendUnNerf()
         {
-            return SolaceOptions.FriendUnNerf.Value;
+            return Options.FriendUnNerf.Value;
         }
         public static bool FriendBackspear()
         {
-            return SolaceOptions.FriendBackspear.Value;
+            return Options.FriendBackspear.Value;
         }
         public static bool FriendRepLock()
         {
-            return SolaceOptions.FriendRepLock.Value;
+            return Options.FriendRepLock.Value;
         }
         // Poacher Settings
         public static bool PoacherBackspear()
         {
-            return SolaceOptions.PoacherBackspear.Value;
+            return Options.PoacherBackspear.Value;
         }
         public static bool PoacherPupActs()
         {
-            return SolaceOptions.PoacherPupActs.Value;
+            return Options.PoacherPupActs.Value;
         }
         public static bool PoacherFreezeFaster()
         {
-            return SolaceOptions.PoacherFreezeFaster.Value;
+            return Options.PoacherFreezeFaster.Value;
         }
         public static bool PoacherFoodParkour()
         {
-            return SolaceOptions.PoacherFoodParkour.Value;
+            return Options.PoacherFoodParkour.Value;
         }
         // Famine Settings
         public static bool NoFamine()
         {
-            return SolaceOptions.NoFamine.Value;
+            return Options.NoFamine.Value;
         }
         public static bool ExpeditionFamine()
         {
-            return SolaceOptions.ExpeditionFamine.Value;
+            return Options.ExpeditionFamine.Value;
         }
         public static bool FaminesForAll()
         {
-            return SolaceOptions.FaminesForAll.Value;
+            return Options.FaminesForAll.Value;
         }
         // Lizard Reputation Settings
         public static bool LizRep()
         {
-            return SolaceOptions.LizRepMeter.Value;
+            return Options.LizRepMeter.Value;
         }
         public static bool LizRepAll()
         {
-            return SolaceOptions.LizRepMeterForAll.Value;
+            return Options.LizRepMeterForAll.Value;
         }
         public static bool LizRide()
         {
-            return SolaceOptions.LizRide.Value;
+            return Options.LizRide.Value;
         }
         public static bool LizRideAll()
         {
-            return SolaceOptions.LizRideAll.Value;
+            return Options.LizRideAll.Value;
         }
         public static bool LocalLizRep()
         {
-            return SolaceOptions.LocalizedLizRep.Value;
+            return Options.LocalizedLizRep.Value;
         }
         public static bool LocalLizRepAll()
         {
-            return SolaceOptions.LocalizedLizRepForAll.Value;
+            return Options.LocalizedLizRepForAll.Value;
         }
         // Misc Hud Settings
         public static bool ShowCycleTimer()
         {
-            return SolaceOptions.SolaceBlizzTimer.Value;
+            return Options.SolaceBlizzTimer.Value;
         }
         #endregion
     }

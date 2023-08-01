@@ -5,15 +5,15 @@ using RWCustom;
 using SlugBase;
 using MoreSlugcats;
 using SlugBase.SaveData;
-using Solace.Objects.FakePlayerEdible;
-using Solace.WorldChanges;
+using TheFriend.Objects.FakePlayerEdible;
+using TheFriend.WorldChanges;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 
 
-namespace Solace.SlugcatThings;
+namespace TheFriend.SlugcatThings;
 
 public class SlugcatGameplay
 {
@@ -40,8 +40,8 @@ public class SlugcatGameplay
         On.LanternMouse.Update += LanternMouse_Update;
         On.MoreSlugcats.DandelionPeach.Update += DandelionPeach_Update;
     }
-    public static readonly SlugcatStats.Name FriendName = Solace.FriendName;
-    public static readonly SlugcatStats.Name DragonName = Solace.DragonName;
+    public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
+    public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
 
     public static void Player_GrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
     { // Makes player ride lizard
@@ -101,7 +101,7 @@ public class SlugcatGameplay
     { // Lizard grabability for dragonriding and young lizards
         if (obj is Lizard liz)
         {
-            if (Solace.LizRide() && liz.Template.type != CreatureTemplateType.YoungLizard)
+            if (Plugin.LizRide() && liz.Template.type != CreatureTemplateType.YoungLizard)
             {
                 if (liz.GetLiz().IsRideable)
                 {
@@ -163,7 +163,7 @@ public class SlugcatGameplay
         if (self.slugcatStats.name == DragonName)
         {
             if (self.input[0].y < 1 || !self.input[0].pckp) self.GetPoacher().isMakingPoppers = false;
-            self.Hypothermia += self.HypothermiaGain * (Solace.PoacherFreezeFaster() ? 1.2f : 0.2f);
+            self.Hypothermia += self.HypothermiaGain * (Plugin.PoacherFreezeFaster() ? 1.2f : 0.2f);
             FamineWorld.PoacherEats(self);
             if (self.dangerGraspTime > 0)
             {
@@ -289,7 +289,7 @@ public class SlugcatGameplay
             if (obj is Creature crit && crit is not Hazer && crit is not VultureGrub && crit is not Snail && crit is not SmallNeedleWorm && crit is not TubeWorm) return orig(self, obj);
             else if (obj is DandelionPeach || obj is DangleFruit)
             {
-                if (!Solace.PoacherFoodParkour()) return false;
+                if (!Plugin.PoacherFoodParkour()) return false;
                 else return true;
             }
             else return false;
@@ -299,7 +299,7 @@ public class SlugcatGameplay
     public static void DandelionPeach_Update(On.MoreSlugcats.DandelionPeach.orig_Update orig, DandelionPeach self, bool eu)
     { // Poacher food parkour
         orig(self, eu);
-        if (!Solace.PoacherFoodParkour()) return;
+        if (!Plugin.PoacherFoodParkour()) return;
         if (self.room.abstractRoom.name == "VR1" || 
             self.room.abstractRoom.name == "PUMP03" || 
             self.room.abstractRoom.name == "PS1") 
@@ -340,7 +340,7 @@ public class SlugcatGameplay
     public static void DangleFruit_Update(On.DangleFruit.orig_Update orig, DangleFruit self, bool eu)
     { // Poacher food parkour
         orig(self, eu);
-        if (!Solace.PoacherFoodParkour()) return;
+        if (!Plugin.PoacherFoodParkour()) return;
         if (self.room.abstractRoom.name == "VR1" || 
             self.room.abstractRoom.name == "PUMP03" || 
             self.room.abstractRoom.name == "PS1") 
@@ -360,7 +360,7 @@ public class SlugcatGameplay
     }
     public static bool SlugcatStats_SlugcatCanMaul(On.SlugcatStats.orig_SlugcatCanMaul orig, SlugcatStats.Name slugcatNum)
     { // Friend maul
-        if (SlugBaseCharacter.TryGet(slugcatNum, out var chara) && Solace.MaulEnabled.TryGet(chara, out var canMaul) && canMaul)
+        if (SlugBaseCharacter.TryGet(slugcatNum, out var chara) && Plugin.MaulEnabled.TryGet(chara, out var canMaul) && canMaul)
             return true;
         else
             return orig(slugcatNum);
@@ -370,7 +370,7 @@ public class SlugcatGameplay
         orig(self, abstractCreature, world);
         try
         {
-            if (self.slugcatStats.name == FriendName && Solace.FriendBackspear())
+            if (self.slugcatStats.name == FriendName && Plugin.FriendBackspear())
             {
                 self.spearOnBack = new Player.SpearOnBack(self);
             }
@@ -379,7 +379,7 @@ public class SlugcatGameplay
                 self.setPupStatus(true);
                 self.GetPoacher().isPoacher = true;
                 self.GetPoacher().IsSkullVisible = true;
-                if (Solace.PoacherBackspear()) self.spearOnBack = new Player.SpearOnBack(self);
+                if (Plugin.PoacherBackspear()) self.spearOnBack = new Player.SpearOnBack(self);
             }
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
@@ -388,7 +388,7 @@ public class SlugcatGameplay
     { // Friend fast crawl
         orig(self);
 
-        if (!self.standing && Solace.SuperCrawl.TryGet(self, out var boost))
+        if (!self.standing && Plugin.SuperCrawl.TryGet(self, out var boost))
         {
             if (self.superLaunchJump >= 20) self.GetPoacher().longjump = true;
             if (self.bodyMode == bod.Crawl)
@@ -487,7 +487,7 @@ public class SlugcatGameplay
             self.jumpBoost = 0.0f;
             self.room.PlaySound(SoundID.Slugcat_Sectret_Super_Wall_Jump, self.mainBodyChunk, false, 1f, 1f);
             
-            if ((!(self.input[0].y > 0) && Solace.FriendAutoCrouch()))
+            if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch()))
             {
                 self.standing = false;
             }
@@ -513,13 +513,13 @@ public class SlugcatGameplay
         }
         
         orig(self);
-        if (Solace.SuperJump.TryGet(self, out var power))
+        if (Plugin.SuperJump.TryGet(self, out var power))
         {
-            if (Solace.FriendUnNerf()) self.jumpBoost += 3f;
+            if (Plugin.FriendUnNerf()) self.jumpBoost += 3f;
             else if (self.bodyMode == bod.Crawl) self.jumpBoost *= 1f + (power / 2);
             else self.jumpBoost += (power + 0.25f) * (self.animation == ind.StandOnBeam ? 0 : 1);
 
-            if ((!(self.input[0].y > 0) && Solace.FriendAutoCrouch()))
+            if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch()))
             {
                 self.standing = false;
             }
@@ -532,7 +532,7 @@ public class SlugcatGameplay
         if (self.slugcatStats.name == FriendName)
         {
             if (self.animation == ind.LedgeGrab && self.input[0].y < 1) { self.standing = false; self.bodyMode = bod.Crawl; }
-            if (self.animation == ind.StandOnBeam && self.input[0].y < 1 && Solace.PoleCrawl())
+            if (self.animation == ind.StandOnBeam && self.input[0].y < 1 && Plugin.PoleCrawl())
             {
                 self.dynamicRunSpeed[0] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;
                 self.dynamicRunSpeed[1] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;
@@ -547,8 +547,8 @@ public class SlugcatGameplay
     public static void SlugcatStats_ctor(On.SlugcatStats.orig_ctor orig, SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
     { // Friend unnerfs
         orig(self, slugcat, malnourished);
-        if (slugcat == FriendName && Solace.FriendUnNerf()) self.poleClimbSpeedFac = 6f;
-        if (slugcat == FriendName && Solace.FriendUnNerf()) self.runspeedFac = 0.8f;
+        if (slugcat == FriendName && Plugin.FriendUnNerf()) self.poleClimbSpeedFac = 6f;
+        if (slugcat == FriendName && Plugin.FriendUnNerf()) self.runspeedFac = 0.8f;
     }
     public static void Player_checkInput(On.Player.orig_checkInput orig, Player self)
     { // Friend leap mechanics
