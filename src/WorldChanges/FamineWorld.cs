@@ -104,6 +104,7 @@ public class FamineWorld
     public static bool HasFamines(RainWorldGame self)
     {
         if ((self.StoryCharacter == Plugin.FriendName || 
+             self.StoryCharacter == Plugin.NoirName ||
             self.StoryCharacter == Plugin.DragonName || 
             (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
             (self.rainWorld.ExpeditionMode && Plugin.ExpeditionFamine())) 

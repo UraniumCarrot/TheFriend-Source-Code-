@@ -41,8 +41,14 @@
         <Reference Include="Assembly-CSharp-firstpass">
           <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
+        <Reference Include="BellyPlus">
+          <HintPath>..\lib\BellyPlus.dll</HintPath>
+        </Reference>
         <Reference Include="SlugBase">
           <HintPath>..\..\..\..\..\Downloads\SlugBase.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.InputLegacyModule">
+          <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     

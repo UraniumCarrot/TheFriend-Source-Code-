@@ -285,7 +285,7 @@ public abstract partial class NoirCatto // Noir master class
     private static void RainWorldOnUpdate(On.RainWorld.orig_Update orig, RainWorld self)
     {
         orig(self);
-        if (self.processManager.currentMainLoop is not RainWorldGame game) return;
+        if (self.processManager?.currentMainLoop is not RainWorldGame game) return;
         if (game.GamePaused) return;
         foreach (var absPlayer in game.Players)
         {

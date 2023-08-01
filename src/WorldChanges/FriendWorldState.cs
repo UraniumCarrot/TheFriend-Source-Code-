@@ -22,13 +22,13 @@ public class FriendWorldState
 {
     public static bool FaminePlayer(RainWorldGame game) // Applies actual room changes 
     {
-        if (game?.StoryCharacter == Plugin.FriendName || game?.StoryCharacter == Plugin.DragonName && game != null) { SolaceWorldstate = true; return true; }
+        if ((game?.StoryCharacter == Plugin.FriendName || game?.StoryCharacter == Plugin.DragonName || game?.StoryCharacter == Plugin.NoirName) && game != null) { SolaceWorldstate = true; return true; }
         else { SolaceWorldstate = false; return false; }
     }
     public static bool SolaceWorldstate;
     public static bool FamineName(SlugcatStats.Name name) // For use in menus and region properties 
     {
-        if (name == Plugin.FriendName || name == Plugin.DragonName) { SolaceName = true; return true; }
+        if (name == Plugin.FriendName || name == Plugin.DragonName || name == Plugin.NoirName) { SolaceName = true; return true; }
         else { SolaceName = false; return false; }
     }
     public static bool SolaceName;
