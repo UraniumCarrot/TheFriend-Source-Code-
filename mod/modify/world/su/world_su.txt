@@ -1,0 +1,32 @@
+[FIND]X-
+[ADDAFTER]Friend,
+[MERGE]
+CREATURES
+(Friend)SU_B11 : 8-Centiwing-4, 8-Strawberry
+(Friend)SU_B02 : 6-Yellow-3, 7-Yellow-2
+
+(Friend)OFFSCREEN : 0-KingVulture-2, 0-Vulture-2, 0-Scavenger-14
+
+(Friend)SU_B07 : 3-Yellow-3, 3-Cyan
+(Friend)SU_C02 : 2-Centiwing-2, 5-BigSpider-{Winter}
+(Friend)SU_A17 : 2-BigSpider-2-{Winter}
+(Friend)SU_A07 : 4-SpitterSpider-{Winter}
+(Friend)SU_B04 : 4-Yellow-2, 5-Yellow-3, 5-Salamander-2-{PreCycle}
+
+(Friend)SU_A10 : 3-Caramel
+(Friend)SU_A04 : 4-Strawberry
+(Friend)SU_B09 : 4-Centipede-5
+(Friend)SU_A20 : 5-Centipede-3, 6-Small Centipede-2
+(Friend)SU_B05 : 4-BigSpider-{Winter}
+(Friend)SU_A32 : 2-Red
+(Friend)SU_B08 : 3-YoungLizard-4
+
+(Friend)LINEAGE : SU_B08 : 3 : MotherLizard-1, NONE-0
+(Friend)LINEAGE : SU_A31 : 3 : NONE-0.1, Small Centipede-0.5, Centipede-{0.3}-0.5, Centipede-{0.5}-0.5, RedCentipede-0
+
+
+(Friend)SU_A06 : 3-Strawberry
+(Friend)SU_A02 : 3-SnowSpider
+(Friend)SU_A40 : 2-SnowSpider
+END CREATURES
+[ENDMERGE]
