@@ -9,6 +9,7 @@ using ObjType = AbstractPhysicalObject.AbstractObjectType;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.SlugcatThings;
+using TheFriend.WorldChanges;
 
 namespace TheFriend.PoacherThings;
 public class DragonCrafts
@@ -67,7 +68,7 @@ public class DragonCrafts
     public static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
     {
         orig(self, spear);
-        if ((self.room.world.game.StoryCharacter == Plugin.FriendName || self.room.world.game.StoryCharacter == Plugin.DragonName) && spear.bugSpear)
+        if (FriendWorldState.SolaceWorldstate && self.room.world.region.name != "HR" && spear.bugSpear)
         {
             spear.spearDamageBonus *= 0.4f;
         }
