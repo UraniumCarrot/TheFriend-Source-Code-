@@ -167,6 +167,7 @@ namespace TheFriend
             orig(self);
             try
             {
+                SlugcatNameFix.Apply();
                 if (ModManager.ActiveMods.Any(x => x.id == "willowwisp.bellyplus"))
                 {
                     RotundWorld = true;
