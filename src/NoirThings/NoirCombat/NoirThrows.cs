@@ -48,10 +48,14 @@ public partial class NoirCatto
 
         noirData.SpearThrownAnimation = self.animation;
 
-
         spear.exitThrownModeSpeed = 10f;
         spear.spearDamageBonus = 0.4f;
-        if (spear.bugSpear)
+
+        if (spear.abstractSpear.explosive || spear.abstractSpear.electric)
+        {
+            spear.firstChunk.vel *= 0.38f;
+        }
+        else if (spear.bugSpear)
         {
             spear.firstChunk.vel *= 0.77f;
         }

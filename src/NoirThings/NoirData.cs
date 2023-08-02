@@ -35,7 +35,7 @@ public abstract partial class NoirCatto // Noir master class
         public bool LastJumpFromHorizontalBeam;
         public bool FrontCrawlFlip;
 
-        public int SlashCooldown;
+        public readonly int[] SlashCooldown = new[] { 0, 0 };
         public int AirSlashCooldown;
         public int CombinedBonus => ComboBonus + MovementBonus + RotundnessBonus;
         public int ComboBonus;
@@ -206,7 +206,8 @@ public abstract partial class NoirCatto // Noir master class
 
         private void CombatUpdate()
         {
-            SlashCooldown.Tick();
+            SlashCooldown[0].Tick();
+            SlashCooldown[1].Tick();
             AirSlashCooldown.Tick();
             ComboTimer.Tick();
             if (ComboTimer == 0 && ComboBonus > 0)

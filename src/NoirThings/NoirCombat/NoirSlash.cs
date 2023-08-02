@@ -240,35 +240,50 @@ public partial class NoirCatto
                 if (crit is TubeWorm or JetFish && crit.grabbedBy.Any(x => x.grabber == Owner)) return false; //todo Add tamed lizards
 
                 var smallCrit = Owner.IsSmallerThanMe(crit);
-                //
                 //if (!smallCrit) ChangeMode(Mode.Free);
 
-                var stunBonus = 20f * (noirData.CombinedBonus + 1);
+                var stunBonus = 10f * (noirData.CombinedBonus + 1);
                 if (smallCrit)
                 {
-                    stunBonus += 30f;
+                    stunBonus += 20f;
                 }
 
-                var damage = 0.2f + 0.2f * (noirData.CombinedBonus + 1);
+                var damage = 0.2f + 0.1f * (noirData.CombinedBonus + 1);
                 if (crit is Player) damage *= 2f;
 
-                crit.Violence(firstChunk, directionAndMomentum, result.chunk, result.onAppendagePos, Creature.DamageType.Stab, damage, stunBonus);
-                CreaturesHit.Add(crit);
-                noirData.ClawHit();
-                if (!smallCrit) firstChunk.vel = firstChunk.vel * 0.5f + Custom.DegToVec(90f) * 0.1f * firstChunk.vel.magnitude;
-
+                var hitShield = false;
                 if (crit is Lizard liz && result.chunk.index == 0)
                 {
                     if (liz.HitHeadShield(directionAndMomentum))
                     {
+                        hitShield = true;
                         if (SlashType is not (SlashType.AirSlash or SlashType.AirSlash2))
                         {
                             Owner.Stun(30);
-                            noirData.SlashCooldown = 50;
+                            noirData.SlashCooldown[0] = 50;
+                            noirData.SlashCooldown[1] = 50;
                             room?.PlaySound(NoirCatto.MeowFrustratedSND, Owner.firstChunk, false, 1f, noirData.MeowPitch);
                         }
                     }
                 }
+
+                if (crit is Player pl)
+                {
+                    if (pl.SlugCatClass == Plugin.DragonName) //Don't scratch up Poacher
+                    {
+                        //ToDo: tried directly using Poacher's hook, no worky, please reimplement something better, don't be lazy Noir
+                    }
+                }
+
+                if (hitShield)
+                {
+                    damage *= 0.5f;
+                    stunBonus *= 0.5f;
+                }
+                crit.Violence(firstChunk, directionAndMomentum, result.chunk, result.onAppendagePos, Creature.DamageType.Stab, damage, stunBonus);
+                CreaturesHit.Add(crit);
+                noirData.ClawHit();
+                if (!smallCrit) firstChunk.vel = firstChunk.vel * 0.5f + Custom.DegToVec(90f) * 0.1f * firstChunk.vel.magnitude;
             }
 
             else if (result.chunk != null)

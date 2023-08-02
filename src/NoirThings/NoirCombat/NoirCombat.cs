@@ -42,10 +42,11 @@ public partial class NoirCatto
         NoirMaul(self, eu);
     }
 
-    private static int HandToSlash(Player self)
+    private static int HandToSlash(NoirData noirData)
     {
-        var hand = self.flipDirection == -1 ? 0 : 1;
-        if (self.grasps[hand] != null) hand = hand == 0 ? 1 : 0;
+        var hand = noirData.Cat.flipDirection == -1 ? 0 : 1;
+        if (noirData.Cat.grasps[hand] != null || noirData.SlashCooldown[hand] > 0) hand = hand == 0 ? 1 : 0;
+        if (noirData.Cat.grasps[hand] != null || noirData.SlashCooldown[hand] > 0) hand = -1;
         return hand;
     }
     private static void CustomCombatUpdate(NoirData noirData, bool eu)
@@ -53,6 +54,7 @@ public partial class NoirCatto
         var self = noirData.Cat;
 
         if (!noirData.CanSlash) return;
+        var hand = HandToSlash(noirData);
 
         if (self.animation == Player.AnimationIndex.Flip)
         {
@@ -66,17 +68,19 @@ public partial class NoirCatto
             }
             else if (noirData.GraspsAnyNull)
             {
-                var airSlash = new AbstractCatSlash(self.room.world, AbstractObjectType.CatSlash, null, self.abstractCreature.pos, self.room.game.GetNewID(), self, HandToSlash(self), SlashType.AirSlash);
+                var airSlash = new AbstractCatSlash(self.room.world, AbstractObjectType.CatSlash, null, self.abstractCreature.pos, self.room.game.GetNewID(), self, hand, SlashType.AirSlash);
                 airSlash.RealizeInRoom();
             }
             noirData.AirSlashCooldown += 40;
         }
         else
         {
-            if (noirData.SlashCooldown > 0) return;
-            var slash = new AbstractCatSlash(self.room.world, AbstractObjectType.CatSlash, null, self.abstractCreature.pos, self.room.game.GetNewID(), self, HandToSlash(self));
+            if (hand < 0) return;
+            if (noirData.SlashCooldown[hand] > 0) return;
+
+            var slash = new AbstractCatSlash(self.room.world, AbstractObjectType.CatSlash, null, self.abstractCreature.pos, self.room.game.GetNewID(), self, hand);
             slash.RealizeInRoom();
-            noirData.SlashCooldown += 40;
+            noirData.SlashCooldown[hand] += 40;
         }
     }
 }

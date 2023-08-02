@@ -177,7 +177,7 @@ public partial class NoirCatto
                 if (noirData.ClimbCounter >= 1)
                 {
                     yMod = 7f;
-                    noirData.ClimbCooldown = 10;
+                    noirData.ClimbCooldown = 27;
                 }
                 if (noirData.ClimbCounter >= 2)
                 {
