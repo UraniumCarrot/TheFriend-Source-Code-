@@ -75,7 +75,7 @@ public class SlugcatGameplay
     }
     public static bool Weapon_HitThisObject(On.Weapon.orig_HitThisObject orig, Weapon self, PhysicalObject obj)
     { // Lizard mount will not be hit by owner's weapons
-        if (obj is Lizard liz && liz.GetLiz() != null && liz.GetLiz().IsBeingRidden && self.thrownBy is Player pl && pl.GetPoacher().dragonSteed == liz) return false;
+        if (obj is Lizard liz && liz.GetLiz() != null && liz.GetLiz().rider != null && self.thrownBy is Player pl && pl.GetPoacher().dragonSteed == liz) return false;
         else return orig(self, obj);
     }
     public static void Player_Grabbed(On.Player.orig_Grabbed orig, Player self, Creature.Grasp grasp)
@@ -113,7 +113,7 @@ public class SlugcatGameplay
                         !liz.dead && 
                         !liz.Stunned) 
                         return Player.ObjectGrabability.CantGrab;
-                    if ((liz.GetLiz().IsBeingRidden || 
+                    if ((liz.GetLiz().rider != null || 
                          self.GetPoacher().grabCounter > 0 || 
                          liz.AI?.LikeOfPlayer(liz.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) < 0) && 
                         !liz.dead && 
@@ -198,7 +198,7 @@ public class SlugcatGameplay
                         liz.animation != Lizard.Animation.ThreatReSpotted &&
                         liz.animation != Lizard.Animation.ThreatSpotted) liz.JawOpen = 0;
                     DragonRiding.DragonRiderSafety(self, self.GetPoacher().dragonSteed, (self.GetPoacher().dragonSteed as Lizard).GetLiz().seat0);
-                    if ((self.input[0].y < 0 && self.input[0].pckp) ||
+                    if ((self.GetPoacher().UnchangedInputForLizRide[0].y < 0 && self.input[0].pckp) ||
                         (self.GetPoacher().dragonSteed as Lizard)?.AI?.LikeOfPlayer((self.GetPoacher().dragonSteed as Lizard)?.AI?.tracker?.RepresentationForCreature(self.abstractCreature, true)) <= 0 ||
                         self.dead ||
                         self.Stunned ||
@@ -264,12 +264,12 @@ public class SlugcatGameplay
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Weapon)
+                    if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Weapon wep)
                     {
                         float rotation = i == 1 ? self.GetPoacher().pointDir1 + 90 : self.GetPoacher().pointDir0 + 90f;
                         Vector2 vec = Custom.DegToVec(rotation);
-                        (self.grasps[i]?.grabbed as Weapon).setRotation = vec; //new Vector2(self.input[0].x*10, self.input[0].y*10);
-                        (self.grasps[i]?.grabbed as Weapon).rotationSpeed = 0f;
+                        (wep).setRotation = vec; //new Vector2(self.input[0].x*10, self.input[0].y*10);
+                        (wep).rotationSpeed = 0f;
                     }
                 }
             }
@@ -554,6 +554,22 @@ public class SlugcatGameplay
     { // Friend leap mechanics
         var timer = self.GetPoacher().poleSuperJumpTimer;
         orig(self);
+        
+        //Moving all inputs one slot up
+        for (var i = self.GetPoacher().UnchangedInputForLizRide.Length - 1; i > 0; i--)
+        {
+            self.GetPoacher().UnchangedInputForLizRide[i] = self.GetPoacher().UnchangedInputForLizRide[i - 1];
+        }
+        //Copying original unmodified input
+        self.GetPoacher().UnchangedInputForLizRide[0] = self.input[0];
+        // Elliot note: Thanks Noir <3
+
+        if (self.GetPoacher().isRidingLizard)
+        {
+            self.input[0].y = 0;
+            self.input[0].x = 0;
+            self.input[0].jmp = false;
+        }
         if (self.slugcatStats.name != FriendName) return;
 
         if (self.GetPoacher().longjump && self.input[0].y == 0) self.GetPoacher().WantsUp = false;

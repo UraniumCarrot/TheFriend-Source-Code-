@@ -18,13 +18,15 @@ public static class DragonRideCWT
         public Vector2 seat0;
         public Vector2? lastOutsideTerrainPos;
         public bool boolseat0;
-        public bool IsBeingRidden;
+        public bool aquatic;
+        //public bool IsBeingRidden;
         public bool IsRideable;
         public Player rider;
 
         public DragonRide()
         {
-            this.IsBeingRidden = false;
+            //this.IsBeingRidden = false;
+            this.aquatic = false;
             this.IsRideable = false;
             this.seat0 = Vector2.zero;
             this.lastOutsideTerrainPos = null;

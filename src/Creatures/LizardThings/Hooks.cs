@@ -459,7 +459,10 @@ public class Hooks
     public static void Lizard_ctor(On.Lizard.orig_ctor orig, Lizard self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (Plugin.LizRideAll() && self.Template.type != CreatureTemplateType.YoungLizard && self.Template.type != CreatureTemplateType.MotherLizard) self.GetLiz().IsRideable = true;
+        if (Plugin.LizRideAll() && 
+            self.Template.type != CreatureTemplateType.YoungLizard && 
+            self.Template.type != CreatureTemplateType.MotherLizard) 
+            self.GetLiz().IsRideable = true;
         if (self.Template.type == CreatureTemplateType.MotherLizard)
         {
             var state = Random.state;
@@ -486,6 +489,9 @@ public class Hooks
             self.GetLiz().IsRideable = false;
             Random.state = state;
         }
+        if (self.Template.type == CreatureTemplate.Type.Salamander ||
+            self.Template.type == MoreSlugcatsEnums.CreatureTemplateType.EelLizard)
+            self.GetLiz().aquatic = true;
     }
     public static void Lizard_Bite(On.Lizard.orig_Bite orig, Lizard self, BodyChunk chunk)
     {
@@ -604,7 +610,7 @@ public class Hooks
             }
         }
         catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update GeneralLizardCode " + e); }
-        if (self.GetLiz() != null && self?.GetLiz()?.IsBeingRidden == true)
+        if (self.GetLiz() != null && self?.GetLiz()?.rider != null)
         {
             if (self?.graphicsModule != null) (self?.graphicsModule as LizardGraphics)?.BringSpritesToFront();
             try
@@ -645,7 +651,7 @@ public class Hooks
     #region misc data
     public static void LizardAI_SocialEvent(On.LizardAI.orig_SocialEvent orig, LizardAI self, SocialEventRecognizer.EventID ID, Creature subjectCrit, Creature objectCrit, PhysicalObject involvedItem)
     {
-        if (self.lizard.GetLiz().IsBeingRidden && subjectCrit is Player pl && pl?.GetPoacher()?.dragonSteed == self.lizard) return;
+        if (self.lizard.GetLiz().rider != null && subjectCrit is Player pl && pl?.GetPoacher()?.dragonSteed == self.lizard) return;
         else orig(self, ID, subjectCrit, objectCrit, involvedItem);
     }
     public static void Creature_NewRoom(On.Creature.orig_NewRoom orig, Creature self, Room newRoom)

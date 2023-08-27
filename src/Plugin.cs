@@ -57,6 +57,7 @@ namespace TheFriend
             On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
 
             // Hooks
+            LizardRideControl.Apply();
             AbstractObjectType.Apply();
             UpdateDeleteCWT.Apply();
             MotherKillTracker.Apply();

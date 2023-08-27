@@ -4,6 +4,7 @@ using MoreSlugcats;
 using UnityEngine;
 using SlugBase.SaveData;
 using TheFriend.SlugcatThings;
+using TheFriend.WorldChanges;
 
 namespace TheFriend.HudThings;
 
@@ -13,7 +14,7 @@ public static class DragonRepInterface
     {
         On.HUD.HUD.InitSinglePlayerHud += HUD_InitSinglePlayerHud;
     }
-    public static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam) // Forces new hud to work
+    public static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam) // Forces new hud elements to work
     {
         orig(self, cam);
         if (Plugin.LizRep() && 
@@ -27,7 +28,6 @@ public static class DragonRepInterface
     {
         public Vector2 pos;
         public Vector2 lastPos;
-        public Vector2 custPos;
 
         public int remainVisibleCounter;
 
@@ -44,14 +44,7 @@ public static class DragonRepInterface
         public DragonUI(HUD.HUD hud, FContainer fContainer, Player player) : base(hud)
         {
             owner = player;
-            Vector2 reinforcedPos = !hud.karmaMeter.showAsReinforced ? Vector2.zero : new Vector2(10,10);
-            custPos = (!player.GetPoacher().RainTimerExists &&
-                (player.room.game.StoryCharacter == Plugin.FriendName ||
-                player.room.game.StoryCharacter == Plugin.DragonName ||
-                player.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint) 
-                ? 
-                new Vector2(-33, 23) : new Vector2(-40, 30)) + reinforcedPos;
-            pos = hud.karmaMeter.pos + custPos;
+            pos = hud.karmaMeter.pos;
             lastPos = pos;
             circles = new HUDCircle[3];
             dragonSprite = new FSprite("DragonSlayerB");
@@ -66,15 +59,27 @@ public static class DragonRepInterface
         }
         public override void Update()
         {
+            bool rainvisible = false;
             if (hud.owner is Player pl && (hud.owner as Player)?.room != null)
             {
                 reputation = pl.room.game.session.creatureCommunities.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, pl.room.world.region.regionNumber, 0);
-                /*pl.room.world.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegion", out List<int> regionsKilledIn);
+                pl.room.world.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegion", out List<int> regionsKilledIn);
+                
                 if (regionsKilledIn.Contains(pl.room.world.RegionNumber))
                     motherSprite.isVisible = true; // Mother
-                else motherSprite.isVisible = false;*/
+                else motherSprite.isVisible = false;
+                
+                if (pl.room.world.rainCycle.AmountLeft > 0 && 
+                    (Plugin.ShowCycleTimer() ||
+                     (!FriendWorldState.SolaceWorldstate &&
+                      pl.slugcatStats.name != MoreSlugcatsEnums.SlugcatStatsName.Saint)))
+                    rainvisible = true;
             }
-
+            
+            pos = hud.karmaMeter.pos + (hud.karmaMeter.showAsReinforced ? new Vector2(0, 10) : Vector2.zero) + // gains more height when karma is reinforced
+                  new Vector2(0, 40); // base height
+            pos += rainvisible ? new Vector2(0, 10) : Vector2.zero; // gains more height when rain meter is visible
+            pos += circles[1].visible ? new Vector2(0,5) : Vector2.zero; // gains more height if at max/min rep
             lastPos = pos;
             lastFade = fade;
             if (hud.HideGeneralHud)
@@ -85,7 +90,7 @@ public static class DragonRepInterface
             {
                 circles[i].Update();
                 circles[i].fade = hud.karmaMeter.fade;
-                circles[i].pos = hud.karmaMeter.pos + custPos;
+                circles[i].pos = pos;
             }
             circles[0].thickness = 2f;
             circles[0].rad = 10f;
@@ -95,16 +100,16 @@ public static class DragonRepInterface
             circles[2].rad = 6f;
 
             dragonSprite.scale = 0.5f;
-            dragonSprite.x = hud.karmaMeter.pos.x + custPos.x;
-            dragonSprite.y = hud.karmaMeter.pos.y + custPos.y;
+            dragonSprite.x = pos.x;
+            dragonSprite.y = pos.y;
 
             friendSprite.scale = 0.5f;
-            friendSprite.x = hud.karmaMeter.pos.x + custPos.x;
-            friendSprite.y = hud.karmaMeter.pos.y + custPos.y;
+            friendSprite.x = pos.x;
+            friendSprite.y = pos.y;
             
             motherSprite.scale = 0.5f;
-            motherSprite.x = hud.karmaMeter.pos.x + custPos.x;
-            motherSprite.y = hud.karmaMeter.pos.y + custPos.y;
+            motherSprite.x = pos.x;
+            motherSprite.y = pos.y;
 
             if (!motherSprite.isVisible)
             {

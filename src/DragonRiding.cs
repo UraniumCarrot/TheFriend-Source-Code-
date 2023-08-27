@@ -35,8 +35,7 @@ public class DragonRiding
     {
         var self = crit as Lizard;
         if (!self.GetLiz().IsRideable) { DragonRideReset(crit,player); return; }
-        self.GetLiz().IsBeingRidden = true;
-        if (self != null) self.abstractCreature.controlled = true;
+        //self.GetLiz().IsBeingRidden = true;
     }
     public static void DragonRideReset(Creature crit, Player player) // Performed after riding stops
     {
@@ -46,11 +45,10 @@ public class DragonRiding
         if (crit is Lizard liz)
         {
             liz.GetLiz().boolseat0 = false;
-            liz.GetLiz().IsBeingRidden = false;
+            //liz.GetLiz().IsBeingRidden = false;
             liz.GetLiz().rider = null;
         }
         player.GetPoacher().isRidingLizard = false;
-        crit.abstractCreature.controlled = false;
         if (player.GetPoacher()?.rideStick != null)
         {
             player.GetPoacher().rideStick.Deactivate();

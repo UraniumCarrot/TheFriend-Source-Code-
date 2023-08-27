@@ -238,7 +238,7 @@ public class Options : OptionInterface
         #region Memorial
         #endregion
 
-        Tabs[0].AddItems( // General
+        opTab0.AddItems( // General
             labelMod,
             labelVersion,
 
@@ -257,7 +257,7 @@ public class Options : OptionInterface
             SolaceTimerBox,
             SolaceTimerLabel
             );
-        Tabs[1].AddItems( // Characters
+        opTab1.AddItems( // Characters
             labelMod1,
             labelVersion1,
 
@@ -283,7 +283,7 @@ public class Options : OptionInterface
             PoacherFoodBox,
             PoacherFoodLabel
             );
-        Tabs[2].AddItems( // Experimental
+        opTab2.AddItems( // Experimental
             labelMod2,
             labelVersion2,
 
@@ -296,10 +296,11 @@ public class Options : OptionInterface
             LizRepMeterAllBox,
             LizRepAllLabel
             );
-        Tabs[3].AddItems( // Memorial
+        opTab3.AddItems( // Memorial
             );
         
         // ^^Why even have a number of different opTab variables if you're gonna do a Tabs[num] either way :leditoroverload:
+        // Elliot note: you will die in 7 days (fixed)
 
 
         NoirSlashConditionsCheckBox = new OpCheckBox(NoirAltSlashConditions, 10f, 520f);

@@ -30,6 +30,9 @@ public static class PoacherClass
         public float pointDir1;
         public int spearRotationTimer;
         public bool RainTimerExists;
+        
+        public Player thisPlayer;
+        public readonly Player.InputPackage[] UnchangedInputForLizRide;
         public DragonRiding.AbstractDragonRider rideStick;
         public Creature dragonSteed;
         public int grabCounter;
@@ -54,14 +57,16 @@ public static class PoacherClass
         public bool TriedSpawningOverseerInThisRoom;
 
 
-        public Poacher()
+        public Poacher(Player player)
         {
+            thisPlayer = player;
             isPoacher = false;
             isRidingLizard = false;
+            UnchangedInputForLizRide = new Player.InputPackage[player.input.Length];
         }
     }
     public static readonly ConditionalWeakTable<Player, Poacher> CWT = new();
-    public static Poacher GetPoacher(this Player player) => CWT.GetValue(player, _ => new());
+    public static Poacher GetPoacher(this Player player) => CWT.GetValue(player, _ => new(player));
     
     // Noir's CWT
     public static readonly ConditionalWeakTable<Player, NoirCatto.NoirData> NoirDeets = new ConditionalWeakTable<Player, NoirCatto.NoirData>();
