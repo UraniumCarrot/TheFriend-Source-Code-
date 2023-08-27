@@ -484,6 +484,7 @@ public class SlugcatGameplay
             self.bodyChunks[1].vel = new Vector2(flipDirNeg * -7f, 11f);
             self.flipFromSlide = true;
             self.whiplashJump = false;
+            self.slideCounter = 0;
             self.jumpBoost = 0.0f;
             self.room.PlaySound(SoundID.Slugcat_Sectret_Super_Wall_Jump, self.mainBodyChunk, false, 1f, 1f);
             

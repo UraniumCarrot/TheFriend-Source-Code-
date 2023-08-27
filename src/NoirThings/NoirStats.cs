@@ -8,11 +8,11 @@ public partial class NoirCatto
         
         if (slugcat == Plugin.NoirName)
         {
-            self.generalVisibilityBonus = -0.1f;
-            self.visualStealthInSneakMode = 0.6f;
-            self.loudnessFac = 0.75f;
+            self.generalVisibilityBonus = -0.2f;
+            self.visualStealthInSneakMode = 0.75f;
+            self.loudnessFac = 0.6f;
 
-            self.bodyWeightFac = 0.90f;
+            self.bodyWeightFac = 0.85f;
             self.throwingSkill = 1;
 
             self.runspeedFac = 0.8f;
