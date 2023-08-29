@@ -50,22 +50,26 @@ public class Options : OptionInterface
 
     public Options()
     {
+        #region friend
         FriendAutoCrouch = config.Bind("FriendAutoCrouch", true, new ConfigAcceptableList<bool>(true, false));
         PoleCrawl = config.Bind("PoleCrawl", true, new ConfigAcceptableList<bool>(true, false));
         FriendUnNerf = config.Bind("FriendUnNerf", false, new ConfigAcceptableList<bool>(true, false));
         FriendBackspear = config.Bind("FriendBackspear", false, new ConfigAcceptableList<bool>(true, false));
         FriendRepLock = config.Bind("FriendRepLock", true, new ConfigAcceptableList<bool>(true, false));
-
+        #endregion
+        #region poacher
         PoacherPupActs = config.Bind("PoacherPupActs", true, new ConfigAcceptableList<bool>(true, false));
         PoacherBackspear = config.Bind("PoacherBackspear", false, new ConfigAcceptableList<bool>(true, false));
         PoacherFreezeFaster = config.Bind("PoacherFreezeFaster", false, new ConfigAcceptableList<bool>(true, false));
         PoacherFoodParkour = config.Bind("PoacherFoodParkour", true, new ConfigAcceptableList<bool>(true, false));
-
+        #endregion
+        #region noir
         NoirAltSlashConditions = config.Bind(nameof(NoirAltSlashConditions), false);
         NoirUseCustomStart = config.Bind(nameof(NoirUseCustomStart), true);
         NoirAttractiveMeow = config.Bind(nameof(NoirAttractiveMeow), true);
         NoirHideEars = config.Bind(nameof(NoirHideEars), false);
         NoirMeowKey = config.Bind(nameof(NoirMeowKey), KeyCode.LeftAlt);
+        #endregion
 
         ExpeditionFamine = config.Bind("ExpeditionFamine", false, new ConfigAcceptableList<bool>(true, false));
         NoFamine = config.Bind("NoFamine", false, new ConfigAcceptableList<bool>(true, false));
@@ -73,13 +77,10 @@ public class Options : OptionInterface
         LocalizedLizRep = config.Bind("LocalizedLizRep", true, new ConfigAcceptableList<bool>(true, false));
         LocalizedLizRepForAll = config.Bind("LocalizedLizRepForAll", false, new ConfigAcceptableList<bool>(true, false));
         SolaceBlizzTimer = config.Bind("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
-
-        LizRide = config.Bind("LizRide", false, new ConfigAcceptableList<bool>(true, false));
         LizRideAll = config.Bind("LizRideAll", false, new ConfigAcceptableList<bool>(true, false));
-        LizRepMeter = config.Bind("LizRepMeter", false, new ConfigAcceptableList<bool>(true, false));
         LizRepMeterForAll = config.Bind("LizRepMeterForAll", false, new ConfigAcceptableList<bool>(true, false));
 
-        // Achievements
+        #region unimplemented
         SolaceFriendOEAchievement = config.Bind("SolaceFriendOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
         SolacePoacherOEAchievement = config.Bind("SolacePoacherOEAchievement", false, new ConfigAcceptableList<bool>(true, false));
         SolaceFriendBadAscensionAchievement = config.Bind("SolaceFriendBadAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
@@ -88,16 +89,13 @@ public class Options : OptionInterface
         SolacePoacherGoodAscensionAchievement = config.Bind("SolacePoacherGoodAscensionAchievement", false, new ConfigAcceptableList<bool>(true, false));
         SolacePebblesAchievement = config.Bind("SolacePebblesAchievement", false, new ConfigAcceptableList<bool>(true, false));
         SolacePebblesStolenEnlightenmentAchievement = config.Bind("SolacePebblesStolenEnlightenmentAchievement", false, new ConfigAcceptableList<bool>(true, false));
+        #endregion
     }
 
     // Greyout-able boxes and labels
     static OpCheckBox NoFamineBox;
     static OpCheckBox AllFamineBox;
     static OpCheckBox ExpeditionFamineBox;
-    static OpCheckBox LizRideBox;
-    static OpCheckBox LizRideAllBox;
-    static OpCheckBox LizRepMeterBox;
-    static OpCheckBox LizRepMeterAllBox;
     static OpCheckBox LocalLizRepBox;
     static OpCheckBox LocalLizRepAllBox;
     // Dynamic stuff
@@ -107,7 +105,7 @@ public class Options : OptionInterface
     public override void Update()
     {
         base.Update();
-
+        /*
         if (NoFamineBox.value == "true")
         {
             AllFamineBox.greyedOut = true; 
@@ -118,13 +116,9 @@ public class Options : OptionInterface
             AllFamineBox.greyedOut = false; 
             ExpeditionFamineBox.greyedOut = false;
         }
-        
-        LizRideAllBox.greyedOut = LizRideBox.value == "false";
-        
-        LizRepMeterAllBox.greyedOut = LizRepMeterBox.value == "false";
-        
+
         LocalLizRepAllBox.greyedOut = LocalLizRepBox.value == "false";
-        
+        */
         // Noir
         NoirSlashConditionsLabel.text = "Slash conditions: " + (NoirSlashConditionsCheckBox.GetValueBool() ?
             "Default - Empty hands, or no directional input while holding an object" : 
@@ -133,27 +127,24 @@ public class Options : OptionInterface
     public override void Initialize()
     {
         var opTab0 = new OpTab(this, "General");
-        var opTab1 = new OpTab(this, "Characters");
-        var opTab2 = new OpTab(this, "Experimental");
-        var opTab3 = new OpTab(this, "Memorial");
+        var opTab1 = new OpTab(this, "Friend");
+        var opTab2 = new OpTab(this, "Poacher");
         var opTabNoir = new OpTab(this, "Noir"); //TODO: Merge into Solace properly
-        OpContainer genCont = new OpContainer(Vector2.zero);
-        opTab0.AddItems(genCont);
-        OpContainer charCont = new OpContainer(Vector2.zero);
-        opTab1.AddItems(charCont);
-        OpContainer achieveCont = new OpContainer(Vector2.zero);
-        opTab1.AddItems(achieveCont);
+        OpContainer FriendSprites = new OpContainer(Vector2.zero);
+        OpContainer PoacherSprites = new OpContainer(Vector2.zero);
 
+        float labelX = 20;
+        float labelY = 570;
+        
         base.Initialize();
-        Tabs = new[] { opTab0, opTab1, opTab2, opTab3, opTabNoir };
+        Tabs = new[] { opTab0, opTab1, opTab2, opTabNoir };
+        
+        //OpContainer achieveCont = new OpContainer(Vector2.zero);
+        //opTab1.AddItems(achieveCont);
 
-        var labelMod = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - General Settings"), true);
-        var labelVersion = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.3.0"));
-        var labelMod1 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Character Settings"), true);
-        var labelVersion1 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.3.0"));
-        var labelMod2 = new OpLabel(20, 600 - 30, Translate("Rain World: Solace Config - Experimental Settings"), true);
-        var labelVersion2 = new OpLabel(20, 600 - 30 - 20, Translate("Version 0.3.0"));
-
+        
+        
+        /*
         // General
         #region General
         NoFamineBox = new OpCheckBox(NoFamine, new Vector2(50, 600 - 100)) { description = Translate("Famine mechanics and changes are disabled when checked") };
@@ -220,24 +211,15 @@ public class Options : OptionInterface
         var PoacherFoodBox = new OpCheckBox(PoacherFoodParkour, new Vector2(50, 600 - 500)) { description = Translate("Allows some food items to affect Poacher's movement") };
         var PoacherFoodLabel = new OpLabel(new(50, 600 - 518), Vector2.zero, Translate("Heavy Foods"));
         #endregion
-        // Experimental
-        #region Experimental
-        LizRideBox = new OpCheckBox(LizRide, new Vector2(50, 600 - 100)) { description = Translate("Allows mother lizards to be ridden if lizard rep is high enough") };
-        var LizRideLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Lizard Riding"));
-
-        LizRideAllBox = new OpCheckBox(LizRideAll, new Vector2(50, 600 - 150)) { description = Translate("Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)") };
+        // Misc
+        #region Misc
+        var LizRideAllBox = new OpCheckBox(LizRideAll, new Vector2(50, 600 - 150)) { description = Translate("Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)") };
         var LizRideAllLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Universal Lizard Riding"));
-
-        LizRepMeterBox = new OpCheckBox(LizRepMeter, new Vector2(50, 600 - 200)) { description = Translate("Displays lizard reputation in the current region for Solace slugcats") };
-        var LizRepLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Lizard Rep Meter"));
-
-        LizRepMeterAllBox = new OpCheckBox(LizRepMeterForAll, new Vector2(50, 600 - 250)) { description = Translate("Displays lizard reputation in the current region for all slugcats") };
+        
+        var LizRepMeterAllBox = new OpCheckBox(LizRepMeterForAll, new Vector2(50, 600 - 250)) { description = Translate("Displays lizard reputation in the current region for all slugcats") };
         var LizRepAllLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Universal Lizard Meter"));
         #endregion
-        // Memorial
-        #region Memorial
-        #endregion
-
+        
         opTab0.AddItems( // General
             labelMod,
             labelVersion,
@@ -287,21 +269,152 @@ public class Options : OptionInterface
             labelMod2,
             labelVersion2,
 
-            LizRideBox,
-            LizRideLabel,
             LizRideAllBox,
             LizRideAllLabel,
-            LizRepMeterBox,
-            LizRepLabel,
             LizRepMeterAllBox,
             LizRepAllLabel
             );
-        opTab3.AddItems( // Memorial
-            );
-        
+            */
         // ^^Why even have a number of different opTab variables if you're gonna do a Tabs[num] either way :leditoroverload:
         // Elliot note: you will die in 7 days (fixed)
 
+        // General
+        opTab0.AddItems(new UIelement[]
+        {
+            new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - General Settings"), true),
+            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+        });
+        
+        
+        float row1 = 475; // Row Y values
+        float row2 = 375;
+        float row3 = 275;
+        
+        float textY = -25; // Added to an OpLabel's row value to put it under a checkbox
+        
+        float defX = 40; // Default X value
+        float addX = 80; // Added to X value to make row longer horizontally, increase Here to change spacing between elements, multiply in Ops to "select columns"
+        
+        
+        #region Friend Tab
+
+        // Sprites
+        var FriendSymbol = new FSprite("symbolfriend");
+        FriendSymbol.scale = 1.45f;
+        FriendSymbol.SetPosition(300,300);
+        FriendSymbol.alpha = 0.05f;
+
+        var friendline1 = new FSprite("pixel");
+        friendline1.color = Menu.MenuColorEffect.rgbMediumGrey;
+        friendline1.scaleX = 450;
+        friendline1.scaleY = 2;
+        friendline1.SetPosition(300,row1-35);
+        
+        var friendline2 = new FSprite("pixel");
+        friendline2.color = Menu.MenuColorEffect.rgbMediumGrey;
+        friendline2.scaleX = 450;
+        friendline2.scaleY = 2;
+        friendline2.SetPosition(300,row2-35);
+        
+        // Add sprites
+        FriendSprites.container.AddChild(FriendSymbol);
+        FriendSprites.container.AddChild(friendline1);
+        FriendSprites.container.AddChild(friendline2);
+
+        // Actual configs
+        opTab1.AddItems(new UIelement[]
+        {
+            FriendSprites,
+            new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - Friend"), true),
+            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+
+            new OpLabel(
+                defX-20,
+                row1 + 25,  
+                "Movement", true) { alpha = 0.3f },
+            
+            new OpCheckBox(
+                    FriendUnNerf, 
+                    defX + (addX*0), 
+                    row1) 
+                { description = 
+                    Translate("Changes various Friend stats to be as they were earlier in the mod's development") },
+            new OpLabel(
+                defX + (addX*0) - 22.5f,
+                row1 + textY,
+                Translate("Legacy Stats")),
+            
+            new OpCheckBox(
+                    FriendAutoCrouch, 
+                    defX + (addX*1), 
+                    row1) 
+                { description = 
+                    Translate("Makes Friend crouch automatically after a standing jump") },
+            new OpLabel(
+                defX + (addX*1) - 22.5f,
+                row1 + textY,
+                Translate("Auto Crouch")),
+            
+            new OpCheckBox(
+                    PoleCrawl, 
+                    defX + (addX*2), 
+                    row1) 
+                { description = 
+                    Translate("Allows Friend to crawl along the tops of poles like Noir does") },
+            new OpLabel(
+                defX + (addX*2) - 16f,
+                row1 + textY,
+                Translate("Pole Crawl")),
+            
+            //////
+            
+            new OpLabel(defX-20,row2 + 25,  
+            "Combat", true) { alpha = 0.3f },
+            
+            new OpCheckBox(
+                    FriendBackspear,
+                    defX+(addX*0), 
+                    row2)
+                { description = 
+                    Translate("Allows Friend to use a backspear like they could earlier in the mod's development") },
+            new OpLabel(
+                defX + (addX*0) - 35f,
+                row2 + textY,
+                Translate("Backspear Enable")),
+            
+            //////
+            
+            new OpLabel(defX-20,row3 + 25,  
+                "Other", true) { alpha = 0.3f },
+            
+            new OpCheckBox(
+                    FriendRepLock,
+                    defX+(addX*0),
+                    row3)
+                { description = 
+                    Translate("Stops changes to lizard reputation happening on cycle 0 for Friend. Lizard reputation may break if disabled") },
+            new OpLabel(
+                defX + (addX*0) - 14f,
+                row3 + textY,
+                Translate("Rep Lock")),
+
+        });
+        #endregion
+        #region Poacher Tab
+        
+        var PoacherSymbol = new FSprite("symbolpoacher");
+        PoacherSymbol.scale = 1.315f;
+        PoacherSymbol.SetPosition(300,300);
+        PoacherSymbol.alpha = 0.05f;
+        
+        PoacherSprites.container.AddChild(PoacherSymbol);
+        opTab2.AddItems(new UIelement[]
+        {
+            PoacherSprites,
+            new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - Poacher"), true),
+            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+        });
+        #endregion
 
         NoirSlashConditionsCheckBox = new OpCheckBox(NoirAltSlashConditions, 10f, 520f);
         NoirSlashConditionsLabel = new OpLabel(40f, 520f, "Slash conditions: ") { verticalAlignment = OpLabel.LabelVAlignment.Center };
