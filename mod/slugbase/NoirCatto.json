@@ -17,11 +17,12 @@
 				"Fly": 0.5,
 				"EggBugEgg": 1,
 				"FireEgg": 1,
+				"LanternMouse": 2,
 				
+				"Seed": 1,
 				"DangleFruit": -1,
 				"WaterNut": -1,
 				"SlimeMold": -1,				
-				"Seed": -1,
 				"GooieDuck": -1,
 				"LillyPuck": -1,
 				"GlowWeed": -1,

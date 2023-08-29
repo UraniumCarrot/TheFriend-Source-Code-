@@ -16,8 +16,8 @@ public partial class NoirCatto
             self.throwingSkill = 1;
 
             self.runspeedFac = 0.8f;
-            self.poleClimbSpeedFac = 1.35f;
-            self.corridorClimbSpeedFac = 1.4f;
+            self.poleClimbSpeedFac = 1.4f;
+            self.corridorClimbSpeedFac = 2f;
 
             self.foodToHibernate = 5;
             self.maxFood = 7;

@@ -84,9 +84,14 @@ public partial class SLOracleHandler
                 var room = self.oracle.room;
                 int stage = self.MoonCutsceneData().stage;
                 // Moon mark cutscene
-                if (!(self?.oracle?.room?.game?.session as StoryGameSession).saveState.deathPersistentSaveData.theMark)
+                if (!(room?.game?.session as StoryGameSession).saveState.deathPersistentSaveData.theMark)
                 {
-                    var grav = room.world.rainCycle.brokenAntiGrav;
+                    if (self.player == null) // Explode cutscene if player leaves the room
+                    {
+                        moondata.counter = 0;
+                        return;
+                    }
+
                     int counter = moondata.counter;
                     if (counter <= 0 &&
                         self.hasNoticedPlayer)
@@ -102,7 +107,8 @@ public partial class SLOracleHandler
                     self.forceFlightMode = true;
                     self.oracle.SetLocalGravity(Mathf.Lerp(self.oracle.gravity, 1f, 0.2f));
                     self.floatyMovement = true;
-                        
+
+                    var grav = room.world.rainCycle.brokenAntiGrav;
                     if (counter == 1799 && grav.on)
                         room.PlaySound(SoundID.Broken_Anti_Gravity_Switch_Off, 0f, room.game.cameras[1].room.roomSettings.GetEffectAmount(RoomSettings.RoomEffect.Type.BrokenZeroG), 1f);
                     grav.on = false;
