@@ -27,6 +27,7 @@
 		"friend/maul": true,
 		"friend/is_the_friend": true,
 		
+		"expedition_enabled": false,
 		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
 		"story_regions": ["RM","UG","-DS","-CL","SH"],
 		"karma": 2,

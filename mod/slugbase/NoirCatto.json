@@ -29,7 +29,7 @@
 				"DandelionPeach": -1				
 			}
 		},
-		
+		"expedition_enabled": false,
 		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
 		"story_regions": ["RM","UG","-DS","-CL","SH"],
 		
