@@ -67,6 +67,7 @@ public class PebblesLL : DaddyLongLegs
     public override void Update(bool eu)
     {
         base.Update(eu);
+        if (!world.game.IsArenaSession) Destroy(); // TODO: GET RID OF THIS LATER
         State.alive = true;
         if (dead == true) dead = false;
         for (int i = 0; i < tentacles.Length; i++)

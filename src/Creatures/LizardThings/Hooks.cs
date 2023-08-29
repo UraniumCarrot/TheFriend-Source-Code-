@@ -583,6 +583,7 @@ public class Hooks
         try { orig(self, eu); }
         catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update orig " + e); }
         if (self == null) return;
+        if (self.Template.type == CreatureTemplateType.PilgrimLizard) self.Destroy(); // TODO: GET RID OF THIS LATER
         try
         {
             if (self.GetLiz() != null)

@@ -15,6 +15,7 @@ using Random = UnityEngine.Random;
 using System.Globalization;
 using TheFriend.Creatures;
 using MonoMod.Cil;
+using On.Menu;
 
 namespace TheFriend.WorldChanges;
 
@@ -22,13 +23,20 @@ public class FriendWorldState
 {
     public static bool FaminePlayer(RainWorldGame game) // Applies actual room changes 
     {
-        if ((game?.StoryCharacter == Plugin.FriendName || game?.StoryCharacter == Plugin.DragonName || game?.StoryCharacter == Plugin.NoirName) && game != null) { SolaceWorldstate = true; return true; }
+        if ((game?.StoryCharacter == Plugin.FriendName || 
+             game?.StoryCharacter == Plugin.DragonName || 
+             game?.StoryCharacter == Plugin.NoirName) && 
+            game != null) 
+        { SolaceWorldstate = true; return true; }
         else { SolaceWorldstate = false; return false; }
     }
     public static bool SolaceWorldstate;
     public static bool FamineName(SlugcatStats.Name name) // For use in menus and region properties 
     {
-        if (name == Plugin.FriendName || name == Plugin.DragonName || name == Plugin.NoirName) { SolaceName = true; return true; }
+        if (name == Plugin.FriendName || 
+            name == Plugin.DragonName || 
+            name == Plugin.NoirName) 
+        { SolaceName = true; return true; }
         else { SolaceName = false; return false; }
     }
     public static bool SolaceName;
@@ -46,10 +54,10 @@ public class FriendWorldState
         On.AbstractCreature.setCustomFlags += AbstractCreature_setCustomFlags;
         On.ScavengerAbstractAI.InitGearUp += ScavengerAbstractAI_InitGearUp;
         On.FireFly.ctor += FireFly_ctor;
-        On.CreatureCommunities.InfluenceLikeOfPlayer += CreatureCommunities_InfluenceLikeOfPlayer;
-        On.CreatureCommunities.LikeOfPlayer += CreatureCommunitiesOnLikeOfPlayer;
+        On.CreatureCommunities.InfluenceCell += CreatureCommunitiesOnInfluenceCell;
+        On.CreatureCommunities.LoadDefaultCommunityAlignments += CreatureCommunitiesOnLoadDefaultCommunityAlignments;
     }
-    
+
     #region deprecated code
     public static bool solaceGenPop;
     public static void WorldLoader_GeneratePopulation(On.WorldLoader.orig_GeneratePopulation orig, WorldLoader self, bool fresh)
@@ -258,9 +266,12 @@ public class FriendWorldState
             else self.HypothermiaImmune = true;
             if (type.type == CreatureTemplate.Type.Centipede || type.type == CreatureTemplateType.MotherLizard || type.type == CreatureTemplateType.YoungLizard) self.ignoreCycle = false;
             else self.ignoreCycle = true;
-            if (type.type == CreatureTemplate.Type.BigSpider && self.world.region.name != "SB" && self.world.region.name != "UG") self.Winterized = true;
-            else if (type.type == CreatureTemplate.Type.SpitterSpider && self.world.region.name != "SB" && self.world.region.name != "UG") self.Winterized = true;
-            else if (type.type == MoreSlugcatsEnums.CreatureTemplateType.MotherSpider && self.world.region.name != "SB" && self.world.region.name != "UG") self.Winterized = true;
+            if (self.world.region.name != "SB" && self.world.region.name != "UG")
+            {
+                if (type.type == CreatureTemplate.Type.BigSpider) self.Winterized = true;
+                else if (type.type == CreatureTemplate.Type.SpitterSpider) self.Winterized = true;
+                else if (type.type == MoreSlugcatsEnums.CreatureTemplateType.MotherSpider) self.Winterized = true;   
+            }
         }
     } // Stops creatures from running or dying when blizzard starts (or should, anyway)
 
@@ -269,35 +280,37 @@ public class FriendWorldState
         orig(self, room, pos);
         if (self.col != null && SolaceWorldstate) self.col = new Color(0.8f, Random.Range(0.8f, 1f), 1f); ;
     } // Silver fireflies
-    public static void CreatureCommunities_InfluenceLikeOfPlayer(On.CreatureCommunities.orig_InfluenceLikeOfPlayer orig, CreatureCommunities self, CreatureCommunities.CommunityID commID, int region, int playerNumber, float influence, float interRegionBleed, float interCommunityBleed)
+    public static void CreatureCommunitiesOnInfluenceCell(On.CreatureCommunities.orig_InfluenceCell orig, CreatureCommunities self, int comm, int reg, int plr, float infl)
     {
-        try
-        {
-            if (SolaceWorldstate &&
-                commID == CreatureCommunities.CommunityID.Lizards &&
-                self.session.game.GetStorySession.saveState.cycleNumber == 0 &&
-                self.session.game.StoryCharacter == Plugin.FriendName &&
-                !self.session.game.IsArenaSession &&
-                Plugin.FriendRepLock())
-            {
-                return;
-            }
-            if (!Plugin.LocalLizRep())
-            {
-                orig(self, commID, region, playerNumber, influence, interRegionBleed, interCommunityBleed);
-                return;
-            }
-            if (commID == CreatureCommunities.CommunityID.Lizards && (SolaceWorldstate || Plugin.LocalLizRepAll()))
-                interCommunityBleed = 0f;
+        if (SolaceWorldstate &&
+            self.session.characterStats.name == Plugin.FriendName &&
+            self.session.game.GetStorySession.saveState.cycleNumber == 0 &&
+            comm == 2 &&
+            Plugin.FriendRepLock())
+            return;
+        // Cycle 0 lizard rep lock
 
-            orig(self, commID, region, playerNumber, influence, interRegionBleed, interCommunityBleed);
+        if ((SolaceWorldstate || Plugin.LocalLizRepAll()) && Plugin.LocalLizRep())
+        {
+            if (comm == 2 && reg == 0)
+                return;
+            if (comm == 0)
+                return;
         }
-        catch (Exception e) { Debug.Log("Solace: Something bad happened! CreatureCommunities.InfluenceLikeOfPlayer broke!" + e); }
-    } // Localized lizard reputation
-    public static float CreatureCommunitiesOnLikeOfPlayer(On.CreatureCommunities.orig_LikeOfPlayer orig, CreatureCommunities self, CreatureCommunities.CommunityID commid, int region, int playernumber)
+        orig(self, comm, reg, plr, infl);
+    } // Stops global lizard and All rep from mattering
+    public static void CreatureCommunitiesOnLoadDefaultCommunityAlignments(On.CreatureCommunities.orig_LoadDefaultCommunityAlignments orig, CreatureCommunities self, SlugcatStats.Name savestatenumber)
     {
-        if (!Plugin.LocalLizRep()) return orig(self, commid, region, playernumber);
-        if ((SolaceWorldstate || Plugin.LocalLizRepAll()) && commid == CreatureCommunities.CommunityID.All) return 0f;
-        else return orig(self, commid, region, playernumber);
-    } // Explode the ALL community likeofplayer because it ruins everything
+        orig(self, savestatenumber);
+        if (savestatenumber == Plugin.FriendName)
+        {
+            for (int i = 1; i < self.playerOpinions.GetLength(1); i++) // region
+            {
+                for (int a = 0; a < self.playerOpinions.GetLength(2); a++) // player
+                {
+                    self.playerOpinions[2, i, a] = Mathf.Lerp(self.playerOpinions[2, i, a], 1,1);
+                }
+            }
+        }
+    } // Sets game-start reputation without slugbase's help (lizard global starts at 0 but rest start at 1)
 }

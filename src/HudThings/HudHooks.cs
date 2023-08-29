@@ -5,6 +5,7 @@ using Menu;
 using On.MoreSlugcats;
 using SlugBase.SaveData;
 using TheFriend.SlugcatThings;
+using TheFriend.WorldChanges;
 using UnityEngine;
 
 namespace TheFriend.HudThings;
@@ -50,47 +51,53 @@ public class HudHooks
     public static void RainMeter_Update(On.HUD.RainMeter.orig_Update orig, RainMeter self)
     { // Makes solace rain timer function like Saint's
         orig(self);
-        if ( self.hud.owner is Player pl && 
-             (pl.slugcatStats.name == FriendName ||
-             pl.slugcatStats.name == DragonName) &&
+        if (self.hud.owner is Player && 
+             FriendWorldState.SolaceName &&
             self.hud.map.RegionName != "HR") self.halfTimeShown = true;
     } 
     public static void RainMeter_ctor(On.HUD.RainMeter.orig_ctor orig, RainMeter self, HUD.HUD hud, FContainer fContainer)
     { // Makes solace rain timer function like Saint's
         orig(self, hud, fContainer);
-        if ( self.hud.owner is Player pl &&
-             (pl.slugcatStats.name == FriendName ||
-            pl.slugcatStats.name == DragonName) &&
+        if (self.hud.owner is Player &&
+             FriendWorldState.SolaceName &&
             self.hud.map.RegionName != "HR") self.halfTimeShown = true;
     } 
     public static void RainMeter_Draw(On.HUD.RainMeter.orig_Draw orig, RainMeter self, float timeStacker)
     { // Makes rain timer visible or not
         orig(self, timeStacker);
-        var owner = self.hud.owner;
-        if (owner is Player pl && pl.slugcatStats.name == MoreSlugcats.MoreSlugcatsEnums.SlugcatStatsName.Saint) // if showing timer is true
+        var owner = self.hud.owner as Player;
+
+        if (!Plugin.ShowCycleTimer())
         {
-            for (int i = 0; i < self.circles.Length; i++)
+            if (self.hud.map.RegionName != "HR")
             {
-                if (Plugin.ShowCycleTimer()) { self.circles[i].Draw(timeStacker);
-                    (owner as Player).GetPoacher().RainTimerExists = true; }
-                else self.circles[i].sprite.scale = 0;
+                if (FriendWorldState.SolaceWorldstate)
+                {
+                    owner.GetPoacher().RainTimerExists = false;
+                    for (int i = 0; i < self.circles.Length; i++)
+                    {
+                        self.circles[i].rad = 0;
+                        self.circles[i].lastRad = 0;
+                        self.circles[i].fade = 0;
+                        self.circles[i].lastFade = 0;
+                        self.circles[i].sprite.scale = 0;
+                    }
+                }
+                else if (owner.slugcatStats.name == MoreSlugcats.MoreSlugcatsEnums.SlugcatStatsName.Saint)
+                    owner.GetPoacher().RainTimerExists = false;
+                else owner.GetPoacher().RainTimerExists = true;
             }
         }
-        if (owner is Player pla && 
-            (pla.slugcatStats.name == FriendName || 
-             pla.slugcatStats.name == DragonName) &&
-            self.hud.map.RegionName != "HR" && !Plugin.ShowCycleTimer()) // if showing timer is false
+        else
         {
-            pla.GetPoacher().RainTimerExists = false;
-            for (int i = 0; i < self.circles.Length; i++)
+            if (owner.slugcatStats.name == MoreSlugcats.MoreSlugcatsEnums.SlugcatStatsName.Saint)
             {
-                self.circles[i].rad = 0;
-                self.circles[i].lastRad = 0;
-                self.circles[i].fade = 0;
-                self.circles[i].lastFade = 0;
-                self.circles[i].sprite.scale = 0;
+                for (int i = 0; i < self.circles.Length; i++)
+                    self.circles[i].Draw(timeStacker);
             }
+            owner.GetPoacher().RainTimerExists = true;
         }
-        else (owner as Player).GetPoacher().RainTimerExists = true;
+        if (self.hud.map.RegionName == "HR") 
+            owner.GetPoacher().RainTimerExists = true;
     } 
 }

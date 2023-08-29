@@ -5,6 +5,8 @@ using UnityEngine;
 using SlugBase.SaveData;
 using TheFriend.SlugcatThings;
 using TheFriend.WorldChanges;
+using FadeCircle = On.HUD.FadeCircle;
+using RainMeter = On.HUD.RainMeter;
 
 namespace TheFriend.HudThings;
 
@@ -14,8 +16,9 @@ public static class DragonRepInterface
     {
         On.HUD.HUD.InitSinglePlayerHud += HUD_InitSinglePlayerHud;
     }
-    public static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam) // Forces new hud elements to work
-    {
+
+    public static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam)
+    { // Forces new hud elements to work
         orig(self, cam);
         if (Plugin.LizRep() && 
             ((self.owner as Player)?.room.world.game.StoryCharacter == Plugin.FriendName || 
@@ -29,7 +32,11 @@ public static class DragonRepInterface
         public Vector2 pos;
         public Vector2 lastPos;
 
-        public int remainVisibleCounter;
+        //public int remainVisibleCounter;
+        public int symbolInd;
+        public bool ingate;
+        public bool MotherKilledHere;
+        public bool Drawn;
 
         public float fade;
         public float lastFade;
@@ -40,6 +47,7 @@ public static class DragonRepInterface
         public FSprite dragonSprite;
         public FSprite friendSprite;
         public FSprite motherSprite;
+        public FSprite noneSprite;
 
         public DragonUI(HUD.HUD hud, FContainer fContainer, Player player) : base(hud)
         {
@@ -50,46 +58,57 @@ public static class DragonRepInterface
             dragonSprite = new FSprite("DragonSlayerB");
             friendSprite = new FSprite("FriendB");
             motherSprite = new FSprite("MotherB");
+            noneSprite = new FSprite("guardHead");
             for (int i = 0; i < circles.Length; i++) circles[i] = new HUDCircle(hud, HUDCircle.SnapToGraphic.smallEmptyCircle, fContainer, 0);
             fContainer.AddChild(dragonSprite);
             fContainer.AddChild(friendSprite);
             fContainer.AddChild(motherSprite);
-            fade = hud.karmaMeter.fade;
+            fContainer.AddChild(noneSprite);
+            fade = 1;
             lastFade = fade;
         }
         public override void Update()
         {
-            bool rainvisible = false;
-            if (hud.owner is Player pl && (hud.owner as Player)?.room != null)
+            // Setup values
+            bool maxed = Mathf.Abs(reputation) > 0.999 || symbolInd == 3;
+            Drawn = owner.GetPoacher().RainTimerExists;
+            ingate = owner.room?.regionGate != null;
+            if (!hud.rainWorld.progression.currentSaveState.miscWorldSaveData.GetSlugBaseData()
+                    .TryGet("MothersKilledInRegion", out List<int> regionsKilledIn))
             {
-                reputation = pl.room.game.session.creatureCommunities.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, pl.room.world.region.regionNumber, 0);
-                pl.room.world.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegion", out List<int> regionsKilledIn);
-                
-                if (regionsKilledIn.Contains(pl.room.world.RegionNumber))
-                    motherSprite.isVisible = true; // Mother
-                else motherSprite.isVisible = false;
-                
-                if (pl.room.world.rainCycle.AmountLeft > 0 && 
-                    (Plugin.ShowCycleTimer() ||
-                     (!FriendWorldState.SolaceWorldstate &&
-                      pl.slugcatStats.name != MoreSlugcatsEnums.SlugcatStatsName.Saint)))
-                    rainvisible = true;
+                regionsKilledIn = new List<int>();
             }
             
-            pos = hud.karmaMeter.pos + (hud.karmaMeter.showAsReinforced ? new Vector2(0, 10) : Vector2.zero) + // gains more height when karma is reinforced
-                  new Vector2(0, 40); // base height
-            pos += rainvisible ? new Vector2(0, 10) : Vector2.zero; // gains more height when rain meter is visible
-            pos += circles[1].visible ? new Vector2(0,5) : Vector2.zero; // gains more height if at max/min rep
-            lastPos = pos;
-            lastFade = fade;
-            if (hud.HideGeneralHud)
+            if (RWCustom.Custom.rainWorld.processManager.currentMainLoop is RainWorldGame game)
             {
-                fade = 0f;
+                reputation = game.session.creatureCommunities.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards,
+                    game.world.region.regionNumber, 0);
+                
+                // Was a mother lizard killed in this region?
+                if (regionsKilledIn.Contains(game.world.RegionNumber))
+                    MotherKilledHere = true;
+                else MotherKilledHere = false;
             }
+            
+            // Fade
+            if (fade < 1 && hud.showKarmaFoodRain) fade += 0.1f;
+            else if (fade > 0 && !hud.showKarmaFoodRain) fade -= 0.15f;
+            if (fade < 0) fade = 0;
+            if (hud.HideGeneralHud) fade = 0f; // ???
+            lastFade = fade;
+            
+            // Position
+            pos = hud.karmaMeter.pos + new Vector2(0, 40) + // base height
+                  (hud.karmaMeter.showAsReinforced ? new Vector2(0, 10) : Vector2.zero); // gains more height when karma is reinforced
+            if (Drawn) pos += new Vector2(0, 10 * hud.rainMeter.fade); // gains more height when rain meter is visible
+            pos += circles[1].visible ? new Vector2(0,3) : Vector2.zero; // gains more height if at max/min rep
+            lastPos = pos;
+
+            // Circle properties
             for (int i = 0; i < circles.Length; i++)
             {
                 circles[i].Update();
-                circles[i].fade = hud.karmaMeter.fade;
+                circles[i].fade = fade;
                 circles[i].pos = pos;
             }
             circles[0].thickness = 2f;
@@ -99,6 +118,7 @@ public static class DragonRepInterface
             circles[2].thickness = 1.5f;
             circles[2].rad = 6f;
 
+            // Sprite properties
             dragonSprite.scale = 0.5f;
             dragonSprite.x = pos.x;
             dragonSprite.y = pos.y;
@@ -110,24 +130,49 @@ public static class DragonRepInterface
             motherSprite.scale = 0.5f;
             motherSprite.x = pos.x;
             motherSprite.y = pos.y;
+            
+            noneSprite.scaleX = 0.2f;
+            noneSprite.scaleY = 0.07f;
+            noneSprite.x = pos.x;
+            noneSprite.y = pos.y;
+            
+            // Symbol visibility
+            if (!MotherKilledHere && !ingate)
+            {
+                switch (reputation)
+                {
+                    default: 
+                        symbolInd = 0; break; // Neutral
+                    case <= -0.5f: 
+                        symbolInd = 1; break; // Negative
+                    case >= 0.5f:
+                        symbolInd = 2; break; // Positive
+                }
+            }
+            else
+            {
+                if (MotherKilledHere && !ingate) symbolInd = 3;
+                else symbolInd = 4;
+            }
 
-            if (!motherSprite.isVisible)
+            switch (symbolInd)
             {
-                if (reputation >= -0.5 && reputation <= 0.5) circles[2].visible = true; // Monk
-                else circles[2].visible = false;
-                if (reputation < -0.5) dragonSprite.isVisible = true; // Dragonslayer
-                else dragonSprite.isVisible = false;
-                if (reputation > 0.5) friendSprite.isVisible = true; // Friend
-                else friendSprite.isVisible = false;
+                case 0: circles[2].visible = true; break;
+                case 1: dragonSprite.isVisible = true; break;
+                case 2: friendSprite.isVisible = true; break;
+                case 3: motherSprite.isVisible = true; break;
+                case >= 4: noneSprite.isVisible = true; break;
             }
-            if (Mathf.Abs(reputation) == 1 || motherSprite.isVisible) circles[1].visible = true; // Max/Min
+
+            if (symbolInd != 0) circles[2].visible = false;
+            if (symbolInd != 1) dragonSprite.isVisible = false;
+            if (symbolInd != 2) friendSprite.isVisible = false;
+            if (symbolInd != 3) motherSprite.isVisible = false;
+            if (symbolInd < 4) noneSprite.isVisible = false;
+            
+            if (maxed && !ingate) circles[1].visible = true; // Max/Min
             else circles[1].visible = false;
-            if (motherSprite.isVisible)
-            {
-                circles[2].visible = false;
-                dragonSprite.isVisible = false;
-                friendSprite.isVisible = false;
-            }
+            
         }
         public override void Draw(float timeStacker)
         {
@@ -137,16 +182,21 @@ public static class DragonRepInterface
             }
             dragonSprite.x = circles[0].lastPos.x;
             dragonSprite.y = circles[0].lastPos.y;
-            dragonSprite.alpha = circles[0].fade;
+            dragonSprite.alpha = fade;
 
             friendSprite.x = circles[0].lastPos.x;
             friendSprite.y = circles[0].lastPos.y;
-            friendSprite.alpha = circles[0].fade;
+            friendSprite.alpha = fade;
             
             motherSprite.x = circles[0].lastPos.x;
             motherSprite.y = circles[0].lastPos.y;
             motherSprite.alpha = circles[0].fade * Random.Range(0.7f,1f);
-            circles[1].fade = motherSprite.isVisible ? motherSprite.alpha : circles[0].fade;
+            
+            noneSprite.x = circles[0].lastPos.x;
+            noneSprite.y = circles[0].lastPos.y;
+            noneSprite.alpha = fade;
+            
+            circles[1].fade = motherSprite.isVisible ? motherSprite.alpha : fade;
         }
 
         public override void ClearSprites()
@@ -155,6 +205,7 @@ public static class DragonRepInterface
             if (dragonSprite != null) dragonSprite.RemoveFromContainer();
             if (friendSprite != null) friendSprite.RemoveFromContainer();
             if (motherSprite != null) motherSprite.RemoveFromContainer();
+            if (noneSprite != null) noneSprite.RemoveFromContainer();
         }
 
         public Vector2 DrawPos(float timeStacker)
