@@ -10,7 +10,7 @@ using MoreSlugcatsEnums = IL.MoreSlugcats.MoreSlugcatsEnums;
 
 namespace TheFriend.WorldChanges;
 
-public class SLOracleHandler
+public partial class SLOracleHandler
 {
     public static void Apply()
     {
@@ -19,12 +19,10 @@ public class SLOracleHandler
         On.SLOracleBehavior.Update += SLOracleBehavior_Update;
         On.SLOracleBehavior.Move += SLOracleBehavior_Move;
         On.SLOracleBehaviorNoMark.Update += SLOracleBehaviorNoMark_Update;
-        //On.OracleGraphics.Update += OracleGraphics_Update;
+        On.SLOracleBehaviorHasMark.MoonConversation.AddEvents += MoonConversationOnAddEvents;
         On.RainWorldGame.IsMoonActive += RainWorldGame_IsMoonActive;
         On.RainWorldGame.MoonHasRobe += RainWorldGame_MoonHasRobe;
         On.RainWorldGame.IsMoonHeartActive += RainWorldGame_IsMoonHeartActive;
-        
-        On.SLOracleBehaviorHasMark.InitateConversation += SLOracleBehaviorHasMarkOnInitateConversation;
     }
 
     // Simple Moon fixes
@@ -95,7 +93,7 @@ public class SLOracleHandler
                         moondata.counter = 1800;
                     if (counter > 0)
                         moondata.counter--;
-                    if (room.game.rainWorld.progression.miscProgressionData.GetSlugBaseData()
+                    if (room.game.rainWorld.progression.currentSaveState.miscWorldSaveData.GetSlugBaseData()
                             .TryGet("SolaceMarkCutsceneHasBeenSeen", out bool a) && a)
                     {
                         moondata.counter = 301;
@@ -208,8 +206,9 @@ public class SLOracleHandler
                             self.player.GetPoacher().JustGotMoonMark = true;
                             room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, self.player.firstChunk.pos, 1f, 1f);
                             room.AddObject(new Spark(self.player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
-                            room.game.rainWorld.progression.miscProgressionData.GetSlugBaseData().Set("SolaceMarkCutsceneHasBeenSeen", true);
+                            room.game.rainWorld.progression.currentSaveState.miscWorldSaveData.GetSlugBaseData().Set("SolaceMarkCutsceneHasBeenSeen", true);
                             room.game.GetStorySession.saveState.deathPersistentSaveData.GetSlugBaseData().Set("SolaceMoonTalk", true);
+                            self.oracle.oracleBehavior = new SLOracleBehaviorHasMark(self.oracle);
                             break;
                     }
                 }
@@ -378,7 +377,6 @@ public class SLOracleHandler
                             new Vector2(self.showMediaPos.x - 100f, self.showMediaPos.y + 150f));
         }
     }
-
     public static void SLOracleBehavior_Move(On.SLOracleBehavior.orig_Move orig, SLOracleBehavior self)
     {
         orig(self);
@@ -390,14 +388,7 @@ public class SLOracleHandler
                             new Vector2(self.showMediaPos.x - 100f, self.showMediaPos.y + 150f));
         }
     }
-    // Moon dialogue
-    public static void SLOracleBehaviorHasMarkOnInitateConversation(On.SLOracleBehaviorHasMark.orig_InitateConversation orig, SLOracleBehaviorHasMark self)
-    {
-        orig(self);
-        if (!FriendWorldState.SolaceWorldstate || !self.oracle.room.game.IsStorySession) return;
-        if (self.currentConversation.id == Conversation.ID.MoonFirstPostMarkConversation)
-            self.currentConversation = new SLOracleBehaviorHasMark.MoonConversation(Conversation.ID.MoonFirstPostMarkConversation,self,SLOracleBehaviorHasMark.MiscItemType.NA);
-    }
+
 }
 
 public static class MoonCutscene
