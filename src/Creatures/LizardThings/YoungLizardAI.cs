@@ -38,17 +38,21 @@ public class YoungLizardAI : LizardAI
             if (mother == null)
             {
                 mother = creature.Room.creatures.FirstOrDefault(i => i.creatureTemplate.type == CreatureTemplateType.MotherLizard && i.state.alive);
-                if (mother == null) 
+                if (mother == null)
                     mother = (AbstractCreature)creature.Room.entitiesInDens.FirstOrDefault(i => i is AbstractCreature crit && crit.creatureTemplate.type == CreatureTemplateType.MotherLizard && crit.state.alive);
             }
             if (mother != null)
             {
                 if (creature != null)
                 {
-                    if (mother.state.dead || mother.Room == null) mother = null;
+                    if (mother.state.dead)
+                    {
+                        mother = null;
+                        return;
+                    }
+
                     creature.abstractAI.followCreature = mother;
-                    if (mother.pos.room != creature?.pos.room) creature?.abstractAI?.SetDestination(mother.pos.WashTileData());
-                    else creature?.abstractAI?.SetDestination(mother.pos);
+                    creature.abstractAI.SetDestination(mother.pos.room != creature.pos.room ? mother.pos.WashTileData() : mother.pos);
                 }
             }
         }
