@@ -46,7 +46,7 @@ public class Options : OptionInterface
     public static Configurable<bool> SolacePoacherBadAscensionAchievement; // Trapped
     public static Configurable<bool> SolacePoacherGoodAscensionAchievement; // Forgiveness
     public static Configurable<bool> SolacePebblesAchievement; // Alone No More
-    public static Configurable<bool> SolacePebblesStolenEnlightenmentAchievement; // Broken Mind
+    public static Configurable<bool> SolacePebblesStolenEnlightenmentAchievement; // Hollow Mind
 
     public Options()
     {
@@ -130,6 +130,7 @@ public class Options : OptionInterface
         var opTab1 = new OpTab(this, "Friend");
         var opTab2 = new OpTab(this, "Poacher");
         var opTabNoir = new OpTab(this, "Noir"); //TODO: Merge into Solace properly
+        OpContainer GenSprites = new OpContainer(Vector2.zero);
         OpContainer FriendSprites = new OpContainer(Vector2.zero);
         OpContainer PoacherSprites = new OpContainer(Vector2.zero);
 
@@ -139,163 +140,129 @@ public class Options : OptionInterface
         base.Initialize();
         Tabs = new[] { opTab0, opTab1, opTab2, opTabNoir };
         
-        //OpContainer achieveCont = new OpContainer(Vector2.zero);
-        //opTab1.AddItems(achieveCont);
-
-        
-        
-        /*
-        // General
-        #region General
-        NoFamineBox = new OpCheckBox(NoFamine, new Vector2(50, 600 - 100)) { description = Translate("Famine mechanics and changes are disabled when checked") };
-        var NoFamineLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Famines Disabled"));
-        AllFamineBox = new OpCheckBox(FaminesForAll, new Vector2(50, 600 - 150)) { description = Translate("Famine mechanics and changes are given to every character") };
-        var AllFamineLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Famines For All"));
-        ExpeditionFamineBox = new OpCheckBox(ExpeditionFamine, new Vector2(50, 600 - 200)) { description = Translate("Forces famines to appear in Expedition Mode") };
-        var ExpeditionFamineLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Expedition Famines"));
-
-        var FamineLabel = new OpLabel(new Vector2(295, 600 - 236), Vector2.zero, Translate("Famines"), FLabelAlignment.Center, true);
-        FSprite line0 = new FSprite("pixel");
-        line0.color = labelMod.color;
-        line0.scaleX = 600;
-        line0.scaleY = 2;
-        line0.SetPosition(new Vector2(300, 600 - 242));
-        genCont.container.AddChild(line0);
-        var RepLabel = new OpLabel(new Vector2(295, 600 - 242 - 23), Vector2.zero, Translate("Reputation"), FLabelAlignment.Center, true);
-
-        LocalLizRepBox = new OpCheckBox(LocalizedLizRep, new Vector2(50, 600 - 236 - 60)) { description = Translate("Lizard reputation is localized for Solace slugcats when checked. May break things if disabled!") };
-        var LocalLizRepLabel = new OpLabel(new(50, 600 - 236 - 78), Vector2.zero, Translate("Local Lizard Rep"));
-        LocalLizRepAllBox = new OpCheckBox(LocalizedLizRepForAll, new Vector2(50, 600 - 236 - 110)) { description = Translate("Lizard reputation is localized for every character") };
-        var LocalLizRepAllLabel = new OpLabel(new(50, 600 - 236 - 128), Vector2.zero, Translate("Local Liz Rep For All"));
-        var SolaceTimerBox = new OpCheckBox(SolaceBlizzTimer, new Vector2(50, 600 - 236 - 160)) { description = Translate("Forces the rain timer to be visible for Solace slugcats and Saint") };
-        var SolaceTimerLabel = new OpLabel(new(50, 600 - 236 - 178), Vector2.zero, Translate("Rain Timer"));
-
-
-        #endregion
-        // Characters
-        #region Characters
-        var FriendAutoCrouchBox = new OpCheckBox(FriendAutoCrouch, new Vector2(50, 600 - 100)) { description = Translate("Makes Friend crouch automatically after a standing jump") };
-        var FriendAutoCrouchLabel = new OpLabel(new(50, 600 - 118), Vector2.zero, Translate("Automatic Crouch"));
-
-        var FriendPoleCrawlBox = new OpCheckBox(PoleCrawl, new Vector2(50, 600 - 150)) { description = Translate("Allows Friend to crawl along the tops of poles like Noir Catto does. Noir Catto not required to work. Thank you Noir for giving this to me!") };
-        var FriendPoleCrawlLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Pole Crawl"));
-        
-        var FriendUnNerfBox = new OpCheckBox(FriendUnNerf, new Vector2(50, 600 - 200)) { description = Translate("Changes various Friend stats to be as they were earlier in the mod's development") };
-        var FriendUnNerfLabel = new OpLabel(new(50, 600 - 218), Vector2.zero, Translate("Legacy Movement"));
-
-        var FriendBackspearBox = new OpCheckBox(FriendBackspear, new Vector2(50, 600 - 250)) { description = Translate("Allows Friend to use a backspear like they could earlier in the mod's development") };
-        var FriendBackspearLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Backspear Enable"));
-
-        var FriendRepLockBox = new OpCheckBox(FriendRepLock, new Vector2(150, 600 - 100)) { description = Translate("Stops changes to lizard reputation happening on cycle 0 for Friend. Lizard reputation may break if disabled") };
-        var FriendRepLockLabel = new OpLabel(new(150, 600 - 118), Vector2.zero, Translate("Cycle 0 Rep Lock"));
-
-
-        var FriendLabel = new OpLabel(new Vector2(295, 311), Vector2.zero, Translate("Friend"), FLabelAlignment.Center, true);
-        FSprite line = new FSprite("pixel");
-        line.color = labelMod.color;
-        line.scaleX = 600;
-        line.scaleY = 2;
-        line.SetPosition(new Vector2(300,305));
-        charCont.container.AddChild(line);
-        var PoacherLabel = new OpLabel(new Vector2(295, 282), Vector2.zero, Translate("Poacher"), FLabelAlignment.Center, true);
-
-        var PoacherPupActsBox = new OpCheckBox(PoacherPupActs, new Vector2(50, 600 - 350)) { description = Translate("Allows Poacher to behave like a pup. Kind of subtle.") };
-        var PoacherPupActsLabel = new OpLabel(new(50, 600 - 368), Vector2.zero, Translate("Pup Behaviors"));
-
-        var PoacherBackspearBox = new OpCheckBox(PoacherBackspear, new Vector2(50, 600 - 400)) { description = Translate("Allows Poacher to use a backspear as was planned early in their development") };
-        var PoacherBackspearLabel = new OpLabel(new(50, 600 - 418), Vector2.zero, Translate("Backspear Enable"));
-
-        var PoacherFreezeBox = new OpCheckBox(PoacherFreezeFaster, new Vector2(50, 600 - 450)) { description = Translate("Makes Poacher get cold as fast as they did in earlier versions of the mod") };
-        var PoacherFreezeLabel = new OpLabel(new(50, 600 - 468), Vector2.zero, Translate("Legacy Hypothermia"));
-
-        var PoacherFoodBox = new OpCheckBox(PoacherFoodParkour, new Vector2(50, 600 - 500)) { description = Translate("Allows some food items to affect Poacher's movement") };
-        var PoacherFoodLabel = new OpLabel(new(50, 600 - 518), Vector2.zero, Translate("Heavy Foods"));
-        #endregion
-        // Misc
-        #region Misc
-        var LizRideAllBox = new OpCheckBox(LizRideAll, new Vector2(50, 600 - 150)) { description = Translate("Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)") };
-        var LizRideAllLabel = new OpLabel(new(50, 600 - 168), Vector2.zero, Translate("Universal Lizard Riding"));
-        
-        var LizRepMeterAllBox = new OpCheckBox(LizRepMeterForAll, new Vector2(50, 600 - 250)) { description = Translate("Displays lizard reputation in the current region for all slugcats") };
-        var LizRepAllLabel = new OpLabel(new(50, 600 - 268), Vector2.zero, Translate("Universal Lizard Meter"));
-        #endregion
-        
-        opTab0.AddItems( // General
-            labelMod,
-            labelVersion,
-
-            FamineLabel,
-            RepLabel,
-            NoFamineBox,
-            NoFamineLabel,
-            AllFamineBox,
-            AllFamineLabel,
-            ExpeditionFamineBox,
-            ExpeditionFamineLabel,
-            LocalLizRepBox,
-            LocalLizRepLabel,
-            LocalLizRepAllBox,
-            LocalLizRepAllLabel,
-            SolaceTimerBox,
-            SolaceTimerLabel
-            );
-        opTab1.AddItems( // Characters
-            labelMod1,
-            labelVersion1,
-
-            FriendLabel,
-            FriendAutoCrouchBox,
-            FriendAutoCrouchLabel,
-            FriendPoleCrawlBox,
-            FriendPoleCrawlLabel,
-            FriendUnNerfBox,
-            FriendUnNerfLabel,
-            FriendBackspearBox,
-            FriendBackspearLabel,
-            FriendRepLockBox,
-            FriendRepLockLabel,
-
-            PoacherLabel,
-            PoacherPupActsBox,
-            PoacherPupActsLabel,
-            PoacherBackspearBox,
-            PoacherBackspearLabel,
-            PoacherFreezeBox,
-            PoacherFreezeLabel,
-            PoacherFoodBox,
-            PoacherFoodLabel
-            );
-        opTab2.AddItems( // Experimental
-            labelMod2,
-            labelVersion2,
-
-            LizRideAllBox,
-            LizRideAllLabel,
-            LizRepMeterAllBox,
-            LizRepAllLabel
-            );
-            */
-        // ^^Why even have a number of different opTab variables if you're gonna do a Tabs[num] either way :leditoroverload:
-        // Elliot note: you will die in 7 days (fixed)
-
-        // General
-        opTab0.AddItems(new UIelement[]
-        {
-            new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - General Settings"), true),
-            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
-        });
-        
-        
         float row1 = 475; // Row Y values
         float row2 = 375;
         float row3 = 275;
+        float row4 = 175;
+        float row5 = 75;
         
         float textY = -25; // Added to an OpLabel's row value to put it under a checkbox
         
         float defX = 40; // Default X value
-        float addX = 80; // Added to X value to make row longer horizontally, increase Here to change spacing between elements, multiply in Ops to "select columns"
+        float addX = 80; // Added to defX to make row longer horizontally, increase Here to change spacing between elements, multiply in Ops to "select columns"
+
+        #region General Tab
         
+        var genline1 = new FSprite("pixel");
+        genline1.color = Menu.MenuColorEffect.rgbMediumGrey;
+        genline1.scaleX = 450;
+        genline1.scaleY = 2;
+        genline1.SetPosition(300,row3+65);
         
+        var genline2 = new FSprite("pixel");
+        genline2.color = Menu.MenuColorEffect.rgbMediumGrey;
+        genline2.scaleX = 450;
+        genline2.scaleY = 2;
+        genline2.SetPosition(300,row5+65);
+        
+        // Add sprites
+        GenSprites.container.AddChild(genline1);
+        GenSprites.container.AddChild(genline2);
+        
+        // Actual configs
+        opTab0.AddItems(new UIelement[]
+        {
+            GenSprites,
+            new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - General"), true),
+            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+            
+            new OpLabel(
+                defX-20,
+                row1 + 25,  
+                "Lizards", true) { alpha = 0.5f },
+            
+            new OpCheckBox(
+                LizRideAll, 
+                defX + (addX*0), 
+                row1) 
+                { description = 
+                    Translate("Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)") },
+            new OpLabel(
+                defX + (addX*0) - 22,
+                row1 + textY,  
+                "Global Rides"),
+            
+            new OpCheckBox(
+                LizRepMeterForAll, 
+                defX + (addX*1), 
+                row1) 
+                { description = 
+                    Translate("Displays lizard reputation in the current region for all slugcats") },
+            new OpLabel(
+                defX + (addX*1) - 32,
+                row1 + textY,  
+                "Universal Meter"),
+            
+            //////
+            
+            new OpLabel(
+                defX-20,
+                row3 + 25,  
+                "Famines", true) { alpha = 0.5f },
+            
+            new OpCheckBox(
+                NoFamine, 
+                defX + (addX*0), 
+                row3)
+                { description = 
+                    Translate("Famine mechanics and changes are disabled when checked") },
+            new OpLabel(
+                defX + (addX*0) - 36,
+                row3 + textY,  
+                "Famines Disabled"),
+            
+            new OpCheckBox(
+                FaminesForAll, 
+                defX + (addX*0), 
+                row3-50)
+            { description = 
+                Translate("Famine mechanics and changes are given to every character") },
+            new OpLabel(
+                defX + (addX*0) - 36,
+                row3 - 50 + textY,  
+                "Universal Famine"),
+            
+            new OpCheckBox(
+                ExpeditionFamine, 
+                defX + (addX*0), 
+                row3-100)
+            { description = 
+                Translate("Forces famines to appear in Expedition Mode") },
+            new OpLabel(
+                defX + (addX*0) - 39,
+                row3 - 100 + textY,  
+                "Expedition Famine"),
+            
+            //////
+            
+            new OpLabel(
+                defX-20,
+                row5 + 25,  
+                "Other", true) { alpha = 0.5f },
+            
+            new OpCheckBox(
+                SolaceBlizzTimer, 
+                defX + (addX*0), 
+                row5)
+            { description = 
+                Translate("Forces the rain timer to be visible for Solace slugcats and Saint") },
+            new OpLabel(
+                defX + (addX*0) - 29,
+                row5 + textY,  
+                "Blizzard Timer"),
+            
+        });
+        #endregion
         #region Friend Tab
 
         // Sprites
@@ -331,7 +298,7 @@ public class Options : OptionInterface
             new OpLabel(
                 defX-20,
                 row1 + 25,  
-                "Movement", true) { alpha = 0.3f },
+                "Movement", true) { alpha = 0.5f },
             
             new OpCheckBox(
                     FriendUnNerf, 
@@ -369,7 +336,7 @@ public class Options : OptionInterface
             //////
             
             new OpLabel(defX-20,row2 + 25,  
-            "Combat", true) { alpha = 0.3f },
+            "Combat", true) { alpha = 0.5f },
             
             new OpCheckBox(
                     FriendBackspear,
@@ -385,7 +352,7 @@ public class Options : OptionInterface
             //////
             
             new OpLabel(defX-20,row3 + 25,  
-                "Other", true) { alpha = 0.3f },
+                "Other", true) { alpha = 0.5f },
             
             new OpCheckBox(
                     FriendRepLock,
@@ -402,18 +369,117 @@ public class Options : OptionInterface
         #endregion
         #region Poacher Tab
         
+        // Sprites
         var PoacherSymbol = new FSprite("symbolpoacher");
         PoacherSymbol.scale = 1.315f;
         PoacherSymbol.SetPosition(300,300);
         PoacherSymbol.alpha = 0.05f;
         
+        var poacherline1 = new FSprite("pixel");
+        poacherline1.color = Menu.MenuColorEffect.rgbMediumGrey;
+        poacherline1.scaleX = 450;
+        poacherline1.scaleY = 2;
+        poacherline1.SetPosition(300,row1-35);
+        
+        var poacherline2 = new FSprite("pixel");
+        poacherline2.color = Menu.MenuColorEffect.rgbMediumGrey;
+        poacherline2.scaleX = 450;
+        poacherline2.scaleY = 2;
+        poacherline2.SetPosition(300,row2-35);
+        
+        // Add sprites
         PoacherSprites.container.AddChild(PoacherSymbol);
+        PoacherSprites.container.AddChild(poacherline1);
+        PoacherSprites.container.AddChild(poacherline2);
+        
+        // Actual config
         opTab2.AddItems(new UIelement[]
         {
             PoacherSprites,
             new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - Poacher"), true),
             new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+            
+            new OpLabel(
+                defX-20,
+                row1 + 25,  
+                "Movement", true) { alpha = 0.5f },
+            
+            new OpCheckBox(
+                PoacherFoodParkour, 
+                defX + (addX*0), 
+                row1)
+                { description = 
+                    Translate("Allows some food items to affect Poacher's movement when held") },
+            new OpLabel(
+                defX + (addX*0) - 23f,
+                row1 + textY,
+                Translate("Heavy Foods")),
+            
+            //////
+            
+            new OpLabel(defX-20,row2 + 25,  
+                "Combat", true) { alpha = 0.5f },
+            
+            new OpCheckBox(
+                PoacherBackspear, 
+                defX + (addX*0), 
+                row2)
+                { description = 
+                    Translate("Allows Poacher to use a backspear as was planned early in their development") },
+            new OpLabel(
+                defX + (addX*0) - 35f,
+                row2 + textY,
+                Translate("Backspear Enable")),
+            
+            //////
+            
+            new OpLabel(defX-20,row3 + 25,  
+                "Other", true) { alpha = 0.5f },
+            
+            new OpCheckBox(
+                PoacherPupActs, 
+                defX + (addX*0), 
+                row3)
+                { description = 
+                    Translate("Allows Poacher to behave like a pup. Kind of subtle.") },
+            new OpLabel(
+                defX + (addX*0) - 25f,
+                row3 + textY,
+                Translate("Pup Behavior")),
+            
+            new OpCheckBox(
+                PoacherFreezeFaster, 
+                defX + (addX*1), 
+                row3)
+                { description = 
+                    Translate("Makes Poacher get cold as fast as they did in earlier versions of the mod") },
+            new OpLabel(
+                defX + (addX*1) - 20f,
+                row3 + textY,
+                Translate("Legacy Cold")),
+
         });
+        #endregion
+        #region Noir Tab
+        
+        // Sprites
+        var NoirSymbol = new FSprite("symbolnoir");
+        NoirSymbol.scale = 1.45f;
+        NoirSymbol.SetPosition(300,300);
+        NoirSymbol.alpha = 0.05f;
+        
+        var noirline1 = new FSprite("pixel");
+        noirline1.color = Menu.MenuColorEffect.rgbMediumGrey;
+        noirline1.scaleX = 450;
+        noirline1.scaleY = 2;
+        noirline1.SetPosition(300,row1-35);
+        
+        var noirline2 = new FSprite("pixel");
+        noirline2.color = Menu.MenuColorEffect.rgbMediumGrey;
+        noirline2.scaleX = 450;
+        noirline2.scaleY = 2;
+        noirline2.SetPosition(300,row2-35);
+        
         #endregion
 
         NoirSlashConditionsCheckBox = new OpCheckBox(NoirAltSlashConditions, 10f, 520f);
