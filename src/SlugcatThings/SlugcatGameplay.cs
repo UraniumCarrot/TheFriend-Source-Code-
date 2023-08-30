@@ -320,10 +320,6 @@ public class SlugcatGameplay
     public static void LanternMouse_Update(On.LanternMouse.orig_Update orig, LanternMouse self, bool eu)
     { // Fixes Poacher unable to use lantern mice
         orig(self, eu);
-        if (self.room.abstractRoom.name == "VR1" || 
-            self.room.abstractRoom.name == "PUMP03" || 
-            self.room.abstractRoom.name == "PS1") 
-            return;
         if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
