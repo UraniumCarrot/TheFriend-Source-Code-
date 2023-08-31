@@ -35,7 +35,7 @@ public class HudHooks
         orig(self, package);
         if (self.IsSleepScreen || self.IsDeathScreen || self.IsStarveScreen)
         {
-            if ((package.characterStats.name == FriendName || package.characterStats.name == DragonName) && self.IsSleepScreen)
+            if ((package.characterStats.name == FriendName || package.characterStats.name == DragonName || package.characterStats.name == Plugin.NoirName) && self.IsSleepScreen)
             {
                 if (self.soundLoop != null) self.soundLoop.Destroy();
                 self.mySoundLoopID = MoreSlugcats.MoreSlugcatsEnums.MSCSoundID.Sleep_Blizzard_Loop;
