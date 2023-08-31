@@ -52,7 +52,7 @@ public partial class NoirCatto
             if (self.manager.menuMic != null)
             {
                 var flag = self.manager.menuMic.soundObjects.Any(t => t is MenuMicrophone.MenuSoundLoop loop && loop.isBkgLoop && ((self.mySoundLoopID != SoundID.None && t.soundData.soundID == self.mySoundLoopID) || (self.mySoundLoopName != "" && t.soundData.soundName == self.mySoundLoopName)));
-                if (!flag && self.mySoundLoopID == SoundID.MENU_Sleep_Screen_LOOP)
+                if (!flag && (self.mySoundLoopID == SoundID.MENU_Sleep_Screen_LOOP || self.mySoundLoopID == MoreSlugcats.MoreSlugcatsEnums.MSCSoundID.Sleep_Blizzard_Loop))
                 {
                     PurrLoop = self.PlayLoop(PurrLoopSND, 0f, 1f, 1f, true);
                 }
