@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 using MoreSlugcats;
 using RWCustom;
 using SlugBase.SaveData;
@@ -14,7 +15,6 @@ public partial class SLOracleHandler
 {
     public static void Apply()
     {
-        On.SLOracleBehavior.UnconciousUpdate += SLOracleBehavior_UnconciousUpdate;
         On.SLOrcacleState.ForceResetState += SLOrcacleState_ForceResetState;
         On.SLOracleBehavior.Update += SLOracleBehavior_Update;
         On.SLOracleBehavior.Move += SLOracleBehavior_Move;
@@ -26,21 +26,6 @@ public partial class SLOracleHandler
     }
 
     // Simple Moon fixes
-    public static void SLOracleBehavior_UnconciousUpdate(On.SLOracleBehavior.orig_UnconciousUpdate orig, SLOracleBehavior self)
-    {
-        orig(self);
-        if (self.oracle.room.game.IsStorySession && FriendWorldState.SolaceWorldstate)
-        {
-            self.oracle.SetLocalGravity(1f);
-            if (self.oracle.room.world.rainCycle.brokenAntiGrav.on)
-            {
-                self.oracle.room.world.rainCycle.brokenAntiGrav.counter = -1;
-                self.oracle.room.world.rainCycle.brokenAntiGrav.to = 0f;
-            }
-            self.oracle.arm.isActive = false;
-            self.moonActive = false;
-        }
-    }
     public static bool RainWorldGame_IsMoonActive(On.RainWorldGame.orig_IsMoonActive orig, RainWorldGame self)
     {
         orig(self);
@@ -64,10 +49,6 @@ public partial class SLOracleHandler
     }
 
     // Moon behaviors
-    /*public static int counter = 0;
-    public static bool SLHasMarkCutsceneHappened;
-    public static bool SLGaveMarkCutsceneHappened;
-    public static bool IsShowingMedia;*/
     public static void SLOracleBehavior_Update(On.SLOracleBehavior.orig_Update orig, SLOracleBehavior self, bool eu)
     {
         try 
@@ -76,6 +57,8 @@ public partial class SLOracleHandler
         }
         catch (Exception e) { Debug.Log("Solace: Exception occured in SLOracleBehaviorUpdate orig" + e); }
 
+        var antigrav = self.oracle.room.world.rainCycle.brokenAntiGrav;
+
         try 
         {
             if (FriendWorldState.SolaceWorldstate)
@@ -83,6 +66,8 @@ public partial class SLOracleHandler
                 var moondata = self.MoonCutsceneData();
                 var room = self.oracle.room;
                 int stage = self.MoonCutsceneData().stage;
+                var gravity = room.world.rainCycle.brokenAntiGrav;
+                
                 // Moon mark cutscene
                 if (!(room?.game?.session as StoryGameSession).saveState.deathPersistentSaveData.theMark)
                 {
@@ -95,8 +80,11 @@ public partial class SLOracleHandler
                     int counter = moondata.counter;
                     if (counter <= 0 &&
                         self.hasNoticedPlayer)
+                    {
                         moondata.counter = 1800;
-                    if (counter > 0)
+                        moondata.nograv = true;
+                    }
+                    if (counter > 0 && self.hasNoticedPlayer)
                         moondata.counter--;
                     if (room.game.rainWorld.progression.currentSaveState.miscWorldSaveData.GetSlugBaseData()
                             .TryGet("SolaceMarkCutsceneHasBeenSeen", out bool a) && a)
@@ -108,14 +96,18 @@ public partial class SLOracleHandler
                     self.oracle.SetLocalGravity(Mathf.Lerp(self.oracle.gravity, 1f, 0.2f));
                     self.floatyMovement = true;
 
-                    var grav = room.world.rainCycle.brokenAntiGrav;
-                    if (counter == 1799 && grav.on)
-                        room.PlaySound(SoundID.Broken_Anti_Gravity_Switch_Off, 0f, room.game.cameras[1].room.roomSettings.GetEffectAmount(RoomSettings.RoomEffect.Type.BrokenZeroG), 1f);
-                    grav.on = false;
-                    grav.counter = 10;
-                    grav.progress = 0f;
-                    grav.from = 0f;
-                    grav.to = 0f;
+                    if (moondata.nograv && self.hasNoticedPlayer)
+                    {
+                        if (gravity.on)
+                        {
+                            gravity.progress = 0;
+                            room.PlaySound(SoundID.Broken_Anti_Gravity_Switch_Off, 0f, room.game.cameras[0].room.roomSettings.GetEffectAmount(RoomSettings.RoomEffect.Type.BrokenZeroG), 1f);
+                        }
+                        gravity.on = false;
+                        gravity.counter = 600;
+                        gravity.from = 1;
+                        gravity.to = 0;
+                    }
 
                     switch (stage)
                     {
@@ -215,6 +207,7 @@ public partial class SLOracleHandler
                             room.game.rainWorld.progression.currentSaveState.miscWorldSaveData.GetSlugBaseData().Set("SolaceMarkCutsceneHasBeenSeen", true);
                             room.game.GetStorySession.saveState.deathPersistentSaveData.GetSlugBaseData().Set("SolaceMoonTalk", true);
                             self.oracle.oracleBehavior = new SLOracleBehaviorHasMark(self.oracle);
+                            moondata.nograv = false;
                             break;
                     }
                 }
@@ -225,149 +218,10 @@ public partial class SLOracleHandler
                 {
                     self.forceFlightMode = false;
                     if (moondata.speechCounter <= 0) 
-                        moondata.speechCounter = 200;
+                        moondata.speechCounter = 55;
                     if (moondata.speechCounter > 1) 
                         moondata.speechCounter--;
-                    if (moondata.speechCounter == 1)
-                    {
-                        self.holdKnees = true;
-                        self.movementBehavior = SLOracleBehavior.MovementBehavior.Meditate;
-                    }
                 }
-                /*
-                if (!(self?.oracle?.room?.game?.session as StoryGameSession).saveState.deathPersistentSaveData.theMark && counter <= 0) SLHasMarkCutsceneHappened = false;
-                if (self.hasNoticedPlayer && !SLHasMarkCutsceneHappened) { counter = 1800; SLHasMarkCutsceneHappened = true; }
-                if (counter > 0)
-                {
-                    if (counter == 1799 && self.oracle.room.world.rainCycle.brokenAntiGrav.on == true)
-                        self.oracle.room.PlaySound(SoundID.Broken_Anti_Gravity_Switch_Off, 0f, self.oracle.room.game.cameras[1].room.roomSettings.GetEffectAmount(RoomSettings.RoomEffect.Type.BrokenZeroG), 1f);
-                    self.oracle.room.world.rainCycle.brokenAntiGrav.on = false;
-                    self.oracle.room.world.rainCycle.brokenAntiGrav.counter = 10;
-                    self.oracle.room.world.rainCycle.brokenAntiGrav.progress = 0f;
-                    self.oracle.room.world.rainCycle.brokenAntiGrav.from = 0f;
-                    self.oracle.room.world.rainCycle.brokenAntiGrav.to = 0f;
-
-
-                    counter--;
-                    if (counter > 1) self.forceFlightMode = true;
-                    self.oracle.SetLocalGravity(Mathf.Lerp(self.oracle.gravity, 1f, 0.2f));
-                    self.floatyMovement = true;
-                    if (counter > 1300) self.setMovementBehavior(SLOracleBehavior.MovementBehavior.ShowMedia);
-                    if (counter <= 1300 && counter >= 300) 
-                    { 
-                        self.setMovementBehavior(SLOracleBehavior.MovementBehavior.KeepDistance);
-                    }
-                    if (counter > 300 && counter < 1300) 
-                        self.lookPoint = ((self.showMediaPos.x <= self.oracle.room.PixelWidth * 0.85f) ? 
-                            new Vector2(self.showMediaPos.x + 100f, self.showMediaPos.y + 150f) : 
-                            new Vector2(self.showMediaPos.x - 100f, self.showMediaPos.y + 150f));
-                    if (counter <= 300 && counter > 1) 
-                    { 
-                        self.setMovementBehavior(SLOracleBehavior.MovementBehavior.Meditate);
-                        if (Random.value > 0.5f && counter < 240) self.player.firstChunk.vel.y += 0.3f;
-                        for (int i = 0; i < self.oracle.mySwarmers.Count; i++)
-                        {
-                            var swarmer = self.oracle.mySwarmers[i];
-                            var dist = 250f;
-                            Vector2 startPos = swarmer.firstChunk.pos;
-                            Vector2 endPos = swarmer.firstChunk.pos + Custom.DirVec(self.oracle.firstChunk.pos,startPos)*dist;
-
-                            var lightning = new LightningBolt(startPos, endPos, 1, 0.5f, 0.3f, 1, 0.33f, false);
-                            if (Random.value > 0.96f + counter*0.0002f)
-                            {
-                                self.oracle.room.AddObject(lightning);
-                                self.oracle.room.AddObject(new Explosion.ExplosionLight(startPos, 0.4f,0.5f,30,new Color(0.2f,1f,0f)));
-                                self.oracle.room.PlaySound(SoundID.SS_Mycelia_Spark,swarmer.firstChunk.pos,3f,1.4f - Random.value * 0.4f);
-                                self.oracle.room.PlaySound(SoundID.Death_Lightning_Spark_Spontaneous,swarmer.firstChunk.pos,0.4f,1f);
-                                lightning.type = 0;
-                            }
-                        }
-                    }
-                }
-
-                if (counter <= 0)
-                {
-                    self.forceFlightMode = false;
-                }
-
-                switch (counter)
-                {
-                    case 1301:
-                        IsShowingMedia = true;
-                        self.displayImage = self.oracle.myScreen.AddImage("AIimg1_DM");
-                        self.displayImage.setAlpha = 0.91f + UnityEngine.Random.value * 0.06f;
-                        self.displayImageTimer = 200;
-                        Debug.Log("Solace: Moon mark cutscene phase -1 passed");
-                        break;
-
-                    case 1300:
-                        IsShowingMedia = true;
-                        self.oracle.room.PlaySound(SoundID.SS_AI_Text, self.player.firstChunk.pos, 1.5f, 1f);
-                        self.displayImage = self.oracle.myScreen.AddImage("AIimg1_DM");
-                        self.displayImage.setAlpha = 0.91f + UnityEngine.Random.value * 0.06f;
-                        self.displayImageTimer = 200;
-                        Debug.Log("Solace: Moon mark cutscene phase 0 passed");
-                        break;
-
-                    case 1100:
-                        self.oracle.room.PlaySound(SoundID.SS_AI_Text, self.player.firstChunk.pos, 1.5f, 1f);
-                        self.displayImage = self.oracle.myScreen.AddImage("AIimg2_RIVEND");
-                        self.displayImage.setAlpha = 0.91f + UnityEngine.Random.value * 0.06f;
-                        self.displayImageTimer = 200;
-                        Debug.Log("Solace: Moon mark cutscene phase 1 passed");
-                        break;
-
-                    case 900:
-                        self.oracle.room.PlaySound(SoundID.SS_AI_Text, self.player.firstChunk.pos, 1.5f, 1f);
-                        self.displayImage = self.oracle.myScreen.AddImage("AIimg1");
-                        self.displayImage.setAlpha = 0.91f + UnityEngine.Random.value * 0.06f;
-                        self.displayImageTimer = 200;
-                        Debug.Log("Solace: Moon mark cutscene phase 2 passed");
-                        break;
-
-                    case 700:
-                        self.oracle.room.PlaySound(SoundID.SS_AI_Text, self.player.firstChunk.pos, 1.5f, 1f);
-                        self.displayImage = self.oracle.myScreen.AddImage("AIimg2");
-                        self.displayImage.setAlpha = 0.91f + UnityEngine.Random.value * 0.06f;
-                        self.displayImageTimer = 200;
-                        Debug.Log("Solace: Moon mark cutscene phase 3 passed");
-                        break;
-
-                    case 500:
-                        self.oracle.room.PlaySound(SoundID.SS_AI_Text, self.player.firstChunk.pos, 1.5f, 1f);
-                        self.displayImage = self.oracle.myScreen.AddImage("AIimg3");
-                        self.displayImage.setAlpha = 0.91f + UnityEngine.Random.value * 0.06f;
-                        self.displayImageTimer = 200;
-                        Debug.Log("Solace: Moon mark cutscene phase 4 passed");
-                        break;
-
-                    case 300:
-                        IsShowingMedia = false;
-                        Debug.Log("Solace: Moon mark cutscene phase 5 passed");
-                        break;
-
-                    case 240:
-                        self.oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Telekenisis, self.player.firstChunk.pos, 1f, 1f);
-                        self.player.Stun(200);
-                        self.player.firstChunk.vel.x += 0.02f;
-                        Debug.Log("Solace: Moon mark cutscene phase 6 passed");
-                        break;
-
-                    case < 100 and > 1:
-                        self.oracle.spasms = 10;
-                        break;
-
-                    case 1:
-                        (self.oracle.room.game.session as StoryGameSession).saveState.deathPersistentSaveData.theMark = true;
-                        self.Pain();
-                        self.oracle.spasms = 44;
-                        self.oracle.stun = Math.Max(self.oracle.stun, 183);
-                        self.player.GetPoacher().JustGotMoonMark = true;
-                        self.oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, self.player.firstChunk.pos, 1f, 1f);
-                        self.oracle.room.AddObject(new Spark(self.player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
-                        Debug.Log("Solace: Moon mark cutscene phase final passed");
-                        break;
-                }*/
             }
         }
         catch(Exception e) { Debug.Log("Solace: Exception occured in SLOracleBehaviorUpdate custom" + e); }
@@ -404,6 +258,7 @@ public static class MoonCutscene
         public int stage;
         public int counter;
         public int speechCounter;
+        public bool nograv;
         public Moon()
         {
         }

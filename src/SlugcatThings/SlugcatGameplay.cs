@@ -146,13 +146,11 @@ public class SlugcatGameplay
         // Moon mark
         if (self.GetPoacher().JustGotMoonMark && !self.GetPoacher().MoonMarkPassed)
         {
-            Debug.Log("Solace: PlayerUpdate JustGotMoonMark check passed");
             self.Stun(20);
             self.GetPoacher().MarkExhaustion = (int)((1 / self.slugcatStats.bodyWeightFac) * 200); self.GetPoacher().MoonMarkPassed = true;
         }
         if (self.GetPoacher().MarkExhaustion > 0 && self.GetPoacher().JustGotMoonMark)
         {
-            Debug.Log("Solace: PlayerUpdate MarkExhaustion check passed");
             self.GetPoacher().MarkExhaustion--;
             self.exhausted = true;
             self.aerobicLevel = (self.slugcatStats.bodyWeightFac < 0.5f) ? 1.5f : 1.1f;

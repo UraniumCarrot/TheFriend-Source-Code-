@@ -159,14 +159,47 @@ public partial class SLOracleHandler
             }
         }
 
-        if (self.currentSaveFile == Plugin.FriendName)
+        if (self.currentSaveFile == Plugin.FriendName || self.currentSaveFile == Plugin.DragonName) //TODO: Give poacher proper unique dialogue
         {
+            bool IsFriend = self.currentSaveFile == Plugin.FriendName;
             if (self.id == Conversation.ID.MoonFirstPostMarkConversation)
             {
                 Say2("...", 0, 2);
                 Wait(5);
-                Say2("Ah, yes.", 0, 2);
-                Say2("The Slugcats.", 0, 999999);
+                Say2("Ah... h-hello.", 0, 2);
+                Say2("Please... Give me a moment.", 0, 2);
+                Say2("...", 0, 2);
+                Wait(100);
+                Say2("Thank you. Sorry, that took a lot of energy... But it seems you can understand me now.<LINE>" + 
+                     "I hope that didn't hurt.", 0, 2);
+                Say2("It is amazing to see more of your kind again. It's been such a long time!", 0, 2);
+                Say2("My last regular visitor passed long ago. " + 
+                     ((IsFriend) ? 
+                         "They looked a lot like you! More aquatic than fluffy, though..." : 
+                         "They were much older than you."), 0, 2);
+                Say2("They helped me a lot. Actually, your kind seems to do that often.", 0, 2);
+                Say2("Are you here to help me too? I don't see how you could." +
+                    ((IsFriend)? 
+                        "<LINE>But, I know someone else who really needs it." : 
+                        "<LINE>You seem very young to be exploring alone. It's dangerous."), 0, 2);
+                if (IsFriend)
+                {
+                    Say2("He's my neighbor, Five Pebbles. I... he-he's hurt.", 0, 2);
+                    Say2("So badly... My last visitor reinstated my ability to communicate with him.", 0, 2);
+                    Say2("And now I've lost him. Again.", 0, 2);
+                    Say2("Please... if there's anything you can do, do it for him. He needs help.", 0, 2);
+                    Say2("Even just keeping him company will do. He is suffering, rotting in his chamber.", 0, 2);
+                    Say2("You... may need to make him less dangerous first. Somehow.<LINE>" + 
+                         "I know he'd appreciate anything at all.", 0, 2);
+                    Say2("You are welcome to stay with me as long as you like, but I urge you to seek him instead.<LINE>" + 
+                         "He needs it much more than I.", 0, 2);
+                }
+                else
+                {
+                    Say2("You are welcome to stay as long as you like, but be careful, little creature.<LINE>" +
+                        "It doesn't seem like the cold suits you well.", 0, 2);
+                }
+                
                 return;
             }
         }
