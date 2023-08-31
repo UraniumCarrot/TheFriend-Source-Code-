@@ -1,0 +1,11 @@
+[MERGE]
+CONDITIONAL LINKS
+//Requires swaps on both sides!
+Friend : CC_A06 : CC_H01SAINT : CC_H01
+Friend : CC_H01SAINT : CC_A06 : DISCONNECTED
+Friend : CC_H01 : 1 : CC_A06
+
+//Hidden on saint
+Friend : HIDEROOM : CC_H01SAINT
+END CONDITIONAL LINKS
+[ENDMERGE]

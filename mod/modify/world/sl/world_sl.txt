@@ -1,0 +1,34 @@
+[MERGE]
+CONDITIONAL LINKS
+//unlink shaded rooms on saint
+
+Friend : SL_B02SAINT : SL_A02 : DISCONNECTED
+Friend : SL_B02SAINT : SL_C11 : DISCONNECTED
+Friend : SL_B02SAINT : SL_A14 : DISCONNECTED
+//link CL rooms on saint
+Friend : SL_B02 : 1 : SL_A02
+Friend : SL_B02 : 2 : SL_A14
+Friend : SL_B02 : 3 : SL_C11
+Friend : SL_A02 : SL_B02SAINT : SL_B02
+Friend : SL_A14 : SL_B02SAINT : SL_B02
+//saint's broken grates
+Friend : SL_C06SAINT : SL_S04 : DISCONNECTED
+Friend : SL_C06SAINT : SL_A03 : DISCONNECTED
+Friend : SL_C06SAINT : SL_A06 : DISCONNECTED
+Friend : SL_C06 : 1 : SL_S04
+Friend : SL_C06 : 2 : SL_A03
+Friend : SL_C06 : 3 : SL_A06
+Friend : SL_S04 : SL_C06SAINT : SL_C06
+Friend : SL_A03 : SL_C06SAINT : SL_C06
+Friend : SL_A06 : SL_C06SAINT : SL_C06
+
+Friend : HIDEROOM : GATE_SL_CL
+Friend : HIDEROOM : SL_B02SAINT
+Friend : HIDEROOM : SL_C16
+Friend : HIDEROOM : SL_I02
+Friend : HIDEROOM : SL_SCRUSHED
+Friend : HIDEROOM : SL_B10
+Friend : HIDEROOM : SL_B11
+Friend : HIDEROOM : SL_C06SAINT
+END CONDITIONAL LINKS
+[ENDMERGE]
