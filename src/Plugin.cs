@@ -65,7 +65,7 @@ namespace TheFriend
             YoungLizardAI.Apply();
             FirecrackerFix.Apply();
             FriendWorldState.Apply();
-            FriendLizThreat.Apply();
+            //FriendLizThreat.Apply();
             FriendCrawl.Apply();
             FriendCrawlTurn.Apply();
             DragonCrafts.Apply();
