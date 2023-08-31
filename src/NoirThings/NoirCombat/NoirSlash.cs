@@ -230,6 +230,8 @@ public partial class NoirCatto
                 return false;
             }
 
+            if (result.obj is SeedCob seedCob) HitCob(seedCob);
+
             if (result.obj is Creature crit)
             {
                 if (crit == Owner) return false;
@@ -304,6 +306,25 @@ public partial class NoirCatto
             }
 
             return true;
+        }
+
+        private static void HitCob(SeedCob seedCob)
+        {
+            if (!seedCob.AbstractCob.opened)
+            {
+                seedCob.Open();
+                return;
+            }
+
+            //todo: ILHook SharedPhysics.TraceProjectileAgainstBodyChunks and Weapon.Update for PhysicalObject.canBeHitByWeapons
+            // for (var i = 0; i < 4; i++)
+            // {
+            //     var absSeed = new AbstractConsumable(seedCob.room.world, MoreSlugcats.MoreSlugcatsEnums.AbstractObjectType.Seed, null, seedCob.room.GetWorldCoordinate(seedCob.placedPos), seedCob.room.game.GetNewID(), -1, -1, null);
+            //     seedCob.room.abstractRoom.AddEntity(absSeed);
+            //     absSeed.pos = seedCob.room.GetWorldCoordinate(seedCob.placedPos);
+            //     absSeed.RealizeInRoom();
+            //     absSeed.realizedObject.firstChunk.HardSetPosition(Vector2.Lerp(seedCob.bodyChunks[0].pos, seedCob.bodyChunks[1].pos, i / 5f));
+            // }
         }
 
         public override void HitSomethingWithoutStopping(PhysicalObject obj, BodyChunk chunk, Appendage appendage)

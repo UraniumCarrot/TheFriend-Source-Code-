@@ -118,8 +118,8 @@ public class Options : OptionInterface
         //LocalLizRepAllBox.greyedOut = LocalLizRepBox.value == "false";
         // Noir
         NoirSlashConditionsLabel.text = "Slash conditions: " + (NoirSlashConditionsCheckBox.GetValueBool() ?
-            "Default - Empty hands, or no directional input while holding an object" : 
-            "Alternative - Main hand must be empty");
+                "Alternative - Main hand must be empty" :
+                "Default - Empty hands, or no directional input while holding an object");
     }
     public override void Initialize()
     {
