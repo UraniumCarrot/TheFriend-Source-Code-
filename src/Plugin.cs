@@ -65,6 +65,7 @@ namespace TheFriend
             YoungLizardAI.Apply();
             FirecrackerFix.Apply();
             FriendWorldState.Apply();
+            FriendLizThreat.Apply();
             FriendCrawl.Apply();
             FriendCrawlTurn.Apply();
             DragonCrafts.Apply();
@@ -160,6 +161,8 @@ namespace TheFriend
             Futile.atlasManager.LoadAtlas("atlases/friendlegs");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull2");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull3");
+            Futile.atlasManager.LoadAtlas("atlases/solacesymbols");
+
             NoirCatto.LoadSounds();
             NoirCatto.LoadAtlases();
         }
@@ -275,7 +278,7 @@ namespace TheFriend
         // Lizard Reputation Settings
         public static bool LizRep()
         {
-            return Options.LizRepMeter.Value;
+            return true;
         }
         public static bool LizRepAll()
         {
@@ -283,7 +286,7 @@ namespace TheFriend
         }
         public static bool LizRide()
         {
-            return Options.LizRide.Value;
+            return true;
         }
         public static bool LizRideAll()
         {

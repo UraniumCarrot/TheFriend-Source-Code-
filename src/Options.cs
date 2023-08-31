@@ -33,9 +33,7 @@ public class Options : OptionInterface
     public static Configurable<bool> NoirHideEars;
     public static Configurable<KeyCode> NoirMeowKey;
 
-    public static Configurable<bool> LizRide;
     public static Configurable<bool> LizRideAll;
-    public static Configurable<bool> LizRepMeter;
     public static Configurable<bool> LizRepMeterForAll;
 
     // Achievements
@@ -105,7 +103,7 @@ public class Options : OptionInterface
     public override void Update()
     {
         base.Update();
-        /*
+        
         if (NoFamineBox.value == "true")
         {
             AllFamineBox.greyedOut = true; 
@@ -117,8 +115,7 @@ public class Options : OptionInterface
             ExpeditionFamineBox.greyedOut = false;
         }
 
-        LocalLizRepAllBox.greyedOut = LocalLizRepBox.value == "false";
-        */
+        //LocalLizRepAllBox.greyedOut = LocalLizRepBox.value == "false";
         // Noir
         NoirSlashConditionsLabel.text = "Slash conditions: " + (NoirSlashConditionsCheckBox.GetValueBool() ?
             "Default - Empty hands, or no directional input while holding an object" : 
@@ -133,6 +130,7 @@ public class Options : OptionInterface
         OpContainer GenSprites = new OpContainer(Vector2.zero);
         OpContainer FriendSprites = new OpContainer(Vector2.zero);
         OpContainer PoacherSprites = new OpContainer(Vector2.zero);
+        OpContainer NoirSprites = new OpContainer(Vector2.zero);
 
         float labelX = 20;
         float labelY = 570;
@@ -170,6 +168,25 @@ public class Options : OptionInterface
         GenSprites.container.AddChild(genline2);
         
         // Actual configs
+
+        ExpeditionFamineBox = new OpCheckBox(
+            ExpeditionFamine,
+            defX + (addX * 0),
+            row3 - 100);
+        ExpeditionFamineBox.description = Translate("Forces famines to appear in Expedition Mode");
+
+        NoFamineBox = new OpCheckBox(
+            NoFamine,
+            defX + (addX * 0),
+            row3);
+        NoFamineBox.description = Translate("Famine mechanics and changes are disabled when checked");
+
+        AllFamineBox = new OpCheckBox(
+            FaminesForAll,
+            defX + (addX * 0),
+            row3 - 50);
+        AllFamineBox.description = Translate("Famine mechanics and changes are given to every character");
+        
         opTab0.AddItems(new UIelement[]
         {
             GenSprites,
@@ -189,7 +206,7 @@ public class Options : OptionInterface
                     Translate("Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)") },
             new OpLabel(
                 defX + (addX*0) - 22,
-                row1 + textY,  
+                row1 + textY,
                 "Global Rides"),
             
             new OpCheckBox(
@@ -210,34 +227,19 @@ public class Options : OptionInterface
                 row3 + 25,  
                 "Famines", true) { alpha = 0.5f },
             
-            new OpCheckBox(
-                NoFamine, 
-                defX + (addX*0), 
-                row3)
-                { description = 
-                    Translate("Famine mechanics and changes are disabled when checked") },
+            NoFamineBox,
             new OpLabel(
                 defX + (addX*0) - 36,
                 row3 + textY,  
                 "Famines Disabled"),
             
-            new OpCheckBox(
-                FaminesForAll, 
-                defX + (addX*0), 
-                row3-50)
-            { description = 
-                Translate("Famine mechanics and changes are given to every character") },
+            AllFamineBox,
             new OpLabel(
                 defX + (addX*0) - 36,
                 row3 - 50 + textY,  
                 "Universal Famine"),
             
-            new OpCheckBox(
-                ExpeditionFamine, 
-                defX + (addX*0), 
-                row3-100)
-            { description = 
-                Translate("Forces famines to appear in Expedition Mode") },
+            ExpeditionFamineBox,
             new OpLabel(
                 defX + (addX*0) - 39,
                 row3 - 100 + textY,  
@@ -464,7 +466,7 @@ public class Options : OptionInterface
         
         // Sprites
         var NoirSymbol = new FSprite("symbolnoir");
-        NoirSymbol.scale = 1.45f;
+        NoirSymbol.scale = 1.4f;
         NoirSymbol.SetPosition(300,300);
         NoirSymbol.alpha = 0.05f;
         
@@ -480,6 +482,13 @@ public class Options : OptionInterface
         noirline2.scaleY = 2;
         noirline2.SetPosition(300,row2-35);
         
+        NoirSprites.container.AddChild(NoirSymbol);
+        //NoirSprites.container.AddChild(noirline1);
+        //NoirSprites.container.AddChild(noirline2);
+        
+        opTabNoir.AddItems(
+            NoirSprites
+            );
         #endregion
 
         NoirSlashConditionsCheckBox = new OpCheckBox(NoirAltSlashConditions, 10f, 520f);
