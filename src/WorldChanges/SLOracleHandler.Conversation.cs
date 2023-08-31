@@ -1,3 +1,5 @@
+using System.Linq;
+using TheFriend.NoirThings;
 using UnityEngine;
 
 namespace TheFriend.WorldChanges;
@@ -31,54 +33,66 @@ public partial class SLOracleHandler
         {
             if (self.id == Conversation.ID.MoonFirstPostMarkConversation)
             {
-                switch (Mathf.Clamp(self.State.neuronsLeft, 0, 5))
+                /*
+                Say("Hello little <PlayerName>.");
+                Say("What are you? If I had my memories I would know...");
+                Say("You must be very brave to have made it all the way here.<LINE>" +
+                    "You dont seem suited to the ocean around my remains.");
+                Say("I am sorry to say, that I have nothing for you. Not even my memories.");
+                Say2("Or did I say that already?", 0, 5);
+                Say("You have been given the gift of communication.<LINE>" +
+                    "Did you meet my neighbour, Five Pebbles?");
+                Say("If so.. You must already understand how little of me remains functional.");
+                Wait(10);
+                Say("Your.. biology... feels familiar.");
+                Say2("Almost like a distant memory..<LINE>" +
+                     "Be it a very fluffy memory!", 0, 5);
+                Say("Speaking of which, my previous visitor wasnt quite as fluffy as you.<LINE>" +
+                    "More... Round. They also didnt seem to walk or crawl the same as you.");
+                Say2("Maybe you're distantly related..?", 0, 2);
+                Say("I must admit your kind's visits help keep what remains of me busy!");
+                Say("I can only hope to remember them all for as long as I can in my current state.");
+                Say("Maybe you know the round one? They left some time ago.<LINE>" +
+                    "My last overseer watched them head far to the west, past the...");
+                Say2("...", 0, 2);
+                Wait(5);
+                Say("It appears I dont remember the locales name. I'm sorry little one.");
+                Say("You are welcome to stay as long as you desire. It is nice to have someone to talk to!");
+                Say("I apologize I don't fully understand the noises you make...<LINE>" +
+                    "They are very cute though.");*/
+                
+                Say2("Ah... Hello little creature.",0,2);
+                Say2("Sorry, give me a moment. I'm still getting used to this...",0,5);
+                Say2("...",0,2);
+                Say("Thank you. Doing that takes a lot of energy. Can you understand me now?");
+                /*var meowPos = self.myBehavior.oracle.firstChunk.pos;
+                if (self.myBehavior.player.SlugCatClass == Plugin.NoirName)
                 {
-                    case 2:
-                        Say2("Get... get away... black... thing.", 30, 10);
-                        Say2("Please... thiss all I have left.", 0, 10);
-                        return;
-                    case 3:
-                        Say2("YOU!", 30, 10);
-                        Say2("...You ate... me. Please go away. I won't speak... to you.<LINE>" +
-                             "I... CAN'T speak to you... because... you ate...me...", 60, 0);
-                        return;
-                    case 5:
-                        Say("Hello little <PlayerName>.");
-                        Say("What are you? If I had my memories I would know...");
-                        if (self.State.playerEncounters > 0 && self.State.playerEncountersWithMark == 0)
-                        {
-                            Say("Perhaps... I saw you before?");
-                        }
-
-                        Say("You must be very brave to have made it all the way here.<LINE>" +
-                            "You dont seem suited to the ocean around my remains.");
-                        Say("I am sorry to say, that I have nothing for you. Not even my memories.");
-                        Say2("Or did I say that already?", 0, 5);
-                        Say("You have been given the gift of communication.<LINE>" +
-                            "Did you meet my neighbour, Five Pebbles?");
-                        Say("If so.. You must already understand how little of me remains functional.");
-                        Wait(10);
-                        Say("Your.. biology... feels familiar.");
-                        Say2("Almost like a distant memory..<LINE>" +
-                             "Be it a very fluffy memory!", 0, 5);
-                        Say("Speaking of which, my previous visitor wasnt quite as fluffy as you.<LINE>" +
-                            "More... Round. They also didnt seem to walk or crawl the same as you.");
-                        Say2("Maybe you're distantly related..?", 0, 2);
-                        Say("I must admit your kind's visits help keep what remains of me busy!");
-                        Say("I can only hope to remember them all for as long as I can in my current state.");
-                        Say("Maybe you know the round one? They left some time ago.<LINE>" +
-                            "My last overseer watched them head far to the west, past the...");
-                        Say2("...", 0, 2);
-                        Wait(5);
-                        Say("It appears I dont remember the locales name. I'm sorry little one.");
-                        Say("You are welcome to stay as long as you desire. It is nice to have someone to talk to!");
-                        Say("I apologize I don't fully understand the noises you make...<LINE>" +
-                            "They are very cute though.");
-                        return;
-                    default:
-                        orig(self);
-                        return;
+                    meowPos = self.myBehavior.player.firstChunk.pos;
                 }
+                else
+                {
+                    var noir = self.myBehavior.PlayersInRoom.FirstOrDefault(p => p.SlugCatClass == Plugin.NoirName);
+                    if (noir != null) meowPos = noir.firstChunk.pos;
+                }
+                self.myBehavior.oracle.room.PlaySound(NoirCatto.Meow1SND, meowPos);*/
+                Say("It seems so! I'm sorry if that caused any discomfort.");
+                Say("Amazing... three visitors, each right after the other!");
+                Say("Do you know them? There's a little one - I think it may be a child - and a fluffy blue one!");
+                Say("Not as fluffy as you, though... your fur is so thick! It's perfectly suited to the blizzard.");
+                Say2("...",0,5);
+                Say("How curious! You're one of their kind, yet you're also so different.<LINE>" +
+                    "You remind me of how felines looked, back when our creators were around.");
+                Say("They were kept as pets, but also were quite capable on their own.");
+                Say("I don't think you descended from them, they're surely extinct by now.");
+                Say("Do your differences come from evolving in some far-away place?<LINE>" +
+                    "Or are you purposed, to look like them?");
+                Say("What a marvel you are, fluffy one!");
+                Wait(10);
+                
+                Say("I apologize, I don't fully understand the noises you make...<LINE>" +
+                    "They are very cute though.");
+                return;
             }
 
             if (self.id == Conversation.ID.MoonSecondPostMarkConversation)
