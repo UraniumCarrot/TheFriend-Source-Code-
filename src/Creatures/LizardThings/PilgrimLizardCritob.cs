@@ -11,7 +11,7 @@ public class PilgrimLizardCritob : Critob
 {
     public PilgrimLizardCritob() : base(CreatureTemplateType.PilgrimLizard)
     {
-        Icon = new SimpleIcon("Kill_Pink_Lizard", new(1f, 1f, 1f));
+        Icon = new SimpleIcon("Kill_Standard_Lizard", new(1f, 1f, 1f));
         LoadedPerformanceCost = 1f;
         SandboxPerformanceCost = new(0.8f, 0.8f);
         Hooks.Apply();

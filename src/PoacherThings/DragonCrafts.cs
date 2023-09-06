@@ -112,8 +112,8 @@ public class DragonCrafts
     public static void Player_SpitUpCraftedObject(On.Player.orig_SpitUpCraftedObject orig, Player self)
     {
         if (self.slugcatStats.name != Plugin.DragonName) { orig(self); return; }
-        int vargrasp = self?.grasps[1]?.grabbed is FirecrackerPlant || self?.grasps[1]?.grabbed is BoomMine ? 1 : 0;
-        var vargraspmat = self?.grasps[vargrasp]?.grabbed;
+        int vargrasp = self.grasps[1]?.grabbed is FirecrackerPlant || self.grasps[1]?.grabbed is BoomMine ? 1 : 0;
+        var vargraspmat = self.grasps[vargrasp]?.grabbed;
         var obj0 = self.grasps[0]?.grabbed?.abstractPhysicalObject;
         var obj1 = self.grasps[1]?.grabbed?.abstractPhysicalObject;
         var resultEx = GetResult(obj0.type, obj1.type);
@@ -143,8 +143,15 @@ public class DragonCrafts
             else if (resultEx == BoomMineFisob.BoomMine)
             {
                 Debug.Log("Solace: BoomMine crafting begun!");
-                if (vargraspmat is not BoomMine) { MineCrafting1(self); return; }
-                else { MineCrafting2(self); return; }
+                if (vargraspmat is not BoomMine) { MineCrafting1(self, obj0, obj1); return; }
+                else
+                {
+                    int oppositevargrasp = vargrasp == 1 ? 0 : 1;
+                    var oppovargraspmat = self.grasps[oppositevargrasp]?.grabbed;
+
+                    MineCrafting2(self, oppovargraspmat.abstractPhysicalObject); 
+                    return;
+                }
             }
             else if (resultEx != null)
             {
@@ -186,6 +193,8 @@ public class DragonCrafts
                 }
                 for (int i = 0; i < 2; i++) // Remove materials
                 {
+                    if (self.room?.world.game.IsStorySession == true)
+                        (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(self.grasps[i].grabbed.abstractPhysicalObject);
                     self.grasps[i].grabbed.RemoveFromRoom();
                     self.room.abstractRoom.RemoveEntity(self.grasps[i].grabbed.abstractPhysicalObject);
                     self.ReleaseGrasp(i);
@@ -218,24 +227,32 @@ public class DragonCrafts
         self.room.PlaySound(SoundID.Big_Needle_Worm_Impale_Terrain, self.firstChunk, loop: false, 1f, 1f);
         self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, color: new Color(1f, 1f, 1f), null, 20, 50));
     }
-    public static void MineCrafting1(Player self)
+    public static void MineCrafting1(Player self, AbstractPhysicalObject mat1, AbstractPhysicalObject mat2)
     {
         Creature.Grasp[] grasp = self.grasps;
-        for (int i = 0; i < 2; i++)
+        if (mat1.realizedObject is not BoomMine)
         {
-            if (grasp[i]?.grabbed?.abstractPhysicalObject.type != BoomMineFisob.BoomMine)
-            {
-                grasp[i]?.grabbed?.abstractPhysicalObject.realizedObject.RemoveFromRoom();
-                self.ReleaseGrasp(i);
-                self.room.abstractRoom.RemoveEntity(grasp[i]?.grabbed?.abstractPhysicalObject);
-                Debug.Log("Solace: Mine recipe item destroyed");
-            }
+            if (self.room?.world.game.IsStorySession == true)
+                (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(mat1);
+            self.ReleaseGrasp(0);
+            mat1.realizedObject.RemoveFromRoom();
+            self.room?.abstractRoom.RemoveEntity(mat1);
+            Debug.Log("Solace: Mine recipe item destroyed");
         }
-
+        if (mat2.realizedObject is not BoomMine)
+        {
+            if (self.room?.world.game.IsStorySession == true)
+                (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(mat2);
+            self.ReleaseGrasp(1);
+            mat2.realizedObject.RemoveFromRoom();
+            self.room?.abstractRoom.RemoveEntity(mat2);
+            Debug.Log("Solace: Mine recipe item destroyed");
+        }
+        
         AbstractPhysicalObject result = new BoomMineAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
-        self.room.PlaySound(SoundID.Gate_Clamp_Lock, self.mainBodyChunk, false, 0.5f, 3f + Random.value);
-        self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, color: new Color(1f, 1f, 1f), null, 20, 50));
-        self.room.abstractRoom.AddEntity(result);
+        self.room?.PlaySound(SoundID.Gate_Clamp_Lock, self.mainBodyChunk, false, 0.5f, 3f + Random.value);
+        self.room?.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, color: new Color(1f, 1f, 1f), null, 20, 50));
+        self.room?.abstractRoom.AddEntity(result);
         result.RealizeInRoom();
         if (self.FreeHand() != -1)
         {
@@ -246,17 +263,17 @@ public class DragonCrafts
         //if ((result.realizedObject as BoomMine).slot1 == 0)
         Debug.Log("Solace: Mine craft ended! Did it work?");
     }
-    public static void MineCrafting2(Player self)
+    public static void MineCrafting2(Player self, AbstractPhysicalObject mat)
     {
-        int grasp = self?.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine ? 0 : 1;
-        int result = self?.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine ? 1 : 0;
+        int grasp = self.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine ? 0 : 1;
+        int result = self.grasps[1]?.grabbed?.abstractPhysicalObject?.type == BoomMineFisob.BoomMine ? 1 : 0;
 
         int? upgrade;
         int red = 1;
         int green = 2;
         int blue = 3;
 
-        upgrade = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject switch
+        upgrade = self.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject switch
         {
             Lantern or LittleCracker => red,
             PuffBall or Mushroom => green,
@@ -265,19 +282,20 @@ public class DragonCrafts
         };
         if (upgrade == null) { CraftFail(self); Debug.Log("Solace: Item cannot be used to upgrade mine!"); return; }
 
-        var mine = self?.grasps[result]?.grabbed?.abstractPhysicalObject?.realizedObject as BoomMine;
+        var mine = self.grasps[result]?.grabbed?.abstractPhysicalObject?.realizedObject as BoomMine;
         if (mine?.Abstr?.slot1 == 0) mine.Abstr.slot1 = (int)upgrade;
         else if (mine?.Abstr?.slot2 == 0) mine.Abstr.slot2 = (int)upgrade;
         else if (mine?.Abstr?.slot3 == 0) mine.Abstr.slot3 = (int)upgrade;
         else { CraftFail(self); Debug.Log("Solace: Mine cannot be upgraded further!"); return; }
 
-        var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject;
-        mat.RemoveFromRoom();
+        if (self.room?.world.game.IsStorySession == true)
+            (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(mat);
         self.ReleaseGrasp(grasp);
-        self.room.abstractRoom.RemoveEntity(self?.grasps[grasp]?.grabbed?.abstractPhysicalObject);
+        mat.realizedObject.RemoveFromRoom();
+        self.room?.abstractRoom.RemoveEntity(mat);
         Debug.Log("Solace: Mine recipe item destroyed");
 
-        self.room.PlaySound(SoundID.Gate_Clamp_Lock, self.mainBodyChunk, false, 0.5f, 3f + Random.value);
+        self.room?.PlaySound(SoundID.Gate_Clamp_Lock, self.mainBodyChunk, false, 0.5f, 3f + Random.value);
         Debug.Log("Solace: Mine craft2 ended!");
         return;
     }
@@ -287,8 +305,8 @@ public class DragonCrafts
         {
             Debug.Log("TearFirecracker started");
             int grasp = self?.grasps[1]?.grabbed is FirecrackerPlant ? 1 : 0;
-            var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject;
-            FirecrackerPlant plant = mat as FirecrackerPlant;
+            var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject;
+            FirecrackerPlant plant = mat.realizedObject as FirecrackerPlant;
 
             if (self != null &&
                 self.room != null &&
@@ -311,9 +329,11 @@ public class DragonCrafts
                     plant.lumpsPopped[i] = true;
                     if (i == 0)
                     {
+                        if (self.room?.world.game.IsStorySession == true)
+                            (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(mat);
                         self.ReleaseGrasp(grasp);
-                        mat.RemoveFromRoom();
-                        self?.room?.abstractRoom?.RemoveEntity(self?.grasps[grasp]?.grabbed?.abstractPhysicalObject);
+                        mat.realizedObject.RemoveFromRoom();
+                        self?.room?.abstractRoom?.RemoveEntity(mat);
                         self.SlugcatGrab(result?.realizedObject, grasp);
                         Debug.Log("Solace: Final popper torn off, plant destroyed");
                         break;
@@ -331,25 +351,25 @@ public class DragonCrafts
         SoundID sound = null;
         float volume = 1f;
 
-        int grasp = self?.grasps[1]?.grabbed is not Spear ? 1 : 0;
-        int speargrasp = self?.grasps[1]?.grabbed is Spear ? 1 : 0;
-        var mat = self?.grasps[grasp]?.grabbed?.abstractPhysicalObject?.realizedObject;
-        AbstractSpear spear = self?.grasps[speargrasp]?.grabbed.abstractPhysicalObject as AbstractSpear;
+        int grasp = self.grasps[1]?.grabbed is not Spear ? 1 : 0;
+        int speargrasp = self.grasps[1]?.grabbed is Spear ? 1 : 0;
+        var mat = self.grasps[grasp]?.grabbed?.abstractPhysicalObject;
+        AbstractSpear spear = self.grasps[speargrasp]?.grabbed.abstractPhysicalObject as AbstractSpear;
         bool electricSet = false;
         float hueSet = 0f;
         int electricCharge = spear.electricCharge;
 
         if (
-            spear?.hue != 0 ||
-            spear?.electricCharge >= 3 ||
-            spear?.explosive == true
+            spear.hue != 0 ||
+            spear.electricCharge >= 3 ||
+            spear.explosive == true
            )
         { CraftFail(self); Debug.Log("Solace: SpearCrafting failed! Invalid spear type."); return; }
 
         switch (spear.electric)
         {
             case true:
-                switch (mat)
+                switch (mat?.realizedObject)
                 {
                     case FlareBomb:
                         electricCharge += 1;
@@ -365,7 +385,7 @@ public class DragonCrafts
                 break;
 
             case false:
-                switch (mat)
+                switch (mat?.realizedObject)
                 {
                     case Rock and not LittleCracker:
                         electricSet = true;
@@ -385,27 +405,34 @@ public class DragonCrafts
                 break;
         }
 
-        if (mat is not JellyFish)
+        if (mat.realizedObject is not JellyFish)
         {
-            mat?.RemoveFromRoom();
-            self?.room?.abstractRoom?.RemoveEntity(self?.grasps[grasp]?.grabbed?.abstractPhysicalObject);
-            self?.ReleaseGrasp(grasp);
+            if (self.room?.world.game.IsStorySession == true)
+                (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(mat);
+            mat.realizedObject.RemoveFromRoom();
+            self.room?.abstractRoom?.RemoveEntity(self.grasps[grasp]?.grabbed?.abstractPhysicalObject);
+            self.ReleaseGrasp(grasp);
         }
-        self?.room?.PlaySound(sound, self?.firstChunk, loop: false, volume, 1f);
-        self?.room?.AddObject(effect);
+        self.room?.PlaySound(sound, self?.firstChunk, loop: false, volume, 1f);
+        self.room?.AddObject(effect);
 
         if (!spear.electric)
         {
             Debug.Log("Solace: SpearCrafting: Spear wasn't electric! Making new spear...");
-            self?.grasps[speargrasp]?.grabbed?.RemoveFromRoom();
-            self?.room?.abstractRoom?.RemoveEntity(self?.grasps[speargrasp]?.grabbed?.abstractPhysicalObject);
-            self?.ReleaseGrasp(speargrasp);
+            self.grasps[speargrasp]?.grabbed?.abstractPhysicalObject.LoseAllStuckObjects();
+            self.grasps[speargrasp]?.grabbed?.RemoveFromRoom();
+            self.room?.abstractRoom?.RemoveEntity(self?.grasps[speargrasp]?.grabbed?.abstractPhysicalObject);
+            self.ReleaseGrasp(speargrasp);
 
             spear = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false, electricSet);
             spear.electricCharge = electricCharge;
             spear.hue = hueSet;
+
+            self.room.abstractRoom.AddEntity(spear);
             spear.RealizeInRoom();
             self.SlugcatGrab(spear.realizedObject, speargrasp);
+            //if (self.room?.world.game.IsStorySession == true)
+            //    (self.room.game.session as StoryGameSession)?.AddNewPersistentTracker(mat);
         }
         else spear.electricCharge = electricCharge;
         Debug.Log("Solace: SpearCrafting ended.");

@@ -16,6 +16,26 @@ public class YoungLizardAI : LizardAI
         //    typeof(LizardAI).GetMethod("get_RoomLike", BindingFlags.Instance | BindingFlags.Public),
         //    typeof(Plugin).GetMethod("LizardRoomLike", BindingFlags.Static | BindingFlags.Public)
         //);
+        On.Creature.SuckedIntoShortCut += CreatureOnSuckedIntoShortCut;
+        //On.Lizard.SpitOutOfShortCut += LizardOnSpitOutOfShortCut;
+    }
+
+    public static void LizardOnSpitOutOfShortCut(On.Lizard.orig_SpitOutOfShortCut orig, Lizard self, IntVector2 pos, Room newroom, bool spitoutallsticks)
+    {
+        orig(self, pos, newroom, spitoutallsticks);
+        if (self.Template.type == CreatureTemplateType.YoungLizard && self.grabbedBy?.Count > 0)
+        {
+            self.bodyChunks[1].HardSetPosition(self.firstChunk.pos);
+        }
+    }
+
+    public static void CreatureOnSuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, IntVector2 entrancepos, bool carriedbyother)
+    { // Shortcut fix
+        if (self.Template.type == CreatureTemplateType.YoungLizard && self.grabbedBy?.Count > 0)
+        {
+            self.SpitOutOfShortCut(entrancepos, self.room, false);
+        }
+        else orig(self, entrancepos, carriedbyother);
     }
 
     public static float LizardRoomLike(Func<LizardAI, float> orig, LizardAI self)

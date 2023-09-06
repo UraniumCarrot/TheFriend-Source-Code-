@@ -181,10 +181,16 @@ public class BoomMine : PlayerCarryableItem, IDrawable
     public override void Update(bool eu)
     {
         base.Update(eu);
-        if (Abstr.slot1 == 0) ExplodeTimer = 30;
+        if (this.grabbedBy.Count != 0) ExplodeTimer = 20;
+        else if (ExplodeTimer > 0)
+        {
+            ExplodeTimer--;
+            return;
+        }
+
         try
         {
-            if (room != null && this != null && this.grabbedBy.Count == 0)
+            if (room != null && this.grabbedBy.Count == 0)
             {
                 if (room?.IdentifySlope(base.firstChunk.pos) == Room.SlopeDirection.DownRight) rotation = 45f;
                 else if (room?.IdentifySlope(base.firstChunk.pos) == Room.SlopeDirection.UpLeft) rotation = -45f;
@@ -195,23 +201,32 @@ public class BoomMine : PlayerCarryableItem, IDrawable
                 for (int i = 0; i < room?.abstractRoom?.creatures?.Count(); i++)
                 {
                     var crit = room?.abstractRoom?.creatures[i]?.realizedCreature;
-                    if (crit != null && (crit != owner || (this.room.game.IsStorySession && crit is not Player)) && crit is not Fly && crit is not JetFish && crit is not GarbageWorm && Custom.DistLess(crit.mainBodyChunk.pos, this.firstChunk.pos + Vector2.up * 3f, 50f) && Abstr.slot1 != 0 && !(crit.dead))
+                    if (crit != null && 
+                        (crit != owner || 
+                         (this.room.game.IsStorySession && 
+                          crit is not Player)) && 
+                        crit is not Fly && 
+                        crit is not JetFish && 
+                        crit is not GarbageWorm && 
+                        Custom.DistLess(
+                            (crit is Lizard) ? crit.bodyChunks[1].pos : crit.mainBodyChunk.pos, 
+                            this.firstChunk.pos + Vector2.up * 3f, 
+                            50f) && 
+                        Abstr.slot1 != 0 && 
+                        !(crit.dead))
                     {
                         if (!(room.abstractRoom.shelter))
                         {
-                            if (ExplodeTimer > 0) ExplodeTimer--;
-                            if (ExplodeTimer == 0) Explosion(crit);
+                            Explosion(crit);
                             return;
                         }
                     }
-                    ExplodeTimer = 30;
                 }
             }
             if (this.grabbedBy.Count > 0 && this.grabbedBy[0].grabber != owner) owner = this.grabbedBy[0].grabber;
         }
         catch(Exception e) { Debug.Log("Solace: Harmless Exception occured related to BoomMine"); Debug.LogException(e); }
     }
-
     public void Explosion(Creature victim)
     {
         Debug.Log("Solace: BOOM, BABY! Mine exploded!");
@@ -275,7 +290,7 @@ public class BoomMine : PlayerCarryableItem, IDrawable
         }
         if (blueStrength != 0)
         {
-            int stun = Mathf.RoundToInt((500 * blueStrength));
+            int stun = Mathf.RoundToInt((150 * (blueStrength*blueStrength)));
             var bolt = new LightningBolt(victim.firstChunk.pos, victim.firstChunk.pos + (50 * Vector2.up * blueStrength), 1, 1f, 0.5f, 1f, 0.61f, true);
             Debug.Log("Solace: Blue damage! Strength " + blueStrength);
             room.AddObject(bolt);

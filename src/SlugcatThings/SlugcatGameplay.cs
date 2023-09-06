@@ -5,6 +5,7 @@ using RWCustom;
 using SlugBase;
 using MoreSlugcats;
 using SlugBase.SaveData;
+using TheFriend.Objects.BoomMineObject;
 using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.WorldChanges;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class SlugcatGameplay
     public static void Apply()
     {
         On.Player.Update += Player_Update;
+        On.Player.ThrowObject += PlayerOnThrowObject;
         On.Player.Stun += Player_Stun;
         On.Weapon.HitThisObject += Weapon_HitThisObject;
         On.Player.WallJump += Player_WallJump;
@@ -40,9 +42,16 @@ public class SlugcatGameplay
         On.LanternMouse.Update += LanternMouse_Update;
         On.MoreSlugcats.DandelionPeach.Update += DandelionPeach_Update;
     }
+
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
-
+    
+    public static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
+    { // Boommine cooldown reduction if thrown
+        var mine = self.grasps[grasp].grabbed as BoomMine;
+        orig(self, grasp, eu);
+        if (mine != null) mine.ExplodeTimer = 5;
+    }
     public static void Player_GrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
     { // Makes player ride lizard
         orig(self, eu);
@@ -75,7 +84,11 @@ public class SlugcatGameplay
     }
     public static bool Weapon_HitThisObject(On.Weapon.orig_HitThisObject orig, Weapon self, PhysicalObject obj)
     { // Lizard mount will not be hit by owner's weapons
-        if (obj is Lizard liz && liz.GetLiz() != null && liz.GetLiz().rider != null && self.thrownBy is Player pl && pl.GetPoacher().dragonSteed == liz) return false;
+        if (obj is Lizard liz &&
+            liz.GetLiz().rider != null && 
+            self.thrownBy is Player pl && 
+            pl.GetPoacher().dragonSteed == liz) 
+            return false;
         else return orig(self, obj);
     }
     public static void Player_Grabbed(On.Player.orig_Grabbed orig, Player self, Creature.Grasp grasp)
@@ -207,7 +220,8 @@ public class SlugcatGameplay
             catch (Exception e) { Debug.Log("Solace: Exception occurred in Player.Update LizRide" + e); }
 
             // Pointing (ONWARDS, STEED!)
-            Vector2 pointPos = new Vector2(self.input[0].x * 50, self.input[0].y * 50) + self.bodyChunks[0].pos;
+            var oldinput = self.GetPoacher().UnchangedInputForLizRide;
+            Vector2 pointPos = new Vector2(oldinput[0].x * 50, oldinput[0].y * 50) + self.bodyChunks[0].pos;
             var graph = self.graphicsModule as PlayerGraphics;
             var hand = ((pointPos - self.mainBodyChunk.pos).x < 0 || self?.grasps[0]?.grabbed is Spear) ? 0 : 1;
             if (self?.grasps[1]?.grabbed is Spear) hand = 1;
@@ -276,9 +290,9 @@ public class SlugcatGameplay
     }
     public static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
     { // Allows Poacher to carry things that they couldn't usually
-        if (self.room.abstractRoom.name == "VR1" || 
-            self.room.abstractRoom.name == "PUMP03" || 
-            self.room.abstractRoom.name == "PS1") 
+        if (self.room?.abstractRoom.name == "VR1" || 
+            self.room?.abstractRoom.name == "PUMP03" || 
+            self.room?.abstractRoom.name == "PS1") 
             return orig(self,obj);
         if (obj is Creature young && young.Template.type == CreatureTemplateType.YoungLizard) return false;
         else if (obj is Lizard mother && mother.GetLiz() != null && mother.GetLiz().IsRideable) return true;

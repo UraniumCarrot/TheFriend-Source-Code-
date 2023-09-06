@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using TheFriend.SlugcatThings;
 
 namespace TheFriend;
@@ -55,6 +56,29 @@ public class DragonRiding
             player.GetPoacher().rideStick = null;
             player.abstractCreature.stuckObjects.Remove(player.GetPoacher().rideStick);
         }
+    }
 
+    public static void DragonRideCommands(Lizard liz, Player rider)
+    {
+        var input = rider.GetPoacher().UnchangedInputForLizRide;
+
+        // Drop it!
+        if (input[0].y < 0)
+        {
+            if (!(input[1].y < 0))
+            {
+                for (int i = 2; i < input.Length - 1; i++)
+                {
+                    if (input[i].y < 0 && !(input[i + 1].y < 0))
+                    {
+                        liz.ReleaseGrasp(0);
+                        liz.voice.MakeSound(LizardVoice.Emotion.Submission);
+                        rider.Blink(12);
+                        rider.room.PlaySound(SoundID.Vulture_Grab_Player, rider.firstChunk.pos,0.5f,1);
+                        rider.room.AddObject(new ExplosionSpikes(rider.room, rider.bodyChunks[1].pos + new Vector2(0.0f, -rider.bodyChunks[1].rad), 8, 7f, 5f, 5.5f, 40f, new Color(1f, 1f, 1f, 0.5f)));
+                    }
+                }
+            }
+        }
     }
 }

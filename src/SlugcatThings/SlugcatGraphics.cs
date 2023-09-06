@@ -144,48 +144,21 @@ public class SlugcatGraphics
         if (self.player.slugcatStats.name != DragonName) return;
         if (self.player.room?.game?.IsArenaSession == null) return;
         blackColor = palette.blackColor;
-        int playerNumber = !self.player.room.game.IsArenaSession && (self.player.playerState.playerNumber == 0) ? -1 : self.player.playerState.playerNumber;
-        LoadDefaultColors(self.player, playerNumber);
-        Color color;
-        Color color2;
-        if (ModManager.CoopAvailable && self.useJollyColor)
+        var color = new PlayerColor("Skull").GetColor(self);
+        var color2 = new PlayerColor("Symbol").GetColor(self);
+        if (Custom.rainWorld.options.jollyColorMode == JollyColorMode.AUTO &&
+            self.player.playerState.playerNumber != 0 && color != null && color2 != null)
         {
-            Color j = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
-            if (Custom.rainWorld.options.jollyColorMode == JollyColorMode.AUTO)
-            {
-                color = new Color(j.r - 0.6f, j.b - 0.6f, j.g - 0.6f);
-                color2 = new Color(color.b + 0.2f, color.r + 0.2f, color.g + 0.2f);
-                self.player.GetPoacher().customColor = color2;
-                self.player.GetPoacher().customColor2 = color;
-            }
-            else if (Custom.rainWorld.options.jollyColorMode == JollyColorMode.CUSTOM)
-            {
-                color = j;
-                bool mono = Custom.RGB2HSL(color).y == 0;
-                bool light = Custom.RGB2HSL(color).z > 0.5f;
-                color2 = (mono) ? new Color(light ? 0 : 1, light ? 0 : 1, light ? 0 : 1) : new Color(color.b, color.r, color.g);
-                self.player.GetPoacher().customColor = color;
-                self.player.GetPoacher().customColor2 = color2;
-            }
+            Color jolly = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
+            color = new Color(jolly.r - 0.4f, jolly.b - 0.4f, jolly.g - 0.4f);
+            Vector3 colorvar = Custom.RGB2HSL(jolly);
+            colorvar.y = 1;
+            colorvar.z = 0.5f;
+            colorvar.x += 0.3f;
+            color2 = Custom.HSL2RGB(colorvar.x, colorvar.y, colorvar.z);
         }
-        else if (PlayerGraphics.CustomColorsEnabled())
-        {
-            color = PlayerGraphics.CustomColorSafety(2);
-            color2 = PlayerGraphics.CustomColorSafety(3);
-            self.player.GetPoacher().customColor = color;
-            self.player.GetPoacher().customColor2 = color2;
-        }
-    }
-    public static void LoadDefaultColors(Player player, int playerNumber)
-    {
-        if (SlugBaseCharacter.TryGet(player.slugcatStats.name, out SlugBaseCharacter chara) && chara.Features.TryGet(PlayerFeatures.CustomColors, out ColorSlot[] customColor))
-        {
-            if (customColor.Length > 3 && player.GetPoacher().isPoacher)
-            {
-                player.GetPoacher().customColor = customColor[2].GetColor(playerNumber);
-                player.GetPoacher().customColor2 = customColor[3].GetColor(playerNumber);
-            }
-        }
+        if (color != null) self.player.GetPoacher().customColor = color.Value;
+        if (color2 != null) self.player.GetPoacher().customColor2 = color2.Value;
     }
 
     // Fix layering and force to render

@@ -46,6 +46,7 @@ public class FriendWorldState
         // General world hooks
         On.Room.SlugcatGamemodeUniqueRoomSettings += Room_SlugcatGamemodeUniqueRoomSettings;
         On.WorldLoader.ctor_RainWorldGame_Name_bool_string_Region_SetupValues += WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues;
+        On.Region.ctor += Region_ctor;
 
         // Shaded Citadel hooks
         On.Room.Loaded += Room_Loaded;

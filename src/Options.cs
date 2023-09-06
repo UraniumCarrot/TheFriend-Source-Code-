@@ -191,7 +191,7 @@ public class Options : OptionInterface
         {
             GenSprites,
             new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - General"), true),
-            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0.1")),
             
             new OpLabel(
                 defX-20,
@@ -295,7 +295,7 @@ public class Options : OptionInterface
         {
             FriendSprites,
             new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - Friend"), true),
-            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0.1")),
 
             new OpLabel(
                 defX-20,
@@ -399,7 +399,7 @@ public class Options : OptionInterface
         {
             PoacherSprites,
             new OpLabel(labelX, labelY, Translate("Rain World: Solace Config - Poacher"), true),
-            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0")),
+            new OpLabel(labelX, labelY - 20, Translate("Version 0.3.0.1")),
             
             new OpLabel(
                 defX-20,
