@@ -28,6 +28,8 @@ public partial class NoirCatto
         On.PlayerGraphics.Reset += PlayerGraphicsOnReset;
         On.SlugcatHand.EngageInMovement += SlugcatHandOnEngageInMovement;
 
+        IL.Weapon.Update += WeaponILUpdate;
+        IL.SharedPhysics.TraceProjectileAgainstBodyChunks += SharedPhysicsILTraceProjectileAgainstBodyChunks;
         IL.Spear.Update += SpearILUpdate;
         On.Spear.Update += SpearOnUpdate;
 
