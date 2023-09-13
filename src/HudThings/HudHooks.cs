@@ -52,14 +52,14 @@ public class HudHooks
     { // Makes solace rain timer function like Saint's
         orig(self);
         if (self.hud.owner is Player && 
-             FriendWorldState.SolaceName &&
+             FriendWorldState.SolaceWorldstate &&
             self.hud.map.RegionName != "HR") self.halfTimeShown = true;
     } 
     public static void RainMeter_ctor(On.HUD.RainMeter.orig_ctor orig, RainMeter self, HUD.HUD hud, FContainer fContainer)
     { // Makes solace rain timer function like Saint's
         orig(self, hud, fContainer);
         if (self.hud.owner is Player &&
-             FriendWorldState.SolaceName &&
+             FriendWorldState.SolaceWorldstate &&
             self.hud.map.RegionName != "HR") self.halfTimeShown = true;
     } 
     public static void RainMeter_Draw(On.HUD.RainMeter.orig_Draw orig, RainMeter self, float timeStacker)

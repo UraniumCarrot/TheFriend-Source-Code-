@@ -25,7 +25,8 @@ public class SolaceSaveData
         orig(self);
         if (self.session == null || 
             self.world == null || 
-            !self.IsStorySession) 
+            !self.IsStorySession ||
+            self.world.region == null) 
             return;
         for (int i = 0; i < self.Players.Count; i++)
         {

@@ -31,7 +31,7 @@ public class FriendWorldState
         else { SolaceWorldstate = false; return false; }
     }
     public static bool SolaceWorldstate;
-    public static bool FamineName(SlugcatStats.Name name) // For use in menus and region properties 
+    /*public static bool FamineName(SlugcatStats.Name name) // For use in menus and region properties 
     {
         if (name == Plugin.FriendName || 
             name == Plugin.DragonName || 
@@ -39,7 +39,7 @@ public class FriendWorldState
         { SolaceName = true; return true; }
         else { SolaceName = false; return false; }
     }
-    public static bool SolaceName;
+    public static bool SolaceName;*/
 
     public static void Apply()
     {
@@ -96,9 +96,9 @@ public class FriendWorldState
 
     public static void Region_ctor(On.Region.orig_ctor orig, Region self, string name, int firstRoomIndex, int regionNumber, SlugcatStats.Name storyIndex) // Adjusts region parameters
     {
-        FamineName(storyIndex);
+        //FamineName(storyIndex);
         orig(self, name, firstRoomIndex, regionNumber, storyIndex);
-        if (SolaceName)
+        if (SolaceWorldstate)
         {
             Debug.Log("Applying regional changes...");
             var regionParams = self.regionParams;
