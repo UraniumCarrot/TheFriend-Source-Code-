@@ -31,7 +31,7 @@ public partial class NoirCatto
         }
     }
 
-    public class CatSlash : Weapon
+    public partial class CatSlash : Weapon
     {
         public readonly Player Owner;
         public readonly SlashType SlashType;
@@ -48,7 +48,7 @@ public partial class NoirCatto
 
         const float AirSlashTargetAngle = 360f;
 
-        private readonly List<Creature> CreaturesHit = new List<Creature>();
+        private readonly List<PhysicalObject> StuffHit = new List<PhysicalObject>();
 
         public override bool HeavyWeapon => true;
 
@@ -230,12 +230,14 @@ public partial class NoirCatto
                 return false;
             }
 
+            if (StuffHit.Contains(result.obj)) return false;
+
+
             if (result.obj is SeedCob seedCob) HitCob(seedCob);
 
             if (result.obj is Creature crit)
             {
                 if (crit == Owner) return false;
-                if (CreaturesHit.Contains(crit)) return false;
                 if (((ModManager.CoopAvailable && !Custom.rainWorld.options.friendlyFire) ||
                      room.game.IsArenaSession && !room.game.GetArenaGameSession.arenaSitting.gameTypeSetup.spearsHitPlayers) &&
                     crit is Player) return false;
@@ -283,7 +285,7 @@ public partial class NoirCatto
                     stunBonus *= 0.5f;
                 }
                 crit.Violence(firstChunk, directionAndMomentum, result.chunk, result.onAppendagePos, Creature.DamageType.Stab, damage, stunBonus);
-                CreaturesHit.Add(crit);
+                StuffHit.Add(crit);
                 noirData.ClawHit();
                 if (!smallCrit) firstChunk.vel = firstChunk.vel * 0.5f + Custom.DegToVec(90f) * 0.1f * firstChunk.vel.magnitude;
             }
@@ -306,25 +308,6 @@ public partial class NoirCatto
             }
 
             return true;
-        }
-
-        private static void HitCob(SeedCob seedCob)
-        {
-            if (!seedCob.AbstractCob.opened)
-            {
-                seedCob.Open();
-                return;
-            }
-
-            //todo: ILHook SharedPhysics.TraceProjectileAgainstBodyChunks and Weapon.Update for PhysicalObject.canBeHitByWeapons
-            // for (var i = 0; i < 4; i++)
-            // {
-            //     var absSeed = new AbstractConsumable(seedCob.room.world, MoreSlugcats.MoreSlugcatsEnums.AbstractObjectType.Seed, null, seedCob.room.GetWorldCoordinate(seedCob.placedPos), seedCob.room.game.GetNewID(), -1, -1, null);
-            //     seedCob.room.abstractRoom.AddEntity(absSeed);
-            //     absSeed.pos = seedCob.room.GetWorldCoordinate(seedCob.placedPos);
-            //     absSeed.RealizeInRoom();
-            //     absSeed.realizedObject.firstChunk.HardSetPosition(Vector2.Lerp(seedCob.bodyChunks[0].pos, seedCob.bodyChunks[1].pos, i / 5f));
-            // }
         }
 
         public override void HitSomethingWithoutStopping(PhysicalObject obj, BodyChunk chunk, Appendage appendage)

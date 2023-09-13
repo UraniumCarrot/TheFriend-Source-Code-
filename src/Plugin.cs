@@ -35,7 +35,7 @@ using TheFriend.SaveThings;
 namespace TheFriend
 {
     [BepInPlugin(MOD_ID, "The Friend", "0.3.0.1")]
-    class Plugin : BaseUnityPlugin
+    public class Plugin : BaseUnityPlugin
     {
         public const string MOD_ID = "thefriend";
 

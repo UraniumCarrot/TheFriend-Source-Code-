@@ -19,6 +19,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
             ear[1] = new TailSegment(self, 1.5f, 7f, ear[0], 0.85f, 1f, 0.5f, true);
         }
 
+        var origBodyParts = self.bodyParts.Except(self.tail).ToList();
         #region Tail
         var tailThickness = 2.50f;
         var tailRoundness = 0.05f;
@@ -34,10 +35,8 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                 (i == 0) ? 1f : 0.5f,
                 true);
         }
-
-        var origBodyParts = self.bodyParts.Where(x => x is not TailSegment).ToList();
-        var partsToAdd = self.tail.Cast<BodyPart>().ToList();
         #endregion
+        var partsToAdd = self.tail.Cast<BodyPart>().ToList();
 
         partsToAdd.AddRange(origBodyParts);
         partsToAdd.AddRange(noirData.Ears[0]);
