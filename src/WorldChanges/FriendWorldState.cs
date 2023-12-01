@@ -1,21 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
-using MoreSlugcats;
-using RWCustom;
+﻿using MoreSlugcats;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
-using System.Globalization;
-using TheFriend.Creatures;
-using MonoMod.Cil;
-using On.Menu;
 
 namespace TheFriend.WorldChanges;
 
@@ -25,21 +11,14 @@ public class FriendWorldState
     {
         if ((game?.StoryCharacter == Plugin.FriendName || 
              game?.StoryCharacter == Plugin.DragonName || 
-             game?.StoryCharacter == Plugin.NoirName) && 
+             game?.StoryCharacter == Plugin.NoirName ||
+             game?.StoryCharacter == Plugin.BelieverName ||
+             game?.StoryCharacter == Plugin.DelugeName) && 
             game != null) 
         { SolaceWorldstate = true; return true; }
         else { SolaceWorldstate = false; return false; }
     }
     public static bool SolaceWorldstate;
-    /*public static bool FamineName(SlugcatStats.Name name) // For use in menus and region properties 
-    {
-        if (name == Plugin.FriendName || 
-            name == Plugin.DragonName || 
-            name == Plugin.NoirName) 
-        { SolaceName = true; return true; }
-        else { SolaceName = false; return false; }
-    }
-    public static bool SolaceName;*/
 
     public static void Apply()
     {
@@ -161,6 +140,8 @@ public class FriendWorldState
         orig(self, room, pos);
         if (self.col != null && SolaceWorldstate) self.col = new Color(0.8f, Random.Range(0.8f, 1f), 1f); ;
     } // Silver fireflies
+
+    public static bool customLock;
     public static void CreatureCommunitiesOnInfluenceCell(On.CreatureCommunities.orig_InfluenceCell orig, CreatureCommunities self, int comm, int reg, int plr, float infl)
     {
         if (SolaceWorldstate &&
@@ -171,7 +152,7 @@ public class FriendWorldState
             return;
         // Cycle 0 lizard rep lock
 
-        if ((SolaceWorldstate || Plugin.LocalLizRepAll()) && Plugin.LocalLizRep())
+        if ((SolaceWorldstate || Plugin.LocalLizRepAll() || customLock) && Plugin.LocalLizRep())
         {
             if (comm == 2 && reg == 0)
                 return;

@@ -73,22 +73,8 @@ public static class DragonRepInterface
             bool maxed = Mathf.Abs(reputation) > 0.999 || symbolInd == 3;
             Drawn = owner.GetPoacher().RainTimerExists;
             ingate = owner.room?.regionGate != null;
-            if (!hud.rainWorld.progression.currentSaveState.miscWorldSaveData.GetSlugBaseData()
-                    .TryGet("MothersKilledInRegion", out List<int> regionsKilledIn))
-            {
-                regionsKilledIn = new List<int>();
-            }
-            
-            if (RWCustom.Custom.rainWorld.processManager.currentMainLoop is RainWorldGame game)
-            {
-                reputation = game.session.creatureCommunities.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards,
-                    game.world.region.regionNumber, 0);
-                
-                // Was a mother lizard killed in this region?
-                if (regionsKilledIn.Contains(game.world.RegionNumber))
-                    MotherKilledHere = true;
-                else MotherKilledHere = false;
-            }
+            if (FriendWorldState.customLock) MotherKilledHere = true;
+            else MotherKilledHere = false;
             
             // Fade
             if (fade < 1 && hud.showKarmaFoodRain) fade += 0.1f;

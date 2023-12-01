@@ -29,6 +29,8 @@ public class SlugcatGraphics
 
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
+    public static readonly SlugcatStats.Name DelugeName = Plugin.DelugeName;
+    public static readonly SlugcatStats.Name BelieverName = Plugin.BelieverName;
 
     public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)
     { // Spear pointing while riding a lizard
@@ -121,7 +123,7 @@ public class SlugcatGraphics
     }
     
     public static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
-    { // Poacher skull init
+    { // Detail Sprites init
         orig(self, sLeaser, rCam);
         if (self.player.slugcatStats.name == DragonName)
         {
@@ -136,29 +138,52 @@ public class SlugcatGraphics
             sLeaser.sprites[self.player.GetPoacher().skullpos3] = new FSprite("dragonskull3A7");
             self.AddToContainer(sLeaser, rCam, null);
         }
+        else if (self.player.slugcatStats.name == BelieverName)
+        {
+            Array.Resize<FSprite>(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
+            self.player.GetPoacher().skullpos1 = sLeaser.sprites.Length - 1;
+            sLeaser.sprites[self.player.GetPoacher().skullpos1] = new FSprite("ForeheadSpotsA0");
+            self.AddToContainer(sLeaser, rCam, null);
+        }
     }
     static Color blackColor;
     public static void PlayerGraphics_ApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
-        if (self.player.slugcatStats.name != DragonName) return;
-        if (self.player.room?.game?.IsArenaSession == null) return;
-        blackColor = palette.blackColor;
-        var color = new PlayerColor("Skull").GetColor(self);
-        var color2 = new PlayerColor("Symbol").GetColor(self);
-        if (Custom.rainWorld.options.jollyColorMode == JollyColorMode.AUTO &&
-            self.player.playerState.playerNumber != 0 && color != null && color2 != null)
+        if (self.player.slugcatStats.name == DragonName)
         {
-            Color jolly = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
-            color = new Color(jolly.r - 0.4f, jolly.b - 0.4f, jolly.g - 0.4f);
-            Vector3 colorvar = Custom.RGB2HSL(jolly);
-            colorvar.y = 1;
-            colorvar.z = 0.5f;
-            colorvar.x += 0.3f;
-            color2 = Custom.HSL2RGB(colorvar.x, colorvar.y, colorvar.z);
+            if (self.player.room?.game?.IsArenaSession == null) return;
+            blackColor = palette.blackColor;
+            var color = new PlayerColor("Skull").GetColor(self);
+            var color2 = new PlayerColor("Symbol").GetColor(self);
+            if (Custom.rainWorld.options.jollyColorMode == JollyColorMode.AUTO &&
+                self.player.playerState.playerNumber != 0 && color != null && color2 != null)
+            {
+                Color jolly = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
+                color = new Color(jolly.r - 0.4f, jolly.b - 0.4f, jolly.g - 0.4f);
+                Vector3 colorvar = Custom.RGB2HSL(jolly);
+                colorvar.y = 1;
+                colorvar.z = 0.5f;
+                colorvar.x += 0.3f;
+                color2 = Custom.HSL2RGB(colorvar.x, colorvar.y, colorvar.z);
+            }
+
+            if (color != null) self.player.GetPoacher().customColor = color.Value;
+            if (color2 != null) self.player.GetPoacher().customColor2 = color2.Value;
         }
-        if (color != null) self.player.GetPoacher().customColor = color.Value;
-        if (color2 != null) self.player.GetPoacher().customColor2 = color2.Value;
+        else if (self.player.slugcatStats.name == BelieverName)
+        {
+            if (self.player.room?.game?.IsArenaSession == null) return;
+            var color = new PlayerColor("Spots").GetColor(self);
+            if (Custom.rainWorld.options.jollyColorMode == JollyColorMode.AUTO &&
+                self.player.playerState.playerNumber != 0 && color != null)
+            {
+                Color jolly = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
+                color = new Color(jolly.r - 0.4f, jolly.b - 0.4f, jolly.g - 0.4f);
+            }
+            if (color != null) self.player.GetPoacher().customColor = color.Value;
+            sLeaser.sprites[self.player.GetPoacher().skullpos1].color = self.player.GetPoacher().customColor;
+        }
     }
 
     // Fix layering and force to render
@@ -177,6 +202,15 @@ public class SlugcatGraphics
                 sLeaser.sprites[self.player.GetPoacher().skullpos3].MoveInFrontOfOtherNode(sLeaser.sprites[self.player.GetPoacher().skullpos1]);
             }
         }
+        else if (self.player.slugcatStats.name == BelieverName)
+        {
+            if (self.player.GetPoacher().skullpos1 < sLeaser.sprites.Length)
+            {
+                if (newContainer == null) newContainer = rCam.ReturnFContainer("Midground");
+                newContainer.AddChild(sLeaser.sprites[self.player.GetPoacher().skullpos1]);
+                sLeaser.sprites[self.player.GetPoacher().skullpos1].MoveBehindOtherNode(sLeaser.sprites[9]);
+            }
+        }
     }
     // Implement FriendHead, Poacher graphics
     public static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -184,6 +218,7 @@ public class SlugcatGraphics
         orig(self, sLeaser, rCam, timeStacker, camPos);
         var head = sLeaser.sprites[3];
         var legs = sLeaser.sprites[4];
+        var face = sLeaser.sprites[9];
         self.player.GetPoacher().glanceDir = Mathf.RoundToInt(head.scaleX);
         self.player.GetPoacher().pointDir0 = sLeaser.sprites[5].rotation;
         self.player.GetPoacher().pointDir1 = sLeaser.sprites[6].rotation;
@@ -196,25 +231,35 @@ public class SlugcatGraphics
         {
             if (!self.RenderAsPup)
             {
-                if (!head.element.name.Contains("Friend") && head.element.name.StartsWith("HeadA")) head.SetElementByName("Friend" + head.element.name);
-                if (!legs.element.name.Contains("Friend") && legs.element.name.StartsWith("LegsA")) legs.SetElementByName("Friend" + legs.element.name);
+                if (!head.element.name.Contains("Friend") && 
+                    head.element.name.StartsWith("HeadA")) 
+                    head.SetElementByName("Friend" + head.element.name);
+                if (!legs.element.name.Contains("Friend") && 
+                    legs.element.name.StartsWith("LegsA")) 
+                    legs.SetElementByName("Friend" + legs.element.name);
             }
         }
-        if (self.player.slugcatStats.name == DragonName)
+        else if (self.player.slugcatStats.name == BelieverName)
         {
-            var poacher = self.player.GetPoacher();
-            var skullpos1 = poacher.skullpos1;
-            var skullpos2 = poacher.skullpos2;
-            var skullpos3 = poacher.skullpos3;
-            var flicker = poacher.flicker;
-            var headToBody = (new Vector2(sLeaser.sprites[1].x, sLeaser.sprites[1].y) - new Vector2(sLeaser.sprites[3].x, sLeaser.sprites[3].y)).normalized;
-            var skullPos = new Vector2(sLeaser.sprites[3].x + headToBody.x * 7.5f, sLeaser.sprites[3].y + headToBody.y * 7.5f);
+            if (!self.RenderAsPup)
+            {
+                if (!head.element.name.Contains("HeadB") && 
+                    head.element.name.StartsWith("HeadA")) 
+                    head.SetElementByName("HeadB" + (head.element.name.Remove(0,5)));
+            }
+            if (face.element.name.StartsWith("Face")) 
+                sLeaser.sprites[self.player.GetPoacher().skullpos1].SetElementByName("ForeheadSpots" + (face.element.name.Remove(0,4)));
+            sLeaser.sprites[self.player.GetPoacher().skullpos1].SetPosition(face.GetPosition());
+            sLeaser.sprites[self.player.GetPoacher().skullpos1].scaleX = face.scaleX;
+        }
+        else if (self.player.slugcatStats.name == DragonName)
+        {
+            // For thinness
             float num = 0.5f + 0.5f * Mathf.Sin(Mathf.Lerp(self.lastBreath, self.breath, timeStacker) * (float)Math.PI * 2f);
             Vector2 vector = Vector2.Lerp(self.drawPositions[0, 1], self.drawPositions[0, 0], timeStacker);
             Vector2 vector2 = Vector2.Lerp(self.drawPositions[1, 1], self.drawPositions[1, 0], timeStacker);
             float num2 = Mathf.InverseLerp(0.3f, 0.5f, Mathf.Abs(Custom.DirVec(vector2, vector).y));
 
-            // For thinness
             sLeaser.sprites[0].scaleX = 0.8f + Mathf.Lerp(Mathf.Lerp(Mathf.Lerp(-0.05f, -0.15f, self.malnourished), 0.05f, num) * num2, 0.15f, self.player.sleepCurlUp);
             sLeaser.sprites[1].scaleX = 0.8f + self.player.sleepCurlUp * 0.2f + 0.05f * num - 0.05f * self.malnourished;
             for (int i = 0; i < 2; i++)
@@ -225,6 +270,25 @@ public class SlugcatGraphics
                 sLeaser.sprites[5 + i].element = Futile.atlasManager.GetElementWithName("PlayerArm" + Mathf.RoundToInt(Mathf.Clamp(Vector2.Distance(vector10, vector11) / 2f, 0f, 12f)));
                 sLeaser.sprites[5 + i].rotation = Custom.AimFromOneVectorToAnother(vector10, vector11) + 90f;
             }
+            PoacherAnimator(self,sLeaser,rCam,timeStacker,camPos);
+        }
+    }
+
+    public static void PoacherAnimator(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    {
+        var head = sLeaser.sprites[3];
+        
+        var poacher = self.player.GetPoacher();
+            var skullpos1 = poacher.skullpos1;
+            var skullpos2 = poacher.skullpos2;
+            var skullpos3 = poacher.skullpos3;
+            var flicker = poacher.flicker;
+            var headToBody = (new Vector2(sLeaser.sprites[1].x, sLeaser.sprites[1].y) - new Vector2(sLeaser.sprites[3].x, sLeaser.sprites[3].y)).normalized;
+            var skullPos = new Vector2(sLeaser.sprites[3].x + headToBody.x * 7.5f, sLeaser.sprites[3].y + headToBody.y * 7.5f);
+            float num = 0.5f + 0.5f * Mathf.Sin(Mathf.Lerp(self.lastBreath, self.breath, timeStacker) * (float)Math.PI * 2f);
+            Vector2 vector = Vector2.Lerp(self.drawPositions[0, 1], self.drawPositions[0, 0], timeStacker);
+            Vector2 vector2 = Vector2.Lerp(self.drawPositions[1, 1], self.drawPositions[1, 0], timeStacker);
+            float num2 = Mathf.InverseLerp(0.3f, 0.5f, Mathf.Abs(Custom.DirVec(vector2, vector).y));
 
             // Redone skull animation code
             Color origColor = poacher.customColor;
@@ -327,6 +391,5 @@ public class SlugcatGraphics
             }
             //layer3 scale match
             sLeaser.sprites[skullpos3].scaleX = sLeaser.sprites[skullpos1].scaleX;
-        }
     }
 }

@@ -105,8 +105,10 @@ public class FamineWorld
     {
         if ((self.StoryCharacter == Plugin.FriendName || 
              self.StoryCharacter == Plugin.NoirName ||
-            self.StoryCharacter == Plugin.DragonName || 
-            (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
+            self.StoryCharacter == Plugin.DragonName ||
+             self.StoryCharacter == Plugin.BelieverName ||
+             self.StoryCharacter == Plugin.DelugeName ||
+             (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
             (self.rainWorld.ExpeditionMode && Plugin.ExpeditionFamine())) 
             && !NoFamine() && !self.IsArenaSession)
         {
@@ -124,7 +126,7 @@ public class FamineWorld
     public static bool IsDiseased(AbstractConsumable c) // General disease bool handler
     {
         if (!FamineBool) return false;
-        if (c.world.region.name == "UG") return false;
+        if (c.world.name == "UG") return false;
         var oldState = Random.state;
         try
         {

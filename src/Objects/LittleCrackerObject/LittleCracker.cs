@@ -14,6 +14,8 @@ namespace TheFriend.Objects.LittleCrackerObject;
 
 public class LittleCracker : Rock
 {
+    public Color explodeColor = new Color(1f, 0.4f, 0.3f);
+    public Color redColor = Color.Lerp(new Color(1f, 0.4f, 0.3f), new Color(1f, 0f, 0f), 0.5f);
     public LittleCrackerAbstract Abstr { get; }
     public LittleCracker(LittleCrackerAbstract abstr, Vector2 pos, Vector2 vel) : base(abstr, abstr.world)
     {
@@ -69,7 +71,6 @@ public class LittleCracker : Rock
     }
     public void Explode(Creature thrownBy)
     {
-        Color explodeColor = new Color(1f, 0.4f, 0.3f);
         Explosion obj = new Explosion(room, this, firstChunk.pos, 6, 30f, 5f, 0.1f, 20f, 0.2f, thrownBy, 1f, 0f, 1f);
         room.AddObject(obj);
         Explosion.ExplosionLight obj2 = new Explosion.ExplosionLight(firstChunk.pos, 150f, 0.9f, 8, explodeColor);
@@ -78,7 +79,7 @@ public class LittleCracker : Rock
         room.PlaySound(SoundID.Firecracker_Bang, firstChunk.pos);
         room.InGameNoise(new Noise.InGameNoise(firstChunk.pos, 8000f, this, 1f));
         room.AddObject(new FirecrackerPlant.ScareObject(firstChunk.pos));
-        room.AddObject(new Spark(firstChunk.pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), color: new Color(1f, 0.4f, 0.3f), null, 7, 17));
+        room.AddObject(new Spark(firstChunk.pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), color: explodeColor, null, 7, 17));
         Destroy();
     }
     public override void HitByExplosion(float hitFac, Explosion explosion, int hitChunk)
@@ -94,7 +95,7 @@ public class LittleCracker : Rock
     {
         Color color = palette.blackColor;
         sLeaser.sprites[0].color = color;
-        sLeaser.sprites[1].color = Color.Lerp(new Color(1f, 0.4f, 0.3f), new Color(1f, 0f, 0f), 0.5f);
+        sLeaser.sprites[1].color = redColor;
     }
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {

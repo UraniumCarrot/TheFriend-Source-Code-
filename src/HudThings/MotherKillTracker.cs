@@ -23,7 +23,7 @@ public class MotherKillTracker : PositionedMenuObject
     public MotherKillTracker(Menu.Menu menu, MenuObject owner, Vector2 pos, SaveState currentSave, FContainer container, CollectiblesTracker tracker) : base(menu, owner, pos)
     {
         if (!currentSave.miscWorldSaveData.GetSlugBaseData()
-                .TryGet("MothersKilledInRegionStr", out List<string> regionsKilledInStr))
+                .TryGet(Plugin.MothersKilled, out List<string> regionsKilledInStr))
             return;
         Color col = new Color(0.5f, 0.1f, 0.15f);
 
@@ -49,7 +49,7 @@ public class MotherKillTracker : PositionedMenuObject
         base.GrafUpdate(timeStacker);
         if (!circleSprites.Any(i => i.x == 0)) return;
         if (!currentSave.miscWorldSaveData.GetSlugBaseData()
-                .TryGet("MothersKilledInRegionStr", out List<string> regionsKilledInStr))
+                .TryGet(Plugin.MothersKilled, out List<string> regionsKilledInStr))
             return;
         for (int a = 0; a < regionsKilledInStr.Count; a++)
         {

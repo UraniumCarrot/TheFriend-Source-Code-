@@ -323,7 +323,7 @@ public class DragonCrafts
                     if (plant.lumpsPopped[i]) continue;
 
                     self.room.PlaySound(SoundID.Seed_Cob_Open, self.firstChunk, loop: false, 1f, 1f);
-                    AbstractPhysicalObject result = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, self.room.game.GetNewID());
+                    AbstractPhysicalObject result = new LittleCrackerAbstract(self?.room?.world, self.abstractCreature.pos, mat.ID);
                     self.room.abstractRoom.AddEntity(result);
                     result.RealizeInRoom();
                     plant.lumpsPopped[i] = true;

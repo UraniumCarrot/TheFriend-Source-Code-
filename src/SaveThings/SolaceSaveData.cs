@@ -12,67 +12,69 @@ namespace TheFriend.SaveThings;
 
 public class SolaceSaveData
 {
-    public static List<int> MothersRegions = new List<int>();
-    public static List<string> MothersRegionsStr = new List<string>();
     public static void Apply()
     {
         On.Creature.Die += CreatureOnDie;
-        On.RainWorldGame.Update += RainWorldGameOnUpdate;
+        On.Player.Update += PlayerOnUpdate;
     }
 
-    public static void RainWorldGameOnUpdate(On.RainWorldGame.orig_Update orig, RainWorldGame self)
+    public static void PlayerOnUpdate(On.Player.orig_Update orig, Player self, bool eu)
     {
-        orig(self);
-        if (self.session == null || 
-            self.world == null || 
-            !self.IsStorySession ||
-            self.world.region == null) 
-            return;
-        for (int i = 0; i < self.Players.Count; i++)
+        orig(self, eu);
+        if (self.room == null) return;
+        if (self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData()
+            .TryGet(Plugin.MothersKilled, out List<string> regionsKilledInStr))
         {
-            if (self.Players[i].realizedCreature == null || !(self.Players[i].realizedCreature is Player)) return;
-            Player player = self.Players[i].realizedCreature as Player;
-            var comm = self.session.creatureCommunities;
-            var liz = CreatureCommunities.CommunityID.Lizards;
-            if (!self.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData()
-                .TryGet("MothersKilledInRegion", out List<int> regionsKilledIn))
-                return;
-            if (regionsKilledIn.Contains(self.world.RegionNumber)) player.GetPoacher().HatedHere = true;
-            else player.GetPoacher().HatedHere = false;
-
-            if (player.GetPoacher().HatedHere && comm.LikeOfPlayer(liz, self.world.RegionNumber, player.playerState.playerNumber) > -1)
+            if (regionsKilledInStr.Contains(self.room.world.name.ToLower()))
             {
-                comm.SetLikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.world.RegionNumber, player.playerState.playerNumber,-1);
-                comm.InfluenceLikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.world.RegionNumber, player.playerState.playerNumber, -1,1,0);
+                FriendWorldState.customLock = true;
             }
-
-            if (!Plugin.LocalLizRep()) return;
-            if (FriendWorldState.SolaceWorldstate || Plugin.LocalLizRepAll()) comm.SetLikeOfPlayer(CreatureCommunities.CommunityID.All, -1,player.playerState.playerNumber, 0);
+            else
+            {
+                FriendWorldState.customLock = false;
+            }
         }
+        else FriendWorldState.customLock = false;
     }
 
     public static void CreatureOnDie(On.Creature.orig_Die orig, Creature self)
     {
         orig(self);
-        if (self.Template.type == CreatureTemplateType.MotherLizard && self.killTag.realizedCreature is Player && self.room.game.IsStorySession)
+        if (self.room == null) return;
+        if (self.Template.type == CreatureTemplateType.MotherLizard && self.killTag.realizedCreature is Player player && self.room.game.IsStorySession)
         {
-            int region = self.room.world.RegionNumber;
-            string name = self.room.world.regionState.regionName;
-            
-            if (!self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegion", out List<int> regionsKilledIn))
-                regionsKilledIn = new List<int>();
-            if (!self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegionStr", out List<string> regionsKilledInStr))
-                regionsKilledInStr = new List<string>();
-
-            self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MotherKillCount", out int count);
-
-            count += 1;
-            if (!regionsKilledIn.Contains(region)) regionsKilledIn.Add(region);
-            if (!regionsKilledInStr.Contains(name)) regionsKilledInStr.Add(name.ToLower());
-
-            self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().Set("MotherKillCount", count);
-            self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().Set("MothersKilledInRegion",regionsKilledIn);
-            self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().Set("MothersKilledInRegionStr",regionsKilledInStr);
+            if (player.room == null) return;
+            else MotherKilled(player);
         }
+    }
+
+    public static void MotherKilled(Player self)
+    {
+        string name = self.room.world.name.ToLower();
+            
+        if (!self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet(Plugin.MothersKilled, out List<string> regionsKilledInStr))
+            regionsKilledInStr = new List<string>();
+        self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().TryGet(Plugin.MotherKillNum, out int count);
+        count += 1;
+            
+        if (!regionsKilledInStr.Contains(name)) regionsKilledInStr.Add(name);
+
+        self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData().Set(Plugin.MotherKillNum, count);
+        self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData()
+            .Set(Plugin.MothersKilled, regionsKilledInStr);
+        // MothersKilledInRegionStr is responsible for telling MotherKillTracker what regions have had an ML killed in - MUST BE IN LOWERCASE TO WORK.
+        // MotherKillCount currently has no purpose
+        MotherKilledRepChange(self);
+    }
+
+    public static void MotherKilledRepChange(Player self)
+    {
+        var liz = CreatureCommunities.CommunityID.Lizards;
+        var community = self.room.game.session.creatureCommunities;
+        var region = self.room.world.RegionNumber;
+        var player = self.playerState.playerNumber;
+
+        community.SetLikeOfPlayer(liz, region, player, -1);
+        community.InfluenceLikeOfPlayer(liz, region, player, -1, 1, 0);
     }
 }
