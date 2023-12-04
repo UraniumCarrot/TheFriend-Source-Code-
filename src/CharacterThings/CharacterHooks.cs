@@ -12,6 +12,7 @@ public class CharacterHooks
     {
         PoacherHooks.Apply();
         FriendHooks.Apply();
+        NoirThings.NoirCatto.Apply();
         BelieverHooks.Apply();
         DelugeHooks.Apply();
         

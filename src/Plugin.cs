@@ -77,7 +77,6 @@ namespace TheFriend
             PebblesLL.Apply();
             DragonRepInterface.Apply();
             HudHooks.Apply();
-            NoirCatto.Apply();
 
             // Misc IL
             IL.Player.ThrowObject += Player_ThrowObject;
