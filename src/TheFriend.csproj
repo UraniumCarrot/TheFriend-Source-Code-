@@ -14,53 +14,53 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <Reference Include="..\lib\BepInEx.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\BepInEx\core\BepInEx.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\Mono.Cecil.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\RainWorld_Data\Managed\Mono.Cecil.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\Mono.Cecil.Rocks.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\RainWorld_Data\Managed\Mono.Cecil.Rocks.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\MonoMod.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\BepInEx\core\MonoMod.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\MonoMod.RuntimeDetour.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\BepInEx\core\MonoMod.RuntimeDetour.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\MonoMod.Utils.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\BepInEx\core\MonoMod.Utils.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\UnityEngine.CoreModule.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\RainWorld_Data\Managed\UnityEngine.CoreModule.dll">
           <Private>false</Private>
         </Reference>
-        <Reference Include="..\lib\UnityEngine.dll">
+        <Reference Include="..\..\Backups\Rain World\Rain World References\RainWorld_Data\Managed\UnityEngine.dll">
           <Private>false</Private>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
-          <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+          <HintPath>..\..\Backups\Rain World\Rain World References\RainWorld_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="BellyPlus">
           <HintPath>..\lib\BellyPlus.dll</HintPath>
         </Reference>
         <Reference Include="SlugBase">
-          <HintPath>..\..\..\..\..\Downloads\SlugBase.dll</HintPath>
+            <HintPath>..\..\Backups\Rain World\Rain World References\SlugBase.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.InputLegacyModule">
-          <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+          <HintPath>..\..\Backups\Rain World\Rain World References\RainWorld_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     
     <ItemGroup>
       <Reference Include="Fisobs">
-        <HintPath>bin\Debug\net48\Fisobs.dll</HintPath>
+        <HintPath>..\..\Backups\Rain World\Rain World References\Fisobs.dll</HintPath>
       </Reference>
       <Reference Include="HOOKS-Assembly-CSharp">
-        <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\plugins\HOOKS-Assembly-CSharp.dll</HintPath>
+        <HintPath>..\..\Backups\Rain World\Rain World References\BepInEx\plugins\HOOKS-Assembly-CSharp.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp">
-        <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\utils\PUBLIC-Assembly-CSharp.dll</HintPath>
+        <HintPath>..\..\Backups\Rain World\Rain World References\BepInEx\utils\PUBLIC-Assembly-CSharp.dll</HintPath>
       </Reference>
     </ItemGroup>
     
@@ -77,7 +77,7 @@
     </Target>
     
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy &quot;C:\Users\liahm\OneDrive\Desktop\The Friend\SlugTemplate\src\bin\Debug\net48\TheFriend.dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\StreamingAssets\mods\thefriend\plugins\TheFriend.dll&quot; /y" />
+      <Exec Command="copy &quot;bin\Debug\net48\TheFriend.dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\StreamingAssets\mods\thefriend\plugins\TheFriend.dll&quot; /y" />
     </Target>
     
 </Project>
