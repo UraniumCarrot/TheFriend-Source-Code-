@@ -2,6 +2,20 @@
 using TheFriend.NoirThings;
 
 namespace TheFriend;
+
+public static class DataPearlType
+{
+    [AllowNull] public static DataPearl.AbstractDataPearl.DataPearlType DelugePearl = new(nameof(DelugePearl), true);
+
+    public static void UnregisterValues()
+    {
+        if (DelugePearl != null)
+        {
+            DelugePearl.Unregister();
+            DelugePearl = null;
+        }
+    }
+}
 public static class CreatureTemplateType
 {
     [AllowNull] public static CreatureTemplate.Type PebblesLL = new(nameof(PebblesLL), true);

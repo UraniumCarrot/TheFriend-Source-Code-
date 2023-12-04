@@ -2,7 +2,7 @@ namespace TheFriend.SlugcatThings;
 using static Plugin;
 
 public class SlugcatNameFix
-{
+{ // This class's hooks don't apply at the same time as the other ones, so DON'T include it in CharacterHooks.cs
     public static void Apply()
     {
         On.SlugcatStats.getSlugcatName += SlugcatStatsOngetSlugcatName;

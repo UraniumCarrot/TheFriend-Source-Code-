@@ -13,24 +13,24 @@ public class DragonRiding
             get => A;
             set => A = value;
         }
-        public AbstractPhysicalObject liz
+        public AbstractPhysicalObject obj
         {
             get => B;
             set => B = value;
         }
-        public AbstractDragonRider(AbstractPhysicalObject self, AbstractPhysicalObject liz) : base(self, liz) { }
+        public AbstractDragonRider(AbstractPhysicalObject self, AbstractPhysicalObject obj) : base(self, obj) { }
     }
     public static void DragonRiderSafety(Player self, Creature crit, Vector2 seat) // Values for the rider of mother lizard
     {
         if (!(crit as Lizard).GetLiz().IsRideable && (crit as Lizard).GetLiz() != null) { DragonRideReset(crit, self); return; }
-        self.GetPoacher().rideStick ??= new AbstractDragonRider(self.abstractPhysicalObject, crit.abstractPhysicalObject);
-        self.GetPoacher().isRidingLizard = true;
-        self.GetPoacher().grabCounter = 15;
+        self.GetGeneral().rideStick ??= new AbstractDragonRider(self.abstractPhysicalObject, crit.abstractPhysicalObject);
+        self.GetGeneral().isRidingLizard = true;
+        self.GetGeneral().grabCounter = 15;
         self.bodyChunks[1].pos = seat;
         self.bodyChunks[0].pos = Vector2.Lerp(seat,seat + new Vector2(0,crit.firstChunk.rad),0.5f);
         self.CollideWithTerrain = false;
         self.CollideWithObjects = false;
-        if (!self.abstractCreature.stuckObjects.Contains(self.GetPoacher()?.rideStick)) self.abstractCreature.stuckObjects.Add(self.GetPoacher()?.rideStick);
+        if (!self.abstractCreature.stuckObjects.Contains(self.GetGeneral()?.rideStick)) self.abstractCreature.stuckObjects.Add(self.GetGeneral()?.rideStick);
     }
     public static void DragonRidden(Creature crit, Player player) // Values for the lizard being ridden
     {
@@ -42,25 +42,25 @@ public class DragonRiding
     {
         player.CollideWithTerrain = true;
         player.CollideWithObjects = true;
-        player.GetPoacher().dragonSteed = null;
+        player.GetGeneral().dragonSteed = null;
         if (crit is Lizard liz)
         {
             liz.GetLiz().boolseat0 = false;
             //liz.GetLiz().IsBeingRidden = false;
             liz.GetLiz().rider = null;
         }
-        player.GetPoacher().isRidingLizard = false;
-        if (player.GetPoacher()?.rideStick != null)
+        player.GetGeneral().isRidingLizard = false;
+        if (player.GetGeneral()?.rideStick != null)
         {
-            player.GetPoacher().rideStick.Deactivate();
-            player.GetPoacher().rideStick = null;
-            player.abstractCreature.stuckObjects.Remove(player.GetPoacher().rideStick);
+            player.GetGeneral().rideStick.Deactivate();
+            player.GetGeneral().rideStick = null;
+            player.abstractCreature.stuckObjects.Remove(player.GetGeneral().rideStick);
         }
     }
 
     public static void DragonRideCommands(Lizard liz, Player rider)
     {
-        var input = rider.GetPoacher().UnchangedInputForLizRide;
+        var input = rider.GetGeneral().UnchangedInputForLizRide;
 
         // Drop it!
         if (input[0].y < 0)

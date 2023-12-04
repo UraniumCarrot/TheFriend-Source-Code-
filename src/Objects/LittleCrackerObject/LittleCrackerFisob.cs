@@ -2,12 +2,6 @@
 using Fisobs.Items;
 using Fisobs.Properties;
 using Fisobs.Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.Experimental.GlobalIllumination;
 
 namespace TheFriend.Objects.LittleCrackerObject;
 

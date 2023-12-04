@@ -43,7 +43,7 @@ public class FriendCrawlTurn
     {
         if (self.SlugCatClass != Plugin.FriendName) return false;
         if (self.animation != Player.AnimationIndex.CrawlTurn) return false;
-        var friendData = self.GetPoacher();
+        var friendData = self.GetFriend();
 
         //If we're jumping, don't proceed with other code, it breaks the jump
         if (self.input[0].jmp)
@@ -89,7 +89,7 @@ public class FriendCrawlTurn
     {
         orig(self, eu);
         if (self.SlugCatClass != Plugin.FriendName) return;
-        var friendData = self.GetPoacher();
+        var friendData = self.GetFriend();
 
         if (self.animation != Player.AnimationIndex.CrawlTurn)
         {

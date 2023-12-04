@@ -1,0 +1,36 @@
+{
+	"id": "FriendBeliever",
+	"name": "The Believer",
+	"description": "Exiled from your old home for forbidden enlightenment, gain attunement with the world<LINE>in a way never seen before.",
+	
+	"features": {
+		"color":"FFCF36", 
+		"custom_colors": [
+			{ "name": "Body", "story": "FFCF36", "arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ] },
+			{ "name": "Eyes", "story": "101010", "arena": [ "101010", "101010", "101010", "BBB6BC" ] },
+			{ "name": "Spots", "story": "FF6600", "arena": [ "3884FF", "58E800", "840039", "FF7FE5" ] }
+		],
+		"weight": 1,
+		"diet": {
+			"corpses": 0,
+			"meat": -1,
+			"plants": 1
+		},
+		
+		"auto_grab_batflies": false,
+		"expedition_enabled": false,
+		"expedition_description": "In unfamiliar territory, The Believer endures<LINE>dangerous conditions to meet their goals.",
+		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
+		"karma": 0,
+		"tunnel_speed": 1, 
+		"climb_speed": 1, 
+		"walk_speed": 1,
+		"throw_skill": 0,
+		"start_room": "SU_S04",
+		"select_menu_scene": "slugcat - friend",
+		"select_menu_scene_ascended": "slugcat end - friend",
+		"sleep_scene": "sleep scene - friend",
+		"food_min": 4,
+		"food_max": 5
+	}
+}

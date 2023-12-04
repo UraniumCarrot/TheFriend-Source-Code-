@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Fisobs.Core;
-using UnityEngine;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
 namespace TheFriend.Objects.LittleCrackerObject;
 

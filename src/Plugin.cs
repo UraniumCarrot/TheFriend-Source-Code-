@@ -14,6 +14,7 @@ using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.PoacherThings;
 using BepInEx.Logging;
+using TheFriend.CharacterThings;
 using ind = Player.AnimationIndex;
 using bod = Player.BodyModeIndex;
 using TheFriend.Creatures.PebblesLLCreature;
@@ -24,6 +25,7 @@ using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
 using TheFriend.NoirThings;
 using TheFriend.Objects;
+using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.SaveThings;
 
@@ -57,6 +59,9 @@ namespace TheFriend
             On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
 
             // Hooks
+            CharacterHooks.Apply();
+            DelugePearlHooks.Apply();
+
             LizardRideControl.Apply();
             AbstractObjectType.Apply();
             UpdateDeleteCWT.Apply();
@@ -65,18 +70,12 @@ namespace TheFriend
             YoungLizardAI.Apply();
             FirecrackerFix.Apply();
             FriendWorldState.Apply();
-            //FriendLizThreat.Apply();
-            FriendCrawl.Apply();
-            FriendCrawlTurn.Apply();
-            DragonCrafts.Apply();
+
             SLOracleHandler.Apply();
             FamineWorld.Apply();
             SnowSpiderGraphics.Apply();
             PebblesLL.Apply();
-            DragonClassFeatures.Apply();
             DragonRepInterface.Apply();
-            SlugcatGameplay.Apply();
-            SlugcatGraphics.Apply();
             HudHooks.Apply();
             NoirCatto.Apply();
 

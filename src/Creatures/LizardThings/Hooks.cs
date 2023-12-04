@@ -652,7 +652,7 @@ public class Hooks
     #region misc data
     public static void LizardAI_SocialEvent(On.LizardAI.orig_SocialEvent orig, LizardAI self, SocialEventRecognizer.EventID ID, Creature subjectCrit, Creature objectCrit, PhysicalObject involvedItem)
     {
-        if (self.lizard.GetLiz().rider != null && subjectCrit is Player pl && pl?.GetPoacher()?.dragonSteed == self.lizard) return;
+        if (self.lizard.GetLiz().rider != null && subjectCrit is Player pl && pl?.GetGeneral()?.dragonSteed == self.lizard) return;
         else orig(self, ID, subjectCrit, objectCrit, involvedItem);
     }
     public static void Creature_NewRoom(On.Creature.orig_NewRoom orig, Creature self, Room newRoom)
@@ -679,9 +679,9 @@ public class Hooks
         {
             try
             {
-                if (creature is Player player && player?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard)
+                if (creature is Player player && player?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard)
                     return true;
-                else if (creature is Player player0 && player0?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)
+                else if (creature is Player player0 && player0?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)
                     return true;
             }
             catch (Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.AlreadyTrackingCreature playerCode " + e); }
@@ -690,8 +690,8 @@ public class Hooks
     }
     public static void WormGrassPatch_InteractWithCreature(On.WormGrass.WormGrassPatch.orig_InteractWithCreature orig, WormGrass.WormGrassPatch self, WormGrass.WormGrassPatch.CreatureAndPull creatureAndPull)
     {
-        if (!(creatureAndPull?.creature is Player player && (player?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)) ||
-            !(creatureAndPull?.creature?.grabbedBy?.Count > 0 && creatureAndPull?.creature?.grabbedBy[0]?.grabber is Player pl && (pl?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)))
+        if (!(creatureAndPull?.creature is Player player && (player?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)) ||
+            !(creatureAndPull?.creature?.grabbedBy?.Count > 0 && creatureAndPull?.creature?.grabbedBy[0]?.grabber is Player pl && (pl?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)))
             orig(self, creatureAndPull);
     }
     public static void WormGrassPatch_Update(On.WormGrass.WormGrassPatch.orig_Update orig, WormGrass.WormGrassPatch self)
@@ -704,7 +704,7 @@ public class Hooks
             {
                 if (self?.trackedCreatures[i]?.creature is Player player)
                 {
-                    if (player?.GetPoacher()?.isRidingLizard == true && (player?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
+                    if (player?.GetGeneral()?.isRidingLizard == true && (player?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
                 }
             }
             catch (Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.Update playerCode " + e); }
@@ -712,7 +712,7 @@ public class Hooks
             {
                 if (crit is not null && crit?.grabbedBy?.Count > 0 && self?.trackedCreatures[i]?.creature?.grabbedBy[0]?.grabber is Player pl)
                 {
-                    if (pl?.GetPoacher()?.dragonSteed != null && (pl?.GetPoacher()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || pl?.GetPoacher()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
+                    if (pl?.GetGeneral()?.dragonSteed != null && (pl?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || pl?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
                 }
                 /*else if (crit is not null && crit?.abstractCreature?.stuckObjects?.Count > 0 && crit?.abstractCreature?.stuckObjects[0]?.B?.realizedObject is Player pla)
                 {

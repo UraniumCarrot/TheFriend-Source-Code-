@@ -73,7 +73,7 @@ public class HudHooks
             {
                 if (FriendWorldState.SolaceWorldstate)
                 {
-                    owner.GetPoacher().RainTimerExists = false;
+                    owner.GetGeneral().RainTimerExists = false;
                     for (int i = 0; i < self.circles.Length; i++)
                     {
                         self.circles[i].rad = 0;
@@ -84,8 +84,8 @@ public class HudHooks
                     }
                 }
                 else if (owner.slugcatStats.name == MoreSlugcats.MoreSlugcatsEnums.SlugcatStatsName.Saint)
-                    owner.GetPoacher().RainTimerExists = false;
-                else owner.GetPoacher().RainTimerExists = true;
+                    owner.GetGeneral().RainTimerExists = false;
+                else owner.GetGeneral().RainTimerExists = true;
             }
         }
         else
@@ -95,9 +95,9 @@ public class HudHooks
                 for (int i = 0; i < self.circles.Length; i++)
                     self.circles[i].Draw(timeStacker);
             }
-            owner.GetPoacher().RainTimerExists = true;
+            owner.GetGeneral().RainTimerExists = true;
         }
         if (self.hud.map.RegionName == "HR") 
-            owner.GetPoacher().RainTimerExists = true;
+            owner.GetGeneral().RainTimerExists = true;
     } 
 }

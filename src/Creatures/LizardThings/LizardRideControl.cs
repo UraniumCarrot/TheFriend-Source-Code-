@@ -23,7 +23,7 @@ public class LizardRideControl
             float swimspeed = breedparams.swimSpeed;
 
             var rider = self.GetLiz().rider;
-            var input = rider.GetPoacher().UnchangedInputForLizRide;
+            var input = rider.GetGeneral().UnchangedInputForLizRide;
             Vector2 inputvec = new Vector2(input[0].x, input[0].y);
             DragonRiding.DragonRideCommands(self,rider);
 

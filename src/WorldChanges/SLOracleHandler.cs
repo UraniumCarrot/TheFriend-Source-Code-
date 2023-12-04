@@ -201,7 +201,7 @@ public partial class SLOracleHandler
                             self.Pain();
                             self.oracle.spasms = 44;
                             self.oracle.stun = Math.Max(self.oracle.stun, 183);
-                            self.player.GetPoacher().JustGotMoonMark = true;
+                            self.player.GetGeneral().JustGotMoonMark = true;
                             room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, self.player.firstChunk.pos, 1f, 1f);
                             room.AddObject(new Spark(self.player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                             room.game.rainWorld.progression.currentSaveState.miscWorldSaveData.GetSlugBaseData().Set("SolaceMarkCutsceneHasBeenSeen", true);

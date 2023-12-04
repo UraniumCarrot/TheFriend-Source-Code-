@@ -27,7 +27,7 @@ public class FriendCrawl
         //Adjusting draw positions slightly
         if (self.player.animation == Player.AnimationIndex.StandOnBeam && self.player.input[0].y < 1)
         {
-            self.player.GetPoacher().poleCrawlState = true;
+            self.player.GetFriend().poleCrawlState = true;
             if (self.player.input[0].x != 0)
             {
                 self.drawPositions[0, 0].y = Mathf.Lerp(self.drawPositions[0, 1].y + 5, self.drawPositions[0, 0].y + 5, 1f);
@@ -113,7 +113,7 @@ public class FriendCrawl
             }
 
         }
-        else self.player.GetPoacher().poleCrawlState = false;
+        else self.player.GetFriend().poleCrawlState = false;
     }
     public static bool SlugcatHand_EngageInMovement(On.SlugcatHand.orig_EngageInMovement orig, SlugcatHand self)
     {

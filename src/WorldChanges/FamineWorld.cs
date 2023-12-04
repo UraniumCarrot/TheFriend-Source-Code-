@@ -25,7 +25,6 @@ public class FamineWorld
     public static void Apply()
     {
         On.SlugcatStats.NourishmentOfObjectEaten += SlugcatStats_NourishmentOfObjectEaten;
-        On.Player.ObjectEaten += Player_ObjectEaten;
         IL.Player.EatMeatUpdate += Player_EatMeatUpdate;
 
         On.CentipedeGraphics.ctor += CentipedeGraphics_ctor;
@@ -44,55 +43,6 @@ public class FamineWorld
         On.MoreSlugcats.DandelionPeach.ApplyPalette += DandelionPeach_ApplyPalette;
 
         On.Fly.ctor += Fly_ctor;
-    }
-
-    public static int favoriteFoodTimer = 0;
-    public static int sleepCounter = 0;
-    public static void PoacherEats(Player self)
-    {
-        if (self.slugcatStats.name != Plugin.DragonName) return;
-        if (sleepCounter < 300 && self.bodyMode == Player.BodyModeIndex.Crawl && !self.input[0].AnyInput) sleepCounter++;
-        if (sleepCounter >= 300) (self.graphicsModule as PlayerGraphics).blink = 5;
-        if (self.bodyMode != Player.BodyModeIndex.Crawl || self.input[0].AnyInput) sleepCounter = 0;
-        if (favoriteFoodTimer == 0) return;
-        if (Plugin.PoacherPupActs() == true)
-        {
-            if (favoriteFoodTimer > 0 && !self.Stunned && !self.Malnourished)
-            {
-                favoriteFoodTimer--;
-                self.slugcatStats.runspeedFac = 1.5f;
-                self.slugcatStats.poleClimbSpeedFac = 1.3f;
-                self.dynamicRunSpeed[0] *= 2f;
-                self.dynamicRunSpeed[1] *= 2f;
-                if (self.bodyMode == Player.BodyModeIndex.Stand) self.input[0].jmp = Random.value < 0.1;
-                if (self.bodyMode == Player.BodyModeIndex.Crawl) self.jumpBoost *= 1.2f;
-                else self.jumpBoost *= 1.05f;
-            }
-            if (favoriteFoodTimer < 0 && !self.Stunned && !self.Malnourished)
-            {
-                favoriteFoodTimer++;
-                self.exhausted = true;
-                (self.graphicsModule as PlayerGraphics).head.vel += Custom.RNV() * 0.2f;
-                self.slugcatStats.runspeedFac = 0.7f;
-                self.slugcatStats.poleClimbSpeedFac = 0.7f;
-                if (favoriteFoodTimer < -500) self.Die();
-            }
-            if (self.dead) { favoriteFoodTimer = 0; }
-            if (favoriteFoodTimer == 0 && !self.Stunned && !self.Malnourished) { self.slugcatStats.runspeedFac = 1f; self.slugcatStats.poleClimbSpeedFac = 1f; }
-        }
-    }
-
-    public static void Player_ObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible eatenobject)
-    {
-        orig(self,eatenobject);
-
-        if (self.slugcatStats.name != Plugin.DragonName) return;
-        if (eatenobject is GlowWeed) { favoriteFoodTimer = 100; Debug.Log("Poacher loves it!"); }
-        if (eatenobject is Hazer) { favoriteFoodTimer = 50; }
-        if (eatenobject is DangleFruit fruit && !IsDiseasedPipHandler(fruit)) { favoriteFoodTimer = 50; }
-        if (eatenobject is LillyPuck) { favoriteFoodTimer = -50; }
-        if (eatenobject is JellyFish) { favoriteFoodTimer = -100; }
-        if (eatenobject is FireEgg) { favoriteFoodTimer = -600; Debug.Log("Poacher hated this food so much they died! Just kidding, it was full of super acid."); }
     }
 
     public static bool NoFamine() // Famine mechanic override, if the player wants it

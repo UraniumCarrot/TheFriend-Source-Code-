@@ -22,6 +22,7 @@ public class SolaceSaveData
     {
         orig(self, eu);
         if (self.room == null) return;
+        if (!self.room.game.IsStorySession) return;
         if (self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData()
             .TryGet(Plugin.MothersKilled, out List<string> regionsKilledInStr))
         {
@@ -41,7 +42,8 @@ public class SolaceSaveData
     {
         orig(self);
         if (self.room == null) return;
-        if (self.Template.type == CreatureTemplateType.MotherLizard && self.killTag.realizedCreature is Player player && self.room.game.IsStorySession)
+        if (!self.room.game.IsStorySession) return;
+        if (self.Template.type == CreatureTemplateType.MotherLizard && self.killTag.realizedCreature is Player player)
         {
             if (player.room == null) return;
             else MotherKilled(player);

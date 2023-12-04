@@ -71,7 +71,7 @@ public static class DragonRepInterface
         {
             // Setup values
             bool maxed = Mathf.Abs(reputation) > 0.999 || symbolInd == 3;
-            Drawn = owner.GetPoacher().RainTimerExists;
+            Drawn = owner.GetGeneral().RainTimerExists;
             ingate = owner.room?.regionGate != null;
             if (FriendWorldState.customLock) MotherKilledHere = true;
             else MotherKilledHere = false;
