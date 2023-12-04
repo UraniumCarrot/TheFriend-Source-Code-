@@ -45,6 +45,7 @@ public partial class NoirCatto
                 if (critHealth <= 0f)
                 {
                     if (RainWorld.ShowLogs) Debug.Log("Creature health below zero, releasing...");
+                    crit.Die();
                     self.TossObject(whichGrasp, eu);
                     self.ReleaseGrasp(whichGrasp);
                 }
