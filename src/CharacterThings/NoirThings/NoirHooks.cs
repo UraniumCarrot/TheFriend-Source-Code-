@@ -33,6 +33,9 @@ public partial class NoirCatto
         IL.Spear.Update += SpearILUpdate;
         On.Spear.Update += SpearOnUpdate;
 
+        On.SeedCob.PlaceInRoom += SeedCobOnPlaceInRoom;
+        On.AbstractPhysicalObject.Abstractize += AbstractPhysicalObjectOnAbstractize;
+
         On.RainWorld.Update += RainWorldOnUpdate;
         On.RainWorldGame.ctor += RainWorldGameOnctor;
 
@@ -46,5 +49,4 @@ public partial class NoirCatto
         On.Menu.Menu.Update += MenuOnUpdate;
         On.Menu.Menu.CommunicateWithUpcomingProcess += MenuOnCommunicateWithUpcomingProcess;
     }
-
 }
