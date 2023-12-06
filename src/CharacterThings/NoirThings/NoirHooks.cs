@@ -34,6 +34,7 @@ public partial class NoirCatto
         On.Spear.Update += SpearOnUpdate;
 
         On.SeedCob.PlaceInRoom += SeedCobOnPlaceInRoom;
+        IL.SeedCob.Update += SeedCobILUpdate;
         On.AbstractPhysicalObject.Abstractize += AbstractPhysicalObjectOnAbstractize;
 
         On.RainWorld.Update += RainWorldOnUpdate;

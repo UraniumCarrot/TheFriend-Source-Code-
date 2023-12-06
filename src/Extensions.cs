@@ -17,4 +17,31 @@ public static class Extensions
 
     public static bool IsSmallerThanMe(this Player self, Creature crit) => crit.Template.smallCreature || self.TotalMass > crit.TotalMass;
     public static bool IsSmallerThanMe(this Creature self, Creature crit) => self.TotalMass > crit.TotalMass;
+
+    /// <summary>
+    /// Returns the name of the getter method for the property
+    /// </summary>
+    /// <param name="type">The class the property originates from</param>
+    /// <param name="propertyName">The name of the property;</param>
+    /// <example>GetGetterMethodName(nameof(<paramref name="propertyName"/>))</example>
+    public static string GetGetterMethodName(this Type type, string propertyName)
+    {
+        var result = type.GetProperty(propertyName)?.GetGetMethod().Name;
+        if (result == null)
+            throw new ArgumentNullException($"Property {propertyName} of {nameof(type)} returned null!");
+        return result;
+    }
+    /// <summary>
+    /// Returns the name of the setter method for the property
+    /// </summary>
+    /// <param name="type">The class the property originates from</param>
+    /// <param name="propertyName">The name of the property;</param>
+    /// <example>GetSetterMethodName(nameof(<paramref name="propertyName"/>))</example>
+    public static string GetSetterMethodName(this Type type, string propertyName)
+    {
+        var result = type.GetProperty(propertyName)?.GetGetMethod().Name;
+        if (result == null)
+            throw new ArgumentNullException($"Property {propertyName} of {nameof(type)} returned null!");
+        return result;
+    }
 }

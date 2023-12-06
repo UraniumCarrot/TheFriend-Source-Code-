@@ -92,6 +92,37 @@ public partial class NoirCatto
     }
 
     //ILHooks
+    //Disabling the ability to eat from popcorn plants which do not have seeds
+    private static void SeedCobILUpdate(ILContext il)
+    {
+        try
+        {
+            var c = new ILCursor(il);
+            ILLabel label = null;
+
+            c.GotoNext(MoveType.AfterLabel,
+                i => i.MatchLdarg(0),
+                i => i.MatchCallOrCallvirt<SeedCob>(typeof(SeedCob).GetGetterMethodName(nameof(SeedCob.AbstractCob))),
+                i => i.MatchLdfld<AbstractSeedCob>(nameof(AbstractSeedCob.dead)),
+                i => i.MatchBrtrue(out label)
+            );
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate((SeedCob self) =>
+            {
+                var seedsAvailable = self.seedsPopped.Count(s => s);
+                return seedsAvailable <= 0;
+            });
+            c.Emit(OpCodes.Brtrue, label);
+        }
+        catch (Exception ex)
+        {
+            Plugin.LogSource.LogError("ILHook failed - SeedCob Update");
+            Plugin.LogSource.LogError(ex);
+        }
+    }
+
+    //Skipping the canBeHitByWeapons check
     private static void WeaponILUpdate(ILContext il)
     {
         try
