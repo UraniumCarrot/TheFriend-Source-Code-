@@ -244,15 +244,14 @@ public partial class NoirCatto
                 if (crit is TubeWorm or JetFish && crit.grabbedBy.Any(x => x.grabber == Owner)) return false; //todo Add tamed lizards
 
                 var smallCrit = Owner.IsSmallerThanMe(crit);
-                //if (!smallCrit) ChangeMode(Mode.Free);
 
-                var stunBonus = 10f * (noirData.CombinedBonus + 1);
-                if (smallCrit)
-                {
-                    stunBonus += 20f;
-                }
+                var baseStunValue = Options.NoirBuffSlash.Value ? 20f : 10f;
+                var baseDamageValue = Options.NoirBuffSlash.Value ? 0.2f : 0.1f;
 
-                var damage = 0.2f + 0.1f * (noirData.CombinedBonus + 1);
+                var stunBonus = baseStunValue * (noirData.CombinedBonus + 1);
+                if (smallCrit) stunBonus += 20f;
+
+                var damage = 0.2f + baseDamageValue * (noirData.CombinedBonus + 1);
                 if (crit is Player) damage *= 2f;
 
                 var hitShield = false;
