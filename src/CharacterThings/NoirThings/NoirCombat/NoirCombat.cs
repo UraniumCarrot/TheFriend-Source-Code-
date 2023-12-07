@@ -71,7 +71,7 @@ public partial class NoirCatto
                 var airSlash = new AbstractCatSlash(self.room.world, AbstractObjectType.CatSlash, null, self.abstractCreature.pos, self.room.game.GetNewID(), self, hand, SlashType.AirSlash);
                 airSlash.RealizeInRoom();
             }
-            noirData.AirSlashCooldown += 40;
+            noirData.AirSlashCooldown += CatSlash.BaseSlashCooldown;
         }
         else
         {
@@ -80,7 +80,10 @@ public partial class NoirCatto
 
             var slash = new AbstractCatSlash(self.room.world, AbstractObjectType.CatSlash, null, self.abstractCreature.pos, self.room.game.GetNewID(), self, hand);
             slash.RealizeInRoom();
-            noirData.SlashCooldown[hand] += 40;
+            noirData.SlashCooldown[hand] += CatSlash.BaseSlashCooldown;
         }
+
+        if (Options.NoirAutoSlash.Value && noirData.AutoSlashCooldown == 0)
+            noirData.AutoSlashCooldown += CatSlash.BaseAutoSlashCooldown;
     }
 }

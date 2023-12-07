@@ -33,6 +33,9 @@ public partial class NoirCatto
 
     public partial class CatSlash : Weapon
     {
+        public const int BaseSlashCooldown = 40;
+        public const int BaseAutoSlashCooldown = BaseSlashCooldown / 2;
+
         public readonly Player Owner;
         public readonly SlashType SlashType;
         public readonly int HandUsed;
