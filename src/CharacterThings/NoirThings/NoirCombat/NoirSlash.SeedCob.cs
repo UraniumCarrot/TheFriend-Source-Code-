@@ -1,15 +1,35 @@
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using static SeedCob;
 
 namespace TheFriend.NoirThings;
+
+public static class SeedCobCWT
+{
+    public static readonly ConditionalWeakTable<AbstractSeedCob, SeedCobData> SeedCobDeets = new ConditionalWeakTable<AbstractSeedCob, SeedCobData>();
+
+    public static SeedCobData GetSeedCobData(this AbstractSeedCob seedCob) => SeedCobDeets.GetValue(seedCob, _ => new(seedCob));
+    public class SeedCobData
+    {
+        public AbstractSeedCob Owner;
+        public bool[] SeedsPopped;
+        public SeedCobData(AbstractSeedCob seedCob)
+        {
+            Owner = seedCob;
+        }
+    }
+}
 
 public partial class NoirCatto
 {
     public partial class CatSlash
     {
+        public const int MaxSeedsToTake = 6;
         private void HitCob(SeedCob seedCob)
         {
             StuffHit.Add(seedCob);
@@ -20,7 +40,24 @@ public partial class NoirCatto
                 return;
             }
 
-            for (var i = 0; i < 2; i++)
+            var seedsTotal = seedCob.seedsPopped.Length;
+            var step = seedsTotal / MaxSeedsToTake;
+            var seedsAvailable = seedCob.seedsPopped.Count(s => s) / step;
+            if (seedsAvailable <= 0) return;
+
+            for (var i = 0; i < step; i++)
+            {
+                for (var j = 0; j < seedsTotal; j++)
+                {
+                    if (seedCob.seedsPopped[j])
+                    {
+                        seedCob.seedsPopped[j] = false;
+                        break;
+                    }
+                }
+            }
+
+            //for (var i = 0; i < 2; i++) //Spawn seeds
             {
                 var absSeed = new AbstractConsumable(seedCob.room.world, MoreSlugcats.MoreSlugcatsEnums.AbstractObjectType.Seed, null,
                     seedCob.room.GetWorldCoordinate(seedCob.placedPos), seedCob.room.game.GetNewID(), -1, -1, null);
@@ -33,7 +70,59 @@ public partial class NoirCatto
         }
     }
 
+    //Saving and restoring from abstract state
+    private static void SeedCobOnPlaceInRoom(On.SeedCob.orig_PlaceInRoom orig, SeedCob self, Room placeroom)
+    {
+        orig(self, placeroom);
+        var seedCobData = self.AbstractCob.GetSeedCobData();
+        if (seedCobData.SeedsPopped != null)
+            self.seedsPopped = seedCobData.SeedsPopped;
+    }
+
+    private static void AbstractPhysicalObjectOnAbstractize(On.AbstractPhysicalObject.orig_Abstractize orig, AbstractPhysicalObject self, WorldCoordinate coord)
+    {
+        if (self is SeedCob.AbstractSeedCob abstractSeedCob)
+        {
+            if (abstractSeedCob.realizedObject is SeedCob seedCob)
+            {
+                abstractSeedCob.GetSeedCobData().SeedsPopped = seedCob.seedsPopped;
+            }
+        }
+        orig(self, coord);
+    }
+
     //ILHooks
+    //Disabling the ability to eat from popcorn plants which do not have seeds
+    private static void SeedCobILUpdate(ILContext il)
+    {
+        try
+        {
+            var c = new ILCursor(il);
+            ILLabel label = null;
+
+            c.GotoNext(MoveType.AfterLabel,
+                i => i.MatchLdarg(0),
+                i => i.MatchCallOrCallvirt<SeedCob>(typeof(SeedCob).GetGetterMethodName(nameof(SeedCob.AbstractCob))),
+                i => i.MatchLdfld<AbstractSeedCob>(nameof(AbstractSeedCob.dead)),
+                i => i.MatchBrtrue(out label)
+            );
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate((SeedCob self) =>
+            {
+                var seedsAvailable = self.seedsPopped.Count(s => s);
+                return seedsAvailable <= 0;
+            });
+            c.Emit(OpCodes.Brtrue, label);
+        }
+        catch (Exception ex)
+        {
+            Plugin.LogSource.LogError("ILHook failed - SeedCob Update");
+            Plugin.LogSource.LogError(ex);
+        }
+    }
+
+    //Skipping the canBeHitByWeapons check
     private static void WeaponILUpdate(ILContext il)
     {
         try

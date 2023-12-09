@@ -15,6 +15,8 @@ public partial class NoirCatto
         }
 
         if (noirData.CanSlash) return;
+        if (Options.NoirAutoSlash.Value && noirData.AutoSlashCooldown == 0)
+            noirData.AutoSlashCooldown += CatSlash.BaseAutoSlashCooldown;
 
         Weapon thrownWeapon = null;
         if (self.grasps[grasp].grabbed is Weapon w)

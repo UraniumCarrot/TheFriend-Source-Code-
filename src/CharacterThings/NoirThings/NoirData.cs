@@ -37,6 +37,7 @@ public abstract partial class NoirCatto // Noir master class
 
         public readonly int[] SlashCooldown = new[] { 0, 0 };
         public int AirSlashCooldown;
+        public int AutoSlashCooldown;
         public int CombinedBonus => ComboBonus + MovementBonus + RotundnessBonus;
         public int ComboBonus;
         public int MovementBonus;
@@ -173,7 +174,8 @@ public abstract partial class NoirCatto // Noir master class
         {
             get
             {
-                if (Cat.input[0].thrw && !Cat.input[1].thrw)
+                if (Cat.input[0].thrw && !Cat.input[1].thrw ||
+                    Cat.input[0].thrw && Options.NoirAutoSlash.Value && AutoSlashCooldown == 0)
                 {
                     if (!Options.NoirAltSlashConditions.Value)
                     {
@@ -209,6 +211,7 @@ public abstract partial class NoirCatto // Noir master class
             SlashCooldown[0].Tick();
             SlashCooldown[1].Tick();
             AirSlashCooldown.Tick();
+            AutoSlashCooldown.Tick();
             ComboTimer.Tick();
             if (ComboTimer == 0 && ComboBonus > 0)
             {
