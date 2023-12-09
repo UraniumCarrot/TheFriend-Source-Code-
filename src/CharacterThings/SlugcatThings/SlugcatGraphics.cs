@@ -218,6 +218,10 @@ public class SlugcatGraphics
             PoacherGraphics.PoacherThinness(self, sLeaser, rCam, timeStacker, camPos);
             PoacherGraphics.PoacherAnimator(self, sLeaser, rCam, timeStacker, camPos);
         }
+        else if (self.player.TryGetDeluge(out var deluge))
+        {
+            DelugeGraphics.DelugeGraphicsUpdate(self, sLeaser);
+        }
     }
 
     public enum colormode

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Noise;
+using RWCustom;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.SlugcatThings;
 using UnityEngine;
@@ -14,8 +16,16 @@ public class DelugePearlMechanics
         On.Player.Update += PlayerOnUpdate;
         On.DataPearl.Update += DataPearlOnUpdate;
         On.DataPearl.ctor += DataPearlOnctor;
+        On.DataPearl.TerrainImpact += DataPearlOnTerrainImpact;
         On.PhysicalObject.Grabbed += PhysicalObjectOnGrabbed;
         On.SaveState.SessionEnded += SaveStateOnSessionEnded;
+    }
+
+    public static void DataPearlOnTerrainImpact(On.DataPearl.orig_TerrainImpact orig, DataPearl self, int chunk, IntVector2 direction, float speed, bool firstcontact)
+    {
+        if (self.AbstractPearl.dataPearlType == TheFriend.DataPearlType.DelugePearl && self.AbstractPearl.DelugePearlData().isAttached)
+            return;
+        orig(self, chunk, direction, speed, firstcontact);
     }
 
     public static void PlayerOnUpdate(On.Player.orig_Update orig, Player self, bool eu)
@@ -64,8 +74,11 @@ public class DelugePearlMechanics
     public static void DataPearlOnctor(On.DataPearl.orig_ctor orig, DataPearl self, AbstractPhysicalObject abstractphysicalobject, World world)
     {
         orig(self, abstractphysicalobject, world);
-        if (self.AbstractPearl.dataPearlType == DataPearlType.DelugePearl) 
+        if (self.AbstractPearl.dataPearlType == DataPearlType.DelugePearl)
+        {
             self.collisionLayer = 0;
+            self.AbstractPearl.hidden = false;
+        }
     }
 
     public static void PhysicalObjectOnGrabbed(On.PhysicalObject.orig_Grabbed orig, PhysicalObject self, Creature.Grasp grasp)
@@ -162,8 +175,35 @@ public class DelugePearlMechanics
             {
                 self.firstChunk.pos = pearl.owner.GetDeluge().tailtip; 
                 self.firstChunk.lastPos = pearl.owner.GetDeluge().tailtip2;
+                self.firstChunk.vel = Vector2.zero;
+                
+                DelugePearlClink(self);
+                
             }
             catch {Debug.Log("Solace: Bauble could not be moved properly!");}
+
+        }
+    }
+
+    public static void DelugePearlClink(DataPearl self)
+    {
+        bool impact = false;
+        IntVector2 tile = self.room.GetTilePosition(self.firstChunk.pos + new Vector2(0,-0.5f));
+
+        switch (self.room.GetTile(tile).Terrain)
+        {
+            case Room.Tile.TerrainType.Solid: impact = true;
+                break;
+            case Room.Tile.TerrainType.Floor: impact = true;
+                break;
+            default: impact = false;
+                break;
+        }
+
+        if (impact)
+        {
+            self.room.PlaySound(SoundID.SS_AI_Marble_Hit_Floor, self.firstChunk, loop: false, Custom.LerpMap(1, 0f, 8f, 0.2f, 1f), 1f);
+            self.room.InGameNoise(new InGameNoise(self.firstChunk.pos, 10, self, 1));
         }
     }
 

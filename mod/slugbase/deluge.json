@@ -1,6 +1,6 @@
 {
 	"id": "FriendDeluge",
-	"name": "The Deluge",
+	"name": "The Storm",
 	"description": "Constant stress from the relentless assault on your senses have you desperately hunting for bliss.<LINE>In this overwhelming land of no solutions, there's only one place for you to go.",
 	
 	"features": {
@@ -14,17 +14,17 @@
 		"diet": {
 			"corpses": 0,
 			"meat": 1,
-			"plants": 1
+			"plants": 1,
 		},
 		
 		"crouch_stealth": [0,0],
 		"expedition_enabled": false,
-		"expedition_description": "Endlessly agitated, The Deluge rushes to finish<LINE>their duty so they can return to their peace",
+		"expedition_description": "Endlessly agitated, The Storm rushes to finish<LINE>their duty so they can return to their peace",
 		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
 		"karma": 1,
 		"tunnel_speed": 1.5, 
 		"climb_speed": 2, 
-		"walk_speed": 1.5,
+		"walk_speed": 1.2,
 		"throw_skill": 1,
 		"start_room": "SU_S04",
 		"select_menu_scene": "slugcat - friend",

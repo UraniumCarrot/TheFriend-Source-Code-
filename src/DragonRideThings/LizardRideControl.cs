@@ -1,9 +1,9 @@
 ﻿using MoreSlugcats;
+using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
-using RWCustom;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.DragonRideThings;
 
 public class LizardRideControl
 {

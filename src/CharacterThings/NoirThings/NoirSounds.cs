@@ -17,6 +17,8 @@ public partial class NoirCatto
     public static SoundID Meow5SND;
     public static SoundID MeowFrustratedSND;
     public static SoundID PurrLoopSND;
+    public static SoundID DelugeHeartbeat;
+    public static SoundID DelugeHeartbeatSine;
     public static void LoadSounds()
     {
         SlashSND = new SoundID("NoirCatto_Slash", true);
@@ -28,6 +30,8 @@ public partial class NoirCatto
         Meow5SND = new SoundID("NoirCatto_Meow5", true);
         MeowFrustratedSND = new SoundID("NoirCatto_MeowFrustrated", true);
         PurrLoopSND = new SoundID("NoirCatto_PurrLoop", true);
+        DelugeHeartbeat = new SoundID("Deluge_Heartbeat", true);
+        DelugeHeartbeatSine = new SoundID("Deluge_Heartbeat_Sine", true);
     }
     
     #region Sleep-Screen Purr

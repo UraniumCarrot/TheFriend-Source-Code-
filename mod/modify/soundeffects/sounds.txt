@@ -7,3 +7,5 @@
 [ADD]NoirCatto_Meow5/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeow5
 [ADD]NoirCatto_MeowFrustrated/vol=0.15/rangeFac=1/dopplerFac=0.6 : NoirCattoMeowFrustrated
 [ADD]NoirCatto_PurrLoop/vol=0.15 : NoirCattoPurrLoop
+[ADD]Deluge_Heartbeat/vol=1 : DelugeHeartbeat
+[ADD]Deluge_Heartbeat_Sine/vol=1 : DelugeHeartbeatSine

@@ -123,336 +123,21 @@ public class Hooks
             var temp = orig(CreatureTemplate.Type.GreenLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
             var breedParams = (temp.breedParameters as LizardBreedParams)!;
             temp.type = type;
-            temp.name = "MotherLizard";
-            breedParams.baseSpeed = 4f;
-            breedParams.terrainSpeeds[1] = new(1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[2] = new(.1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[3] = new(.1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[4] = new(.1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[5] = new(.1f, 1f, 1f, 1f);
-            breedParams.swimSpeed = 0.5f;
-
-            temp.visualRadius = 1000f;
-            temp.waterVision = .3f;
-            temp.movementBasedVision = .4f;
-            temp.throughSurfaceVision = .95f;
-            breedParams.perfectVisionAngle = Mathf.Lerp(1f, -1f, 0f);
-            breedParams.periferalVisionAngle = Mathf.Lerp(1f, -1f, 7f / 12f);
-            breedParams.framesBetweenLookFocusChange = 60;
-
-            breedParams.headSize = 1.5f;
-            breedParams.neckStiffness = 1f;
-            breedParams.jawOpenAngle = 100f;
-            breedParams.jawOpenLowerJawFac = .65f;
-            breedParams.jawOpenMoveJawsApart = 18.5f;
-            breedParams.headGraphics = new int[5] { 0, 0, 0, 5, 3 };
-
-            breedParams.standardColor = new(1f, 1f, 1f);
-            breedParams.bodyMass = 10f;
-            breedParams.bodySizeFac = 1.8f;
-            breedParams.bodyLengthFac = 1.7f;
-            breedParams.bodyRadFac = 1f;
-            breedParams.bodyStiffnes = .1f;
-            temp.bodySize = 3f;
-
-            breedParams.tailSegments = 7;
-            breedParams.tailStiffness = 500f;
-            breedParams.tailStiffnessDecline = .30f;
-            breedParams.tailLengthFactor = 1.85f;
-            breedParams.tailColorationStart = 0.5f;
-            breedParams.tailColorationExponent = 0.3f;
-
-            breedParams.biteDelay = 2;
-            breedParams.biteInFront = 20f;
-            breedParams.biteRadBonus = 5f;
-            breedParams.biteHomingSpeed = 1f;
-            breedParams.biteChance = 1f;
-            breedParams.attemptBiteRadius = 150f;
-            breedParams.getFreeBiteChance = 1f;
-            breedParams.biteDamage = 10f;
-            breedParams.biteDamageChance = 1f;
-            breedParams.biteDominance = 1f;
-
-            temp.dangerousToPlayer = breedParams.danger;
-            breedParams.danger = .7f;
-            breedParams.aggressionCurveExponent = .4f;
-            breedParams.headShieldAngle = 80f;
-            breedParams.toughness = 20f;
-            breedParams.stunToughness = 8f;
-            temp.damageRestistances[(int)Creature.DamageType.Explosion, 0] = 1.9f;
-            temp.damageRestistances[(int)Creature.DamageType.Electric, 0] = 1.9f;
-            temp.baseDamageResistance = 40;
-            temp.baseStunResistance = 20;
-
-            breedParams.legPairDisplacement = 0.8f;
-            breedParams.limbSize = 1.4f;
-            breedParams.limbSpeed = 3.15f;
-            breedParams.limbThickness = 1.9f;
-            breedParams.limbQuickness = 0.5f;
-            breedParams.limbGripDelay = 2;
-            breedParams.liftFeet = 0.2f;
-            breedParams.feetDown = 0.2f;
-            breedParams.stepLength = 0.5f;
-            breedParams.regainFootingCounter = 11;
-            breedParams.floorLeverage = 10f;
-            breedParams.maxMusclePower = 14f;
-            breedParams.wiggleSpeed = 0.2f;
-            breedParams.wiggleDelay = 15;
-            breedParams.idleCounterSubtractWhenCloseToIdlePos = 10;
-            breedParams.noGripSpeed = .1f;
-            breedParams.smoothenLegMovement = true;
-            breedParams.walkBob = 1.9f;
-
-            breedParams.canExitLounge = false;
-            breedParams.canExitLoungeWarmUp = true;
-            breedParams.loungeDistance = 100f;
-            breedParams.preLoungeCrouch = 25;
-            breedParams.preLoungeCrouchMovement = -.3f;
-            breedParams.loungeSpeed = 2.8f;
-            breedParams.loungeMaximumFrames = 20;
-            breedParams.loungePropulsionFrames = 20;
-            breedParams.loungeJumpyness = 1f;
-            breedParams.findLoungeDirection = 1f;
-            breedParams.loungeDelay = 60;
-            breedParams.riskOfDoubleLoungeDelay = .4f;
-            breedParams.postLoungeStun = 18;
-            breedParams.loungeTendensy = 0.65f;
-
-            breedParams.tamingDifficulty = 10f;
-            breedParams.tongue = false;
-
-            temp.meatPoints = 20;
-            temp.wormGrassImmune = true;
-            temp.waterPathingResistance = 1.5f;
-            temp.requireAImap = true;
-            temp.BlizzardAdapted = true;
-            temp.preBakedPathingAncestor = StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.GreenLizard);
-            temp.doPreBakedPathing = false;
-
-            temp.throwAction = "Hiss";
-            temp.pickupAction = "Bite";
-            temp.jumpAction = "Lunge";
-            return temp;
+            return MotherLizardMethods.MotherLizardStats(temp, breedParams);
         }
         if (type == CreatureTemplateType.YoungLizard)
         {
             var temp = orig(CreatureTemplate.Type.PinkLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
             var breedParams = (temp.breedParameters as LizardBreedParams)!;
             temp.type = type;
-            temp.name = "YoungLizard";
-            breedParams.baseSpeed = 10f;
-            breedParams.terrainSpeeds[1] = new(1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[2] = new(1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[3] = new(1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[4] = new(.1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[5] = new(.1f, 1f, 1f, 1f);
-            temp.waterPathingResistance = 3f;
-            breedParams.swimSpeed = 0.5f;
-
-            temp.visualRadius = 900f;
-            temp.waterVision = .4f;
-            temp.throughSurfaceVision = .85f;
-            temp.movementBasedVision = .3f;
-            breedParams.perfectVisionAngle = Mathf.Lerp(1f, -1f, 0f);
-            breedParams.periferalVisionAngle = Mathf.Lerp(1f, -1f, 7f / 12f);
-            breedParams.framesBetweenLookFocusChange = 80;
-
-            breedParams.headSize = 0.85f;
-            breedParams.neckStiffness = 0.2f;
-            breedParams.jawOpenAngle = 100f;
-            breedParams.jawOpenLowerJawFac = .65f;
-            breedParams.jawOpenMoveJawsApart = 18.5f;
-            breedParams.headGraphics = new int[5];
-
-            breedParams.standardColor = new(1f, 1f, 1f);
-            breedParams.standardColor = new Color(0.80f, 0.75f, 0.6f);
-            breedParams.bodyMass = 0.5f;
-            breedParams.bodySizeFac = 0.73f;
-            breedParams.bodyLengthFac = 0.6f;
-            breedParams.bodyRadFac = 1f;
-            breedParams.bodyStiffnes = .25f;
-            temp.bodySize = 1f;
-
-            breedParams.tailSegments = 4;
-            breedParams.tailStiffness = 250f;
-            breedParams.tailStiffnessDecline = .20f;
-            breedParams.tailLengthFactor = 0.6f;
-            breedParams.tailColorationStart = .3f;
-            breedParams.tailColorationExponent = 2f;
-
-            breedParams.biteDelay = 12;
-            breedParams.biteInFront = 25f;
-            breedParams.biteRadBonus = 0f;
-            breedParams.biteHomingSpeed = 1.7f;
-            breedParams.biteChance = 0.5f;
-            breedParams.attemptBiteRadius = 40f;
-            breedParams.getFreeBiteChance = 0.65f;
-            breedParams.biteDamage = 0.01f;
-            breedParams.biteDamageChance = 100f;
-            breedParams.biteDominance = 0.2f;
-
-            temp.dangerousToPlayer = breedParams.danger;
-            breedParams.danger = 0.01f;
-            breedParams.aggressionCurveExponent = .4f;
-            breedParams.headShieldAngle = 100f;
-            breedParams.toughness = 0.5f;
-            breedParams.stunToughness = 8f;
-            temp.baseDamageResistance = 0.5f;
-            temp.baseStunResistance = 1;
-
-            breedParams.legPairDisplacement = 0.2f;
-            breedParams.limbSize = 0.94f;
-            breedParams.limbSpeed = 3.15f;
-            breedParams.limbThickness = 0.94f;
-            breedParams.limbQuickness = .5f;
-            breedParams.limbGripDelay = 1;
-            breedParams.liftFeet = .3f;
-            breedParams.feetDown = 0.5f;
-            breedParams.stepLength = 0.3f;
-            breedParams.regainFootingCounter = 8;
-            breedParams.floorLeverage = 0.5f;
-            breedParams.maxMusclePower = 3f;
-            breedParams.wiggleSpeed = .5f;
-            breedParams.wiggleDelay = 15;
-            breedParams.idleCounterSubtractWhenCloseToIdlePos = 10;
-            breedParams.noGripSpeed = .1f;
-            breedParams.smoothenLegMovement = true;
-            breedParams.walkBob = 5.34f;
-
-            breedParams.canExitLounge = true;
-            breedParams.canExitLoungeWarmUp = true;
-            breedParams.findLoungeDirection = .5f;
-            breedParams.loungeDistance = 100f;
-            breedParams.preLoungeCrouch = 25;
-            breedParams.preLoungeCrouchMovement = -.4f;
-            breedParams.loungeSpeed = 2.1f;
-            breedParams.loungeMaximumFrames = 15;
-            breedParams.loungePropulsionFrames = 40;
-            breedParams.loungeJumpyness = 1f;
-            breedParams.loungeDelay = 60;
-            breedParams.riskOfDoubleLoungeDelay = .1f;
-            breedParams.postLoungeStun = 18;
-            breedParams.loungeTendensy = 1f;
-
-            breedParams.tamingDifficulty = 0.2f;
-
-            temp.meatPoints = 1;
-            temp.doPreBakedPathing = false;
-            temp.requireAImap = true;
-            temp.preBakedPathingAncestor = StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.PinkLizard);
-            temp.throwAction = "Hiss";
-            temp.pickupAction = "Bite";
-            return temp;
+            return YoungLizardMethods.YoungLizardStats(temp, breedParams);
         }
         if (type == CreatureTemplateType.PilgrimLizard)
         {
             var temp = orig(CreatureTemplate.Type.PinkLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
             var breedParams = (temp.breedParameters as LizardBreedParams)!;
             temp.type = type;
-            temp.name = "PilgrimLizard";
-            breedParams.baseSpeed = 4f;
-            breedParams.terrainSpeeds[1] = new(1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[2] = new(1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[3] = new(1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[4] = new(.1f, 1f, 1f, 1f);
-            breedParams.terrainSpeeds[5] = new(.1f, 1f, 1f, 1f);
-            temp.waterPathingResistance = 3f;
-            breedParams.swimSpeed = 0.5f;
-
-            temp.visualRadius = 900f;
-            temp.waterVision = .4f;
-            temp.throughSurfaceVision = .85f;
-            temp.movementBasedVision = .3f;
-            breedParams.perfectVisionAngle = Mathf.Lerp(1f, -1f, 0f);
-            breedParams.periferalVisionAngle = Mathf.Lerp(1f, -1f, 7f / 12f);
-            breedParams.framesBetweenLookFocusChange = 80;
-
-            breedParams.headSize = 1f;
-            breedParams.neckStiffness = 0.2f;
-            breedParams.jawOpenAngle = 100f;
-            breedParams.jawOpenLowerJawFac = .65f;
-            breedParams.jawOpenMoveJawsApart = 18.5f;
-            breedParams.headGraphics = new int[5];
-
-            breedParams.standardColor = new(1f, 1f, 1f);
-            breedParams.standardColor = new Color(1f, 1f, 1f);
-            breedParams.bodyMass = 1f;
-            breedParams.bodySizeFac = 1f;
-            breedParams.bodyLengthFac = 1f;
-            breedParams.bodyRadFac = 1f;
-            breedParams.bodyStiffnes = .25f;
-            temp.bodySize = 1f;
-
-            breedParams.tailSegments = 6;
-            breedParams.tailStiffness = 250f;
-            breedParams.tailStiffnessDecline = .20f;
-            breedParams.tailLengthFactor = 0.6f;
-            breedParams.tailColorationStart = .3f;
-            breedParams.tailColorationExponent = 2f;
-
-            breedParams.biteDelay = 12;
-            breedParams.biteInFront = 25f;
-            breedParams.biteRadBonus = 0f;
-            breedParams.biteHomingSpeed = 1.7f;
-            breedParams.biteChance = 0.5f;
-            breedParams.attemptBiteRadius = 40f;
-            breedParams.getFreeBiteChance = 0.65f;
-            breedParams.biteDamage = 0.01f;
-            breedParams.biteDamageChance = 100f;
-            breedParams.biteDominance = 0.2f;
-
-            temp.dangerousToPlayer = breedParams.danger;
-            breedParams.danger = 0.01f;
-            breedParams.aggressionCurveExponent = .4f;
-            breedParams.headShieldAngle = 100f;
-            breedParams.toughness = 0.5f;
-            breedParams.stunToughness = 8f;
-            temp.baseDamageResistance = 0.5f;
-            temp.baseStunResistance = 1;
-
-            breedParams.legPairDisplacement = 0.2f;
-            breedParams.limbSize = 0.94f;
-            breedParams.limbSpeed = 3.15f;
-            breedParams.limbThickness = 0.94f;
-            breedParams.limbQuickness = .5f;
-            breedParams.limbGripDelay = 1;
-            breedParams.liftFeet = .3f;
-            breedParams.feetDown = 0.5f;
-            breedParams.stepLength = 0.3f;
-            breedParams.regainFootingCounter = 8;
-            breedParams.floorLeverage = 0.5f;
-            breedParams.maxMusclePower = 3f;
-            breedParams.wiggleSpeed = .5f;
-            breedParams.wiggleDelay = 15;
-            breedParams.idleCounterSubtractWhenCloseToIdlePos = 10;
-            breedParams.noGripSpeed = .1f;
-            breedParams.smoothenLegMovement = true;
-            breedParams.walkBob = 5.34f;
-
-            breedParams.canExitLounge = true;
-            breedParams.canExitLoungeWarmUp = true;
-            breedParams.findLoungeDirection = .5f;
-            breedParams.loungeDistance = 100f;
-            breedParams.preLoungeCrouch = 25;
-            breedParams.preLoungeCrouchMovement = -.4f;
-            breedParams.loungeSpeed = 2.1f;
-            breedParams.loungeMaximumFrames = 15;
-            breedParams.loungePropulsionFrames = 40;
-            breedParams.loungeJumpyness = 1f;
-            breedParams.loungeDelay = 60;
-            breedParams.riskOfDoubleLoungeDelay = .1f;
-            breedParams.postLoungeStun = 18;
-            breedParams.loungeTendensy = 1f;
-
-            breedParams.tamingDifficulty = 0.2f;
-
-            temp.meatPoints = 1;
-            temp.doPreBakedPathing = false;
-            temp.requireAImap = true;
-            temp.preBakedPathingAncestor = StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.PinkLizard);
-            temp.throwAction = "Hiss";
-            temp.pickupAction = "Bite";
-            return temp;
+            return  PilgrimLizardMethods.PilgrimLizardStats(temp, breedParams);
         }
         return orig(type, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
     }
@@ -519,59 +204,11 @@ public class Hooks
 
             if (self?.lizard?.Template?.type == CreatureTemplateType.YoungLizard)
             {
-                if ((trackedcreature.Template?.type == CreatureTemplate.Type.Slugcat || 
-                     trackedcreature.Template?.type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC) && 
-                    (relationship.type == CreatureTemplate.Relationship.Type.Attacks || 
-                     relationship.type == CreatureTemplate.Relationship.Type.Eats))
-                {
-                    if (self?.creature?.personality.aggression >= 0.7f || 
-                        self?.creature?.personality.bravery >= 0.7f)
-                        relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                    else
-                        relationship.type = CreatureTemplate.Relationship.Type.Afraid;
-                }
-                if (trackedcreature is Lizard liz && liz.Template?.type == CreatureTemplateType.YoungLizard && 
-                    (relationship.type == CreatureTemplate.Relationship.Type.Attacks || 
-                     relationship.type == CreatureTemplate.Relationship.Type.Eats || 
-                     relationship.type == CreatureTemplate.Relationship.Type.AgressiveRival))
-                    relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                
-                if (trackedcreature is Lizard && relationship.type == CreatureTemplate.Relationship.Type.Attacks || 
-                    relationship.type == CreatureTemplate.Relationship.Type.Eats || 
-                    relationship.type == CreatureTemplate.Relationship.Type.Afraid)
-                {
-                    if (relationship.type == CreatureTemplate.Relationship.Type.Attacks)
-                        relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                    
-                    if (relationship.type == CreatureTemplate.Relationship.Type.Afraid && 
-                        (self.creature.personality.aggression >= 0.7f || 
-                         self.creature.personality.bravery >= 0.7f))
-                        relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                }
-                return relationship;
+                return YoungLizardMethods.YoungLizardDynamicRelations(self, relationship, trackedcreature);
             }
             if (self?.lizard?.Template?.type == CreatureTemplateType.MotherLizard && self?.lizard != null)
             {
-                if ((trackedcreature.Template?.type == CreatureTemplate.Type.Slugcat || 
-                     trackedcreature.Template?.type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC))
-                {
-                    if (relationship.type == CreatureTemplate.Relationship.Type.Afraid) 
-                        relationship.type = CreatureTemplate.Relationship.Type.Attacks;
-                    if (relationship.type == CreatureTemplate.Relationship.Type.Eats && 
-                        !self.lizard.room.game.IsArenaSession && 
-                        ( self.creature?.personality.sympathy >= 0.75f && 
-                          self.creature?.world?.game?.session?.creatureCommunities?.LikeOfPlayer(CreatureCommunities.CommunityID.Lizards, self.creature.world.region.regionNumber, 0) > 0.5f ||
-                         self.lizard?.AI?.LikeOfPlayer(self.lizard?.AI?.tracker?.RepresentationForCreature(trackedcreature.abstractCreature, true)) > 0)
-                        )
-                        relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                }
-                if (trackedcreature is Lizard liz && 
-                    liz != null && 
-                    liz?.Template?.type == CreatureTemplateType.YoungLizard && 
-                    relationship.type == CreatureTemplate.Relationship.Type.Attacks)
-                    relationship.type = CreatureTemplate.Relationship.Type.Ignores;
-                
-                return relationship;
+                return MotherLizardMethods.MotherLizardDynamicRelations(self, relationship, trackedcreature);
             }
             return relationship;
         }
@@ -704,7 +341,10 @@ public class Hooks
             {
                 if (self?.trackedCreatures[i]?.creature is Player player)
                 {
-                    if (player?.GetGeneral()?.isRidingLizard == true && (player?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || player?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
+                    if (player?.GetGeneral()?.isRidingLizard == true && 
+                        (player?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || 
+                         player?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)) 
+                        self.trackedCreatures.RemoveAt(i);
                 }
             }
             catch (Exception e) { Debug.Log("Solace: Exception occurred in WormGrassPatch.Update playerCode " + e); }
@@ -712,7 +352,10 @@ public class Hooks
             {
                 if (crit is not null && crit?.grabbedBy?.Count > 0 && self?.trackedCreatures[i]?.creature?.grabbedBy[0]?.grabber is Player pl)
                 {
-                    if (pl?.GetGeneral()?.dragonSteed != null && (pl?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || pl?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)) self.trackedCreatures.RemoveAt(i);
+                    if (pl?.GetGeneral()?.dragonSteed != null && 
+                        (pl?.GetGeneral()?.dragonSteed?.Template?.type == CreatureTemplateType.MotherLizard || 
+                         pl?.GetGeneral()?.dragonSteed?.Template?.wormGrassImmune == true)) 
+                        self.trackedCreatures.RemoveAt(i);
                 }
                 /*else if (crit is not null && crit?.abstractCreature?.stuckObjects?.Count > 0 && crit?.abstractCreature?.stuckObjects[0]?.B?.realizedObject is Player pla)
                 {
@@ -756,6 +399,7 @@ public class Hooks
         {
             self.numberOfSprites = 0;
         }
+        else orig(self, lGraphics, startSprite);
     }
     public static void ShortBodyScales_ctor(On.LizardCosmetics.ShortBodyScales.orig_ctor orig, ShortBodyScales self, LizardGraphics lGraphics, int startSprite)
     {

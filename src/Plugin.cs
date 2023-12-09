@@ -20,6 +20,7 @@ using bod = Player.BodyModeIndex;
 using TheFriend.Creatures.PebblesLLCreature;
 using TheFriend.Creatures.LizardThings;
 using TheFriend.Creatures.SnowSpiderCreature;
+using TheFriend.DragonRideThings;
 using TheFriend.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;

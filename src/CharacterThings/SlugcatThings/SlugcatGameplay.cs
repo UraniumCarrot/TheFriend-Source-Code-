@@ -3,6 +3,7 @@ using System.Linq;
 using RWCustom;
 using SlugBase;
 using TheFriend.CharacterThings.BelieverThings;
+using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
 using TheFriend.FriendThings;
 using TheFriend.Objects.BoomMineObject;
@@ -217,12 +218,11 @@ public class SlugcatGameplay
             }
             catch (Exception) { Debug.Log("Solace: Harmless exception happened in Player.Update riderHand"); }
         }
-
-        // Friend stuff
+        
         if (self.TryGetFriend(out var friend))
-        {
             FriendGameplay.FriendUpdate(self, eu);
-        }
+        if (self.TryGetDeluge(out var deluge))
+            DelugeGameplay.DelugeUpdate(self, eu);
     }
     public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)
     { // Spear pointing while on a lizard
@@ -268,6 +268,12 @@ public class SlugcatGameplay
                 self.GetPoacher().IsSkullVisible = true;
                 if (Plugin.PoacherBackspear()) self.spearOnBack = new Player.SpearOnBack(self);
             }
+
+            if (self.TryGetDeluge(out var deluge))
+            {
+                self.slugcatStats.visualStealthInSneakMode = 0;
+                self.slugcatStats.generalVisibilityBonus = 1;
+            }
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
     }
@@ -286,6 +292,7 @@ public class SlugcatGameplay
         orig(self);
         
         if (isFriend) FriendGameplay.FriendJump2(self);
+        if (self.TryGetDeluge(out var deluge)) DelugeGameplay.DelugeSiezeJump(self);
     }
     public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
     { 
@@ -336,6 +343,8 @@ public class SlugcatGameplay
         }
 
         if (self.TryGetFriend(out var friend)) FriendGameplay.FriendLeapController(self, timer);
-        
+
+        if (self.TryGetDeluge(out var deluge)) DelugeGameplay.DelugeSprintCheck(self);
+
     }
 }
