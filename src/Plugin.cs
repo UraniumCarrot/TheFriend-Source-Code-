@@ -15,6 +15,7 @@ using TheFriend.Objects.BoomMineObject;
 using TheFriend.PoacherThings;
 using BepInEx.Logging;
 using TheFriend.CharacterThings;
+using TheFriend.CharacterThings.DelugeThings;
 using ind = Player.AnimationIndex;
 using bod = Player.BodyModeIndex;
 using TheFriend.Creatures.PebblesLLCreature;
@@ -162,7 +163,7 @@ namespace TheFriend
             Futile.atlasManager.LoadAtlas("atlases/dragonskull3");
             Futile.atlasManager.LoadAtlas("atlases/solacesymbols");
             Futile.atlasManager.LoadAtlas("atlases/ForeheadSpots");
-
+            DelugeSounds.LoadSounds();
             NoirCatto.LoadSounds();
             NoirCatto.LoadAtlases();
         }

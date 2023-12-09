@@ -149,7 +149,7 @@ public class DelugeGameplay
             if (self.deafLoopHolder.deafLoop != null)
             {
                 var deafener = self.deafLoopHolder.deafLoop;
-                deafener.sound = NoirThings.NoirCatto.DelugeHeartbeatSine;
+                deafener.sound = DelugeSounds.DelugeHeartbeatSine;
                 deafener.Volume = Mathf.Lerp(0.1f, 2f, percent);
             }
     }
