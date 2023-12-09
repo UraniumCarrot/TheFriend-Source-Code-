@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
 namespace TheFriend.Objects.DelugePearlObject;
@@ -7,11 +8,16 @@ public static class PearlCWT
 {
     public class DelugePearl
     {
+        public const float BaseButtConnectionAssymetry = 0.9f;
+        public const float BaseTailConnectionAssymetry = BaseButtConnectionAssymetry * 0.5f;
+
         public int ownerInt;
         public Player owner;
         public bool isAttached;
         public bool hasBeenRead;
         public Color color;
+        public BodyChunkBodyPartConnection tailConnection;
+        public PhysicalObject.BodyChunkConnection buttConnection;
         public DelugePearl(DataPearl.AbstractDataPearl pearl)
         {
             

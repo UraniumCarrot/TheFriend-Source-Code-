@@ -16,7 +16,7 @@ public class DelugePearlMechanics
         On.Player.Update += PlayerOnUpdate;
         On.DataPearl.Update += DataPearlOnUpdate;
         On.DataPearl.ctor += DataPearlOnctor;
-        On.DataPearl.TerrainImpact += DataPearlOnTerrainImpact;
+        //On.DataPearl.TerrainImpact += DataPearlOnTerrainImpact;
         On.PhysicalObject.Grabbed += PhysicalObjectOnGrabbed;
         On.SaveState.SessionEnded += SaveStateOnSessionEnded;
     }
@@ -126,15 +126,15 @@ public class DelugePearlMechanics
     {
         try
         {
-            if (obj is DataPearl pearl && pearl.AbstractPearl.dataPearlType == DataPearlType.DelugePearl)
-            {
-                var data = pearl.AbstractPearl.DelugePearlData();
-                if (data.owner.dead || data.owner == null)
-                {
-                    return orig(self, obj);
-                }
-                else return Player.ObjectGrabability.CantGrab;
-            }
+            // if (obj is DataPearl pearl && pearl.AbstractPearl.dataPearlType == DataPearlType.DelugePearl)
+            // {
+            //     var data = pearl.AbstractPearl.DelugePearlData();
+            //     if (data.owner.dead || data.owner == null)
+            //     {
+            //         return orig(self, obj);
+            //     }
+            //     else return Player.ObjectGrabability.CantGrab;
+            // }
         }
         catch { Debug.Log("Solace: Failed to make bauble ungrabbable");}
         return orig(self, obj);
@@ -146,12 +146,13 @@ public class DelugePearlMechanics
         if (self.AbstractPearl.dataPearlType == DataPearlType.DelugePearl)
         {
             var pearl = self.AbstractPearl.DelugePearlData();
+            var delugeData = pearl.owner.GetDeluge();
 
             try
             {
                 if (pearl.owner == null || 
                     self.room != pearl.owner.room ||
-                    pearl.owner.GetDeluge().pearl == null ||
+                    delugeData.pearl == null ||
                     self.room.world != pearl.owner.room.world ||
                     self.room == null)
                 {
@@ -163,25 +164,13 @@ public class DelugePearlMechanics
             
             try
             {
-                if (!pearl.owner.GetDeluge().PearlWasTaken) pearl.isAttached = true;
+                if (!delugeData.PearlWasTaken) pearl.isAttached = true;
                 if (!pearl.isAttached)
                 {
                     return;
                 }
             }
             catch { Debug.Log("Solace: Bauble isAttached detection failed!");}
-
-            try
-            {
-                self.firstChunk.pos = pearl.owner.GetDeluge().tailtip; 
-                self.firstChunk.lastPos = pearl.owner.GetDeluge().tailtip2;
-                self.firstChunk.vel = Vector2.zero;
-                
-                DelugePearlClink(self);
-                
-            }
-            catch {Debug.Log("Solace: Bauble could not be moved properly!");}
-
         }
     }
 
@@ -230,6 +219,11 @@ public class DelugePearlMechanics
             data.ownerInt = self.playerState.playerNumber;
             self.GetDeluge().pearl = pearl.realizedObject as DataPearl;
             data.color = pearlCol;
+            var graphics = (PlayerGraphics)self.graphicsModule;
+            data.tailConnection = new BodyChunkBodyPartConnection(pearl.realizedObject.firstChunk, graphics.tail[graphics.tail.Length - 1], 0f,
+                PhysicalObject.BodyChunkConnection.Type.Pull, 1f, 0.5f);
+            data.buttConnection = new PhysicalObject.BodyChunkConnection(pearl.realizedObject.firstChunk, self.bodyChunks[1], 40f,
+                PhysicalObject.BodyChunkConnection.Type.Pull, 1f, PearlCWT.DelugePearl.BaseButtConnectionAssymetry);
         
             Debug.Log("Solace: Bauble manifested!");
         }

@@ -6,7 +6,7 @@ public class DelugeGraphics
     {
     }
 
-    public static void DelugeGraphicsUpdate(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser)
+    public static void DelugeDrawSprites(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser)
     {
         var face = sLeaser.sprites[9];
         if (self.player.dead) return;

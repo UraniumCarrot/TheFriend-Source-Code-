@@ -65,11 +65,6 @@ public class SlugcatGraphics
         {
             FriendGraphics.FriendGraphicsUpdate(self);
         }
-        else if (self.player.TryGetDeluge(out var deluge))
-        {
-            self.player.GetDeluge().tailtip = Vector2.Lerp(self.tail[self.tail.Length - 2].pos, self.tail[self.tail.Length - 1].pos, 0.5f);
-            self.player.GetDeluge().tailtip2 = Vector2.Lerp(self.tail[self.tail.Length - 2].lastPos, self.tail[self.tail.Length - 1].lastPos, 0.5f);
-        }
     }
     
     public static Color GraphicsModule_HypothermiaColorBlend(On.GraphicsModule.orig_HypothermiaColorBlend orig, GraphicsModule self, Color oldCol)
@@ -220,7 +215,7 @@ public class SlugcatGraphics
         }
         else if (self.player.TryGetDeluge(out var deluge))
         {
-            DelugeGraphics.DelugeGraphicsUpdate(self, sLeaser);
+            DelugeGraphics.DelugeDrawSprites(self, sLeaser);
         }
     }
 

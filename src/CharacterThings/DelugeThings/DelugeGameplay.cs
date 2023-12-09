@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using RWCustom;
 using System;
+using System.Linq;
 using On.MoreSlugcats;
+using TheFriend.Objects.DelugePearlObject;
 using Random = UnityEngine.Random;
 
 namespace TheFriend.CharacterThings.DelugeThings;
@@ -15,6 +17,24 @@ public class DelugeGameplay
     public static void DelugeUpdate(Player self, bool eu)
     {
         var scug = self.GetDeluge();
+
+        if (scug.pearl != null)
+        {
+            var pearlData = scug.pearl.AbstractPearl.DelugePearlData();
+            if (scug.pearl.grabbedBy.Any() && !scug.pearl.grabbedBy.Select(x => x.grabber).Contains(self))
+            {
+                pearlData.buttConnection.weightSymmetry = 0.75f;
+                pearlData.tailConnection.weightSymmetry = 0.25f;
+            }
+            else
+            {
+                pearlData.buttConnection.weightSymmetry = PearlCWT.DelugePearl.BaseButtConnectionAssymetry;
+                pearlData.tailConnection.weightSymmetry = PearlCWT.DelugePearl.BaseTailConnectionAssymetry;
+            }
+            pearlData.tailConnection?.Update();
+            pearlData.buttConnection?.Update();
+        }
+
         if (self.dead && !self.Stunned) return;
         
         scug.AmIIdling = DelugeIdleCheck(self);
@@ -135,6 +155,8 @@ public class DelugeGameplay
 
     public static void DelugeOverloadEffects(Player self, int intensity, bool eu)
     {
+        if (self.room != null && self.room.game.IsArenaSession) return;
+
         var scug = self.GetDeluge();
         var percent = intensity * 0.001f;
 

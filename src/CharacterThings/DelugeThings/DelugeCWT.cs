@@ -10,8 +10,6 @@ public static class DelugeCWT
     {
         public DataPearl pearl;
         public PhysicalObject lookTarget;
-        public Vector2 tailtip;
-        public Vector2 tailtip2;
         public bool PearlWasTaken;
         public bool sprinting;
         public bool siezing;
