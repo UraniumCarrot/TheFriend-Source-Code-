@@ -21,8 +21,15 @@ public class DelugeGameplay
         if (scug.pearl != null)
         {
             var pearlData = scug.pearl.AbstractPearl.DelugePearlData();
+
             if (scug.pearl.grabbedBy.Any() && !scug.pearl.grabbedBy.Select(x => x.grabber).Contains(self))
             {
+                if (self.dead && Custom.Dist(scug.pearl.firstChunk.pos, self.bodyChunks[1].pos) > PearlCWT.DelugePearl.BasePearlToButtDist) ;
+                {
+                    pearlData.tailConnection.active = false;
+                    pearlData.buttConnection.active = false;
+                }
+
                 pearlData.buttConnection.weightSymmetry = 0.75f;
                 pearlData.tailConnection.weightSymmetry = 0.25f;
             }

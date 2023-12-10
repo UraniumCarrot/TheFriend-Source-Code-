@@ -10,6 +10,7 @@ public static class PearlCWT
     {
         public const float BaseButtConnectionAssymetry = 0.9f;
         public const float BaseTailConnectionAssymetry = BaseButtConnectionAssymetry * 0.5f;
+        public const float BasePearlToButtDist = 40f;
 
         public int ownerInt;
         public Player owner;

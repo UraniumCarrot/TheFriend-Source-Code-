@@ -16,16 +16,8 @@ public class DelugePearlMechanics
         On.Player.Update += PlayerOnUpdate;
         On.DataPearl.Update += DataPearlOnUpdate;
         On.DataPearl.ctor += DataPearlOnctor;
-        //On.DataPearl.TerrainImpact += DataPearlOnTerrainImpact;
         On.PhysicalObject.Grabbed += PhysicalObjectOnGrabbed;
         On.SaveState.SessionEnded += SaveStateOnSessionEnded;
-    }
-
-    public static void DataPearlOnTerrainImpact(On.DataPearl.orig_TerrainImpact orig, DataPearl self, int chunk, IntVector2 direction, float speed, bool firstcontact)
-    {
-        if (self.AbstractPearl.dataPearlType == TheFriend.DataPearlType.DelugePearl && self.AbstractPearl.DelugePearlData().isAttached)
-            return;
-        orig(self, chunk, direction, speed, firstcontact);
     }
 
     public static void PlayerOnUpdate(On.Player.orig_Update orig, Player self, bool eu)
@@ -222,7 +214,7 @@ public class DelugePearlMechanics
             var graphics = (PlayerGraphics)self.graphicsModule;
             data.tailConnection = new BodyChunkBodyPartConnection(pearl.realizedObject.firstChunk, graphics.tail[graphics.tail.Length - 1], 0f,
                 PhysicalObject.BodyChunkConnection.Type.Pull, 1f, 0.5f);
-            data.buttConnection = new PhysicalObject.BodyChunkConnection(pearl.realizedObject.firstChunk, self.bodyChunks[1], 40f,
+            data.buttConnection = new PhysicalObject.BodyChunkConnection(pearl.realizedObject.firstChunk, self.bodyChunks[1], PearlCWT.DelugePearl.BasePearlToButtDist,
                 PhysicalObject.BodyChunkConnection.Type.Pull, 1f, PearlCWT.DelugePearl.BaseButtConnectionAssymetry);
         
             Debug.Log("Solace: Bauble manifested!");
