@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System;
 using UnityEngine;
 using TheFriend.SlugcatThings;
+using RWCustom;
 
 namespace TheFriend;
 
@@ -80,5 +82,81 @@ public class DragonRiding
                 }
             }
         }
+    }
+
+    public static void DragonRiderPoint(Player self)
+    {
+        var oldinput = self.GetGeneral().UnchangedInputForLizRide;
+        Vector2 pointPos = new Vector2(oldinput[0].x * 50, oldinput[0].y * 50) + self.bodyChunks[0].pos;
+        var graph = self.graphicsModule as PlayerGraphics;
+        var hand = ((pointPos - self.mainBodyChunk.pos).x < 0 || self?.grasps[0]?.grabbed is Spear) ? 0 : 1;
+        if (self?.grasps[1]?.grabbed is Spear) hand = 1;
+        var nothand = (hand == 1) ? 0 : 1;
+
+        for (int i = 0; i < 2; i++)
+        {
+            if (self?.grasps[i]?.grabbed is Spear && self?.grasps[0]?.grabbed != self?.grasps[1]?.grabbed) hand = i;
+        }
+        try
+        {
+            if (graph == null) return;
+            graph.LookAtPoint(pointPos, 0f);
+            graph.hands[hand].absoluteHuntPos = pointPos;
+            if (self.GetGeneral().dragonSteed != null) graph.hands[nothand].absoluteHuntPos = self.GetGeneral().dragonSteed.firstChunk.pos;
+            graph.hands[hand].reachingForObject = true;
+            graph.hands[nothand].reachingForObject = true;
+        }
+        catch (Exception e) { Debug.Log("Solace: Harmless exception happened in Player.Update riderHand"); }
+    }
+
+    public static void DragonRiderSpearPoint(Player self)
+    { // Spear pointing specifically needed a fix so that the correct hand would be used
+        if (self != null && self.GetGeneral().dragonSteed != null && self.GetGeneral().isRidingLizard)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Weapon wep)
+                {
+                    float rotation = i == 1 ? self.GetGeneral().pointDir1 + 90 : self.GetGeneral().pointDir0 + 90f;
+                    Vector2 vec = Custom.DegToVec(rotation);
+                    (wep).setRotation = vec;
+                    (wep).rotationSpeed = 0f;
+                }
+            }
+        }
+    }
+
+    public static Player.ObjectGrabability LizardGrabability(Player self, Lizard liz)
+    {
+        if (Plugin.LizRide() && liz.Template.type != CreatureTemplateType.YoungLizard)
+        {
+            if (liz.GetLiz().IsRideable)
+            {
+                if (liz.Template?.type != CreatureTemplateType.MotherLizard && 
+                    liz.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Attacks && 
+                    liz.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Eats && 
+                    liz.AI?.friendTracker?.friend != null && 
+                    liz.AI?.friendTracker?.friendRel?.like < 0.5f && 
+                    !liz.dead && 
+                    !liz.Stunned) 
+                    return Player.ObjectGrabability.CantGrab;
+                if ((liz.GetLiz().rider != null || 
+                     self.GetGeneral().grabCounter > 0 || 
+                     liz.AI?.LikeOfPlayer(liz.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) < 0) && 
+                    !liz.dead && 
+                    !liz.Stunned) 
+                    return Player.ObjectGrabability.CantGrab;
+                self.GetGeneral().grabCounter = 15;
+                return Player.ObjectGrabability.OneHand;
+            }
+        }
+        else if (liz.Template.type == CreatureTemplateType.YoungLizard)
+        {
+            for (int i = 0; i < self?.grasps?.Length; i++) 
+                if ((self.grasps[i]?.grabbed as Creature)?.Template?.type == CreatureTemplateType.YoungLizard) 
+                    return Player.ObjectGrabability.CantGrab; // If already holding a young lizard, you can't grab a second one
+            return Player.ObjectGrabability.OneHand;
+        }
+        return Player.ObjectGrabability.TwoHands;
     }
 }

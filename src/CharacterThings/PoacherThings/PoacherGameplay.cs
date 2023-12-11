@@ -1,6 +1,7 @@
 ﻿using MoreSlugcats;
 using UnityEngine;
 using RWCustom;
+using TheFriend.CharacterThings;
 using TheFriend.SlugcatThings;
 using Random = UnityEngine.Random;
 using bod = Player.BodyModeIndex;
@@ -36,6 +37,14 @@ public class PoacherGameplay
             if (self.input[0].pckp) self.DangerGraspPickup(eu);
         }
     }
+
+    public static void PoacherConstructor(Player self)
+    {
+        self.setPupStatus(true);
+        self.GetPoacher().IsSkullVisible = true;
+        if (Plugin.PoacherBackspear()) self.spearOnBack = new Player.SpearOnBack(self);
+    }
+    
     #endregion
     
     #region misc mechanics
@@ -97,7 +106,7 @@ public class PoacherGameplay
             {
                 poacher.favoriteFoodTimer++;
                 self.exhausted = true;
-                (self.graphicsModule as PlayerGraphics).head.vel += Custom.RNV() * 0.2f;
+                CharacterHooksAndTools.HeadShiver(self.graphicsModule as PlayerGraphics, 0.2f);
                 self.slugcatStats.runspeedFac = 0.7f;
                 self.slugcatStats.poleClimbSpeedFac = 0.7f;
                 if (poacher.favoriteFoodTimer < -500) self.Die();

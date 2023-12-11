@@ -438,5 +438,14 @@ public class DragonCrafts
         Debug.Log("Solace: SpearCrafting ended.");
         return;
     }
+
+    public static void PoacherQuickCraft(Player self)
+    {
+        if (self.craftingObject && self.GetPoacher().isMakingPoppers && 
+            self.grasps.Count(i => i.grabbed is FirecrackerPlant) == 1 && 
+            self.swallowAndRegurgitateCounter < 70) 
+            self.swallowAndRegurgitateCounter = 70;
+    }
+    
     #endregion
 }

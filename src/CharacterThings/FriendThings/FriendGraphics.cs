@@ -1,5 +1,6 @@
 ﻿using TheFriend.SlugcatThings;
 using UnityEngine;
+using System.Linq;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 
@@ -13,6 +14,41 @@ public class FriendGraphics
         
     }
 
+    public static void FriendDrawSprites(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, FSprite head, FSprite legs)
+    {
+        if (!self.RenderAsPup)
+        {
+            if (!head.element.name.Contains("Friend") && 
+                head.element.name.StartsWith("HeadA")) 
+                head.SetElementByName("Friend" + head.element.name);
+            if (!legs.element.name.Contains("Friend") && 
+                legs.element.name.StartsWith("LegsA")) 
+                legs.SetElementByName("Friend" + legs.element.name);
+        }
+    }
+
+    public static void FriendTailCtor(PlayerGraphics self)
+    {
+        if (self.RenderAsPup)
+        {
+            self.tail[0] = new TailSegment(self, 8f, 2f, null, 0.85f, 1f, 1f, true);
+            self.tail[1] = new TailSegment(self, 6f, 3.5f, self.tail[0], 0.85f, 1f, 0.5f, true);
+            self.tail[2] = new TailSegment(self, 4f, 3.5f, self.tail[1], 0.85f, 1f, 0.5f, true);
+            self.tail[3] = new TailSegment(self, 2f, 3.5f, self.tail[2], 0.85f, 1f, 0.5f, true);
+        }
+        else
+        {
+            self.tail[0] = new TailSegment(self, 9f, 4f, null, 0.85f, 1f, 1f, true);
+            self.tail[1] = new TailSegment(self, 7f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+            self.tail[2] = new TailSegment(self, 4f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+            self.tail[3] = new TailSegment(self, 1f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+        }
+        var bp = self.bodyParts.ToList();
+        bp.RemoveAll(x => x is TailSegment);
+        bp.AddRange(self.tail);
+        self.bodyParts = bp.ToArray();
+    }
+    
     public static void FriendGraphicsUpdate(PlayerGraphics self)
     {
         if ((self.player.bodyMode == bod.Crawl || 

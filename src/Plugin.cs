@@ -61,7 +61,7 @@ namespace TheFriend
             On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
 
             // Hooks
-            CharacterHooks.Apply();
+            CharacterHooksAndTools.Apply();
             DelugePearlHooks.Apply();
 
             LizardRideControl.Apply();

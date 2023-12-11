@@ -6,6 +6,7 @@ using System.Linq;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
+using TheFriend.CharacterThings;
 using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.FriendThings;
@@ -62,19 +63,15 @@ public class SlugcatGraphics
     { // Friend cosmetic movement
         orig(self);
         if (self.player.TryGetFriend(out var friend))
-        {
             FriendGraphics.FriendGraphicsUpdate(self);
-        }
     }
     
     public static Color GraphicsModule_HypothermiaColorBlend(On.GraphicsModule.orig_HypothermiaColorBlend orig, GraphicsModule self, Color oldCol)
     { // Poacher hypothermia color fix
-        if (self.owner is Player player && player.TryGetPoacher(out var poacher))
+        if (self.owner is Player player)
         {
-            //Color b = new Color(0f, 0f, 0f, 0f);
-            float hypothermia = (self.owner.abstractPhysicalObject as AbstractCreature).Hypothermia;
-            Color b = !(hypothermia < 1f) ? Color.Lerp(new Color(0.8f, 0.8f, 1f), new Color(0.15f, 0.15f, 0.3f), hypothermia - 1f) : Color.Lerp(oldCol, new Color(0.8f, 0.8f, 1f), hypothermia);
-            return Color.Lerp(oldCol, b, 0.92f);
+            if (player.TryGetPoacher(out var poacher))
+                return PoacherGraphics.PoacherHypothermiaColor(player, oldCol);
         }
         return orig(self, oldCol);
     }
@@ -83,63 +80,28 @@ public class SlugcatGraphics
     { // Implement CustomTail
         orig(self, ow);
         if (self.player.TryGetFriend(out var friend))
-        {
-            if (self.RenderAsPup)
-            {
-                self.tail[0] = new TailSegment(self, 8f, 2f, null, 0.85f, 1f, 1f, true);
-                self.tail[1] = new TailSegment(self, 6f, 3.5f, self.tail[0], 0.85f, 1f, 0.5f, true);
-                self.tail[2] = new TailSegment(self, 4f, 3.5f, self.tail[1], 0.85f, 1f, 0.5f, true);
-                self.tail[3] = new TailSegment(self, 2f, 3.5f, self.tail[2], 0.85f, 1f, 0.5f, true);
-            }
-            else
-            {
-                self.tail[0] = new TailSegment(self, 9f, 4f, null, 0.85f, 1f, 1f, true);
-                self.tail[1] = new TailSegment(self, 7f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
-                self.tail[2] = new TailSegment(self, 4f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
-                self.tail[3] = new TailSegment(self, 1f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
-            }
-            var bp = self.bodyParts.ToList();
-            bp.RemoveAll(x => x is TailSegment);
-            bp.AddRange(self.tail);
-            self.bodyParts = bp.ToArray();
-        }
+            FriendGraphics.FriendTailCtor(self);
     }
     
     public static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     { // Detail Sprites init
         orig(self, sLeaser, rCam);
         if (self.player.TryGetPoacher(out var poacher))
-        {
-            Array.Resize<FSprite>(ref sLeaser.sprites, sLeaser.sprites.Length + 3);
-            self.player.GetGeneral().customSprite1 = sLeaser.sprites.Length - 3;
-            self.player.GetGeneral().customSprite2 = sLeaser.sprites.Length - 2;
-            self.player.GetGeneral().customSprite3 = sLeaser.sprites.Length - 1;
-
-            // Set default sprites
-            sLeaser.sprites[self.player.GetGeneral().customSprite1] = new FSprite("dragonskull2A0");
-            sLeaser.sprites[self.player.GetGeneral().customSprite2] = new FSprite("dragonskull2A11");
-            sLeaser.sprites[self.player.GetGeneral().customSprite3] = new FSprite("dragonskull3A7");
-            self.AddToContainer(sLeaser, rCam, null);
-        }
+            PoacherGraphics.PoacherSpritesInit(self, sLeaser, rCam);
+        
         else if (self.player.TryGetBeliever(out var believer))
-        {
-            Array.Resize<FSprite>(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
-            self.player.GetGeneral().customSprite1 = sLeaser.sprites.Length - 1;
-            sLeaser.sprites[self.player.GetGeneral().customSprite1] = new FSprite("ForeheadSpotsA0");
-            self.AddToContainer(sLeaser, rCam, null);
-        }
+            BelieverGraphics.BelieverSpritesInit(self, sLeaser, rCam);
+        
     }
     public static void PlayerGraphics_ApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
         if (self.player.TryGetPoacher(out var poacher))
-        {
             PoacherGraphics.PoacherPalette(self, sLeaser, rCam, palette);
-        }
+        
         else if (self.player.TryGetBeliever(out var believer))
-        {
             BelieverGraphics.BelieverPalette(self,sLeaser,rCam,palette);
-        }
+        
     }
 
     // Fix layering and force to render
@@ -147,26 +109,11 @@ public class SlugcatGraphics
     {
         orig(self, sLeaser, rCam, newContainer);
         if (self.player.TryGetPoacher(out var poacher))
-        {
-            if (self.player.GetGeneral().customSprite1 < sLeaser.sprites.Length)
-            {
-                if (newContainer == null) newContainer = rCam.ReturnFContainer("Midground");
-                newContainer.AddChild(sLeaser.sprites[self.player.GetGeneral().customSprite1]);
-                newContainer.AddChild(sLeaser.sprites[self.player.GetGeneral().customSprite2]);
-                newContainer.AddChild(sLeaser.sprites[self.player.GetGeneral().customSprite3]);
-                sLeaser.sprites[self.player.GetGeneral().customSprite2].MoveBehindOtherNode(sLeaser.sprites[0]);
-                sLeaser.sprites[self.player.GetGeneral().customSprite3].MoveInFrontOfOtherNode(sLeaser.sprites[self.player.GetGeneral().customSprite1]);
-            }
-        }
+            PoacherGraphics.PoacherSpritesContainer(self, sLeaser, rCam, newContainer);
+        
         else if (self.player.TryGetBeliever(out var believer))
-        {
-            if (self.player.GetGeneral().customSprite1 < sLeaser.sprites.Length)
-            {
-                if (newContainer == null) newContainer = rCam.ReturnFContainer("Midground");
-                newContainer.AddChild(sLeaser.sprites[self.player.GetGeneral().customSprite1]);
-                sLeaser.sprites[self.player.GetGeneral().customSprite1].MoveBehindOtherNode(sLeaser.sprites[9]);
-            }
-        }
+            BelieverGraphics.BelieverSpritesContainer(self, sLeaser, rCam, newContainer);
+        
     }
     // Implement FriendHead, Poacher graphics
     public static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -183,89 +130,20 @@ public class SlugcatGraphics
         {
             sLeaser.sprites[4].isVisible = false;
         }
+        
         if (self.player.TryGetFriend(out var friend))
-        {
-            if (!self.RenderAsPup)
-            {
-                if (!head.element.name.Contains("Friend") && 
-                    head.element.name.StartsWith("HeadA")) 
-                    head.SetElementByName("Friend" + head.element.name);
-                if (!legs.element.name.Contains("Friend") && 
-                    legs.element.name.StartsWith("LegsA")) 
-                    legs.SetElementByName("Friend" + legs.element.name);
-            }
-        }
+            FriendGraphics.FriendDrawSprites(self, sLeaser, head, legs);
+        
         else if (self.player.TryGetBeliever(out var believer))
-        {
-            if (!self.RenderAsPup)
-            {
-                if (!head.element.name.Contains("HeadB") && 
-                    head.element.name.StartsWith("HeadA")) 
-                    head.SetElementByName("HeadB" + (head.element.name.Remove(0,5)));
-            }
-            if (face.element.name.StartsWith("Face")) 
-                sLeaser.sprites[self.player.GetGeneral().customSprite1].SetElementByName("ForeheadSpots" + (face.element.name.Remove(0,4)));
-            sLeaser.sprites[self.player.GetGeneral().customSprite1].SetPosition(face.GetPosition());
-            sLeaser.sprites[self.player.GetGeneral().customSprite1].scaleX = face.scaleX;
-        }
+            BelieverGraphics.BelieverDrawSprites(self, sLeaser, head, face);
+        
         else if (self.player.TryGetPoacher(out var poacher))
         {
             PoacherGraphics.PoacherThinness(self, sLeaser, rCam, timeStacker, camPos);
             PoacherGraphics.PoacherAnimator(self, sLeaser, rCam, timeStacker, camPos);
         }
-        else if (self.player.TryGetDeluge(out var deluge))
-        {
-            DelugeGraphics.DelugeDrawSprites(self, sLeaser);
-        }
-    }
-
-    public enum colormode
-    {
-        set,
-        mult,
-        add
-    }
-    public static Color ColorMaker(
-        float hue, float sat, float val, 
-        colormode hueMode, colormode satMode, colormode valMode, 
-        Color origCol = new Color(), Vector3 origHSL = new Vector3())
-    {
-        // Negative floats can be used to preserve the original value.  
-        Vector3 color = Custom.ColorToVec3(Color.black);
-        if (origCol != Color.black) color = Custom.RGB2HSL(origCol);
-        if (origHSL != Vector3.zero) color = origHSL;
-        float newhue = color.x;
-        float newsat = color.y;
-        float newval = color.z;
         
-        color.x = hueMode switch
-        {
-            colormode.set => newhue = (hue < 0) ? color.x : hue,
-            colormode.add => newhue += (hue < 0) ? 0 : hue,
-            colormode.mult => newhue *= (hue < 0) ? 1 : hue,
-            _ => newhue = 0
-        };
-        color.y = satMode switch
-        {
-            colormode.set => newsat = (sat < 0) ? color.y : sat,
-            colormode.add => newsat += (sat < 0) ? 0 : sat,
-            colormode.mult => newsat *= (sat < 0) ? 1 : sat,
-            _ => newsat = 0
-        };
-        color.z = valMode switch
-        {
-            colormode.set => newval = (val < 0) ? color.z : val,
-            colormode.add => newval += (val < 0) ? 0 : val,
-            colormode.mult => newval *= (val < 0) ? 1 : val,
-            _ => newval = 0
-        };
         
-        color.x = newhue;
-        color.y = newsat;
-        color.z = newval;
-
-        if (color == Vector3.zero) return Color.magenta;
-        return Custom.Vec3ToColor(color);
+        CharacterHooksAndTools.Squint(self,sLeaser);
     }
-    
 }

@@ -140,51 +140,17 @@ public class DelugePearlMechanics
             var pearl = self.AbstractPearl.DelugePearlData();
             var delugeData = pearl.owner.GetDeluge();
 
-            try
-            {
-                if (pearl.owner == null || 
-                    self.room != pearl.owner.room ||
-                    delugeData.pearl == null ||
-                    self.room.world != pearl.owner.room.world ||
-                    self.room == null)
-                {
-                    DeleteDelugePearl(self.AbstractPearl);
-                    return;
-                }
+            if (pearl.owner == null || 
+                self.room != pearl.owner.room || 
+                delugeData.pearl == null || 
+                self.room.world != pearl.owner.room.world || 
+                self.room == null) 
+            { 
+                DeleteDelugePearl(self.AbstractPearl); 
+                return;
             }
-            catch { Debug.Log("Solace: Bauble failed to be destroyed!"); }
             
-            try
-            {
-                if (!delugeData.PearlWasTaken) pearl.isAttached = true;
-                if (!pearl.isAttached)
-                {
-                    return;
-                }
-            }
-            catch { Debug.Log("Solace: Bauble isAttached detection failed!");}
-        }
-    }
-
-    public static void DelugePearlClink(DataPearl self)
-    {
-        bool impact = false;
-        IntVector2 tile = self.room.GetTilePosition(self.firstChunk.pos + new Vector2(0,-0.5f));
-
-        switch (self.room.GetTile(tile).Terrain)
-        {
-            case Room.Tile.TerrainType.Solid: impact = true;
-                break;
-            case Room.Tile.TerrainType.Floor: impact = true;
-                break;
-            default: impact = false;
-                break;
-        }
-
-        if (impact)
-        {
-            self.room.PlaySound(SoundID.SS_AI_Marble_Hit_Floor, self.firstChunk, loop: false, Custom.LerpMap(1, 0f, 8f, 0.2f, 1f), 1f);
-            self.room.InGameNoise(new InGameNoise(self.firstChunk.pos, 10, self, 1));
+            if (!delugeData.PearlWasTaken) pearl.isAttached = true;
         }
     }
 

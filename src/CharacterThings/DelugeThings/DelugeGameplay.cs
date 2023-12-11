@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using On.MoreSlugcats;
 using TheFriend.Objects.DelugePearlObject;
+using TheFriend.SlugcatThings;
 using Random = UnityEngine.Random;
 
 namespace TheFriend.CharacterThings.DelugeThings;
@@ -12,6 +13,7 @@ public class DelugeGameplay
 {
     public static void Apply()
     {
+        On.DeafLoopHolder.Update += DeafLoopHolderOnUpdate;
     }
 
     public static void DelugeUpdate(Player self, bool eu)
@@ -29,7 +31,6 @@ public class DelugeGameplay
                     pearlData.tailConnection.active = false;
                     pearlData.buttConnection.active = false;
                 }
-
                 pearlData.buttConnection.weightSymmetry = 0.75f;
                 pearlData.tailConnection.weightSymmetry = 0.25f;
             }
@@ -42,28 +43,78 @@ public class DelugeGameplay
             pearlData.buttConnection?.Update();
         }
 
-        if (self.dead && !self.Stunned) return;
+        if (self.dead && !self.Stunned)
+        {
+            self.deaf = 0;
+            return;
+        }
         
         scug.AmIIdling = DelugeIdleCheck(self);
         if (scug.GracePeriod > 0)
             scug.GracePeriod--;
 
-        DelugeOverloadEffects(self, scug.Overload, eu);
-
+        // LookTarget determination, see DelugeOverload for why
         if (scug.lookTarget is Creature || scug.lookTarget is Oracle || scug.lookTarget is OracleSwarmer)
             scug.lookTarget = (self.graphicsModule as PlayerGraphics)?.objectLooker.currentMostInteresting;
         else scug.lookTarget = null;
         
         scug.OverloadLooper++;
         if (scug.OverloadLooper > 5)
-        {
+        { // Overload changes every five ticks, determines intensity of DelugeOverloadEffects. Overload IS NOT CHANGED during grace period, preventing effect intensifying
             if (scug.GracePeriod <= 0) DelugeOverload(self, eu);
             scug.OverloadLooper = 0;
         }
-        
+        DelugeOverloadEffects(self, scug.Overload, eu);
 
-        if (scug.sprintParticleTimer >= 5)
+        if (scug.sprinting)
+            DelugeSprint(self, scug, eu);
+        else
         {
+            scug.sprintParticleTimer = 0;
+            if (scug.Exhaustion >= DelugeCWT.Deluge.ExhaustionStillnessThreshold)
+            {
+                if (scug.AmIIdling)
+                {
+                    scug.Exhaustion--;
+                    if (self.bodyMode == Player.BodyModeIndex.Crawl)
+                        scug.Exhaustion--; //  Exhaustion depletes twice as fast if Deluge lays down
+                }
+                else if (scug.Exhaustion < DelugeCWT.Deluge.ExhaustionLimit) scug.Exhaustion++;
+            }
+            else if (scug.Exhaustion > 0)
+            {
+                scug.Exhaustion--;
+                if (self.bodyMode == Player.BodyModeIndex.Crawl) scug.Exhaustion--; //  Exhaustion depletes twice as fast if Deluge lays down
+            }
+        }
+
+        if (scug.Exhaustion > DelugeCWT.Deluge.ExhaustionSiezeThreshold) // Add to Sieze if threshold is passed
+            if (scug.Sieze < DelugeCWT.Deluge.SiezeLimit && !scug.AmIIdling) scug.Sieze++;
+        if (scug.Sieze >= DelugeCWT.Deluge.SiezeLimit) DelugeSiezure(self, eu);
+
+        if (scug.Sieze > 0)
+        {
+            if (scug.AmIIdling) scug.Sieze--;
+            if (!scug.siezing) CharacterHooksAndTools.HeadShiver(self.graphicsModule as PlayerGraphics, 0.5f);
+            if (scug.Sieze < DelugeCWT.Deluge.SiezeLimit && scug.siezing) DelugeSiezeEffects(self, eu);
+        }
+        else scug.siezing = false;
+
+        if (scug.sprinting || (scug.Sieze > 0 && !scug.siezing) || scug.Overload > DelugeCWT.Deluge.OverloadLimit*0.7f) self.GetGeneral().squint = true;
+        else self.GetGeneral().squint = false; // Controls if Deluge is squeezing their eyes shut
+    }
+
+    public static void DelugeSprint(Player self, DelugeCWT.Deluge scug, bool eu)
+    {
+        self.bodyChunks[0].vel.x += 2.2f * self.input[0].x;
+        self.bodyChunks[1].vel.x += 1.8f * self.input[0].x;
+        if (scug.Exhaustion < DelugeCWT.Deluge.ExhaustionLimit) 
+            scug.Exhaustion++;
+        scug.sprintParticleTimer++;
+        self.AerobicIncrease(1f);
+        
+        if (scug.sprintParticleTimer >= 5)
+        { // Cosmetic effect that loops every 5 ticks
             self.room?.AddObject(new WaterDrip(
                 self.bodyChunks[1].pos + new Vector2(0f, -self.bodyChunks[1].rad + 1f), 
                 Custom.DegToVec(-self.slideDirection * Mathf.Lerp(30f, 70f, Random.value)) * Mathf.Lerp(6f, 11f, Random.value), 
@@ -75,46 +126,8 @@ public class DelugeGameplay
                 Color.white));
             scug.sprintParticleTimer = 0;
         }
-
-        if (scug.sprinting)
-        {
-            self.bodyChunks[0].vel.x += 2.2f * self.input[0].x;
-            self.bodyChunks[1].vel.x += 1.8f * self.input[0].x;
-            if (scug.Exhaustion < 500) scug.Exhaustion++;
-            if (scug.Exhaustion >= 400) scug.Exhaustion = 500;
-            scug.sprintParticleTimer++;
-            self.AerobicIncrease(1f);
-        }
-        else
-        {
-            scug.sprintParticleTimer = 0;
-            if (scug.Exhaustion >= 100)
-            {
-                if (self.input[0].x == 0) scug.Exhaustion--;
-            }
-            else if (scug.Exhaustion > 0)
-            {
-                scug.Exhaustion--;
-                if (self.bodyMode == Player.BodyModeIndex.Crawl) scug.Exhaustion--;
-            }
-        }
-
-        if (scug.Exhaustion > 400)
-        {
-            self.Blink(5);
-            if (scug.Sieze < 100) scug.Sieze += 1;
-        }
-        if (scug.Sieze == 100) DelugeSiezure(self, eu);
-
-        if (scug.Sieze > 0)
-        {
-            self.Blink(5);
-            if (self.input[0].x == 0) scug.Sieze--;
-            if (scug.Sieze < 100 && scug.siezing) DelugeSiezeEffects(self, eu);
-        }
-        else scug.siezing = false;
     }
-
+    
     public static void DelugeSiezure(Player self, bool eu)
     {
         self.Stun(80);
@@ -123,119 +136,86 @@ public class DelugeGameplay
         self.GetDeluge().siezing = true;
     }
     public static void DelugeSiezeEffects(Player self, bool eu)
-    {
+    {   // These occur while Deluge is recovering from siezing
         var scug = self.GetDeluge();
+        self.Blink(5);
         if (self.bodyMode == Player.BodyModeIndex.Stand && self.animation == Player.AnimationIndex.None && scug.siezing)
         {
             self.bodyChunks[0].vel.x *= 0.7f;
             self.bodyChunks[1].vel.x *= 0.7f;
         }
-        self.Blink(5);
         self.AerobicIncrease(1);
     }
     public static void DelugeSiezeJump(Player self)
-    {
-        var deluge = self.GetDeluge();
-        if (deluge.Sieze > 0)
+    {   // Penalty for trying to be movementful while under DelugeSiezeEffects
+        var scug = self.GetDeluge();
+        if (scug.Sieze > 0 && scug.siezing)
         { 
             self.Stun(20); 
-            deluge.Sieze += 40;
+            scug.Sieze += Mathf.RoundToInt(DelugeCWT.Deluge.SiezeLimit*0.4f);
             self.Blink(50);
         }
     }
     public static void DelugeOverload(Player self, bool eu)
     {
+        /*
+         Deluge gains overload while not moving and not focusing on anything
+         By moving or having something interesting to look at, they lose overload
+         */
+        var limit = DelugeCWT.Deluge.OverloadLimit;
         var scug = self.GetDeluge();
         if (scug.lookTarget != null)
-            scug.Overload -= 100;
-        else if (scug.Overload < 1000 && scug.AmIIdling)
-        {
-            scug.Overload += 5;
-        }
+            scug.Overload -= Mathf.RoundToInt(limit*0.05f);
+        else if (scug.Overload < limit && scug.AmIIdling)
+            scug.Overload += Mathf.RoundToInt(limit*0.005f);
+        
 
-        if (scug.sprinting) scug.Overload -= 45;
+        if (scug.sprinting) scug.Overload -= Mathf.RoundToInt(limit*0.045f);
         else if (!scug.AmIIdling) scug.Overload--;
         
         if (scug.Overload < 0) scug.Overload = 0;
-        
     }
 
     public static void DelugeOverloadEffects(Player self, int intensity, bool eu)
     {
         if (self.room != null && self.room.game.IsArenaSession) return;
+        float percent = (float)intensity / (float)DelugeCWT.Deluge.OverloadLimit;
 
-        var scug = self.GetDeluge();
-        var percent = intensity * 0.001f;
-
-        if (self.dead && !self.Stunned)
-        {
-            self.deaf = 0;
-            return;
-        }
-        
         self.deaf = Mathf.RoundToInt(Mathf.Lerp(1f, 90f, percent));
-        if (self.deafLoopHolder != null)
-            if (self.deafLoopHolder.deafLoop != null)
-            {
-                var deafener = self.deafLoopHolder.deafLoop;
-                deafener.sound = DelugeSounds.DelugeHeartbeatSine;
-                deafener.Volume = Mathf.Lerp(0.1f, 2f, percent);
-            }
     }
 
+    public static void DeafLoopHolderOnUpdate(On.DeafLoopHolder.orig_Update orig, DeafLoopHolder self, bool eu)
+    { // Consider this a part of DelugeOverloadEffects...
+        orig(self, eu);
+        if (self.player.TryGetDeluge(out var scug) && self.deafLoop != null)
+        {
+            var deafener = self.deafLoop;
+            var intensity = scug.Overload;
+            float percent = (float)intensity / (float)DelugeCWT.Deluge.OverloadLimit;
+
+            deafener.sound = DelugeSounds.DelugeHeartbeatSine;
+            deafener.Volume = Mathf.Lerp(0.1f, DelugeCWT.Deluge.OverloadIntensity, percent);
+        }
+    }
+    
     public static bool DelugeIdleCheck(Player self)
-    {
+    { // Is the Deluge doing something?
         var scug = self.GetDeluge();
         if (self.stun > 0 && !self.dead) return true;
 
-        if (self.dead) return false;
-        if (scug.lookTarget != null) return false;
-        if (scug.sprinting) return false;
-        
-        if (self.animation == Player.AnimationIndex.Flip) return false;
-        if (self.animation == Player.AnimationIndex.BellySlide) return false;
-        if (self.bodyMode == Player.BodyModeIndex.WallClimb && self.firstChunk.vel.y > 0) return true;
-        
-        if (self.animation != Player.AnimationIndex.CorridorTurn && 
-            self.bodyMode == Player.BodyModeIndex.CorridorClimb &&
-            Mathf.Abs(self.firstChunk.vel.x) < 2 && 
-            Mathf.Abs(self.firstChunk.vel.y) < 2) return true;
+        if ((self.firstChunk.vel.magnitude + self.bodyChunks[1].vel.magnitude) / 2 > 3) return false;
+        else return true;
+    }
 
-        if (self.input[0].x == 0 && self.input[0].y == 0) // Both X and Y are 0
-        {
-            if (self.bodyMode == Player.BodyModeIndex.Stand) return true;
-            if (self.bodyMode == Player.BodyModeIndex.Crawl) return true;
-
-            if (self.animation == Player.AnimationIndex.DeepSwim) return true;
-            if (self.animation == Player.AnimationIndex.GetUpOnBeam) return false;
-            if (self.animation == Player.AnimationIndex.HangFromBeam) return true;
-            if (self.animation == Player.AnimationIndex.HangUnderVerticalBeam) return true;
-            if (self.animation == Player.AnimationIndex.VineGrab) return true;
-            if (self.animation == Player.AnimationIndex.ZeroGSwim) return true;
-            if (self.animation == Player.AnimationIndex.ZeroGPoleGrab) return true;
-            return false;
-        }
-        else if (self.input[0].x == 0 && self.input[0].y != 0) // Only X is 0
-        {
-            if (self.bodyMode == Player.BodyModeIndex.Stand) return true;
-            if (self.animation == Player.AnimationIndex.StandOnBeam) return true;
-            if (self.animation == Player.AnimationIndex.BeamTip) return true;
-            if (self.input[0].y >= 0 && self.animation == Player.AnimationIndex.SurfaceSwim) return true;
-            return false;
-        }
-        else if (self.input[0].y == 0 && self.input[0].x != 0) // Only Y is 0
-        {
-            if (self.animation == Player.AnimationIndex.ClimbOnBeam) return true;
-            return false;
-        }
-        if (self.animation == Player.AnimationIndex.None) return false;
-
-        return false;
+    public static void DelugeConstructor(Player self)
+    { // Deluge is the loudest motherfucker besides Artificer. Funny bauble go tinktink
+        self.slugcatStats.visualStealthInSneakMode = 0;
+        self.slugcatStats.generalVisibilityBonus = 1;
+        self.GetGeneral().iHaveSenses = true;
     }
     
-    
     public static void DelugeSprintCheck(Player self)
-    {
+    { // TODO: Allow any player to have their own sprint keybind
         var deluge = self.GetDeluge();
         if (self.Malnourished) return;
         if (self.bodyMode == Player.BodyModeIndex.Stand && self.animation == Player.AnimationIndex.None)
@@ -246,6 +226,4 @@ public class DelugeGameplay
             else  deluge.sprinting = false;
         else  deluge.sprinting = false;
     }
-    
-    
 }

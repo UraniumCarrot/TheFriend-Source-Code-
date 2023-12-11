@@ -6,6 +6,7 @@ using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 using JollyColorMode = Options.JollyColorMode;
 using SlugBase.DataTypes;
+using TheFriend.CharacterThings;
 using TheFriend.SlugcatThings;
 
 namespace TheFriend.PoacherThings;
@@ -20,6 +21,33 @@ public class PoacherGraphics
     
     public static Color blackColor;
 
+    public static void PoacherSpritesInit(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    {
+        Array.Resize<FSprite>(ref sLeaser.sprites, sLeaser.sprites.Length + 3);
+        self.player.GetGeneral().customSprite1 = sLeaser.sprites.Length - 3;
+        self.player.GetGeneral().customSprite2 = sLeaser.sprites.Length - 2;
+        self.player.GetGeneral().customSprite3 = sLeaser.sprites.Length - 1;
+
+        // Set default sprites
+        sLeaser.sprites[self.player.GetGeneral().customSprite1] = new FSprite("dragonskull2A0");
+        sLeaser.sprites[self.player.GetGeneral().customSprite2] = new FSprite("dragonskull2A11");
+        sLeaser.sprites[self.player.GetGeneral().customSprite3] = new FSprite("dragonskull3A7");
+        self.AddToContainer(sLeaser, rCam, null);
+    }
+
+    public static void PoacherSpritesContainer(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
+    {
+        if (self.player.GetGeneral().customSprite1 < sLeaser.sprites.Length)
+        {
+            if (newContainer == null) newContainer = rCam.ReturnFContainer("Midground");
+            newContainer.AddChild(sLeaser.sprites[self.player.GetGeneral().customSprite1]);
+            newContainer.AddChild(sLeaser.sprites[self.player.GetGeneral().customSprite2]);
+            newContainer.AddChild(sLeaser.sprites[self.player.GetGeneral().customSprite3]);
+            sLeaser.sprites[self.player.GetGeneral().customSprite2].MoveBehindOtherNode(sLeaser.sprites[0]);
+            sLeaser.sprites[self.player.GetGeneral().customSprite3].MoveInFrontOfOtherNode(sLeaser.sprites[self.player.GetGeneral().customSprite1]);
+        }
+    }
+    
     public static void PoacherPalette(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam,
         RoomPalette palette)
     {
@@ -32,7 +60,7 @@ public class PoacherGraphics
         {
             Color jolly = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
             color = new Color(jolly.r - 0.4f, jolly.b - 0.4f, jolly.g - 0.4f);
-            Color colorvar = SlugcatGraphics.ColorMaker(0.3f, 1f, 0.5f, SlugcatGraphics.colormode.add, SlugcatGraphics.colormode.set, SlugcatGraphics.colormode.set, jolly);
+            Color colorvar = CharacterHooksAndTools.ColorMaker(0.3f, 1f, 0.5f, CharacterHooksAndTools.colormode.add, CharacterHooksAndTools.colormode.set, CharacterHooksAndTools.colormode.set, jolly);
             color2 = colorvar;
         }
 
@@ -63,6 +91,13 @@ public class PoacherGraphics
             sLeaser.sprites[5 + i].element = Futile.atlasManager.GetElementWithName("PlayerArm" + Mathf.RoundToInt(Mathf.Clamp(Vector2.Distance(vector10, vector11) / 2f, 0f, 12f)));
             sLeaser.sprites[5 + i].rotation = Custom.AimFromOneVectorToAnother(vector10, vector11) + 90f;
         }
+    }
+
+    public static Color PoacherHypothermiaColor(Player self, Color oldCol)
+    {
+        float hypothermia = (self.abstractPhysicalObject as AbstractCreature).Hypothermia;
+        Color b = !(hypothermia < 1f) ? Color.Lerp(new Color(0.8f, 0.8f, 1f), new Color(0.15f, 0.15f, 0.3f), hypothermia - 1f) : Color.Lerp(oldCol, new Color(0.8f, 0.8f, 1f), hypothermia);
+        return Color.Lerp(oldCol, b, 0.92f);
     }
     public static void PoacherAnimator(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
@@ -175,6 +210,9 @@ public class PoacherGraphics
             case > 0.2f and < 0.9f: sLeaser.sprites[skullpos1].element = atlas.GetElementWithName(dragon + "5"); break;
             case > 0.9f: sLeaser.sprites[skullpos1].element = atlas.GetElementWithName(dragon + "7"); break;
         }
+        if (self.player.Sleeping) 
+            sLeaser.sprites[skullpos1].element = atlas.GetElementWithName(dragon + "7");
+        
         if (b == bod.CorridorClimb && (headname.EndsWith("C9") || headname.EndsWith("C8") || headname.EndsWith("C7") || headname.EndsWith("C6") || headname.EndsWith("C9") || headname.EndsWith("C10") || headname.EndsWith("C5")))
         {
             sLeaser.sprites[skullpos1].element = atlas.GetElementWithName(dragon + "7");

@@ -15,7 +15,6 @@ public class FriendGameplay
 {
     public static void Apply()
     {
-        
     }
 
     #region movement
@@ -235,4 +234,36 @@ public class FriendGameplay
         }
         if (self.animation != ind.RocketJump && self.GetFriend().HighJumped) self.GetFriend().HighJumped = false;
     }
+
+    #region World's smallest adjustments
+    public static void FriendConstructor(Player self)
+    {
+        if (Plugin.FriendBackspear())
+            self.spearOnBack = new Player.SpearOnBack(self);
+    }
+    public static void FriendStats(SlugcatStats self)
+    {
+        if (Plugin.FriendUnNerf())
+        {
+            self.poleClimbSpeedFac = 6f;
+            self.runspeedFac = 0.8f;
+        }
+    }
+    public static void FriendLedgeFix(Player self)
+    { // Attempted ledgegrab fix, and increased polewalk speed
+        if (self.animation == ind.LedgeGrab && self.input[0].y < 1) { self.standing = false; self.bodyMode = bod.Crawl; }
+        if (self.animation == ind.StandOnBeam && self.input[0].y < 1 && Plugin.PoleCrawl())
+        {
+            self.dynamicRunSpeed[0] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;
+            self.dynamicRunSpeed[1] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;
+        }
+    }
+
+    public static void FriendWalljumpFix(Player self)
+    {
+        self.standing = false;
+    }
+
+    #endregion
+
 }

@@ -1,6 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using Color = UnityEngine.Color;
-using UnityEngine;
 
 namespace TheFriend.CharacterThings.DelugeThings;
 
@@ -10,17 +8,27 @@ public static class DelugeCWT
     {
         public DataPearl pearl;
         public PhysicalObject lookTarget;
+        
         public bool PearlWasTaken;
         public bool sprinting;
         public bool siezing;
         public bool AmIIdling;
+
+        public int sprintParticleTimer;
         public int GracePeriod;
         public int OverloadLooper;
         public int Overload;
         public int Exhaustion;
         public int Sieze;
-        //public bool iSiezed;
-        public int sprintParticleTimer;
+
+        //TODO: Make these values configurable
+        public const int SiezeLimit = 100; // How many ticks until Deluge siezes if they don't stop what they're doing
+        public const int ExhaustionSiezeThreshold = 400; // The point Deluge will start gaining sieze
+        public const int ExhaustionStillnessThreshold = 100; // The point Deluge has to stay still to regain stamina
+        public const int ExhaustionLimit = 500; // When Deluge is incapable of sprinting more
+        public const int OverloadLimit = 1000; // How much overload is allowed to build up over time
+        public const int OverloadIntensity = 2; // How intense overload effects are allowed to get
+
         public Deluge(Player player)
         {
             GracePeriod = 500;

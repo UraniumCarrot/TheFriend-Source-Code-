@@ -64,6 +64,10 @@
       </Reference>
     </ItemGroup>
     
+    <ItemGroup>
+      <Compile Remove="CharacterThings\DelugeThings\SensoryHologram.cs" />
+    </ItemGroup>
+    
     <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
 		<ItemGroup>
 			<RemovePlugins Include="../mod/plugins/*.dll" />

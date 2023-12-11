@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Color = UnityEngine.Color;
+using OverseerHolograms;
 using UnityEngine;
 
 namespace TheFriend.SlugcatThings;
@@ -16,6 +17,10 @@ public static class SlugcatGeneralCWT
         public Color customColor2;
         
         // General player variables
+        public bool squint;
+        public OverseerHologram sensoryHolo;
+        public bool iHaveSenses;
+        
         public bool JustGotMoonMark;
         public bool MoonMarkPassed;
         public int MarkExhaustion;
