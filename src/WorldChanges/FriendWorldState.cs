@@ -11,9 +11,7 @@ public class FriendWorldState
     {
         if ((game?.StoryCharacter == Plugin.FriendName || 
              game?.StoryCharacter == Plugin.DragonName || 
-             game?.StoryCharacter == Plugin.NoirName ||
-             game?.StoryCharacter == Plugin.BelieverName ||
-             game?.StoryCharacter == Plugin.DelugeName) && 
+             game?.StoryCharacter == Plugin.NoirName) && 
             game != null) 
         { SolaceWorldstate = true; return true; }
         else { SolaceWorldstate = false; return false; }
@@ -50,11 +48,6 @@ public class FriendWorldState
             }
             self.roomSettings.wetTerrain = false;
             self.roomSettings.CeilingDrips = 0f;
-            /*if (self.world.region.name != "UG" && 
-                self.world.region.name != "SS" && 
-                self.world.region.name != "RM" && 
-                self.world.region.name != "SB") 
-                self.roomSettings.DangerType = MoreSlugcatsEnums.RoomRainDangerType.Blizzard;*/
         }
     } // Default room settings
     public static void Room_Loaded(On.Room.orig_Loaded orig, Room self)

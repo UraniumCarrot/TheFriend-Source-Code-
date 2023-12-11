@@ -56,8 +56,6 @@ public class FamineWorld
         if ((self.StoryCharacter == Plugin.FriendName || 
              self.StoryCharacter == Plugin.NoirName ||
             self.StoryCharacter == Plugin.DragonName ||
-             self.StoryCharacter == Plugin.BelieverName ||
-             self.StoryCharacter == Plugin.DelugeName ||
              (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
             (self.rainWorld.ExpeditionMode && Plugin.ExpeditionFamine())) 
             && !NoFamine() && !self.IsArenaSession)

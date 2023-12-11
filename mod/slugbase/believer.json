@@ -19,8 +19,8 @@
 		
 		"auto_grab_batflies": false,
 		"expedition_enabled": false,
-		"expedition_description": "In unfamiliar territory, The Believer endures<LINE>dangerous conditions to meet their goals.",
-		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
+		"expedition_description": "In unfamiliar territory, The Believer endures<LINE>dangerous conditions to make their dreams a reality.",
+		"world_state": ["FriendBeliever","Saint","Rivulet","Monk","Survivor"],
 		"karma": 0,
 		"tunnel_speed": 1, 
 		"climb_speed": 1, 

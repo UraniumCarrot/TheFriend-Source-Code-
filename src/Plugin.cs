@@ -64,21 +64,23 @@ namespace TheFriend
             CharacterHooksAndTools.Apply();
             DelugePearlHooks.Apply();
 
-            LizardRideControl.Apply();
             AbstractObjectType.Apply();
             UpdateDeleteCWT.Apply();
-            MotherKillTracker.Apply();
             SolaceSaveData.Apply();
+            
+            LizardRideControl.Apply();
             YoungLizardAI.Apply();
-            FirecrackerFix.Apply();
-            FriendWorldState.Apply();
-
-            SLOracleHandler.Apply();
-            FamineWorld.Apply();
             SnowSpiderGraphics.Apply();
             PebblesLL.Apply();
+            
             DragonRepInterface.Apply();
             HudHooks.Apply();
+            MotherKillTracker.Apply();
+
+            FriendWorldState.Apply();
+            DelugeWorldState.Apply();
+            SLOracleHandler.Apply();
+            FamineWorld.Apply();
 
             // Misc IL
             IL.Player.ThrowObject += Player_ThrowObject;
