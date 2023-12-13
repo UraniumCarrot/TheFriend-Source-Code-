@@ -39,15 +39,21 @@ public class FriendWorldState
     public static void Room_SlugcatGamemodeUniqueRoomSettings(On.Room.orig_SlugcatGamemodeUniqueRoomSettings orig, Room self, RainWorldGame game)
     {
         orig(self, game);
-        if (game.IsStorySession && SolaceWorldstate)
+        if (game.IsStorySession)
         {
-            if (self.world.region.name == "SH")
+            if (SolaceWorldstate)
             {
-                if (self.roomSettings.DangerType == RoomRain.DangerType.Flood)
-                    self.roomSettings.RainIntensity = 0f;
+                if (self.world.region.name == "SH")
+                {
+                    if (self.roomSettings.DangerType == RoomRain.DangerType.Flood)
+                        self.roomSettings.RainIntensity = 0f;
+                }
+                self.roomSettings.wetTerrain = false;
+                self.roomSettings.CeilingDrips = 0f;
             }
-            self.roomSettings.wetTerrain = false;
-            self.roomSettings.CeilingDrips = 0f;
+            if (DelugeWorldState.Deluge)
+                DelugeWorldState.DelugeRoomSettings(self, game);
+            
         }
     } // Default room settings
     public static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
@@ -62,6 +68,7 @@ public class FriendWorldState
     public static void WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues(On.WorldLoader.orig_ctor_RainWorldGame_Name_bool_string_Region_SetupValues orig, WorldLoader self, RainWorldGame game, SlugcatStats.Name playerCharacter, bool singleRoomWorld, string worldName, Region region, RainWorldGame.SetupValues setupValues)
     {
         FaminePlayer(game);
+        DelugeWorldState.DelugeWorld(game);
         if (game != null) FamineWorld.HasFamines(game);
         orig(self, game, playerCharacter, singleRoomWorld, worldName, region, setupValues);
     }

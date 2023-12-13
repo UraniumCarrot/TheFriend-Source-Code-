@@ -16,6 +16,20 @@ public static class DataPearlType
         }
     }
 }
+
+public static class DangerType
+{
+    [AllowNull] public static RoomRain.DangerType FloodAndBlizzard = new(nameof(FloodAndBlizzard), true);
+
+    public static void UnregisterValues()
+    {
+        if (FloodAndBlizzard != null)
+        {
+            FloodAndBlizzard.Unregister();
+            FloodAndBlizzard = null;
+        }
+    }
+}
 public static class CreatureTemplateType
 {
     [AllowNull] public static CreatureTemplate.Type PebblesLL = new(nameof(PebblesLL), true);

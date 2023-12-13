@@ -12,10 +12,6 @@ public class YoungLizardAI : LizardAI
 {
     public static void Apply()
     {
-        //new Hook(
-        //    typeof(LizardAI).GetMethod("get_RoomLike", BindingFlags.Instance | BindingFlags.Public),
-        //    typeof(Plugin).GetMethod("LizardRoomLike", BindingFlags.Static | BindingFlags.Public)
-        //);
         On.Creature.SuckedIntoShortCut += CreatureOnSuckedIntoShortCut;
         //On.Lizard.SpitOutOfShortCut += LizardOnSpitOutOfShortCut;
     }
