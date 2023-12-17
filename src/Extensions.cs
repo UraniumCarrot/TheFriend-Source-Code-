@@ -28,7 +28,7 @@ public static class Extensions
     {
         var result = type.GetProperty(propertyName)?.GetGetMethod().Name;
         if (result == null)
-            throw new ArgumentNullException($"Property {propertyName} of {nameof(type)} returned null!");
+            throw new ArgumentNullException($"Property {propertyName} of {type.Name} returned null!");
         return result;
     }
     /// <summary>
@@ -41,7 +41,7 @@ public static class Extensions
     {
         var result = type.GetProperty(propertyName)?.GetGetMethod().Name;
         if (result == null)
-            throw new ArgumentNullException($"Property {propertyName} of {nameof(type)} returned null!");
+            throw new ArgumentNullException($"Property {propertyName} of {type.Name} returned null!");
         return result;
     }
 }
