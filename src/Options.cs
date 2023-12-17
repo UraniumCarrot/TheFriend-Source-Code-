@@ -30,6 +30,7 @@ public class Options : OptionInterface
     public static Configurable<bool> NoirAltSlashConditions;
     public static Configurable<bool> NoirBuffSlash;
     public static Configurable<bool> NoirAutoSlash;
+    public static Configurable<bool> NoirDisableAutoCrouch;
     public static Configurable<bool> NoirUseCustomStart;
     public static Configurable<bool> NoirAttractiveMeow;
     public static Configurable<bool> NoirHideEars;
@@ -67,6 +68,7 @@ public class Options : OptionInterface
         NoirAltSlashConditions = config.Bind(nameof(NoirAltSlashConditions), false);
         NoirBuffSlash = config.Bind(nameof(NoirBuffSlash), false);
         NoirAutoSlash = config.Bind(nameof(NoirAutoSlash), false);
+        NoirDisableAutoCrouch = config.Bind(nameof(NoirDisableAutoCrouch), false);
         NoirUseCustomStart = config.Bind(nameof(NoirUseCustomStart), true);
         NoirAttractiveMeow = config.Bind(nameof(NoirAttractiveMeow), true);
         NoirHideEars = config.Bind(nameof(NoirHideEars), false);
@@ -508,8 +510,10 @@ public class Options : OptionInterface
             new OpLabel(40f, 490f, "Buff Noir slash (stronger stun and damage)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
             new OpCheckBox(NoirAutoSlash, 10f, 460f),
             new OpLabel(40f, 460f, "Auto-repeat slash when holding throw") { verticalAlignment = OpLabel.LabelVAlignment.Center },
-            new OpCheckBox(NoirUseCustomStart, 10f, 430f),
-            new OpLabel(40f, 430f, "Custom Start (disable if Story Mode fails to load)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+            new OpCheckBox(NoirDisableAutoCrouch, 10f, 430f),
+            new OpLabel(40f, 430f, "Disable Noir tripping") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+            new OpCheckBox(NoirUseCustomStart, 10f, 400f),
+            new OpLabel(40f, 400f, "Custom Start (disable if Story Mode fails to load)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
 
             new OpLabel(10f, 450f - offset, "Fun and Extras", true) { color = new Color(0.65f, 0.85f, 1f) },
             new OpKeyBinder(NoirMeowKey, new Vector2(10f, 420f - offset), new Vector2(150f, 30f), true, OpKeyBinder.BindController.AnyController),

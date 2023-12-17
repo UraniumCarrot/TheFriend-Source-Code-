@@ -61,6 +61,14 @@ public partial class NoirCatto
         DirectlyToBeam2(noirData, dtbFlag);
 
         #region Standing
+        if (noirData.LastAnimation == Player.AnimationIndex.LedgeCrawl && self.animation != Player.AnimationIndex.LedgeCrawl)
+        {
+            if (Options.NoirDisableAutoCrouch.Value)
+            {
+                self.standing = false;
+                noirData.StandCounter = 0;
+            }
+        }
         if (self.input[0].y > 0 || !noirData.Jumping && self.input[0].y == 0 && noirData.StandCounter is >= 1 and <= 10)
         {
             self.standing = true;
@@ -72,7 +80,7 @@ public partial class NoirCatto
 
         if (self.standing)
         {
-            if (self.input[0].y == 0 && self.input[0].x != 0) noirData.StandCounter++;
+            if (self.input[0].y == 0 && self.input[0].x != 0 && !Options.NoirDisableAutoCrouch.Value) noirData.StandCounter++;
             else noirData.StandCounter = 1;
         }
         else if (!self.standing)
