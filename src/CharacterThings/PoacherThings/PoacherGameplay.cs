@@ -106,7 +106,7 @@ public class PoacherGameplay
             {
                 poacher.favoriteFoodTimer++;
                 self.exhausted = true;
-                CharacterHooksAndTools.HeadShiver(self.graphicsModule as PlayerGraphics, 0.2f);
+                CharacterTools.HeadShiver(self.graphicsModule as PlayerGraphics, 0.2f);
                 self.slugcatStats.runspeedFac = 0.7f;
                 self.slugcatStats.poleClimbSpeedFac = 0.7f;
                 if (poacher.favoriteFoodTimer < -500) self.Die();

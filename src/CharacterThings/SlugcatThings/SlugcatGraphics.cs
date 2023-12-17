@@ -69,7 +69,7 @@ public class SlugcatGraphics
             UnityEngine.Random.value > self.player.room.world.rainCycle.RainApproaching &&
             UnityEngine.Random.value < 1f / 102f &&
             (self.player.room.roomSettings.DangerType == DangerType.FloodAndAerie)) 
-            CharacterHooksAndTools.LookAtRain(self);
+            CharacterTools.LookAtRain(self);
     }
     
     public static Color GraphicsModule_HypothermiaColorBlend(On.GraphicsModule.orig_HypothermiaColorBlend orig, GraphicsModule self, Color oldCol)
@@ -150,6 +150,6 @@ public class SlugcatGraphics
         }
         
         
-        CharacterHooksAndTools.Squint(self,sLeaser);
+        CharacterTools.Squint(self,sLeaser);
     }
 }

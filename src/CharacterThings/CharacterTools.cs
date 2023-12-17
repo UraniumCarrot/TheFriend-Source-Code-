@@ -1,28 +1,11 @@
-﻿using TheFriend.CharacterThings.BelieverThings;
-using TheFriend.CharacterThings.DelugeThings;
-using TheFriend.CharacterThings.FriendThings;
-using TheFriend.PoacherThings;
-using TheFriend.SlugcatThings;
 using RWCustom;
+using TheFriend.SlugcatThings;
 using UnityEngine;
 
 namespace TheFriend.CharacterThings;
 
-public class CharacterHooksAndTools
+public class CharacterTools
 {
-    public static void Apply()
-    {
-        PoacherHooks.Apply();
-        FriendHooks.Apply();
-        NoirThings.NoirCatto.Apply();
-        BelieverHooks.Apply();
-        DelugeHooks.Apply();
-        
-        SlugcatGameplay.Apply();
-        SlugcatGraphics.Apply();
-        SensoryHolograms.Apply();
-    }
-    
     public static void Squint(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser)
     {
         var face = sLeaser.sprites[9];
@@ -39,11 +22,11 @@ public class CharacterHooksAndTools
     public static void LookAtRain(PlayerGraphics self)
     {
         self.objectLooker.LookAtPoint(new Vector2(
-            self.player.room.PixelWidth * UnityEngine.Random.value, 
-            self.player.room.PixelHeight + 100f), 
+            self.player.room.PixelWidth * UnityEngine.Random.value,
+            self.player.room.PixelHeight + 100f),
             (1f - self.player.room.world.rainCycle.RainApproaching) * 0.6f);
     }
-    
+
     public enum colormode
     {
         set,
@@ -51,8 +34,8 @@ public class CharacterHooksAndTools
         add
     }
     public static Color ColorMaker(
-        float hue, float sat, float val, 
-        colormode hueMode, colormode satMode, colormode valMode, 
+        float hue, float sat, float val,
+        colormode hueMode, colormode satMode, colormode valMode,
         Color origCol = new Color(), Vector3 origHSL = new Vector3())
     {   // This method is pretty much exclusively for easy Jolly Co-op autocoloring
         // Negative floats can be used to preserve the original value
@@ -62,7 +45,7 @@ public class CharacterHooksAndTools
         float newhue = color.x;
         float newsat = color.y;
         float newval = color.z;
-        
+
         color.x = hueMode switch
         {
             colormode.set => newhue = (hue < 0) ? color.x : hue,
@@ -84,7 +67,7 @@ public class CharacterHooksAndTools
             colormode.mult => newval *= (val < 0) ? 1 : val,
             _ => newval = 0
         };
-        
+
         color.x = newhue;
         color.y = newsat;
         color.z = newval;
