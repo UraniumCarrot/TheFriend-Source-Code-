@@ -4,7 +4,6 @@ namespace TheFriend.NoirThings;
 
 public partial class NoirCatto
 {
-    private const int YcounterTreshold = 10;
     private static void PlayerOncheckInput(On.Player.orig_checkInput orig, Player self)
     {
         orig(self);
@@ -17,16 +16,13 @@ public partial class NoirCatto
         }
         //Copying original unmodified input
         noirData.UnchangedInput[0] = self.input[0];
+        noirData.YinputForPole = self.input[0].y > 0;
+    }
 
-
-        if (noirData.UnchangedInput[0].y > 0)
-        {
-            if (noirData.Ycounter < 40) noirData.Ycounter++;
-        }
-        else
-        {
-            noirData.Ycounter = 0;
-        }
+    private static void ResetPoleInputBlocker(NoirData noirData)
+    {
+        if (noirData.Cat.animation != Player.AnimationIndex.StandOnBeam || !noirData.YinputForPole)
+            noirData.YinputForPoleBlocker = 0;
     }
 
     private static void ModifyLeapInput(Player self)
@@ -51,7 +47,7 @@ public partial class NoirCatto
                 self.input[0].jmp = false;
                 self.input[0].x = 0;
                 self.input[0].y = 0;
-                noirData.Ycounter = 0;
+                noirData.YinputForPole = false;
 
                 if (noirData.SuperCrawlPounce < 20)
                 {

@@ -49,6 +49,9 @@ public partial class NoirCatto
             self.input[0].y > 0 && self.mainBodyChunk.lastPos.y >= self.mainBodyChunk.pos.y
             && !flag && noirData.CanGrabBeam())
         {
+            // Grab the beam here
+            noirData.YinputForPoleBlocker = 10;
+
             // Debug.Log($"tile: {self.room.MiddleOfTile(self.bodyChunks[1].pos).y}");
             // Debug.Log($"pos: {self.bodyChunks[1].pos.y}");
 
