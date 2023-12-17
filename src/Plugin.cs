@@ -81,6 +81,7 @@ namespace TheFriend
             DelugeWorldState.Apply();
             SLOracleHandler.Apply();
             FamineWorld.Apply();
+            DangerTypes.Apply();
 
             // Misc IL
             IL.Player.ThrowObject += Player_ThrowObject;

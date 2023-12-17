@@ -1,0 +1,20 @@
+{
+	"id": "slugcat - friend new",
+	"scene_folder": "slugbase/scenes/slugcat - friend new",
+	"images": [
+		{"name": "flat", "pos": [0, 0], "depth": -1.0, "flatmode": true},
+		{"name": "8", "pos": [210, -180], "depth": 3.8, "shader": "Basic"},
+		{"name": "7", "pos": [210, -180], "depth": 3.5, "shader": "Basic"},
+		{"name": "6", "pos": [210, -180], "depth": 2.7, "shader": "Basic"},
+		{"name": "5", "pos": [210, -180], "depth": 2.6, "shader": "Basic"},
+		{"name": "4", "pos": [210, -180], "depth": 2.6, "shader": "Basic"},
+		{"name": "2", "pos": [210, -180], "depth": 2.0, "shader": "Basic"},
+		{"name": "3", "pos": [210, -180], "depth": 1.5, "shader": "Basic"},
+		{"name": "1", "pos": [210, -180], "depth": 1.5, "shader": "Basic"},
+	],
+	"idle_depths": [2.9],
+	"glow_pos": [730, 335],
+	"mark_pos": [740, 575],
+	"select_menu_pos": [-10, 100],
+	"slugcat_depth": 3.0
+}

@@ -36,6 +36,13 @@ public class CharacterHooksAndTools
     {
         self.head.vel += Custom.RNV() * intensity;
     }
+    public static void LookAtRain(PlayerGraphics self)
+    {
+        self.objectLooker.LookAtPoint(new Vector2(
+            self.player.room.PixelWidth * UnityEngine.Random.value, 
+            self.player.room.PixelHeight + 100f), 
+            (1f - self.player.room.world.rainCycle.RainApproaching) * 0.6f);
+    }
     
     public enum colormode
     {

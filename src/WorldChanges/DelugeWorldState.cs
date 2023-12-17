@@ -34,8 +34,24 @@ public class DelugeWorldState
         On.Room.ctor += RoomOnctor;
         ColdRoom.ColdBreath.Update += ColdBreathOnUpdate;
         On.RoofTopView.DustpuffSpawner.DustPuff.Update += DustPuffOnUpdate;
+        On.FlyAI.RoomNotACycleHazard += FlyAIOnRoomNotACycleHazard;
     }
 
+    
+    public static bool FlyAIOnRoomNotACycleHazard(On.FlyAI.orig_RoomNotACycleHazard orig, Room room)
+    {
+        if (room.roomSettings.DangerType == RoomRain.DangerType.AerieBlizzard && Deluge)
+            if (room.world.rainCycle.CycleProgression < 0.2f) return true;
+            else return false;
+        return orig(room);
+    }
+    public static void WaterOnInitiateSprites(On.Water.orig_InitiateSprites orig, Water self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam)
+    {
+        orig(self, sleaser, rcam);
+        if (self.room == null) return;
+        if (self.room.roomSettings.DangerType == RoomRain.DangerType.AerieBlizzard && Deluge)
+            sleaser.sprites[0].shader = self.room.game.rainWorld.Shaders["WaterSlush"];
+    }
     public static void DustPuffOnUpdate(On.RoofTopView.DustpuffSpawner.DustPuff.orig_Update orig, RoofTopView.DustpuffSpawner.DustPuff self, bool eu)
     {
         orig(self, eu);
@@ -72,10 +88,11 @@ public class DelugeWorldState
             return;
         }
         var saints = new RoomSettings(abstractroom.name, world.region, false, false, MoreSlugcatsEnums.SlugcatStatsName.Saint);
-        if (saints.filePath != null)
+        if (saints.filePath != null && !self.snow)
         {
             for (int i = 0; i < saints.placedObjects.Count; i++)
-                self.roomSettings.placedObjects.Add(saints.placedObjects[i]);
+                if (saints.placedObjects[i].data is PlacedObject.SnowSourceData)
+                    self.roomSettings.placedObjects.Add(saints.placedObjects[i]);
             
             for (int i = 0; i < saints.effects.Count; i++)
                 self.roomSettings.effects.Add(saints.effects[i]);
@@ -86,8 +103,8 @@ public class DelugeWorldState
     {
         if (self.roomSettings.DangerType == MoreSlugcatsEnums.RoomRainDangerType.Blizzard || self.roomSettings.DangerType == RoomRain.DangerType.Rain) 
             self.roomSettings.DangerType = RoomRain.DangerType.AerieBlizzard;
-        //else if (self.roomSettings.DangerType == RoomRain.DangerType.FloodAndRain || self.roomSettings.DangerType == RoomRain.DangerType.Flood)
-            //self.roomSettings.DangerType = DangerType.FloodAndBlizzard;
+        else if (self.roomSettings.DangerType == RoomRain.DangerType.FloodAndRain || self.roomSettings.DangerType == RoomRain.DangerType.Flood)
+            self.roomSettings.DangerType = DangerType.FloodAndAerie;
     }
     
     public static void CreatureOnHypothermiaUpdate(ILContext il)

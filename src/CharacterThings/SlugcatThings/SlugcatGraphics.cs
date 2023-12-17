@@ -64,6 +64,12 @@ public class SlugcatGraphics
         orig(self);
         if (self.player.TryGetFriend(out var friend))
             FriendGraphics.FriendGraphicsUpdate(self);
+
+        if (self.player.room.world.rainCycle.RainApproaching < 1f &&
+            UnityEngine.Random.value > self.player.room.world.rainCycle.RainApproaching &&
+            UnityEngine.Random.value < 1f / 102f &&
+            (self.player.room.roomSettings.DangerType == DangerType.FloodAndAerie)) 
+            CharacterHooksAndTools.LookAtRain(self);
     }
     
     public static Color GraphicsModule_HypothermiaColorBlend(On.GraphicsModule.orig_HypothermiaColorBlend orig, GraphicsModule self, Color oldCol)

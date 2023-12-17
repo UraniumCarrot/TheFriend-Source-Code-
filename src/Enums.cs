@@ -19,14 +19,14 @@ public static class DataPearlType
 
 public static class DangerType
 {
-    [AllowNull] public static RoomRain.DangerType FloodAndBlizzard = new(nameof(FloodAndBlizzard), true);
+    [AllowNull] public static RoomRain.DangerType FloodAndAerie = new(nameof(FloodAndAerie), true);
 
     public static void UnregisterValues()
     {
-        if (FloodAndBlizzard != null)
+        if (FloodAndAerie != null)
         {
-            FloodAndBlizzard.Unregister();
-            FloodAndBlizzard = null;
+            FloodAndAerie.Unregister();
+            FloodAndAerie = null;
         }
     }
 }

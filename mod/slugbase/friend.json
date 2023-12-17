@@ -35,7 +35,7 @@
 		"walk_speed": 0.92,
 		"throw_skill": 2,
 		"start_room": "SU_S04",
-		"select_menu_scene": "slugcat - friend",
+		"select_menu_scene": "slugcat - friend new",
 		"select_menu_scene_ascended": "slugcat end - friend",
 		"sleep_scene": "sleep scene - friend",
 		"food_min": 3,
