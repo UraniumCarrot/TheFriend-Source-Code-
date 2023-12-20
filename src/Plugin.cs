@@ -38,10 +38,11 @@ using TheFriend.SaveThings;
 
 namespace TheFriend
 {
-    [BepInPlugin(MOD_ID, "The Friend", "0.3.0.1")]
+    [BepInPlugin(MOD_ID, "The Friend", MOD_VERSION)]
     public class Plugin : BaseUnityPlugin
     {
         public const string MOD_ID = "thefriend";
+        public const string MOD_VERSION = "0.3.0.2";
 
         public static readonly PlayerFeature<float> SuperJump = PlayerFloat("friend/super_jump");
         public static readonly PlayerFeature<float> SuperCrawl = PlayerFloat("friend/super_crawl");
