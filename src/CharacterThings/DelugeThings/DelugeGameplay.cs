@@ -95,7 +95,7 @@ public class DelugeGameplay
         if (scug.Sieze > 0)
         {
             if (scug.AmIIdling) scug.Sieze--;
-            if (!scug.siezing) CharacterHooksAndTools.HeadShiver(self.graphicsModule as PlayerGraphics, 0.5f);
+            if (!scug.siezing) CharacterTools.HeadShiver(self.graphicsModule as PlayerGraphics, 0.5f);
             if (scug.Sieze < DelugeCWT.Deluge.SiezeLimit && scug.siezing) DelugeSiezeEffects(self, eu);
         }
         else scug.siezing = false;

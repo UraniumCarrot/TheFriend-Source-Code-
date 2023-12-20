@@ -42,7 +42,7 @@ public class BelieverGraphics
             self.player.playerState.playerNumber != 0 && color != null)
         {
             Color jolly = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
-            Color colorvar = CharacterHooksAndTools.ColorMaker(0.1f,1f,1f, CharacterHooksAndTools.colormode.add, CharacterHooksAndTools.colormode.mult, CharacterHooksAndTools.colormode.mult, jolly);
+            Color colorvar = CharacterTools.ColorMaker(0.1f,1f,1f, CharacterTools.colormode.add, CharacterTools.colormode.mult, CharacterTools.colormode.mult, jolly);
             color = colorvar;
         }
         if (color != null) self.player.GetGeneral().customColor1 = color.Value;

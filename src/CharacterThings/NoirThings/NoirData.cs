@@ -27,9 +27,10 @@ public abstract partial class NoirCatto // Noir master class
         public int CrawlTurnCounter;
         public int AfterCrawlTurnCounter;
         public int SuperCrawlPounce;
-        public int Ycounter;
         public int ClimbCounter;
         public int ClimbCooldown;
+        public bool YinputForPole;
+        public int YinputForPoleBlocker;
         public bool Jumping;
         public bool JumpInitiated;
         public bool LastJumpFromHorizontalBeam;
@@ -120,7 +121,7 @@ public abstract partial class NoirCatto // Noir master class
 
             //Debug.Log($"BEAM LENGTH - LEFT: {beamLengthL}, RIGHT: {beamLengthR}, TOTAL: {beamLengthL + beamLengthR}");
 
-            return (Cat.animation == Player.AnimationIndex.StandOnBeam && beamLengthL + beamLengthR > 40 && Ycounter < YcounterTreshold);
+            return (Cat.animation == Player.AnimationIndex.StandOnBeam && beamLengthL + beamLengthR > 40 && (!YinputForPole || YinputForPoleBlocker > 0));
         }
 
         public bool CanGrabBeam()
@@ -263,7 +264,8 @@ public abstract partial class NoirCatto // Noir master class
                 MeowPitch = 1f - (Cat.bodyChunks[1].mass - DefaultFirstChunkMass) * 0.65f;
                 if (MeowPitch < 0.15f) MeowPitch = 0.15f;
             }
-            
+
+            YinputForPoleBlocker.Tick();
             lastBodyModeInternal = Cat.bodyMode;
             lastAnimationInternal = Cat.animation;
             GraspsAllNull = Cat.grasps.All(x => x is null);
