@@ -76,6 +76,7 @@ namespace TheFriend
             DragonRepInterface.Apply();
             HudHooks.Apply();
             MotherKillTracker.Apply();
+            MainMenu.Apply();
 
             FriendWorldState.Apply();
             DelugeWorldState.Apply();
