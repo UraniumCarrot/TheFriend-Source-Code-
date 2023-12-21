@@ -3,7 +3,7 @@ using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace TheFriend.NoirThings;
+namespace TheFriend.CharacterThings.NoirThings;
 
 public abstract partial class NoirCatto // Noir master class
 {

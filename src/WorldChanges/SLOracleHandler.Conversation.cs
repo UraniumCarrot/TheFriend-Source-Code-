@@ -1,5 +1,3 @@
-using System.Linq;
-using TheFriend.NoirThings;
 using UnityEngine;
 
 namespace TheFriend.WorldChanges;

@@ -25,7 +25,7 @@ using TheFriend.DragonRideThings;
 using TheFriend.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
-using TheFriend.NoirThings;
+using TheFriend.CharacterThings.NoirThings;
 using TheFriend.Objects;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;

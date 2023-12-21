@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using TheFriend.NoirThings;
+using TheFriend.CharacterThings.NoirThings;
 
 namespace TheFriend;
 

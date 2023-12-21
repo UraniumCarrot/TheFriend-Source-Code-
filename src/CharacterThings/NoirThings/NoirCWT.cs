@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace TheFriend.NoirThings;
+namespace TheFriend.CharacterThings.NoirThings;
 
 public static class NoirCWT
 {

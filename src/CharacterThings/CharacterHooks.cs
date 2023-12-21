@@ -1,6 +1,7 @@
 ﻿using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
+using TheFriend.CharacterThings.NoirThings;
 using TheFriend.PoacherThings;
 using TheFriend.SlugcatThings;
 
@@ -12,7 +13,7 @@ public class CharacterHooks
     {
         PoacherHooks.Apply();
         FriendHooks.Apply();
-        NoirThings.NoirCatto.Apply();
+        NoirCatto.Apply();
         BelieverHooks.Apply();
         DelugeHooks.Apply();
         

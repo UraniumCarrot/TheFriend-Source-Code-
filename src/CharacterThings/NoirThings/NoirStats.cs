@@ -1,4 +1,4 @@
-namespace TheFriend.NoirThings;
+namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {

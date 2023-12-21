@@ -4,7 +4,7 @@ using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace TheFriend.NoirThings;
+namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto //Sprite replacement and layer management is here
 {

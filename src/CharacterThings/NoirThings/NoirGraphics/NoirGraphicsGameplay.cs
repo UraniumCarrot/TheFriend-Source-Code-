@@ -2,7 +2,7 @@ using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace TheFriend.NoirThings;
+namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto //Animations + drawing position adjustments are here
 {

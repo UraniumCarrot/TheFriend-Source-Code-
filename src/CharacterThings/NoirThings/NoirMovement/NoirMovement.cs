@@ -2,7 +2,7 @@ using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 using static TheFriend.Plugin;
-namespace TheFriend.NoirThings;
+namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {

@@ -7,7 +7,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using static SeedCob;
 
-namespace TheFriend.NoirThings;
+namespace TheFriend.CharacterThings.NoirThings;
 
 public static class SeedCobCWT
 {
