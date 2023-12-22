@@ -9,20 +9,34 @@ namespace TheFriend.SaveThings;
 
 public static class SolaceCustom
 {
+    public static void Apply()
+    {
+        On.PlayerProgression.ClearOutSaveStateFromMemory += PlayerProgressionOnClearOutSaveStateFromMemory;
+    }
+
     private static string SolaceSaveDataPath => Application.persistentDataPath + Path.DirectorySeparatorChar + Plugin.MOD_ID;
+    private static readonly Dictionary<string, string> MalnourishedSaveData;
 
     static SolaceCustom()
     {
+        MalnourishedSaveData = new Dictionary<string, string>();
         Directory.CreateDirectory(SolaceSaveDataPath);
     }
 
     public static bool SaveStorySpecific<T>(string key, T value, StoryGameSession storySession)
     {
-        //todo handle malnourished
         try
         {
-            var savePath = GetStorySavePath(storySession);
             var rawValue = JsonConvert.SerializeObject(value);
+            if (storySession.saveState.malnourished)
+            {
+                var name = storySession.saveStateNumber;
+                Plugin.LogSource.LogInfo($"{name} starved! Saving {key} to memory...");
+                MalnourishedSaveData[key + name] = rawValue;
+                return true;
+            }
+
+            var savePath = GetStorySavePath(storySession);
 
             if (File.Exists(savePath))
             {
@@ -54,6 +68,19 @@ public static class SolaceCustom
         value = default;
         try
         {
+            if (storySession.saveState.malnourished)
+            {
+                var name = storySession.saveStateNumber;
+                Plugin.LogSource.LogInfo($"{name} starved! Trying to load {key} from memory...");
+                if (MalnourishedSaveData.TryGetValue(key + name, out var rawValue))
+                {
+                    value = JsonConvert.DeserializeObject<T>(rawValue);
+                    MalnourishedSaveData.Remove(key + name);
+                    return true;
+                }
+                Plugin.LogSource.LogInfo("Failed to load from memory, attempting to load from disk instead");
+            }
+
             var savePath = GetStorySavePath(storySession);
 
             if (File.Exists(savePath))
@@ -85,4 +112,11 @@ public static class SolaceCustom
         return Path.Combine(savePath, name + ".json");
     }
 
+    //-----
+
+    private static void PlayerProgressionOnClearOutSaveStateFromMemory(On.PlayerProgression.orig_ClearOutSaveStateFromMemory orig, PlayerProgression self)
+    {
+        orig(self);
+        MalnourishedSaveData.Clear();
+    }
 }

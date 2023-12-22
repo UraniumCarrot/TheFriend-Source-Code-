@@ -14,8 +14,8 @@ public partial class HuntQuestThings
         if (cam.room.game.IsStorySession && !cam.room.game.rainWorld.ExpeditionMode &&
             self.owner is Player && cam.room.game.StoryCharacter == Plugin.NoirName)
         {
-            Master ??= new HuntQuestMaster(cam.room.game.GetStorySession);
-            self.AddPart(new HuntQuestHUD(self));
+            if (Master != null)
+                self.AddPart(new HuntQuestHUD(self));
         }
     }
 

@@ -19,7 +19,8 @@ public partial class HuntQuestThings
         orig(self, savestatenumber, game);
         if (!game.rainWorld.ExpeditionMode && savestatenumber == Plugin.NoirName)
         {
-            Master ??= new HuntQuestMaster(self);
+            Master ??= new HuntQuestMaster();
+            Master.StorySession = self;
             Master.LoadOrCreateQuests();
         }
     }

@@ -11,17 +11,15 @@ public partial class HuntQuestThings
     public class HuntQuestMaster
     {
         private const string HUNTQUEST_DATA = "HUNTQUEST_DATA";
-
-        private readonly StoryGameSession StorySession;
         private readonly List<WeakReference> _huntedCreatures; //AbstractCreature
         
         public readonly ObservableCollection<HuntQuest> Quests;
+        public StoryGameSession StorySession;
         public bool Completed;
         public RewardPhase NextRewardPhase;
 
-        public HuntQuestMaster(StoryGameSession storySession)
+        public HuntQuestMaster()
         {
-            StorySession = storySession;
             _huntedCreatures = new List<WeakReference>();
             Quests = new ObservableCollection<HuntQuest>();
         }
