@@ -98,11 +98,10 @@ public partial class NoirCatto
             c.GotoPrev(MoveType.After, i => i.MatchLdarg(0));
             c.EmitDelegate((Menu.KarmaLadderScreen self) =>
             {
-                if (self.saveState.saveStateNumber == Plugin.NoirName) return true;
-                return false;
+                return self.saveState.saveStateNumber.IsSolaceName();
             });
             c.Emit(OpCodes.Brtrue, label);
-            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg_0); //todo improve ILHook's compatibility with other mods
         }
         catch (Exception ex)
         {

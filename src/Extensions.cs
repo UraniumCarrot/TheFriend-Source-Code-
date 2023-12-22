@@ -4,6 +4,12 @@ namespace TheFriend;
 
 public static class Extensions
 {
+    public static bool IsSolaceName(this SlugcatStats.Name name)
+    {
+        return name.value == Plugin.FriendName.value || name.value == Plugin.NoirName.value || name.value == Plugin.DragonName.value || name.value == Plugin.DelugeName.value ||
+               name.value == Plugin.BelieverName.value;
+    }
+
     public static float Map(this float x, float in_min, float in_max, float out_min, float out_max, bool clamp = false)
     {
         if (clamp) x = Math.Max(in_min, Math.Min(x, in_max));
