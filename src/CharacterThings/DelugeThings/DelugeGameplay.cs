@@ -54,10 +54,11 @@ public class DelugeGameplay
             scug.GracePeriod--;
 
         // LookTarget determination, see DelugeOverload for why
-        if (scug.lookTarget is Creature || scug.lookTarget is Oracle || scug.lookTarget is OracleSwarmer)
-            scug.lookTarget = (self.graphicsModule as PlayerGraphics)?.objectLooker.currentMostInteresting;
-        else scug.lookTarget = null;
-        
+        scug.lookTarget = (self.graphicsModule as PlayerGraphics)?.objectLooker.currentMostInteresting switch
+        {
+            var target when target is Creature or Oracle or OracleSwarmer => target,
+            _ => null
+        };
         scug.OverloadLooper++;
         if (scug.OverloadLooper > 5)
         { // Overload changes every five ticks, determines intensity of DelugeOverloadEffects. Overload IS NOT CHANGED during grace period, preventing effect intensifying
