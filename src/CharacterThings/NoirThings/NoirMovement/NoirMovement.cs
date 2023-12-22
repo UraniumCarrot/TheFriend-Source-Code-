@@ -53,10 +53,9 @@ public partial class NoirCatto
             return;
         }
 
+        ResetPoleInputBlocker(noirData);
         ModifyLeapInput(self);
         PoleLeapUpdate(noirData);
-
-        ResetPoleInputBlocker(noirData);
 
         DirectlyToBeam1(noirData, out var dtbFlag);
         orig(self, eu); // ORIG HERE
