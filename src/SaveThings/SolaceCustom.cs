@@ -12,6 +12,7 @@ public static class SolaceCustom
     public static void Apply()
     {
         On.PlayerProgression.ClearOutSaveStateFromMemory += PlayerProgressionOnClearOutSaveStateFromMemory;
+        On.PlayerProgression.WipeSaveState += PlayerProgressionOnWipeSaveState;
     }
 
     private static string SolaceSaveDataPath => Application.persistentDataPath + Path.DirectorySeparatorChar + Plugin.MOD_ID;
@@ -105,10 +106,13 @@ public static class SolaceCustom
 
     private static string GetStorySavePath(StoryGameSession storySession)
     {
+        return GetStorySavePath(storySession.saveStateNumber);
+    }
+    private static string GetStorySavePath(SlugcatStats.Name name)
+    {
         var saveSlot = RWCustom.Custom.rainWorld.options.saveSlot.ToString();
         var savePath = Path.Combine(SolaceSaveDataPath, saveSlot);
         Directory.CreateDirectory(savePath);
-        var name = storySession.saveStateNumber;
         return Path.Combine(savePath, name + ".json");
     }
 
@@ -118,5 +122,15 @@ public static class SolaceCustom
     {
         orig(self);
         MalnourishedSaveData.Clear();
+    }
+
+    private static void PlayerProgressionOnWipeSaveState(On.PlayerProgression.orig_WipeSaveState orig, PlayerProgression self, SlugcatStats.Name savestatenumber)
+    {
+        orig(self, savestatenumber);
+        var savePath = GetStorySavePath(savestatenumber);
+        if (File.Exists(savePath))
+        {
+            File.Delete(savePath);
+        }
     }
 }

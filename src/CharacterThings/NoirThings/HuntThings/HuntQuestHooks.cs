@@ -12,6 +12,7 @@ public partial class HuntQuestThings
         On.Menu.KarmaLadderScreen.Singal += KarmaLadderScreenOnSingal;
 
         On.StoryGameSession.ctor += StoryGameSessionOnctor;
+        On.CreatureSymbol.ctor += CreatureSymbolOnctor;
     }
 
     private static void StoryGameSessionOnctor(On.StoryGameSession.orig_ctor orig, StoryGameSession self, SlugcatStats.Name savestatenumber, RainWorldGame game)
