@@ -13,7 +13,7 @@ namespace TheFriend.WorldChanges;
 public class DangerTypes
 {
     /*
-     I'm having to hook so much stuff for FloodAndBlizzard to act like an actual blizzard.
+     I'm having to hook so much stuff for FloodAndAerie to act like an actual flood.
      */
     
     
@@ -21,18 +21,13 @@ public class DangerTypes
     {
         new Hook(typeof(RoomRain).GetProperty(nameof(RoomRain.OutsidePushAround))!.GetGetMethod(), ChillyOutsidePushAround);
         new ILHook(typeof(RoomRain).GetProperty(nameof(RoomRain.FloodLevel))!.GetGetMethod(), ChillyFloodLevel);
-        
-        
-        
-        
-        
-        
-        // Hooks that ensure FloodAndBlizzard is treated like FloodAndRain
+
+        // Hooks that ensure FloodAndAerie is treated like FloodAndRain
         On.RoomRain.ctor += RoomRainOnctor;
         On.RoomRain.Update += RoomRainOnUpdate;
         On.AbstractCreature.DrainWorldDenFlooded += AbstractCreatureOnDrainWorldDenFlooded;
-        //On.Water.ctor += WaterOnctor;
-        //On.ShelterDoor.Update += ShelterDoorOnUpdate;
+        On.Water.ctor += WaterOnctor;
+        On.ShelterDoor.Update += ShelterDoorOnUpdate;
         IL.RoomCamera.Update += RoomCameraOnUpdate;
         
         // Minor hooks
@@ -82,19 +77,31 @@ public class DangerTypes
     public static void ShelterDoorOnUpdate(On.ShelterDoor.orig_Update orig, ShelterDoor self, bool eu)
     {
         orig(self, eu);
-        if (self.room == null) return;
-        if (self.room.roomSettings.DangerType == DangerType.FloodAndAerie)
+        if (self.room != null && 
+            self.room.game.globalRain.drainWorldFlood > 0f && 
+            !self.room.game.globalRain.drainWorldFloodFlag && 
+            self.room.roomSettings.DangerType == DangerType.FloodAndAerie && 
+            self.room.waterObject == null &&
+            self.room.game.Players.Count > 0)
         {
             self.room.AddWater();
             self.room.waterObject.fWaterLevel = self.room.game.Players[0].Room.realizedRoom.roomRain.FloodLevel;
+            Plugin.LogSource.LogWarning("Water add");
         }
     }
     public static void WaterOnctor(On.Water.orig_ctor orig, Water self, Room room, int waterlevel)
     {
+        Plugin.LogSource.LogWarning("Waterctor called");
         orig(self, room, waterlevel);
-        if (self.room == null || self.room.roomSettings == null) return;
-        if (room.roomSettings.DangerType == DangerType.FloodAndAerie)
+        Plugin.LogSource.LogWarning("Waterctor orig done");
+        if (room.roomRain != null &&
+            room.roomRain.globalRain != null &&
+            room.roomSettings.DangerType == DangerType.FloodAndAerie)
+        {
             self.fWaterLevel = self.originalWaterLevel + room.roomRain.globalRain.flood;
+            self.fWaterLevel = self.originalWaterLevel;
+            Plugin.LogSource.LogWarning("Waterctor hooked");
+        }
     }
     public static bool AbstractCreatureOnDrainWorldDenFlooded(On.AbstractCreature.orig_DrainWorldDenFlooded orig, AbstractCreature self)
     {
@@ -168,7 +175,7 @@ public class DangerTypes
             return self.globalRain.OutsidePushAround * self.room.roomSettings.RainIntensity;
         else return orig(self);
     }
-    public static void ChillyFloodLevel(ILContext il) // Makes FloodAndBlizzard inherently capable of flooding
+    public static void ChillyFloodLevel(ILContext il) // Makes FloodAndAerie inherently capable of flooding
     {
         try
         {
