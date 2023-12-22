@@ -27,10 +27,10 @@ public class MainMenu
     { // Handles blizzard's audio
         orig(self);
         IntroOrSelect = self is IntroRoll || self is SlugcatSelectMenu;
-        
+
         if (self.manager.menuMic != null && !blizzardFinished && IntroOrSelect)
         {
-            var music = self.manager.musicPlayer.song as Music.IntroRollMusic;
+            var music = self.manager.musicPlayer?.song as Music.IntroRollMusic;
             if (music != null && music.subTracks[0] != null) music.subTracks[0].volume = 0;
             
             float? vol = music?.rainVol;
