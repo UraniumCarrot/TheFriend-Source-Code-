@@ -48,6 +48,7 @@ public partial class NoirCatto
                 self.input[0].x = 0;
                 self.input[0].y = 0;
                 noirData.YinputForPole = false;
+                noirData.YinputForPoleBlocker = 10;
 
                 if (noirData.SuperCrawlPounce < 20)
                 {
