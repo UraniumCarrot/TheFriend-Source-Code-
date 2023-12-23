@@ -9,6 +9,7 @@ public partial class NoirCatto
     {
         orig(self);
 
+        if (RWCustom.Custom.rainWorld.ExpeditionMode) return;
         if (self.saveStateNumber != Plugin.NoirName) return;
         if (self.cycleNumber == 0)
         {
@@ -21,6 +22,7 @@ public partial class NoirCatto
         orig(self, manager);
 
         if (!self.IsStorySession) return;
+        if (RWCustom.Custom.rainWorld.ExpeditionMode) return;
         if (self.StoryCharacter != Plugin.NoirName) return;
         var session = self.GetStorySession;
 
