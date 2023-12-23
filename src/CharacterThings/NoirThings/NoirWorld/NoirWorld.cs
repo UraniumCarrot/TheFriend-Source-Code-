@@ -4,12 +4,19 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {
+    public enum CustomStartMode
+    {
+        StoryAndExpedition = 0,
+        Story = 1,
+        Disabled = 2,
+    }
+
     private const string StartingRoom = "SI_B12";
     private static void SaveStateOnsetDenPosition(On.SaveState.orig_setDenPosition orig, SaveState self)
     {
         orig(self);
 
-        if (RWCustom.Custom.rainWorld.ExpeditionMode) return;
+        if (Custom.rainWorld.ExpeditionMode && Options.NoirUseCustomStart.Value != CustomStartMode.StoryAndExpedition) return;
         if (self.saveStateNumber != Plugin.NoirName) return;
         if (self.cycleNumber == 0)
         {
@@ -22,8 +29,8 @@ public partial class NoirCatto
         orig(self, manager);
 
         if (!self.IsStorySession) return;
-        if (RWCustom.Custom.rainWorld.ExpeditionMode) return;
         if (self.StoryCharacter != Plugin.NoirName) return;
+        if (Custom.rainWorld.ExpeditionMode && Options.NoirUseCustomStart.Value != CustomStartMode.StoryAndExpedition) return;
         var session = self.GetStorySession;
 
         if (session.saveState.cycleNumber == 0)
@@ -39,7 +46,7 @@ public partial class NoirCatto
 
                 startRoom ??= player.Room.realizedRoom;
             }
-            if (Options.NoirUseCustomStart.Value && startRoom != null)
+            if (Options.NoirUseCustomStart.Value != CustomStartMode.Disabled && startRoom != null)
             {
                 startRoom.AddObject(new NoirStart());
             }

@@ -1,11 +1,30 @@
-﻿using Menu.Remix.MixedUI;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Menu.Remix.MixedUI;
 using Menu.Remix.MixedUI.ValueTypes;
+using TheFriend.CharacterThings.NoirThings;
 using UnityEngine;
 
 namespace TheFriend;
 
 public class Options : OptionInterface
 {
+    public class BetterComboBox : OpComboBox //Thanks Henpemaz
+    {
+        public BetterComboBox(ConfigurableBase configBase, Vector2 pos, float width, List<ListItem> list) : base(configBase, pos, width, list) { }
+        public override void GrafUpdate(float timeStacker)
+        {
+            base.GrafUpdate(timeStacker);
+            if(this._rectList != null && !_rectList.isHidden)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    this._rectList.sprites[j].alpha = 1;
+                }
+            }
+        }
+    }
+
     public static Configurable<bool> NoFamine;
     public static Configurable<bool> FaminesForAll;
     public static Configurable<bool> LocalizedLizRep;
@@ -31,7 +50,7 @@ public class Options : OptionInterface
     public static Configurable<bool> NoirBuffSlash;
     public static Configurable<bool> NoirAutoSlash;
     public static Configurable<bool> NoirDisableAutoCrouch;
-    public static Configurable<bool> NoirUseCustomStart;
+    public static Configurable<NoirCatto.CustomStartMode> NoirUseCustomStart;
     public static Configurable<bool> NoirAttractiveMeow;
     public static Configurable<bool> NoirHideEars;
     public static Configurable<KeyCode> NoirMeowKey;
@@ -39,7 +58,7 @@ public class Options : OptionInterface
     public static Configurable<bool> LizRideAll;
     public static Configurable<bool> LizRepMeterForAll;
 
-    // Achievements
+    // Achievements //todo: Use SaveThings.SolaceCustom
     public static Configurable<bool> SolaceFriendOEAchievement; // Live Well
     public static Configurable<bool> SolacePoacherOEAchievement; // A New Beginning
     public static Configurable<bool> SolaceFriendBadAscensionAchievement; // Betrayal
@@ -69,7 +88,7 @@ public class Options : OptionInterface
         NoirBuffSlash = config.Bind(nameof(NoirBuffSlash), false);
         NoirAutoSlash = config.Bind(nameof(NoirAutoSlash), false);
         NoirDisableAutoCrouch = config.Bind(nameof(NoirDisableAutoCrouch), false);
-        NoirUseCustomStart = config.Bind(nameof(NoirUseCustomStart), true);
+        NoirUseCustomStart = config.Bind(nameof(NoirUseCustomStart), NoirCatto.CustomStartMode.Story);
         NoirAttractiveMeow = config.Bind(nameof(NoirAttractiveMeow), true);
         NoirHideEars = config.Bind(nameof(NoirHideEars), false);
         NoirMeowKey = config.Bind(nameof(NoirMeowKey), KeyCode.LeftAlt);
@@ -512,8 +531,8 @@ public class Options : OptionInterface
             new OpLabel(40f, 460f, "Auto-repeat slash when holding throw") { verticalAlignment = OpLabel.LabelVAlignment.Center },
             new OpCheckBox(NoirDisableAutoCrouch, 10f, 430f),
             new OpLabel(40f, 430f, "Disable Noir tripping") { verticalAlignment = OpLabel.LabelVAlignment.Center },
-            new OpCheckBox(NoirUseCustomStart, 10f, 400f),
-            new OpLabel(40f, 400f, "Custom Start (disable if Story Mode fails to load)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+            // new BetterComboBox(NoirUseCustomStart, new Vector2(10f, 400f), 200f, OpResourceSelector.GetEnumNames(null, typeof(NoirCatto.CustomStartMode)).ToList()),
+            // new OpLabel(240f, 400f, "Custom Start (disable if Story Mode fails to load)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
 
             new OpLabel(10f, 450f - offset, "Fun and Extras", true) { color = new Color(0.65f, 0.85f, 1f) },
             new OpKeyBinder(NoirMeowKey, new Vector2(10f, 420f - offset), new Vector2(150f, 30f), true, OpKeyBinder.BindController.AnyController),
@@ -522,6 +541,10 @@ public class Options : OptionInterface
             new OpLabel(40f, 390f - offset, "Creatures react to Meows") { verticalAlignment = OpLabel.LabelVAlignment.Center },
             new OpCheckBox(NoirHideEars, 10f, 360f - offset),
             new OpLabel(40f, 360f - offset, "Hide ears (eg. For use with DMS)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
+
+            //Added last due to overlap
+            new BetterComboBox(NoirUseCustomStart, new Vector2(10f, 400f), 200f, OpResourceSelector.GetEnumNames(null, typeof(NoirCatto.CustomStartMode)).ToList()),
+            new OpLabel(220f, 400f, "Custom Start (disable if Story Mode fails to load)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
         });
     }
 }
