@@ -15,21 +15,26 @@ public class HudHooks
     public static void Apply()
     {
         On.Menu.SleepAndDeathScreen.GetDataFromGame += SleepAndDeathScreen_GetDataFromGame;
-        On.MoreSlugcats.CollectiblesTracker.ctor += CollectiblesTrackerOnctor;
         On.HUD.RainMeter.Draw += RainMeter_Draw;
         On.HUD.RainMeter.ctor += RainMeter_ctor;
         On.HUD.RainMeter.Update += RainMeter_Update;
+        
+        On.HUD.HUD.InitSinglePlayerHud += HUDOnInitSinglePlayerHud;
     }
-    
+
+    public static void HUDOnInitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam)
+    {
+        orig(self, cam);
+        if (Plugin.LizRep() && 
+            ((self.owner as Player)?.room.world.game.StoryCharacter == Plugin.FriendName || 
+             (self.owner as Player)?.room.world.game.StoryCharacter == Plugin.DragonName || 
+             Plugin.LizRepAll())) 
+            self.AddPart(new LizardRepHud.LizardUI(self, self.fContainers[1], self.owner as Player));
+    }
+
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
-    //ublic static int CollTrackerInd;
     
-    public static void CollectiblesTrackerOnctor(CollectiblesTracker.orig_ctor orig, MoreSlugcats.CollectiblesTracker self, Menu.Menu menu, MenuObject owner, Vector2 pos, FContainer container, SlugcatStats.Name saveslot)
-    {
-        orig(self, menu, owner, pos, container, saveslot);
-        //CollTrackerInd = menu.pages[0].subObjects.IndexOf(self);
-    }
     public static void SleepAndDeathScreen_GetDataFromGame(On.Menu.SleepAndDeathScreen.orig_GetDataFromGame orig, Menu.SleepAndDeathScreen self, Menu.KarmaLadderScreen.SleepDeathScreenDataPackage package)
     { // Improved sleep screen
         orig(self, package);
@@ -44,7 +49,14 @@ public class HudHooks
             if (package.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegionStr", out List<string> killedInRegion) && killedInRegion.Any())
             {
                 if (self.pages[0].subObjects.FirstOrDefault(i => i is MoreSlugcats.CollectiblesTracker) is not MoreSlugcats.CollectiblesTracker tracker) return;
-                self.pages[0].subObjects.Add(new MotherKillTracker(self, self.pages[0],new Vector2(self.manager.rainWorld.options.ScreenSize.x - 50f + (1366f - self.manager.rainWorld.options.ScreenSize.x) / 2f, self.manager.rainWorld.options.ScreenSize.y - 15f),package.saveState,self.container, tracker));
+                self.pages[0].subObjects.Add(new MotherKillTracker(
+                    self, 
+                    self.pages[0],
+                    new Vector2(self.manager.rainWorld.options.ScreenSize.x - 50f + (1366f - self.manager.rainWorld.options.ScreenSize.x) / 2f, 
+                        self.manager.rainWorld.options.ScreenSize.y - 15f),
+                    package.saveState,
+                    self.container, 
+                    tracker));
             }
         }
     } 

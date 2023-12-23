@@ -74,7 +74,6 @@ namespace TheFriend
             SnowSpiderGraphics.Apply();
             PebblesLL.Apply();
             
-            DragonRepInterface.Apply();
             HudHooks.Apply();
             MotherKillTracker.Apply();
             MainMenu.Apply();
