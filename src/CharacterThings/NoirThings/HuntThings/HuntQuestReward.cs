@@ -14,15 +14,23 @@ public partial class HuntQuestThings
 
     private static void RainWorldGameOnWin(On.RainWorldGame.orig_Win orig, RainWorldGame self, bool malnourished)
     {
+        if (self.manager.upcomingProcess != null)
+        {
+            orig(self, malnourished);
+            return;
+        }
+
+        var flag = false;
         if (!self.rainWorld.ExpeditionMode && self.StoryCharacter == Plugin.NoirName && Master != null)
         {
             if (Master.NextRewardPhase == RewardPhase.IncreaseKarmaCap)
             {
                 self.GetStorySession.saveState.deathPersistentSaveData.karmaCap++;
             }
-            Master.SaveQuestProgress();
+            flag = true;
         }
         orig(self, malnourished);
+        if (flag) Master.SaveQuestProgress(); //Save after orig so malnourished is fetched properly
     }
 
     private static void ProcessManagerOnRequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID id)

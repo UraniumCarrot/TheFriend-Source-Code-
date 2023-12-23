@@ -68,6 +68,7 @@ namespace TheFriend
             AbstractObjectType.Apply();
             UpdateDeleteCWT.Apply();
             SolaceSaveData.Apply();
+            SolaceCustom.Apply();
             
             LizardRideControl.Apply();
             YoungLizardAI.Apply();

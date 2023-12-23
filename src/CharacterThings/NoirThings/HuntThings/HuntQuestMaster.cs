@@ -11,17 +11,15 @@ public partial class HuntQuestThings
     public class HuntQuestMaster
     {
         private const string HUNTQUEST_DATA = "HUNTQUEST_DATA";
-
-        private readonly StoryGameSession StorySession;
         private readonly List<WeakReference> _huntedCreatures; //AbstractCreature
         
         public readonly ObservableCollection<HuntQuest> Quests;
+        public StoryGameSession StorySession;
         public bool Completed;
         public RewardPhase NextRewardPhase;
 
-        public HuntQuestMaster(StoryGameSession storySession)
+        public HuntQuestMaster()
         {
-            StorySession = storySession;
             _huntedCreatures = new List<WeakReference>();
             Quests = new ObservableCollection<HuntQuest>();
         }
@@ -38,7 +36,12 @@ public partial class HuntQuestThings
                 newQuests = loadedQuests;
 
             if (!newQuests.Any())
-                newQuests = HuntQuest.GenerateQuests(StorySession);
+            {
+                if (StorySession.saveState.cycleNumber == 0) return; //Do nothing on first cycle
+                var karma = StorySession.saveState.deathPersistentSaveData.karmaCap;
+                if (karma >= 9) return;
+                newQuests = HuntQuestTemplates.FromKarma(karma);
+            }
 
             foreach (var quest in newQuests)
                 Quests.Add(quest);
@@ -63,7 +66,9 @@ public partial class HuntQuestThings
             _huntedCreatures.Add(new WeakReference(target));
             foreach (var quest in Quests.ToArray())
             {
-                quest.Targets.Remove(target.creatureTemplate.type);
+                var customType = HuntQuest.TypeTranslator(target.creatureTemplate.type);
+                if (!quest.Targets.Remove(customType))
+                    quest.Targets.Remove(target.creatureTemplate.type);
                 if (quest.Completed) QuestComplete(quest);
             }
         }

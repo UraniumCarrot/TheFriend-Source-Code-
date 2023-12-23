@@ -12,6 +12,7 @@ public partial class HuntQuestThings
         On.Menu.KarmaLadderScreen.Singal += KarmaLadderScreenOnSingal;
 
         On.StoryGameSession.ctor += StoryGameSessionOnctor;
+        On.CreatureSymbol.ctor += CreatureSymbolOnctor;
     }
 
     private static void StoryGameSessionOnctor(On.StoryGameSession.orig_ctor orig, StoryGameSession self, SlugcatStats.Name savestatenumber, RainWorldGame game)
@@ -19,7 +20,8 @@ public partial class HuntQuestThings
         orig(self, savestatenumber, game);
         if (!game.rainWorld.ExpeditionMode && savestatenumber == Plugin.NoirName)
         {
-            Master ??= new HuntQuestMaster(self);
+            Master ??= new HuntQuestMaster();
+            Master.StorySession = self;
             Master.LoadOrCreateQuests();
         }
     }
