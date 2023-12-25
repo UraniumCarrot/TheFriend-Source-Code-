@@ -39,8 +39,8 @@ public partial class HuntQuestThings
             {
                 if (StorySession.saveState.cycleNumber == 0) return; //Do nothing on first cycle
                 var karma = StorySession.saveState.deathPersistentSaveData.karmaCap;
-                if (karma >= 9) return;
-                newQuests = HuntQuestTemplates.FromKarma(karma);
+                if (karma >= 9) return; //Max karma reached!
+                newQuests = HuntQuestTemplates.FromKarma(0); //todo: use karma
             }
 
             foreach (var quest in newQuests)
@@ -56,7 +56,7 @@ public partial class HuntQuestThings
 
         public void QuestComplete(HuntQuest quest)
         {
-            Quests.Clear();
+            //Quests.Clear();
             Completed = true;
             NextRewardPhase = RewardPhase.IncreaseKarmaCap;
         }
@@ -75,7 +75,7 @@ public partial class HuntQuestThings
         public void AddEat(PhysicalObject eatenobject)
         {
             if (eatenobject is not Creature crit) return;
-            if (crit.killTag != null && crit.killTag.creatureTemplate.type == CreatureTemplate.Type.Slugcat)
+            if (!crit.dead || crit.killTag != null && crit.killTag.creatureTemplate.type == CreatureTemplate.Type.Slugcat)
             {
                 if (!AlreadyHunted(crit.abstractCreature))
                     TargetHunted(crit.abstractCreature);

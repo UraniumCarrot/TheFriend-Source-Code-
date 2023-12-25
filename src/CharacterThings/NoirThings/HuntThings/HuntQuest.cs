@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using TheFriend.HudThings;
 using TheFriend.WorldChanges;
 using UnityEngine;
 using static MoreSlugcats.MoreSlugcatsEnums.CreatureTemplateType;
@@ -34,15 +35,29 @@ public abstract partial class HuntQuestThings
 
         public bool Completed => !Targets.Any();
 
-        public static IconSymbol.IconSymbolData SymbolDataFromType(CreatureTemplate.Type type)
-        {
-            return !(type == CreatureTemplate.Type.Centipede) ? //why, rain world
-                new IconSymbol.IconSymbolData(type, AbstractPhysicalObject.AbstractObjectType.Creature, 0):
-                new IconSymbol.IconSymbolData(type, AbstractPhysicalObject.AbstractObjectType.Creature, 2);
-        }
-
         //-----
 
+        public static CreatureSprite GetHuntSprite(CreatureTemplate.Type type)
+        {
+            CreatureSprite sprite;
+            if (type == HuntCentipede || type == HuntCicada || type == HuntEggbug || type == HuntDLL)
+            {
+                sprite = new CreatureSprite(TypeTranslator(type));
+                sprite.CreatureType = type;
+            }
+            else
+            {
+                sprite = new CreatureSprite(type);
+            }
+
+            if (type == HuntCicada) sprite.CreatureColor = new Color(0.55f, 0.85f, 0.95f);
+            if (type == CreatureTemplate.Type.LanternMouse) sprite.CreatureColor = new Color(0.4f, 0.85f, 0.95f);
+            if (type == HuntCentipede || type == CreatureTemplate.Type.Centipede || type == CreatureTemplate.Type.SmallCentipede)
+                sprite.CreatureColor = Color.HSVToRGB(FamineWorld.defCentiColor, FamineWorld.defCentiSat, 1f);
+
+            sprite.color = sprite.CreatureColor;
+            return sprite;
+        }
         public static CreatureTemplate.Type TypeTranslator(CreatureTemplate.Type type)
         {
             if (type == CreatureTemplate.Type.Centipede || type == CreatureTemplate.Type.Centiwing || type == AquaCenti)
@@ -70,35 +85,5 @@ public abstract partial class HuntQuestThings
         public static readonly CreatureTemplate.Type HuntCicada = new CreatureTemplate.Type(nameof(HuntCicada));
         public static readonly CreatureTemplate.Type HuntEggbug = new CreatureTemplate.Type(nameof(HuntEggbug));
         public static readonly CreatureTemplate.Type HuntDLL = new CreatureTemplate.Type(nameof(HuntDLL));
-    }
-
-    private static void CreatureSymbolOnctor(On.CreatureSymbol.orig_ctor orig, CreatureSymbol self, IconSymbol.IconSymbolData icondata, FContainer container)
-    {
-        if (icondata.critType == HuntQuest.HuntCentipede || icondata.critType == HuntQuest.HuntCicada ||
-            icondata.critType == HuntQuest.HuntEggbug || icondata.critType == HuntQuest.HuntDLL)
-        {
-            var type = icondata.critType;
-            icondata.critType = HuntQuest.TypeTranslator(type);
-
-            orig(self, icondata, container);
-
-            self.myColor = CreatureSymbol.ColorOfCreature(icondata);
-            self.spriteName = CreatureSymbol.SpriteNameOfCreature(icondata);
-            self.graphWidth = Futile.atlasManager.GetElementWithName(self.spriteName).sourcePixelSize.x;
-
-            if (type == HuntQuest.HuntCicada)
-                self.myColor = new Color(0.55f, 0.85f, 0.95f);
-            if (type == HuntQuest.HuntCentipede)
-                self.myColor = Color.HSVToRGB(FamineWorld.defCentiColor, FamineWorld.defCentiSat, 1f);
-
-            self.iconData.critType = type;
-            return;
-        }
-        orig(self, icondata, container);
-
-        if (icondata.critType == CreatureTemplate.Type.SmallCentipede)
-            self.myColor = Color.HSVToRGB(FamineWorld.defCentiColor, FamineWorld.defCentiSat, 1f);
-        if (icondata.critType == CreatureTemplate.Type.LanternMouse)
-            self.myColor = new Color(0.4f, 0.85f, 0.95f);
     }
 }

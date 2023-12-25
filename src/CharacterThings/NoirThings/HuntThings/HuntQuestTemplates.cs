@@ -28,11 +28,16 @@ public partial class HuntQuestThings
 
         public static List<CreatureTemplate.Type[]> Ingredients0 = new List<CreatureTemplate.Type[]>()
         {
-            new[] { CreatureTemplate.Type.SmallCentipede, CreatureTemplate.Type.SmallCentipede },
-            new[] { CreatureTemplate.Type.SmallNeedleWorm, CreatureTemplate.Type.SmallNeedleWorm },
-            new[] { CreatureTemplate.Type.LanternMouse },
-            new[] { HuntQuest.HuntCicada },
-            new[] { HuntQuest.HuntEggbug },
+            // new[] { CreatureTemplate.Type.SmallCentipede, CreatureTemplate.Type.SmallCentipede },
+            // new[] { CreatureTemplate.Type.SmallNeedleWorm, CreatureTemplate.Type.SmallNeedleWorm },
+            // new[] { CreatureTemplate.Type.LanternMouse },
+            // new[] { HuntQuest.HuntCicada },
+            // new[] { HuntQuest.HuntEggbug },
+
+            new []{ CreatureTemplate.Type.SmallCentipede, CreatureTemplate.Type.SmallNeedleWorm, CreatureTemplate.Type.LanternMouse },
+            new []{ HuntQuest.HuntCicada, CreatureTemplate.Type.SmallCentipede, HuntQuest.HuntEggbug },
+            new []{ CreatureTemplate.Type.Scavenger, CreatureTemplate.Type.JetFish },
+            new []{ CreatureTemplate.Type.SmallCentipede }
         };
 
 

@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using HUD;
+using TheFriend.HudThings;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TheFriend.CharacterThings.NoirThings.HuntThings;
 
@@ -22,7 +25,11 @@ public partial class HuntQuestThings
     public class HuntQuestHUD : HudPart
     {
         private readonly FContainer fContainer;
-        private readonly Dictionary<HuntQuest, List<CreatureSymbol>> iconsContainer;
+        private readonly Dictionary<HuntQuest, List<CreatureSprite>> iconsContainer;
+        private readonly Queue<FadeRequest> fadeQueue;
+        private readonly FSpriteEx glowSprite;
+        private CreatureSprite winIcon;
+        private byte winScript;
         private Vector2 containerPos;
         private Vector2 containerLastPos;
         private float fade;
@@ -30,22 +37,25 @@ public partial class HuntQuestThings
         private float minFade;
         private float maxFade;
         private int fadeDelay;
-        private Queue<FadeRequest> fadeQueue;
         private float iconMargin;
         private float lastIconMargin;
         private float questMargin;
         private float lastQuestMargin;
+        private bool visible;
+        private bool scriptRunning;
 
         public readonly Player Owner;
-        public bool Visible;
 
         public HuntQuestHUD(HUD.HUD hud) : base(hud)
         {
             fContainer = hud.fContainers[1];
-            iconsContainer = new Dictionary<HuntQuest, List<CreatureSymbol>>();
-            containerPos = new Vector2(20.2f, 725.2f); //todo: use screen size?
+            iconsContainer = new Dictionary<HuntQuest, List<CreatureSprite>>();
+            containerPos = new Vector2(20.2f, Screen.height - 42.8f);
             containerLastPos = containerPos;
-            Visible = true;
+            visible = false;
+            scriptRunning = false;
+            glowSprite = new FSpriteEx("Futile_White");
+            glowSprite.shader = hud.rainWorld.Shaders["FlatLight"];
 
             fade = 1f;
             lastFade = 1;
@@ -64,32 +74,64 @@ public partial class HuntQuestThings
             LoadMiscData();
         }
 
+        public bool Visible => visible || !scriptRunning && (hud.map.visible || iconsContainer.Values.Any(x => x.Any(y => y.SlatedForDeletion != null)));
+
         public override void Update()
         {
+            if (Master == null) return;
+            if (Master.StorySession.game.GamePaused) return;
             base.Update();
+            WinUpdate();
+            RoomUpdate();
             MessageUpdate();
             FadeQueueUpdate();
 
-            foreach (var icon in iconsContainer.Values.SelectMany(icons => icons))
-                icon.Update();
-
-            if (hud.map.visible)
+            foreach (var item in iconsContainer.ToArray())
             {
-                iconMargin += 1f;
+                foreach (var icon in item.Value.ToArray())
+                {
+                    icon.Update();
+                    if (fade >= maxFade && icon.SlatedForDeletion != null)
+                    {
+                        if (icon.SlatedForDeletion.Value == false && icon != winIcon)
+                        {
+                            if (fadeDelay == 0) fadeDelay = 50;
+                            icon.SlatedForDeletion = true;
+                        }
+                        if (fadeDelay == 0 && icon.SlatedForDeletion is true)
+                        {
+                            icon.alpha -= 0.05f;
+                            if (icon.alpha <= 0f)
+                                RemoveIcon(item.Key, icon);
+                        }
+                    }
+                }
+            }
+            glowSprite.Update();
+
+            if (Visible)
+            {
+                iconMargin += 3f;
                 questMargin += 1f;
             }
             else
             {
-                iconMargin -= 1f;
+                iconMargin -= 3f;
                 questMargin -= 1f;
             }
-            iconMargin = Mathf.Clamp(iconMargin, 10f, 20f);
-            questMargin = Mathf.Clamp(questMargin, 18f, 20f);
+            iconMargin = Mathf.Clamp(iconMargin, 10f, 25f);
+            questMargin = Mathf.Clamp(questMargin, 20f, 25f);
 
-            if ((Visible || hud.map.visible) && fade < maxFade)
-                fade += 0.025f;
-            else if (fade > minFade)
-                fade -= 0.025f;
+            if (Visible)
+            {
+                if (fade > maxFade) fade -= 0.025f;
+                if (fade < maxFade) fade += 0.025f;
+            }
+            else
+            {
+                if (fade < minFade) fade += 0.025f;
+                if (fade > minFade) fade -= 0.025f;
+            }
 
             fade = Mathf.Clamp01(fade);
             lastFade = fade;
@@ -106,34 +148,52 @@ public partial class HuntQuestThings
             var drawFade = Mathf.Lerp(lastFade, fade, timeStacker);
             var drawIconMargin = Mathf.Lerp(lastIconMargin, iconMargin, timeStacker);
             var drawQuestMargin = Mathf.Lerp(lastQuestMargin, questMargin, timeStacker);
+            var containerDrawPos = Vector2.Lerp(containerLastPos, containerPos, timeStacker);
 
             for (var i = 0; i < iconsContainer.Count; i++)
             {
                 var container = iconsContainer.ElementAt(i).Value;
-                var questPos = ContainerDrawPos(timeStacker);
+                var questPos = containerDrawPos;
                 questPos.y -= i * drawQuestMargin;
                 for (var j = 0; j < container.Count; j++)
                 {
                     var icon = container[j];
                     var iconPos = questPos;
                     iconPos.x += j * drawIconMargin;
-                    icon.Draw(timeStacker, iconPos);
-                    icon.symbolSprite.alpha = drawFade;
+                    icon.pos = iconPos;
+                    if ((icon.SlatedForDeletion is not true && fadeDelay == 0) && winScript < 3)
+                        icon.alpha = drawFade;
+                    icon.Draw(timeStacker);
                 }
             }
+            glowSprite.Draw(timeStacker);
         }
 
         private void AddIcon(HuntQuest quest, CreatureTemplate.Type type)
         {
-            var icon = new CreatureSymbol(HuntQuest.SymbolDataFromType(type), fContainer);
+            var icon = HuntQuest.GetHuntSprite(type);
+            fContainer.AddChild(icon);
             iconsContainer[quest].Add(icon);
-            icon.Show(false);
         }
-        private void RemoveIcon(HuntQuest quest, CreatureTemplate.Type type)
+        private void RemoveIcon(HuntQuest quest, CreatureSprite icon)
         {
-            var icon = iconsContainer[quest].First(x => x.critType == type);
-            icon.RemoveSprites();
+            icon.RemoveFromContainer();
             iconsContainer[quest].Remove(icon);
+            if (!iconsContainer[quest].Any())
+            {
+                iconsContainer.Remove(quest);
+                quest.Targets.CollectionChanged -= TargetsOnCollectionChanged;
+            }
+        }
+        private void SlateIconForDeletion(HuntQuest quest, CreatureTemplate.Type type)
+        {
+            var icon = iconsContainer[quest].Last(x => x.CreatureType == type);
+            icon.SlatedForDeletion = false;
+            if (quest.Completed && winIcon == null)
+            {
+                winIcon = icon;
+                winScript = 1;
+            }
         }
 
         private void InitializeContainer()
@@ -149,7 +209,7 @@ public partial class HuntQuestThings
             {
                 foreach (CreatureTemplate.Type oldTarget in e.OldItems)
                 {
-                    RemoveIcon(quest, oldTarget);
+                    SlateIconForDeletion(quest, oldTarget);
                 }
             }
             if (e.NewItems != null) //Targets have been added
@@ -165,7 +225,7 @@ public partial class HuntQuestThings
         #region Quests
         private void NewQuest(HuntQuest quest)
         {
-            iconsContainer.Add(quest, new List<CreatureSymbol>());
+            iconsContainer.Add(quest, new List<CreatureSprite>());
             foreach (var target in quest.Targets)
             {
                 AddIcon(quest, target);
@@ -174,12 +234,10 @@ public partial class HuntQuestThings
         }
         private void DisposeQuest(HuntQuest quest)
         {
-            foreach (var creatureSymbol in iconsContainer[quest])
-            {
-                creatureSymbol.RemoveSprites();
-            }
+            foreach (var icon in iconsContainer[quest])
+                icon.SlatedForDeletion = true;
+
             quest.Targets.CollectionChanged -= TargetsOnCollectionChanged;
-            iconsContainer.Remove(quest);
         }
 
         //-----
@@ -205,27 +263,129 @@ public partial class HuntQuestThings
         }
         #endregion
 
-        private Vector2 ContainerDrawPos(float timeStacker)
+        private void WinUpdate()
         {
-            return Vector2.Lerp(containerLastPos, containerPos, timeStacker);
+            if (winScript == 0) return;
+            switch (winScript)
+            {
+                case 1:
+                    visible = true;
+                    if (fade >= maxFade)
+                    {
+                        foreach (var icon in iconsContainer.Values.SelectMany(icons => icons).Where(i => i != winIcon && i.SlatedForDeletion != null))
+                        {
+                            icon.SlatedForDeletion = null; //Prevent accidentally removing other icons than winIcon
+                        }
+                        fadeDelay = 50;
+                        winScript++;
+                    }
+                    break;
+                case 2:
+                    if (fadeDelay != 0) return;
+                    glowSprite.SetPosition(winIcon.pos);
+                    glowSprite.alpha = 0f;
+                    glowSprite.scale = 3f;
+                    fContainer.AddChild(glowSprite);
+                    fadeDelay = 79;
+                    hud.PlaySound(SoundID.HUD_Karma_Reinforce_Flicker);
+                    winScript++;
+                    break;
+                case 3:
+                    glowSprite.alpha = 0.5f * Mathf.Pow(Mathf.InverseLerp(78f, 54f, fadeDelay), 3f);
+                    glowSprite.alpha += 0.06f * Mathf.Sin(fadeDelay * Mathf.Deg2Rad * Random.Range(0, 15));
+                    foreach (var icon in iconsContainer.Values.SelectMany(x => x))
+                    {
+                        if (icon == winIcon) continue;
+                        icon.color = Color.Lerp(icon.CreatureColor, Color.white, Mathf.InverseLerp(78f, 54f, fadeDelay));
+                        if (icon.alpha > 0.5f) icon.alpha -= 0.025f;
+                    }
+                    if (fadeDelay == 0)
+                    {
+                        fadeDelay = 5;
+                        winScript++;
+                    }
+                    break;
+                case 4:
+                    if (fadeDelay != 0) return;
+                    hud.fadeCircles.Add(new FadeCircle(hud, winIcon.pixelSize.MaxValue(), 1f, 0.82f, 50f, 4f, winIcon.pos, fContainer));
+                    hud.PlaySound(SoundID.HUD_Karma_Reinforce_Bump);
+                    fadeDelay = 40;
+                    winScript++;
+                    break;
+                case 5:
+                    winIcon.SlatedForDeletion = true;
+                    winScript++;
+                    break;
+                case 6:
+                    glowSprite.alpha = 0.6f * Mathf.Pow(winIcon.alpha, 2f);
+                    if (glowSprite.alpha <= 0f)
+                    {
+                        fadeDelay = 10;
+                        winScript++;
+                    }
+                    break;
+                case 7:
+                    if (fadeDelay != 0) return;
+                    foreach (var quest in iconsContainer.Keys)
+                        DisposeQuest(quest);
+                    visible = false;
+                    winScript = 0;
+                    break;
+            }
+            hud.foodMeter.showCountDelay = 50;
+        }
+
+        private void RoomUpdate()
+        {
+            if (scriptRunning) return;
+            if (Owner.room == null) return;
+            if (Owner.room.abstractRoom.shelter)
+            {
+                if (minFade != 0f) new FadeRequest(null, 0, fadeQueue, 0f);
+            }
+            else
+            {
+                if (minFade != 0.5f) new FadeRequest(null, 0, fadeQueue, 0.5f);
+            }
         }
 
         #region Messages
         private const string HUNTQUEST_GREETMSG = "HUNTQUEST_GREETMSG";
-        private bool TutorialMessageShown;
+        private byte TutorialMessageShown;
         private void MessageUpdate()
         {
-            if (!TutorialMessageShown)
+            if (TutorialMessageShown < 5)
             {
-                Visible = false;
-                fade = 0f;
-                if (Master.StorySession.saveState.cycleNumber != 0 && Owner.room != null && !Owner.room.abstractRoom.shelter)
+                switch (TutorialMessageShown)
                 {
-                    hud.textPrompt.AddMessage("You feel the urge to hunt...", 10, 300, true, true);
-                    TutorialMessageShown = true;
-                    new FadeRequest(true, 300, fadeQueue);
-                    new FadeRequest(false, 100, fadeQueue, 0.5f);
-                    SaveThings.SolaceCustom.SaveStorySpecific(HUNTQUEST_GREETMSG, false, Master.StorySession); //todo true
+                    case 0:
+                        scriptRunning = true;
+                        visible = false;
+                        fade = 0f;
+                        TutorialMessageShown++;
+                        break;
+                    case 1:
+                        if (Master.StorySession.saveState.cycleNumber != 0 && Owner.room != null && !Owner.room.abstractRoom.shelter)
+                            TutorialMessageShown++;
+                        break;
+                    case 2:
+                        hud.textPrompt.AddMessage("You feel the urge to hunt...", 10, 200, true, true);
+                        new FadeRequest(true, 200, fadeQueue, null, 1f);
+                        new FadeRequest(false, 100, fadeQueue, 0.5f);
+                        TutorialMessageShown++;
+                        break;
+                    case 3:
+                        if (fade >= maxFade)
+                            TutorialMessageShown++;
+                        break;
+                    case 4:
+                        if (fade <= minFade)
+                        {
+                            scriptRunning = false;
+                            TutorialMessageShown++;
+                            SaveThings.SolaceCustom.SaveStorySpecific(HUNTQUEST_GREETMSG, false, Master.StorySession); //todo true
+                        }
+                        break;
                 }
             }
         }
@@ -234,10 +394,10 @@ public partial class HuntQuestThings
         private class FadeRequest
         {
             public int Delay;
-            public bool Visible;
+            public bool? Visible;
             public float? MaxFade;
             public float? MinFade;
-            public FadeRequest(bool visible, int delay, Queue<FadeRequest> queue, float? minFade = null, float? maxFade = null)
+            public FadeRequest(bool? visible, int delay, Queue<FadeRequest> queue, float? minFade = null, float? maxFade = null)
             {
                 Visible = visible;
                 Delay = delay;
@@ -251,7 +411,7 @@ public partial class HuntQuestThings
         {
             if (fadeDelay == 0 && currentRequest != null)
             {
-                Visible = currentRequest.Visible;
+                if (currentRequest.Visible != null) visible = currentRequest.Visible.Value;
                 if (currentRequest.MaxFade != null) maxFade = currentRequest.MaxFade.Value;
                 if (currentRequest.MinFade != null) minFade = currentRequest.MinFade.Value;
                 currentRequest = null;
@@ -265,7 +425,8 @@ public partial class HuntQuestThings
 
         private void LoadMiscData()
         {
-            SaveThings.SolaceCustom.LoadStorySpecific(HUNTQUEST_GREETMSG, out TutorialMessageShown, Master.StorySession);
+            SaveThings.SolaceCustom.LoadStorySpecific(HUNTQUEST_GREETMSG, out bool tutorialMessageShown, Master.StorySession);
+            if (tutorialMessageShown) TutorialMessageShown = byte.MaxValue;
         }
     }
 }

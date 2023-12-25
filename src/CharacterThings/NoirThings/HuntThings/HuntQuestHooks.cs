@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace TheFriend.CharacterThings.NoirThings.HuntThings;
 
 public partial class HuntQuestThings
@@ -5,14 +7,24 @@ public partial class HuntQuestThings
     public static void Apply()
     {
         On.HUD.HUD.InitSinglePlayerHud += HUDOnInitSinglePlayerHud;
-        On.PlayerSessionRecord.AddEat += PlayerSessionRecordOnAddEat;
-        On.RainWorldGame.Win += RainWorldGameOnWin;
-        On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManagerOnRequestMainProcessSwitch_ProcessID;
         On.Menu.KarmaLadder.ctor += KarmaLadderOnctor;
         On.Menu.KarmaLadderScreen.Singal += KarmaLadderScreenOnSingal;
 
         On.StoryGameSession.ctor += StoryGameSessionOnctor;
-        On.CreatureSymbol.ctor += CreatureSymbolOnctor;
+        On.RainWorldGame.Win += RainWorldGameOnWin;
+        On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManagerOnRequestMainProcessSwitch_ProcessID;
+        On.PlayerSessionRecord.AddEat += PlayerSessionRecordOnAddEat;
+        On.Creature.Die += CreatureOnDie;
+    }
+
+    private static void CreatureOnDie(On.Creature.orig_Die orig, Creature self)
+    {
+        if (self.killTag == null)
+        {
+            if (self.grabbedBy.FirstOrDefault(x => x.grabber is Player)?.grabber is Player player)
+                self.SetKillTag(player.abstractCreature);
+        }
+        orig(self);
     }
 
     private static void StoryGameSessionOnctor(On.StoryGameSession.orig_ctor orig, StoryGameSession self, SlugcatStats.Name savestatenumber, RainWorldGame game)
