@@ -37,17 +37,17 @@ public abstract partial class HuntQuestThings
 
         //-----
 
-        public static CreatureSprite GetHuntSprite(CreatureTemplate.Type type)
+        public static HuntQuestHUD.HuntCreatureSprite GetHuntSprite(CreatureTemplate.Type type)
         {
-            CreatureSprite sprite;
+            HuntQuestHUD.HuntCreatureSprite sprite;
             if (type == HuntCentipede || type == HuntCicada || type == HuntEggbug || type == HuntDLL)
             {
-                sprite = new CreatureSprite(TypeTranslator(type));
+                sprite = new HuntQuestHUD.HuntCreatureSprite(TypeTranslator(type));
                 sprite.CreatureType = type;
             }
             else
             {
-                sprite = new CreatureSprite(type);
+                sprite = new HuntQuestHUD.HuntCreatureSprite(type);
             }
 
             if (type == HuntCicada) sprite.CreatureColor = new Color(0.55f, 0.85f, 0.95f);

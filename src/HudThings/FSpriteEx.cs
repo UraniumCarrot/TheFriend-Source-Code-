@@ -51,7 +51,6 @@ public class CreatureSprite : FSpriteEx
 {
     public CreatureTemplate.Type CreatureType;
     public Color CreatureColor;
-    public bool? SlatedForDeletion;
 
     public CreatureSprite(CreatureTemplate.Type type) : this(SymbolDataFromType(type)) { }
     public CreatureSprite(IconSymbol.IconSymbolData iconData) : base(CreatureSymbol.SpriteNameOfCreature(iconData))

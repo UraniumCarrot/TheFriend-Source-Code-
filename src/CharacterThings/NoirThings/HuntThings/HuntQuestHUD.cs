@@ -24,14 +24,20 @@ public partial class HuntQuestThings
 
     public class HuntQuestHUD : HudPart //To any poor soul entering here, I apologize in advance. I must uphold the Rain World's poor and uncomprehensible coding standards.
     {
+        public class HuntCreatureSprite : CreatureSprite
+        {
+            public bool? MarkedForDeletion;
+            public HuntCreatureSprite(CreatureTemplate.Type type) : base(type) { }
+        }
+        
         private readonly FContainer fContainer;
-        private readonly Dictionary<HuntQuest, List<CreatureSprite>> iconsContainer;
+        private readonly Dictionary<HuntQuest, List<HuntCreatureSprite>> iconsContainer;
         private readonly Queue<FadeRequest> fadeQueue;
         private readonly FSpriteEx glowSprite;
         private readonly List<FSprite> separators;
         private float separatorFade;
         private float separatorLastFade;
-        private CreatureSprite winIcon;
+        private HuntCreatureSprite winIcon;
         private byte winScript;
         private Vector2 containerPos;
         private Vector2 containerLastPos;
@@ -52,7 +58,7 @@ public partial class HuntQuestThings
         public HuntQuestHUD(HUD.HUD hud) : base(hud)
         {
             fContainer = hud.fContainers[1];
-            iconsContainer = new Dictionary<HuntQuest, List<CreatureSprite>>();
+            iconsContainer = new Dictionary<HuntQuest, List<HuntCreatureSprite>>();
             containerPos = new Vector2(20.2f, Screen.height - 42.8f);
             containerLastPos = containerPos;
             visible = false;
@@ -79,7 +85,7 @@ public partial class HuntQuestThings
             LoadMiscData();
         }
 
-        public bool Visible => visible || !scriptRunning && (hud.map.visible || iconsContainer.Values.Any(x => x.Any(y => y.SlatedForDeletion != null)));
+        public bool Visible => visible || !scriptRunning && (hud.map.visible || iconsContainer.Values.Any(x => x.Any(y => y.MarkedForDeletion != null)));
 
         public override void Update()
         {
@@ -96,14 +102,14 @@ public partial class HuntQuestThings
                 foreach (var icon in item.Value.ToArray())
                 {
                     icon.Update();
-                    if (fade >= maxFade && icon.SlatedForDeletion != null)
+                    if (fade >= maxFade && icon.MarkedForDeletion != null)
                     {
-                        if (icon.SlatedForDeletion.Value == false)
+                        if (icon.MarkedForDeletion.Value == false)
                         {
                             if (fadeDelay == 0) fadeDelay = 50;
-                            icon.SlatedForDeletion = true;
+                            icon.MarkedForDeletion = true;
                         }
-                        if (fadeDelay == 0 && icon.SlatedForDeletion is true)
+                        if (fadeDelay == 0 && icon.MarkedForDeletion is true)
                         {
                             icon.targetAlpha -= 0.025f;
                             if (icon.alpha <= 0f)
@@ -171,9 +177,9 @@ public partial class HuntQuestThings
                     iconPos.x += j * drawIconMargin;
                     icon.pos = Vector2.Lerp(icon.lastPos, iconPos, timeStacker);
                     icon.color = icon.LerpColor(timeStacker);
-                    if (icon.SlatedForDeletion is not true && winScript < 3)
+                    if (icon.MarkedForDeletion is not true && winScript < 3)
                         icon.alpha = drawFade;
-                    else if (icon.SlatedForDeletion is true || winScript >= 3)
+                    else if (icon.MarkedForDeletion is true || winScript >= 3)
                         icon.alpha = icon.LerpAlpha(timeStacker);
                 }
 
@@ -202,7 +208,7 @@ public partial class HuntQuestThings
             fContainer.AddChild(icon);
             iconsContainer[quest].Add(icon);
         }
-        private void RemoveIcon(HuntQuest quest, CreatureSprite icon)
+        private void RemoveIcon(HuntQuest quest, HuntCreatureSprite icon)
         {
             icon.RemoveFromContainer();
             iconsContainer[quest].Remove(icon);
@@ -213,7 +219,7 @@ public partial class HuntQuestThings
                 quest.Targets.CollectionChanged -= TargetsOnCollectionChanged;
             }
         }
-        private void SlateIconForDeletion(HuntQuest quest, CreatureTemplate.Type type)
+        private void MarkIconForDeletion(HuntQuest quest, CreatureTemplate.Type type)
         {
             var icon = iconsContainer[quest].Last(x => x.CreatureType == type);
             if (quest.Completed && winIcon == null)
@@ -222,7 +228,7 @@ public partial class HuntQuestThings
                 winScript = 1;
                 return;
             }
-            icon.SlatedForDeletion = false;
+            icon.MarkedForDeletion = false;
         }
         private void AddSeparator()
         {
@@ -250,7 +256,7 @@ public partial class HuntQuestThings
             {
                 foreach (CreatureTemplate.Type oldTarget in e.OldItems)
                 {
-                    SlateIconForDeletion(quest, oldTarget);
+                    MarkIconForDeletion(quest, oldTarget);
                 }
             }
             if (e.NewItems != null) //Targets have been added
@@ -267,7 +273,7 @@ public partial class HuntQuestThings
         private void NewQuest(HuntQuest quest)
         {
             if (iconsContainer.Any()) AddSeparator();
-            iconsContainer.Add(quest, new List<CreatureSprite>());
+            iconsContainer.Add(quest, new List<HuntCreatureSprite>());
             foreach (var target in quest.Targets)
             {
                 AddIcon(quest, target);
@@ -277,7 +283,7 @@ public partial class HuntQuestThings
         private void DisposeQuest(HuntQuest quest)
         {
             foreach (var icon in iconsContainer[quest])
-                icon.SlatedForDeletion = true;
+                icon.MarkedForDeletion = true;
 
             quest.Targets.CollectionChanged -= TargetsOnCollectionChanged;
         }
@@ -316,7 +322,7 @@ public partial class HuntQuestThings
                     {
                         foreach (var icon in iconsContainer.Values.SelectMany(icons => icons))
                         {
-                            icon.SlatedForDeletion = null; //Prevent accidentally removing other icons
+                            icon.MarkedForDeletion = null; //Prevent accidentally removing other icons
                         }
                         fadeDelay = 50;
                         winScript++;
@@ -356,7 +362,7 @@ public partial class HuntQuestThings
                     winScript++;
                     break;
                 case 5:
-                    winIcon.SlatedForDeletion = true;
+                    winIcon.MarkedForDeletion = true;
                     winScript++;
                     break;
                 case 6:
