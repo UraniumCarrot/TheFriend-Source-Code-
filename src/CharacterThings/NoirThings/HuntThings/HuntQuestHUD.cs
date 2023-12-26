@@ -22,12 +22,15 @@ public partial class HuntQuestThings
         }
     }
 
-    public class HuntQuestHUD : HudPart
+    public class HuntQuestHUD : HudPart //To any poor soul entering here, I apologize in advance. I must uphold the Rain World's poor and uncomprehensible coding standards.
     {
         private readonly FContainer fContainer;
         private readonly Dictionary<HuntQuest, List<CreatureSprite>> iconsContainer;
         private readonly Queue<FadeRequest> fadeQueue;
         private readonly FSpriteEx glowSprite;
+        private readonly List<FSprite> separators;
+        private float separatorFade;
+        private float separatorLastFade;
         private CreatureSprite winIcon;
         private byte winScript;
         private Vector2 containerPos;
@@ -56,7 +59,9 @@ public partial class HuntQuestThings
             scriptRunning = false;
             glowSprite = new FSpriteEx("Futile_White");
             glowSprite.shader = hud.rainWorld.Shaders["FlatLight"];
-
+            separators = new List<FSprite>();
+            separatorFade = 1f;
+            separatorLastFade = 1f;
             fade = 1f;
             lastFade = 1;
             minFade = 0f;
@@ -126,16 +131,19 @@ public partial class HuntQuestThings
             {
                 if (fade > maxFade) fade -= 0.025f;
                 if (fade < maxFade) fade += 0.025f;
+                if (separatorFade < fade * 0.5f) separatorFade += 0.025f;
             }
             else
             {
                 if (fade < minFade) fade += 0.025f;
                 if (fade > minFade) fade -= 0.025f;
+                separatorFade -= 0.025f;
             }
 
             fade = Mathf.Clamp01(fade);
             lastFade = fade;
-
+            separatorFade = Mathf.Clamp01(separatorFade);
+            separatorLastFade = separatorFade;
             lastIconMargin = iconMargin;
             lastQuestMargin = questMargin;
             containerLastPos = containerPos;
@@ -155,6 +163,7 @@ public partial class HuntQuestThings
                 var container = iconsContainer.ElementAt(i).Value;
                 var questPos = containerDrawPos;
                 questPos.y -= i * drawQuestMargin;
+
                 for (var j = 0; j < container.Count; j++)
                 {
                     var icon = container[j];
@@ -167,7 +176,23 @@ public partial class HuntQuestThings
                     else if (icon.SlatedForDeletion is true || winScript >= 3)
                         icon.alpha = icon.LerpAlpha(timeStacker);
                 }
+
+                var line = separators.ElementAtOrDefault(i);
+                if (line == null) continue;
+                var linePos = questPos;
+                linePos.y -= 0.5f * drawQuestMargin;
+                line.scaleX = drawIconMargin * (container.Count - 1) + 20f;
+                linePos.x += line.scaleX * 0.5f - 10f;
+                line.SetPosition(linePos);
+                if (winScript < 3)
+                    line.alpha = Mathf.Lerp(separatorLastFade, separatorFade, timeStacker);
+                else
+                {
+                    var iconAlpha = iconsContainer.Values.SelectMany(icons => icons).First(icon => icon != winIcon).alpha;
+                    if (iconAlpha < line.alpha) line.alpha = iconAlpha;
+                }
             }
+
             glowSprite.LerpAll(timeStacker);
         }
 
@@ -183,6 +208,7 @@ public partial class HuntQuestThings
             iconsContainer[quest].Remove(icon);
             if (!iconsContainer[quest].Any())
             {
+                RemoveSeparator();
                 iconsContainer.Remove(quest);
                 quest.Targets.CollectionChanged -= TargetsOnCollectionChanged;
             }
@@ -197,6 +223,18 @@ public partial class HuntQuestThings
                 return;
             }
             icon.SlatedForDeletion = false;
+        }
+        private void AddSeparator()
+        {
+            var sprite = new FSprite("pixel");
+            separators.Add(sprite);
+            fContainer.AddChild(sprite);
+        }
+        private void RemoveSeparator()
+        {
+            var sprite = separators.Last();
+            sprite.RemoveFromContainer();
+            separators.Remove(sprite);
         }
 
         private void InitializeContainer()
@@ -228,6 +266,7 @@ public partial class HuntQuestThings
         #region Quests
         private void NewQuest(HuntQuest quest)
         {
+            if (iconsContainer.Any()) AddSeparator();
             iconsContainer.Add(quest, new List<CreatureSprite>());
             foreach (var target in quest.Targets)
             {
