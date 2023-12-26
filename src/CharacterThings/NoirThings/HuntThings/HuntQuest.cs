@@ -55,6 +55,7 @@ public abstract partial class HuntQuestThings
             if (type == HuntCentipede || type == CreatureTemplate.Type.Centipede || type == CreatureTemplate.Type.SmallCentipede)
                 sprite.CreatureColor = Color.HSVToRGB(FamineWorld.defCentiColor, FamineWorld.defCentiSat, 1f);
 
+            sprite.targetColor = sprite.CreatureColor;
             sprite.color = sprite.CreatureColor;
             return sprite;
         }

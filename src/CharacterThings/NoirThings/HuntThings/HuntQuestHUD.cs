@@ -93,14 +93,14 @@ public partial class HuntQuestThings
                     icon.Update();
                     if (fade >= maxFade && icon.SlatedForDeletion != null)
                     {
-                        if (icon.SlatedForDeletion.Value == false && icon != winIcon)
+                        if (icon.SlatedForDeletion.Value == false)
                         {
                             if (fadeDelay == 0) fadeDelay = 50;
                             icon.SlatedForDeletion = true;
                         }
                         if (fadeDelay == 0 && icon.SlatedForDeletion is true)
                         {
-                            icon.alpha -= 0.05f;
+                            icon.targetAlpha -= 0.025f;
                             if (icon.alpha <= 0f)
                                 RemoveIcon(item.Key, icon);
                         }
@@ -160,13 +160,15 @@ public partial class HuntQuestThings
                     var icon = container[j];
                     var iconPos = questPos;
                     iconPos.x += j * drawIconMargin;
-                    icon.pos = iconPos;
-                    if ((icon.SlatedForDeletion is not true && fadeDelay == 0) && winScript < 3)
+                    icon.pos = Vector2.Lerp(icon.lastPos, iconPos, timeStacker);
+                    icon.color = icon.LerpColor(timeStacker);
+                    if (icon.SlatedForDeletion is not true && winScript < 3)
                         icon.alpha = drawFade;
-                    icon.Draw(timeStacker);
+                    else if (icon.SlatedForDeletion is true || winScript >= 3)
+                        icon.alpha = icon.LerpAlpha(timeStacker);
                 }
             }
-            glowSprite.Draw(timeStacker);
+            glowSprite.LerpAll(timeStacker);
         }
 
         private void AddIcon(HuntQuest quest, CreatureTemplate.Type type)
@@ -188,12 +190,13 @@ public partial class HuntQuestThings
         private void SlateIconForDeletion(HuntQuest quest, CreatureTemplate.Type type)
         {
             var icon = iconsContainer[quest].Last(x => x.CreatureType == type);
-            icon.SlatedForDeletion = false;
             if (quest.Completed && winIcon == null)
             {
                 winIcon = icon;
                 winScript = 1;
+                return;
             }
+            icon.SlatedForDeletion = false;
         }
 
         private void InitializeContainer()
@@ -272,9 +275,9 @@ public partial class HuntQuestThings
                     visible = true;
                     if (fade >= maxFade)
                     {
-                        foreach (var icon in iconsContainer.Values.SelectMany(icons => icons).Where(i => i != winIcon && i.SlatedForDeletion != null))
+                        foreach (var icon in iconsContainer.Values.SelectMany(icons => icons))
                         {
-                            icon.SlatedForDeletion = null; //Prevent accidentally removing other icons than winIcon
+                            icon.SlatedForDeletion = null; //Prevent accidentally removing other icons
                         }
                         fadeDelay = 50;
                         winScript++;
@@ -284,6 +287,7 @@ public partial class HuntQuestThings
                     if (fadeDelay != 0) return;
                     glowSprite.SetPosition(winIcon.pos);
                     glowSprite.alpha = 0f;
+                    glowSprite.targetAlpha = 0f;
                     glowSprite.scale = 3f;
                     fContainer.AddChild(glowSprite);
                     fadeDelay = 79;
@@ -291,13 +295,13 @@ public partial class HuntQuestThings
                     winScript++;
                     break;
                 case 3:
-                    glowSprite.alpha = 0.5f * Mathf.Pow(Mathf.InverseLerp(78f, 54f, fadeDelay), 3f);
-                    glowSprite.alpha += 0.06f * Mathf.Sin(fadeDelay * Mathf.Deg2Rad * Random.Range(0, 15));
+                    glowSprite.targetAlpha = 0.5f * Mathf.Pow(Mathf.InverseLerp(78f, 54f, fadeDelay), 3f);
+                    glowSprite.targetAlpha += 0.06f * Mathf.Sin(fadeDelay * Mathf.Deg2Rad * Random.Range(0, 10));
                     foreach (var icon in iconsContainer.Values.SelectMany(x => x))
                     {
                         if (icon == winIcon) continue;
-                        icon.color = Color.Lerp(icon.CreatureColor, Color.white, Mathf.InverseLerp(78f, 54f, fadeDelay));
-                        if (icon.alpha > 0.5f) icon.alpha -= 0.025f;
+                        icon.targetColor = Color.Lerp(icon.CreatureColor, Color.white, Mathf.InverseLerp(78f, 54f, fadeDelay));
+                        if (icon.alpha > 0.5f) icon.targetAlpha -= 0.025f;
                     }
                     if (fadeDelay == 0)
                     {
@@ -317,7 +321,12 @@ public partial class HuntQuestThings
                     winScript++;
                     break;
                 case 6:
-                    glowSprite.alpha = 0.6f * Mathf.Pow(winIcon.alpha, 2f);
+                    foreach (var icon in iconsContainer.Values.SelectMany(x => x))
+                    {
+                        if (icon == winIcon) continue;
+                        if (icon.alpha > 0f) icon.targetAlpha -= 0.025f;
+                    }
+                    glowSprite.targetAlpha = 0.6f * Mathf.Pow(winIcon.alpha, 2f);
                     if (glowSprite.alpha <= 0f)
                     {
                         fadeDelay = 10;
@@ -329,6 +338,7 @@ public partial class HuntQuestThings
                     foreach (var quest in iconsContainer.Keys)
                         DisposeQuest(quest);
                     visible = false;
+                    winIcon = null;
                     winScript = 0;
                     break;
             }
