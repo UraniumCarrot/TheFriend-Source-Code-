@@ -238,8 +238,8 @@ public partial class HuntQuestThings
         }
         private void RemoveSeparator()
         {
-            var sprite = separators.Last();
-            sprite.RemoveFromContainer();
+            var sprite = separators.LastOrDefault();
+            sprite?.RemoveFromContainer();
             separators.Remove(sprite);
         }
 
@@ -438,7 +438,7 @@ public partial class HuntQuestThings
                         {
                             scriptRunning = false;
                             TutorialMessageShown++;
-                            SaveThings.SolaceCustom.SaveStorySpecific(HUNTQUEST_GREETMSG, false, Master.StorySession); //todo true
+                            SaveThings.SolaceCustom.SaveStorySpecific(HUNTQUEST_GREETMSG, true, Master.StorySession);
                         }
                         break;
                 }
