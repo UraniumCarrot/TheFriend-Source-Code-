@@ -40,7 +40,7 @@ public partial class HuntQuestThings
                 if (StorySession.saveState.cycleNumber == 0) return; //Do nothing on first cycle
                 var karma = StorySession.saveState.deathPersistentSaveData.karmaCap;
                 if (karma >= 9) return; //Max karma reached!
-                newQuests = HuntQuestTemplates.FromKarma(0); //todo: use karma
+                newQuests = HuntQuestTemplates.FromKarma(karma);
             }
 
             foreach (var quest in newQuests)
@@ -67,8 +67,8 @@ public partial class HuntQuestThings
             foreach (var quest in Quests.ToArray())
             {
                 var customType = HuntQuest.TypeTranslator(target.creatureTemplate.type);
-                if (!quest.Targets.Remove(customType))
-                    quest.Targets.Remove(target.creatureTemplate.type);
+                if (!quest.Targets.Remove(target.creatureTemplate.type))
+                    quest.Targets.Remove(customType);
                 if (quest.Completed) QuestComplete(quest);
             }
         }
