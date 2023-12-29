@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Menu;
 using On.RWCustom;
 using UnityEngine;
 using MenuObject = Menu.MenuObject;
 using MusicPlayer = Music.MusicPlayer;
+using Random = UnityEngine.Random;
 
 namespace TheFriend;
 
@@ -15,6 +17,23 @@ public class MainMenu
         On.Menu.RainEffect.ctor += RainEffectOnctor;
         On.Menu.RainEffect.GrafUpdate += RainEffectOnGrafUpdate; 
         On.Menu.Menu.Update += MenuOnUpdate;
+        On.Menu.IntroRoll.ctor += IntroRollOnctor;
+    }
+
+    private static bool shouldPlayBlizzard;
+    private static void IntroRollOnctor(On.Menu.IntroRoll.orig_ctor orig, IntroRoll self, ProcessManager manager)
+    {
+        orig(self, manager);
+        var oldSplashScreen = self.pages[0].subObjects.FirstOrDefault(x => x is MenuIllustration illu && illu.fileName.Contains("Intro_Roll_C_"));
+        if (oldSplashScreen == null) return;
+        if (Random.value > 0.5f) return;
+        var validNames = new[] { "friend", "noir", "poacher" };
+        var index = Random.Range(0, validNames.Length);
+        self.pages[0].RemoveSubObject(oldSplashScreen);
+        self.illustrations[2] = new MenuIllustration(self, self.pages[0], "", "Intro_Roll_C_" + validNames[index], new Vector2(0f, 0f), true, false);
+        self.pages[0].subObjects.Add(self.illustrations[2]);
+        self.illustrations[2].sprite.isVisible = true;
+        shouldPlayBlizzard = true;
     }
 
     private static float blizzardTicker = 0f;
@@ -60,7 +79,7 @@ public class MainMenu
         if (!IntroOrSelect) return;
         var menu = self.menu as SlugcatSelectMenu;
         bool yes = menu != null;
-        bool IHaveSnow = (self.menu is SlugcatSelectMenu) ? DoIHaveSnow(menu.slugcatPages[menu.slugcatPageIndex].name) : false;
+        bool IHaveSnow = (self.menu is SlugcatSelectMenu) && DoIHaveSnow(menu.slugcatPages[menu.slugcatPageIndex].name);
         
         // Make old raineffect appearance explode!
         self.lightning = 0;
