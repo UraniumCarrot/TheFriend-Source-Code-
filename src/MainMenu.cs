@@ -127,11 +127,15 @@ public class MainMenu
 
         var snowTex = new RenderTexture(1400, 800, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
         snowTex.filterMode = FilterMode.Point;
-        
 
+        Shader.EnableKeyword("SNOW_ON");
         Shader.SetGlobalTexture("_SnowTex", snowTex);
         Shader.SetGlobalTexture("_PalTex", palTex);
-        
+        Shader.SetGlobalTexture("_GrabTexture", Texture2D.whiteTexture);
+        Shader.SetGlobalTexture("_LevelTex", Texture2D.whiteTexture);
+        Shader.SetGlobalTexture("_MainTex", Texture2D.whiteTexture);
+        Shader.SetGlobalTexture("_WindTexRendered", Texture2D.whiteTexture);
+
         Shader.SetGlobalFloat("_waterLevel", 20);
         Shader.SetGlobalFloat("_RAIN", 20);
         Shader.SetGlobalFloat("_fogAmount", 20);
