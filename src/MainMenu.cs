@@ -75,42 +75,32 @@ public class MainMenu
     public static void RainEffectOnGrafUpdate(On.Menu.RainEffect.orig_GrafUpdate orig, Menu.RainEffect self, float timestacker)
     { // Blizzard or snow graphics
         orig(self, timestacker);
-
         if (!IntroOrSelect) return;
-        var menu = self.menu as SlugcatSelectMenu;
-        bool yes = menu != null;
-        bool IHaveSnow = (self.menu is SlugcatSelectMenu) && DoIHaveSnow(menu.slugcatPages[menu.slugcatPageIndex].name);
-        
+        var slugMenu = (self.menu as SlugcatSelectMenu);
+
         // Make old raineffect appearance explode!
         self.lightning = 0;
         self.lightningIntensity = 0;
         self.lastLightning = 0;
-        foreach (FSprite i in self.sprites)
+        foreach (var sprite in self.sprites)
         {
-            if (i == self.bkg ||
-                i == self.fadeSprite) continue;
-            if (yes) i.color = Color.Lerp(Color.white, Color.black, raindropfader);
-            else i.isVisible = false;
+            if (sprite == self.bkg || sprite == self.fadeSprite) continue;
+            if (slugMenu != null) sprite.color = Color.Lerp(Color.white, Color.black, raindropfader);
+            else sprite.isVisible = false;
         }
-        self.bkg.scale = 50;
-        self.bkg.scaleX = 200;
-        self.bkg.scaleY = 200;
-        self.bkg.x = self.menu.manager.rainWorld.screenSize.x/2;
-        self.bkg.y = self.menu.manager.rainWorld.screenSize.y/2;
-        
+
         if (blizzardTicker < 1) blizzardTicker += 0.01f;
         if (self.menu is IntroRoll)
         {
-            self.bkg.shader = RWCustom.Custom.rainWorld.Shaders["LocalBlizzard"];
             var sin = 330 + Mathf.Sin(Time.time * Mathf.Deg2Rad * 50f) * 6;
             self.bkg.rotation = sin;
             self.bkg.color = Color.Lerp(Color.black, Color.white, blizzardTicker);
         }
-        else if (yes)
+        else
         {
+            var IHaveSnow = DoIHaveSnow(slugMenu.slugcatPages[slugMenu.slugcatPageIndex].name);
             if (raindropfader < 1 && IHaveSnow) raindropfader += 0.01f;
             else if (raindropfader > 0 && !IHaveSnow) raindropfader -= 0.01f;
-            self.bkg.shader = RWCustom.Custom.rainWorld.Shaders["SnowFall"];
             self.bkg.color = Color.Lerp(Color.black, Color.white, raindropfader);
         }
     }
@@ -119,6 +109,13 @@ public class MainMenu
     { // Initialize important ingredients for Blizzard and Snow shaders
         orig(self, menu, owner);
         if (menu is not IntroRoll && menu is not SlugcatSelectMenu) return;
+
+        self.bkg.shader = menu is IntroRoll ? RWCustom.Custom.rainWorld.Shaders["LocalBlizzard"] : RWCustom.Custom.rainWorld.Shaders["SnowFall"];
+        self.bkg.scale = 50;
+        self.bkg.scaleX = 200;
+        self.bkg.scaleY = 200;
+        self.bkg.x = self.menu.manager.rainWorld.screenSize.x/2;
+        self.bkg.y = self.menu.manager.rainWorld.screenSize.y/2;
 
         var palTex = new Texture2D(32, 8, TextureFormat.ARGB32, false);
         palTex.anisoLevel = 0;
