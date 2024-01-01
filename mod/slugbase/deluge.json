@@ -16,7 +16,7 @@
 			"meat": 1,
 			"plants": 1
 		},
-		
+		"expedition_enabled": false,
 		"crouch_stealth": [0,0],
 		"expedition_description": "Endlessly agitated, The Storm rushes to finish<LINE>their duty so they can return to their peace",
 		"world_state": ["FriendDeluge","Rivulet","Monk","Survivor"],
@@ -26,7 +26,7 @@
 		"walk_speed": 1.2,
 		"throw_skill": 1,
 		"start_room": "SU_S04",
-		"select_menu_scene": "slugcat - friend",
+		"select_menu_scene": "slugcat - deluge",
 		"select_menu_scene_ascended": "slugcat end - friend",
 		"sleep_scene": "sleep scene - friend",
 		"food_min": 4,

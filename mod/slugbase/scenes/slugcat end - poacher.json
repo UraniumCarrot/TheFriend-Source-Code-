@@ -1,6 +1,6 @@
 {
 	"id": "slugcat end - poacher",
-	"scene_folder": "slugbase/scenes/slugcat end - poacher",
+	"scene_folder": "slugbase/scenes/poacher/end ascension",
 	"images": [
 		{"name": "poacher - flat", "pos": [0, 0], "depth": -1.0, "flatmode": true},
 		{"name": "poacher c", "pos": [0, 120], "depth": 3.3, "shader": "Basic"},

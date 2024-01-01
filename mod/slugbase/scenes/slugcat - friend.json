@@ -1,6 +1,6 @@
 {
 	"id": "slugcat - friend",
-	"scene_folder": "slugbase/scenes/slugcat - friend",
+	"scene_folder": "slugbase/scenes/friend/charselect",
 	"images": [
 		{"name": "slugcat - friend - flat", "pos": [0, 0], "depth": -1.0, "flatmode": true},
 		{"name": "friend background", "pos": [490, 125], "depth": 3.2, "shader": "Basic"},

@@ -1,6 +1,6 @@
 {
   "id": "Slugcat_NoirCatto_Ghost",
-  "scene_folder": "slugbase/scenes/Slugcat_NoirCatto_Ghost",
+  "scene_folder": "slugbase/scenes/noircatto/Slugcat_NoirCatto_Ghost",
   "images": [
     {"name": "Flat",       "pos": [  0,   0], "depth": -1.0, "flatmode": true},
     {"name": "Background", "pos": [409, 104], "depth":  3.5, "shader": "Basic"},

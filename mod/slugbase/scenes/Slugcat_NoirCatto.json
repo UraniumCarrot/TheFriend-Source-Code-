@@ -1,6 +1,6 @@
 {
   "id": "Slugcat_NoirCatto",
-  "scene_folder": "slugbase/scenes/Slugcat_NoirCatto",
+  "scene_folder": "slugbase/scenes/noircatto/Slugcat_NoirCatto",
   "images": 
   [
       {"name": "NoirFlat", "pos": [0, -40], "depth": -1.0, "flatmode": true},
