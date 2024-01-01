@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Menu;
-using On.RWCustom;
+using RWCustom;
 using UnityEngine;
 using MenuObject = Menu.MenuObject;
 using MusicPlayer = Music.MusicPlayer;
@@ -20,7 +20,6 @@ public class MainMenu
         On.Menu.IntroRoll.ctor += IntroRollOnctor;
     }
 
-    private static bool shouldPlayBlizzard;
     private static void IntroRollOnctor(On.Menu.IntroRoll.orig_ctor orig, IntroRoll self, ProcessManager manager)
     {
         orig(self, manager);
@@ -33,7 +32,6 @@ public class MainMenu
         self.illustrations[2] = new MenuIllustration(self, self.pages[0], "", "Intro_Roll_C_" + validNames[index], new Vector2(0f, 0f), true, false);
         self.pages[0].subObjects.Add(self.illustrations[2]);
         self.illustrations[2].sprite.isVisible = true;
-        shouldPlayBlizzard = true;
     }
 
     private static float blizzardTicker = 0f;

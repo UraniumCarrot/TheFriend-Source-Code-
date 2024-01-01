@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RWCustom;
 using SlugBase;
 using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
+using TheFriend.DragonRideThings;
 using TheFriend.FriendThings;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.Objects.FakePlayerEdible;
@@ -33,6 +36,27 @@ public class SlugcatGameplay
         On.Player.checkInput += Player_checkInput;
         On.SlugcatStats.SlugcatCanMaul += SlugcatStats_SlugcatCanMaul;
         On.SlugcatStats.ctor += SlugcatStats_ctor;
+        
+        IL.Player.MovementUpdate += PlayerOnMovementUpdate;
+    }
+
+    public static void PlayerOnMovementUpdate(ILContext il)
+    {
+        var cursor = new ILCursor(il);
+
+        cursor.GotoNext(MoveType.After,
+            i => i.MatchCallOrCallvirt<Player>("get_playerState"),
+            i => i.MatchLdfld<PlayerState>(nameof(PlayerState.isPup)),
+            i => i.MatchBrtrue(out _),
+            i => i.MatchLdcI4(out _));
+
+        cursor.MoveAfterLabels();
+
+        cursor.Emit(OpCodes.Ldarg_0);
+        cursor.EmitDelegate((int originalDistance, Player self) => 
+            (self.TryGetFriend(out var friend) && Configs.CharHeight) ? originalDistance+4 : 
+            (self.TryGetPoacher(out var poacher) && Configs.CharHeight) ? originalDistance-3 :
+            originalDistance);
     }
 
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;

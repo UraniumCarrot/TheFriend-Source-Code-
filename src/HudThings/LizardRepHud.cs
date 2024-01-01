@@ -41,7 +41,6 @@ public class LizardRepHud
             pos += new Vector2(0, 40);
             pos += (repMaxed) ? new Vector2(0,3) : Vector2.zero;
             fade = hud.karmaMeter.fade;
-            Debug.Log(sprites[0].GetPosition() + "," + circles[0].pos);
             SymbolUpdate();
             UpdatePositions();
 
@@ -63,39 +62,32 @@ public class LizardRepHud
 
         public void SymbolUpdate()
         {
-            // This fade system allows symbols to smoothly transition between eachother at the cost of being less straightforward
-            foreach (FSprite i in sprites)
+            // Base rep ring
+            circles[0].fade = fade;
+
+            foreach (FSprite i in sprites) // Rep symbols
             {
                 int index = sprites.IndexOf(i);
-
                 if (index == activeSymbol)
                 {
-                    if (sprites[index].alpha < fade)
-                        sprites[index].alpha += 0.15f;
-                    if (index == 2) sprites[index].alpha = circles[0].fade * Random.Range(0.7f,1f);
+                    if (index == 2) sprites[index].alpha = circles[0].fade * Random.Range(0.7f, 1f);
+                    else sprites[index].alpha = fade;
                 }
-                else if (sprites[index].alpha > 0) 
-                    sprites[index].alpha -= 0.1f;
+                else if (sprites[index].alpha > 0) sprites[index].alpha -= 0.1f;
             }
-            
-            // Max Rep ring
-            if (repMaxed)
-            {
-                if (circles[1].fade < fade)
-                    circles[1].fade += 0.15f;
-                if (activeSymbol == 2) circles[1].fade = sprites[2].alpha;
-            }
-            else if (circles[1].fade > 0) 
-                circles[1].fade -= 0.1f;
 
+            if (repMaxed) // Max Rep ring
+            {
+                if (activeSymbol == 2) circles[1].fade = sprites[2].alpha;
+                else circles[1].fade = fade;
+            }
+            else if (circles[1].fade > 0) circles[1].fade -= 0.1f;
+            
             // Neutral Rep ring
             if (activeSymbol == 4) 
                 circles[2].fade = circles[0].fade;
             else if (circles[2].fade > 0) 
                 circles[2].fade -= 0.1f;
-
-            // Base rep ring
-            circles[0].fade = fade;
         }
         
         public void LizUIStats()

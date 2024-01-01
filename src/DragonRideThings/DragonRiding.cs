@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using System;
-using UnityEngine;
-using TheFriend.SlugcatThings;
+﻿using System;
 using RWCustom;
+using TheFriend.SlugcatThings;
+using UnityEngine;
 
-namespace TheFriend;
+namespace TheFriend.DragonRideThings;
 
 public class DragonRiding
 {
@@ -37,7 +36,7 @@ public class DragonRiding
     public static void DragonRidden(Creature crit, Player player) // Values for the lizard being ridden
     {
         var self = crit as Lizard;
-        if (!self.GetLiz().IsRideable) { DragonRideReset(crit,player); return; }
+        if (!self.GetLiz().IsRideable) { DragonRideReset(crit,player); }
         //self.GetLiz().IsBeingRidden = true;
     }
     public static void DragonRideReset(Creature crit, Player player) // Performed after riding stops
@@ -89,13 +88,13 @@ public class DragonRiding
         var oldinput = self.GetGeneral().UnchangedInputForLizRide;
         Vector2 pointPos = new Vector2(oldinput[0].x * 50, oldinput[0].y * 50) + self.bodyChunks[0].pos;
         var graph = self.graphicsModule as PlayerGraphics;
-        var hand = ((pointPos - self.mainBodyChunk.pos).x < 0 || self?.grasps[0]?.grabbed is Spear) ? 0 : 1;
-        if (self?.grasps[1]?.grabbed is Spear) hand = 1;
+        var hand = ((pointPos - self.mainBodyChunk.pos).x < 0 || self.grasps[0]?.grabbed is Spear) ? 0 : 1;
+        if (self.grasps[1]?.grabbed is Spear) hand = 1;
         var nothand = (hand == 1) ? 0 : 1;
 
         for (int i = 0; i < 2; i++)
         {
-            if (self?.grasps[i]?.grabbed is Spear && self?.grasps[0]?.grabbed != self?.grasps[1]?.grabbed) hand = i;
+            if (self.grasps[i]?.grabbed is Spear && self.grasps[0]?.grabbed != self.grasps[1]?.grabbed) hand = i;
         }
         try
         {
@@ -106,7 +105,7 @@ public class DragonRiding
             graph.hands[hand].reachingForObject = true;
             graph.hands[nothand].reachingForObject = true;
         }
-        catch (Exception e) { Debug.Log("Solace: Harmless exception happened in Player.Update riderHand"); }
+        catch (Exception) { Debug.Log("Solace: Harmless exception happened in Player.Update riderHand"); }
     }
 
     public static void DragonRiderSpearPoint(Player self)
@@ -128,7 +127,7 @@ public class DragonRiding
 
     public static Player.ObjectGrabability LizardGrabability(Player self, Lizard liz)
     {
-        if (Plugin.LizRide() && liz.Template.type != CreatureTemplateType.YoungLizard)
+        if (liz.Template.type != CreatureTemplateType.YoungLizard)
         {
             if (liz.GetLiz().IsRideable)
             {
