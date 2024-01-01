@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RWCustom;
+using TheFriend.RemixMenus;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -248,8 +249,8 @@ public partial class NoirCatto
 
                 var smallCrit = Owner.IsSmallerThanMe(crit);
 
-                var baseStunValue = Options.NoirBuffSlash.Value ? 20f : 10f;
-                var baseDamageValue = Options.NoirBuffSlash.Value ? 0.2f : 0.1f;
+                var baseStunValue = RemixMain.NoirBuffSlash.Value ? 20f : 10f;
+                var baseDamageValue = RemixMain.NoirBuffSlash.Value ? 0.2f : 0.1f;
 
                 var stunBonus = baseStunValue * (noirData.CombinedBonus + 1);
                 if (smallCrit) stunBonus += 20f;

@@ -25,10 +25,9 @@ public class HudHooks
     public static void HUDOnInitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam)
     {
         orig(self, cam);
-        if (Plugin.LizRep() && 
-            ((self.owner as Player)?.room.world.game.StoryCharacter == Plugin.FriendName || 
-             (self.owner as Player)?.room.world.game.StoryCharacter == Plugin.DragonName || 
-             Plugin.LizRepAll())) 
+        if ((self.owner as Player)?.room.world.game.StoryCharacter == Plugin.FriendName || 
+            (self.owner as Player)?.room.world.game.StoryCharacter == Plugin.DragonName || 
+            Configs.RepMeterAll)
             self.AddPart(new LizardRepHud.LizardUI(self, self.fContainers[1], self.owner as Player));
     }
 
@@ -79,7 +78,7 @@ public class HudHooks
         orig(self, timeStacker);
         var owner = self.hud.owner as Player;
 
-        if (!Plugin.ShowCycleTimer())
+        if (!Configs.BlizzTimer)
         {
             if (self.hud.map.RegionName != "HR")
             {

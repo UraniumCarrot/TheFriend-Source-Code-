@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TheFriend;
 
-public class Options : OptionInterface
+/*public class Options : OptionInterface
 {
     public class BetterComboBox : OpComboBox //Thanks Henpemaz
     {
@@ -547,4 +547,4 @@ public class Options : OptionInterface
             new OpLabel(220f, 400f, "Custom Start (disable if Story Mode fails to load)") { verticalAlignment = OpLabel.LabelVAlignment.Center },
         });
     }
-}
+}*/

@@ -15,7 +15,7 @@ public class FriendCrawl
     public static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {
         orig(self);
-        if (self.player.slugcatStats.name != Plugin.FriendName || Plugin.PoleCrawl() != true) return;
+        if (self.player.slugcatStats.name != Plugin.FriendName || !Configs.FriendPoleCrawl) return;
 
         var angle = Custom.AimFromOneVectorToAnother(self.player.bodyChunks[0].pos, self.player.bodyChunks[1].pos);
         var lastAngle = Custom.AimFromOneVectorToAnother(self.player.bodyChunks[0].lastPos, self.player.bodyChunks[1].lastPos);
@@ -119,7 +119,7 @@ public class FriendCrawl
     {
         var player = (Player)self.owner.owner;
 
-        if (player.slugcatStats.name != Plugin.FriendName || Plugin.PoleCrawl() != true) return orig(self);
+        if (player.slugcatStats.name != Plugin.FriendName || !Configs.FriendPoleCrawl) return orig(self);
 
         if (player.animation == Player.AnimationIndex.StandOnBeam && player.input[0].y < 1)
         {

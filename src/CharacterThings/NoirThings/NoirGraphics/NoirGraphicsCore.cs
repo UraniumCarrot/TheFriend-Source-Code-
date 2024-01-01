@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using RWCustom;
+using TheFriend.RemixMenus;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
@@ -95,7 +96,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
             }
             #endregion
 
-            if (Options.NoirHideEars.Value) //For.. DMS?
+            if (RemixMain.NoirHideEars.Value) //For.. DMS?
             {
                 foreach (var sprNum in EarSpr)
                 {

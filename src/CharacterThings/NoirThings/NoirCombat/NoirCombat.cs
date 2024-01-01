@@ -1,4 +1,5 @@
 using RWCustom;
+using TheFriend.RemixMenus;
 using UnityEngine;
 
 namespace TheFriend.CharacterThings.NoirThings;
@@ -83,7 +84,7 @@ public partial class NoirCatto
             noirData.SlashCooldown[hand] += CatSlash.BaseSlashCooldown;
         }
 
-        if (Options.NoirAutoSlash.Value && noirData.AutoSlashCooldown == 0)
+        if (RemixMain.NoirAutoSlash.Value && noirData.AutoSlashCooldown == 0)
             noirData.AutoSlashCooldown += CatSlash.BaseAutoSlashCooldown;
     }
 }

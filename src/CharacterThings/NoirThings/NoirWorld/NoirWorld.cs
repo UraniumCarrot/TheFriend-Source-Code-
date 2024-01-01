@@ -1,4 +1,5 @@
 using RWCustom;
+using TheFriend.RemixMenus;
 
 namespace TheFriend.CharacterThings.NoirThings;
 
@@ -16,7 +17,7 @@ public partial class NoirCatto
     {
         orig(self);
 
-        if (Custom.rainWorld.ExpeditionMode && Options.NoirUseCustomStart.Value != CustomStartMode.StoryAndExpedition) return;
+        if (Custom.rainWorld.ExpeditionMode && RemixMain.NoirUseCustomStart.Value != CustomStartMode.StoryAndExpedition) return;
         if (self.saveStateNumber != Plugin.NoirName) return;
         if (self.cycleNumber == 0)
         {
@@ -30,7 +31,7 @@ public partial class NoirCatto
 
         if (!self.IsStorySession) return;
         if (self.StoryCharacter != Plugin.NoirName) return;
-        if (Custom.rainWorld.ExpeditionMode && Options.NoirUseCustomStart.Value != CustomStartMode.StoryAndExpedition) return;
+        if (Custom.rainWorld.ExpeditionMode && RemixMain.NoirUseCustomStart.Value != CustomStartMode.StoryAndExpedition) return;
         var session = self.GetStorySession;
 
         if (session.saveState.cycleNumber == 0)
@@ -46,7 +47,7 @@ public partial class NoirCatto
 
                 startRoom ??= player.Room.realizedRoom;
             }
-            if (Options.NoirUseCustomStart.Value != CustomStartMode.Disabled && startRoom != null)
+            if (RemixMain.NoirUseCustomStart.Value != CustomStartMode.Disabled && startRoom != null)
             {
                 startRoom.AddObject(new NoirStart());
             }

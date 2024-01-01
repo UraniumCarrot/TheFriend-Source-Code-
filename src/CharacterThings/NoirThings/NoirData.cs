@@ -1,5 +1,6 @@
 using System.Linq;
 using RWCustom;
+using TheFriend.RemixMenus;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
@@ -176,9 +177,9 @@ public abstract partial class NoirCatto // Noir master class
             get
             {
                 if (Cat.input[0].thrw && !Cat.input[1].thrw ||
-                    Cat.input[0].thrw && Options.NoirAutoSlash.Value && AutoSlashCooldown == 0)
+                    Cat.input[0].thrw && RemixMain.NoirAutoSlash.Value && AutoSlashCooldown == 0)
                 {
-                    if (!Options.NoirAltSlashConditions.Value)
+                    if (!RemixMain.NoirAltSlashConditions.Value)
                     {
                         if (GraspsAllNull ||
                             GraspsAnyNull && (CanSlashInpt || !Cat.IsObjectThrowable(Cat.grasps[0]?.grabbed) || !Cat.IsObjectThrowable(Cat.grasps[1]?.grabbed)))

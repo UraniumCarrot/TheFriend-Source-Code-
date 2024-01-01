@@ -4,6 +4,7 @@ using LizardCosmetics;
 using MoreSlugcats;
 using RWCustom;
 using TheFriend.SlugcatThings;
+using TheFriend.DragonRideThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
@@ -144,7 +145,7 @@ public class Hooks
     public static void Lizard_ctor(On.Lizard.orig_ctor orig, Lizard self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (Plugin.LizRideAll() && 
+        if (Configs.LizRideAll && 
             self.Template.type != CreatureTemplateType.YoungLizard && 
             self.Template.type != CreatureTemplateType.MotherLizard) 
             self.GetLiz().IsRideable = true;
@@ -153,7 +154,7 @@ public class Hooks
             var state = Random.state;
             Random.InitState(abstractCreature.ID.RandomSeed);
             self.effectColor = Custom.HSL2RGB(Custom.WrappedRandomVariation(0.9f, 0.1f, 0.6f), 1f, Custom.ClampedRandomVariation(0.85f, 0.15f, 0.2f));
-            if (Plugin.LizRide()) self.GetLiz().IsRideable = true;
+            self.GetLiz().IsRideable = true;
             Random.state = state;
         }
         else if (self.Template.type == CreatureTemplateType.YoungLizard)

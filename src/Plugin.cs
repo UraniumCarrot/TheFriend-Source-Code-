@@ -2,6 +2,7 @@
 using System.Linq;
 using BepInEx;
 using SlugBase.Features;
+using UnityEngine;
 using static SlugBase.Features.FeatureTypes;
 using System.Security.Permissions;
 using MonoMod.Cil;
@@ -12,7 +13,6 @@ using TheFriend.WorldChanges;
 using TheFriend.Objects.BoulderObject;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.BoomMineObject;
-using TheFriend.PoacherThings;
 using BepInEx.Logging;
 using TheFriend.CharacterThings;
 using TheFriend.CharacterThings.DelugeThings;
@@ -22,13 +22,13 @@ using TheFriend.Creatures.PebblesLLCreature;
 using TheFriend.Creatures.LizardThings;
 using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.DragonRideThings;
-using TheFriend.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
 using TheFriend.CharacterThings.NoirThings;
-using TheFriend.Objects;
+using TheFriend.Expedition;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
+using TheFriend.RemixMenus;
 using TheFriend.SaveThings;
 
 #pragma warning disable CS0618
@@ -42,7 +42,7 @@ namespace TheFriend
     public class Plugin : BaseUnityPlugin
     {
         public const string MOD_ID = "thefriend";
-        public const string MOD_VERSION = "0.3.0.2";
+        public const string MOD_VERSION = "0.3.1.0";
 
         public static readonly PlayerFeature<float> SuperJump = PlayerFloat("friend/super_jump");
         public static readonly PlayerFeature<float> SuperCrawl = PlayerFloat("friend/super_crawl");
@@ -69,15 +69,16 @@ namespace TheFriend
             UpdateDeleteCWT.Apply();
             SolaceSaveData.Apply();
             SolaceCustom.Apply();
-            
+
             LizardRideControl.Apply();
             YoungLizardAI.Apply();
             SnowSpiderGraphics.Apply();
             PebblesLL.Apply();
-            
+
             HudHooks.Apply();
             MotherKillTracker.Apply();
             MainMenu.Apply();
+            ExpeditionHooks.Apply();
 
             FriendWorldState.Apply();
             DelugeWorldState.Apply();
@@ -161,7 +162,7 @@ namespace TheFriend
         }
         public void LoadResources(RainWorld rainWorld)
         {
-            MachineConnector.SetRegisteredOI("thefriend", new Options());
+            MachineConnector.SetRegisteredOI("thefriend", new RemixMain());
             Futile.atlasManager.LoadAtlas("atlases/friendsprites");
             Futile.atlasManager.LoadAtlas("atlases/friendlegs");
             Futile.atlasManager.LoadAtlas("atlases/dragonskull2");
@@ -233,89 +234,6 @@ namespace TheFriend
         
         public const string MothersKilled = "MothersKilledInRegionStr";
         public const string MotherKillNum = "MotherKillCount";
-
-        #region options
-        // Friend Settings
-        public static bool FriendAutoCrouch()
-        {
-            return Options.FriendAutoCrouch.Value;
-        }
-        public static bool PoleCrawl()
-        {
-            return Options.PoleCrawl.Value;
-        }
-        public static bool FriendUnNerf()
-        {
-            return Options.FriendUnNerf.Value;
-        }
-        public static bool FriendBackspear()
-        {
-            return Options.FriendBackspear.Value;
-        }
-        public static bool FriendRepLock()
-        {
-            return Options.FriendRepLock.Value;
-        }
-        // Poacher Settings
-        public static bool PoacherBackspear()
-        {
-            return Options.PoacherBackspear.Value;
-        }
-        public static bool PoacherPupActs()
-        {
-            return Options.PoacherPupActs.Value;
-        }
-        public static bool PoacherFreezeFaster()
-        {
-            return Options.PoacherFreezeFaster.Value;
-        }
-        public static bool PoacherFoodParkour()
-        {
-            return Options.PoacherFoodParkour.Value;
-        }
-        // Famine Settings
-        public static bool NoFamine()
-        {
-            return Options.NoFamine.Value;
-        }
-        public static bool ExpeditionFamine()
-        {
-            return Options.ExpeditionFamine.Value;
-        }
-        public static bool FaminesForAll()
-        {
-            return Options.FaminesForAll.Value;
-        }
-        // Lizard Reputation Settings
-        public static bool LizRep()
-        {
-            return true;
-        }
-        public static bool LizRepAll()
-        {
-            return Options.LizRepMeterForAll.Value;
-        }
-        public static bool LizRide()
-        {
-            return true;
-        }
-        public static bool LizRideAll()
-        {
-            return Options.LizRideAll.Value;
-        }
-        public static bool LocalLizRep()
-        {
-            return Options.LocalizedLizRep.Value;
-        }
-        public static bool LocalLizRepAll()
-        {
-            return Options.LocalizedLizRepForAll.Value;
-        }
-        // Misc Hud Settings
-        public static bool ShowCycleTimer()
-        {
-            return Options.SolaceBlizzTimer.Value;
-        }
-        #endregion
+        
     }
 }

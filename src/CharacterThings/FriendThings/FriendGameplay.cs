@@ -109,7 +109,7 @@ public class FriendGameplay
             self.jumpBoost = 0.0f;
             self.room.PlaySound(SoundID.Slugcat_Sectret_Super_Wall_Jump, self.mainBodyChunk, false, 1f, 1f);
             
-            if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch()))
+            if ((!(self.input[0].y > 0) && Configs.FriendAutoCrouch))
             {
                 self.standing = false;
             }
@@ -137,11 +137,11 @@ public class FriendGameplay
 
     public static void FriendJump2(Player self)
     {
-        if (Plugin.FriendUnNerf()) self.jumpBoost += 3f;
+        if (Configs.FriendUnNerf) self.jumpBoost += 3f;
         else if (self.bodyMode == bod.Crawl) self.jumpBoost *= 1f + (0.5f / 2);
         else self.jumpBoost += (0.5f + 0.25f) * (self.animation == ind.StandOnBeam ? 0 : 1);
 
-        if ((!(self.input[0].y > 0) && Plugin.FriendAutoCrouch()))
+        if ((!(self.input[0].y > 0) && Configs.FriendAutoCrouch))
         {
             self.standing = false;
         }
@@ -238,12 +238,12 @@ public class FriendGameplay
     #region World's smallest adjustments
     public static void FriendConstructor(Player self)
     {
-        if (Plugin.FriendBackspear())
+        if (Configs.FriendBackspear)
             self.spearOnBack = new Player.SpearOnBack(self);
     }
     public static void FriendStats(SlugcatStats self)
     {
-        if (Plugin.FriendUnNerf())
+        if (Configs.FriendUnNerf)
         {
             self.poleClimbSpeedFac = 6f;
             self.runspeedFac = 0.8f;
@@ -252,7 +252,7 @@ public class FriendGameplay
     public static void FriendLedgeFix(Player self)
     { // Attempted ledgegrab fix, and increased polewalk speed
         if (self.animation == ind.LedgeGrab && self.input[0].y < 1) { self.standing = false; self.bodyMode = bod.Crawl; }
-        if (self.animation == ind.StandOnBeam && self.input[0].y < 1 && Plugin.PoleCrawl())
+        if (self.animation == ind.StandOnBeam && self.input[0].y < 1 && Configs.FriendPoleCrawl)
         {
             self.dynamicRunSpeed[0] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;
             self.dynamicRunSpeed[1] = 2.1f + (self.slugcatStats.runspeedFac * 0.5f) * 4.5f;

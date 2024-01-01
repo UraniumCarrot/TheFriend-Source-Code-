@@ -1,4 +1,5 @@
 using RWCustom;
+using TheFriend.RemixMenus;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 using static TheFriend.Plugin;
@@ -64,7 +65,7 @@ public partial class NoirCatto
         #region Standing
         if (noirData.LastAnimation == Player.AnimationIndex.LedgeCrawl && self.animation != Player.AnimationIndex.LedgeCrawl)
         {
-            if (Options.NoirDisableAutoCrouch.Value)
+            if (RemixMain.NoirDisableAutoCrouch.Value)
             {
                 self.standing = false;
                 noirData.StandCounter = 0;
@@ -81,7 +82,7 @@ public partial class NoirCatto
 
         if (self.standing)
         {
-            if (self.input[0].y == 0 && self.input[0].x != 0 && !Options.NoirDisableAutoCrouch.Value) noirData.StandCounter++;
+            if (self.input[0].y == 0 && self.input[0].x != 0 && !RemixMain.NoirDisableAutoCrouch.Value) noirData.StandCounter++;
             else noirData.StandCounter = 1;
         }
         else if (!self.standing)

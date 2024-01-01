@@ -47,7 +47,7 @@ public class FamineWorld
 
     public static bool NoFamine() // Famine mechanic override, if the player wants it
     {
-        if (Plugin.NoFamine() == true) return true;
+        if (Configs.NoFamine) return true;
         else return false;
     }
 
@@ -56,8 +56,8 @@ public class FamineWorld
         if ((self.StoryCharacter == Plugin.FriendName || 
              self.StoryCharacter == Plugin.NoirName ||
             self.StoryCharacter == Plugin.DragonName ||
-             (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
-            (self.rainWorld.ExpeditionMode && Plugin.ExpeditionFamine())) 
+             (Configs.GlobalFamine && !self.rainWorld.ExpeditionMode) || 
+            (self.rainWorld.ExpeditionMode && Configs.ExpeditionFamine)) 
             && !NoFamine() && !self.IsArenaSession)
         {
             FamineBool = true;

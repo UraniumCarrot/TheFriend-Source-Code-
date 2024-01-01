@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Noise;
 using RWCustom;
+using TheFriend.RemixMenus;
 using UnityEngine;
 
 namespace TheFriend.CharacterThings.NoirThings;
@@ -77,10 +78,10 @@ public partial class NoirCatto
         //Meow!
         if (noirData.Cat.stun == 0 && !noirData.Cat.dead && noirData.Cat.controller is not NoirStartController)
         {
-            if (Input.GetKeyDown(Options.NoirMeowKey.Value))
+            if (Input.GetKeyDown(RemixMain.NoirMeowKey.Value))
             {
                 noirData.Cat.room?.PlaySound(MeowSND, noirData.Cat.firstChunk, false, 1f, noirData.MeowPitch);
-                if (Options.NoirAttractiveMeow.Value) noirData.Cat.room?.InGameNoise(new InGameNoise(noirData.Cat.firstChunk.pos, 600f, noirData.Cat, 1f));
+                if (RemixMain.NoirAttractiveMeow.Value) noirData.Cat.room?.InGameNoise(new InGameNoise(noirData.Cat.firstChunk.pos, 600f, noirData.Cat, 1f));
             }
         }
     }

@@ -148,11 +148,11 @@ public class FriendWorldState
             self.session.characterStats.name == Plugin.FriendName &&
             self.session.game.GetStorySession.saveState.cycleNumber == 0 &&
             comm == 2 &&
-            Plugin.FriendRepLock())
+            Configs.FriendRepLock)
             return;
         // Cycle 0 lizard rep lock
 
-        if ((SolaceWorldstate || Plugin.LocalLizRepAll() || customLock) && Plugin.LocalLizRep())
+        if (SolaceWorldstate || Configs.LocalRepAll || customLock)
         {
             if (comm == 2 && reg == 0)
                 return;

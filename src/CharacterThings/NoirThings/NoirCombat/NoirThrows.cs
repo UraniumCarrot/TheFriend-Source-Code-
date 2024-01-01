@@ -1,5 +1,6 @@
 using MoreSlugcats;
 using RWCustom;
+using TheFriend.RemixMenus;
 using TheFriend.SlugcatThings;
 
 namespace TheFriend.CharacterThings.NoirThings;
@@ -15,7 +16,7 @@ public partial class NoirCatto
         }
 
         if (noirData.CanSlash) return;
-        if (Options.NoirAutoSlash.Value && noirData.AutoSlashCooldown == 0)
+        if (RemixMain.NoirAutoSlash.Value && noirData.AutoSlashCooldown == 0)
             noirData.AutoSlashCooldown += CatSlash.BaseAutoSlashCooldown;
 
         Weapon thrownWeapon = null;
