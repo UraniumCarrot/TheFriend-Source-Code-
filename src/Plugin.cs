@@ -2,7 +2,6 @@
 using System.Linq;
 using BepInEx;
 using SlugBase.Features;
-using UnityEngine;
 using static SlugBase.Features.FeatureTypes;
 using System.Security.Permissions;
 using MonoMod.Cil;
@@ -24,11 +23,12 @@ using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.DragonRideThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
-using TheFriend.CharacterThings.NoirThings;
 using TheFriend.Expedition;
+using TheFriend.RemixMenus;
+using TheFriend.Creatures.FamineCreatures;
+using TheFriend.CharacterThings.NoirThings;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
-using TheFriend.RemixMenus;
 using TheFriend.SaveThings;
 
 #pragma warning disable CS0618
@@ -79,11 +79,12 @@ namespace TheFriend
             MotherKillTracker.Apply();
             MainMenu.Apply();
             ExpeditionHooks.Apply();
-
+            
             FriendWorldState.Apply();
             DelugeWorldState.Apply();
             SLOracleHandler.Apply();
             FamineWorld.Apply();
+            FamineCreatures.Apply();
             DangerTypes.Apply();
 
             // Misc IL

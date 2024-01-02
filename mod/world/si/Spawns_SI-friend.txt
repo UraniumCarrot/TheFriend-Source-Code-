@@ -1,0 +1,27 @@
+SI_A18 : 3-Eggbug
+SI_D05 : 4-Eggbug, 3-Yellow-2, 6-Centiwing, 6-Small Centipede-3-{AlternateForm}
+SI_B04 : 2-White
+SI_C08 : 3-Centiwing, 4-Centiwing
+SI_B11 : 2-CicadaA, 2-CicadaB
+SI_C05 : 5-Mimic-{14}, 6-Mimic-{17}
+SI_C02 : 6-Eggbug, 5-CicadaB, 5-CicadaA-2, 8-Mimic-{20}, 9-Mimic-{14}
+SI_B12 : 2-Centiwing, 1-Small Centipede-3-{AlternateForm}
+SI_C07 : 2-Yellow-2, 2-White
+SI_C01 : 3-Yellow, 4-Yellow-2
+SI_D01 : 5-Eggbug, 6-Cyan
+SI_C06 : 2-CicadaB, 3-CicadaA
+SI_D06 : 5-Yellow, 6-Yellow, 7-Yellow-2
+SI_C09 : 2-Centiwing
+SI_A30 : 3-Yellow //check
+SI_B16 : 7-White
+SI_F01 : 3-CicadaA, 4-CicadaB, 11-Centiwing-2, 11-Small Centipede-{AlternateForm}
+SI_A03x : 3-Cyan, 3-Yellow-2
+SI_B02x : 3-Yellow-4
+OFFSCREEN : 0-Vulture-4, 0-Scavenger-4
+
+LINEAGE : SI_B01 : 4 : Yellow-0.5, Cyan-0.5, White-0.3, Red-0
+LINEAGE : SI_B09 : 6 : NONE-0.05, Cyan-0.5, White-0.3, Red-0
+LINEAGE : SI_B16 : 7 : NONE-0.07, Cyan-0
+LINEAGE : SI_C01 : 2 : NONE-0.05, Mimic-{8}-0.5, Mimic-{12}-0.5, TentaclePlant-0
+LINEAGE : OFFSCREEN : 0 : NONE-0.10, Vulture-0.25, KingVulture-0
+
