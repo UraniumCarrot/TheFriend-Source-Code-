@@ -119,10 +119,6 @@ public class PoacherGameplay
     #region item carrying
     public static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
     { // Allows Poacher to carry things that they couldn't usually
-        if (self.room?.abstractRoom.name == "VR1" || 
-            self.room?.abstractRoom.name == "PUMP03" || 
-            self.room?.abstractRoom.name == "PS1") 
-            return orig(self,obj);
         if (obj is Creature young && young.Template.type == CreatureTemplateType.YoungLizard) return false;
         else if (obj is Lizard mother && mother.GetLiz() != null && mother.GetLiz().IsRideable) return true;
         if (self.TryGetPoacher(out var poacher))
@@ -141,10 +137,6 @@ public class PoacherGameplay
     { // Poacher food parkour
         orig(self, eu);
         if (!Plugin.PoacherFoodParkour()) return;
-        if (self.room.abstractRoom.name == "VR1" || 
-            self.room.abstractRoom.name == "PUMP03" || 
-            self.room.abstractRoom.name == "PS1") 
-            return;
         if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
@@ -178,10 +170,6 @@ public class PoacherGameplay
     { // Poacher food parkour
         orig(self, eu);
         if (!Plugin.PoacherFoodParkour()) return;
-        if (self.room.abstractRoom.name == "VR1" || 
-            self.room.abstractRoom.name == "PUMP03" || 
-            self.room.abstractRoom.name == "PS1") 
-            return;
         if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
