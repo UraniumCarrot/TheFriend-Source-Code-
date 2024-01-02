@@ -26,6 +26,7 @@ using TheFriend.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
 using TheFriend.CharacterThings.NoirThings;
+using TheFriend.Creatures.FamineCreatures;
 using TheFriend.Objects;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
@@ -83,6 +84,7 @@ namespace TheFriend
             DelugeWorldState.Apply();
             SLOracleHandler.Apply();
             FamineWorld.Apply();
+            FamineCreatures.Apply();
             DangerTypes.Apply();
 
             // Misc IL

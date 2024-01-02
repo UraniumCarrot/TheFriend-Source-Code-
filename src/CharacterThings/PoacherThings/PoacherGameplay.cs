@@ -75,7 +75,7 @@ public class PoacherGameplay
         if (!self.TryGetPoacher(out var poacher)) return;
         if (eatenobject is GlowWeed) { poacher.favoriteFoodTimer = 100; Debug.Log("Poacher loves it!"); }
         if (eatenobject is Hazer) { poacher.favoriteFoodTimer = 50; }
-        if (eatenobject is DangleFruit fruit && !WorldChanges.FamineWorld.IsDiseasedPipHandler(fruit)) { poacher.favoriteFoodTimer = 50; }
+        if (eatenobject is DangleFruit fruit && !WorldChanges.FamineWorld.IsDiseased(fruit)) { poacher.favoriteFoodTimer = 50; }
         if (eatenobject is LillyPuck) { poacher.favoriteFoodTimer = -50; }
         if (eatenobject is JellyFish) { poacher.favoriteFoodTimer = -100; }
         if (eatenobject is FireEgg) { poacher.favoriteFoodTimer = -600; Debug.Log("Poacher hated this food so much they died! Just kidding, it was full of super acid."); }

@@ -35,9 +35,9 @@ public partial class HuntQuestThings
         {
             new[] { HuntQuest.HuntCicada },
             new[] { CreatureTemplate.Type.SmallCentipede },
-            //new[] { CreatureTemplate.Type.SmallNeedleWorm },
-            //new[] { CreatureTemplate.Type.LanternMouse },
-            //new[] { HuntQuest.HuntEggbug },
+            new[] { HuntQuest.HuntEggbug },
+            //new[] { CreatureTemplate.Type.SmallNeedleWorm }, //Nonexistent in SI
+            //new[] { CreatureTemplate.Type.LanternMouse }, //Nonexistent in SI
         };
 
         //Karma 2, Progression to Karma 3
@@ -45,8 +45,8 @@ public partial class HuntQuestThings
         {
             new []{ CreatureTemplate.Type.SmallCentipede, CreatureTemplate.Type.SmallCentipede, CreatureTemplate.Type.SmallCentipede, },
             new []{ HuntQuest.HuntCicada, HuntQuest.HuntCicada, },
-            new []{ HuntQuest.HuntCicada, CreatureTemplate.Type.SmallCentipede, },
-            new []{ HuntQuest.HuntCentipede, CreatureTemplate.Type.SmallCentipede, },
+            new []{ HuntQuest.HuntEggbug, HuntQuest.HuntCicada, },
+            new []{ HuntQuest.HuntEggbug, CreatureTemplate.Type.SmallCentipede, },
             new []{ CreatureTemplate.Type.YellowLizard, }
         };
 

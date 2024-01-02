@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using TheFriend.HudThings;
-using TheFriend.WorldChanges;
+using TheFriend.Creatures.FamineCreatures;
 using UnityEngine;
 using static MoreSlugcats.MoreSlugcatsEnums.CreatureTemplateType;
 
@@ -53,7 +51,7 @@ public abstract partial class HuntQuestThings
             if (type == HuntCicada) sprite.CreatureColor = new Color(0.55f, 0.85f, 0.95f);
             if (type == CreatureTemplate.Type.LanternMouse) sprite.CreatureColor = new Color(0.4f, 0.85f, 0.95f);
             if (type == HuntCentipede || type == CreatureTemplate.Type.Centipede || type == CreatureTemplate.Type.SmallCentipede)
-                sprite.CreatureColor = Color.HSVToRGB(FamineWorld.defCentiColor, FamineWorld.defCentiSat, 1f);
+                sprite.CreatureColor = Color.HSVToRGB(FamineCentipede.defCentiColor, FamineCentipede.defCentiSat, 1f);
 
             sprite.targetColor = sprite.CreatureColor;
             sprite.color = sprite.CreatureColor;
