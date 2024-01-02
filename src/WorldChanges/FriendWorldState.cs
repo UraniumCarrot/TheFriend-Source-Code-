@@ -69,7 +69,11 @@ public class FriendWorldState
     {
         FaminePlayer(game);
         DelugeWorldState.DelugeWorld(game);
-        if (game != null) FamineWorld.HasFamines(game);
+        if (game != null)
+        {
+            FamineWorld.HasFamines(game);
+            FamineWorld.FamineBurden(game);
+        }
         orig(self, game, playerCharacter, singleRoomWorld, worldName, region, setupValues);
     }
 

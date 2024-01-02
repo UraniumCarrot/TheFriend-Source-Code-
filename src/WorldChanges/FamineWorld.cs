@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
 using MoreSlugcats;
 using RWCustom;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
-using System.Globalization;
+using Expedition;
 using SlugBase;
-using SlugBase.Assets;
-using SlugBase.DataTypes;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 
@@ -51,39 +42,45 @@ public class FamineWorld
         else return false;
     }
 
-    public static bool HasFamines(RainWorldGame self)
+    public static void FamineBurden(RainWorldGame self)
+    {
+        if (self.rainWorld.ExpeditionMode &&
+            ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))
+            FamineBurdenBool = true;
+        FamineBurdenBool = false;
+    }
+    
+    public static void HasFamines(RainWorldGame self)
     {
         if ((self.StoryCharacter == Plugin.FriendName || 
              self.StoryCharacter == Plugin.NoirName ||
             self.StoryCharacter == Plugin.DragonName ||
-             (Configs.GlobalFamine && !self.rainWorld.ExpeditionMode) || 
-            (self.rainWorld.ExpeditionMode && Configs.ExpeditionFamine)) 
-            && !NoFamine() && !self.IsArenaSession)
-        {
+             (Configs.GlobalFamine && !self.rainWorld.ExpeditionMode)
+            && !NoFamine() && !self.IsArenaSession))
             FamineBool = true;
-            return true;
-        }
-        else 
-        {
+        else if (self.rainWorld.ExpeditionMode && 
+                 ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))
+            FamineBool = true;
+        else
             FamineBool = false;
-            return false;
-        }
+        
     } // Helps majority of the code here tell slugcat has famines
     public static bool FamineBool; // Global bool used to tell if the world has Solace famines, has no requirements unlike above
+    public static bool FamineBurdenBool;
 
     public static bool IsDiseased(AbstractConsumable c) // General disease bool handler
     {
         if (!FamineBool) return false;
-        if (c.world.name == "UG") return false;
+        if (c.world.name == "UG" && !FamineBurdenBool) return false;
         var oldState = Random.state;
         try
         {
             var newState = c.ID.RandomSeed; //c.placedObjectIndex != -1 ? ((c.world.GetAbstractRoom(c.originRoom)?.name.GetHashCode() ?? 0) ^ c.placedObjectIndex) : c.ID.number;
             Random.InitState(newState);
-            if (c.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit) return Random.value > 0.2;
-            if (c.type == MoreSlugcatsEnums.AbstractObjectType.LillyPuck) return Random.value > 0.05;
-            if (c.type == MoreSlugcatsEnums.AbstractObjectType.GooieDuck) return Random.value > 0.9;
-            if (c.type == MoreSlugcatsEnums.AbstractObjectType.DandelionPeach) return Random.value > 0.4;
+            if (c.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit) return (FamineBurdenBool) ? true : Random.value > 0.2;
+            if (c.type == MoreSlugcatsEnums.AbstractObjectType.LillyPuck) return (FamineBurdenBool) ? true : Random.value > 0.05;
+            if (c.type == MoreSlugcatsEnums.AbstractObjectType.GooieDuck) return (FamineBurdenBool) ? true : Random.value > 0.9;
+            if (c.type == MoreSlugcatsEnums.AbstractObjectType.DandelionPeach) return (FamineBurdenBool) ? true : Random.value > 0.4;
             else return false;
         }
         finally
@@ -143,7 +140,7 @@ public class FamineWorld
         return num;
     }
     // Diseased centipede food
-    public static void Player_EatMeatUpdate(MonoMod.Cil.ILContext il)
+    public static void Player_EatMeatUpdate(ILContext il)
     {
         try
         {
@@ -195,14 +192,14 @@ public class FamineWorld
     public static void DangleFruit_ApplyPalette(On.DangleFruit.orig_ApplyPalette orig, DangleFruit self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette) // Makes it brown
     {
         orig(self, sLeaser, rCam, palette);
-        if (self.AbstrConsumable is AbstractConsumable obj && IsDiseased(obj))
+        if (IsDiseased(self.AbstrConsumable))
         {
             self.color = Color.Lerp(new Color(0.2f, 0.16f, 0.1f), palette.blackColor, palette.darkness);
         }
     }
     public static void DangleFruit_DrawSprites(On.DangleFruit.orig_DrawSprites orig, DangleFruit self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos) // Makes it small
     {
-        if (self.AbstrConsumable is AbstractConsumable obj && IsDiseased(obj))
+        if (IsDiseased(self.AbstrConsumable))
         {
             sLeaser.sprites[0].scaleX = 0.8f;
             sLeaser.sprites[1].scaleX = 0.8f;
@@ -214,7 +211,7 @@ public class FamineWorld
     public static void LillyPuck_ApplyPalette(On.MoreSlugcats.LillyPuck.orig_ApplyPalette orig, LillyPuck self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
-        if (self.AbstrConsumable is AbstractConsumable obj && IsDiseased(obj))
+        if (IsDiseased(self.AbstrConsumable))
         {
             self.color = Color.Lerp(new Color(0.3f, 0.24f, 0.18f), palette.blackColor, palette.darkness);
             sLeaser.sprites[0].color = self.color;
@@ -229,7 +226,7 @@ public class FamineWorld
     public static void LillyPuck_Update(On.MoreSlugcats.LillyPuck.orig_Update orig, LillyPuck self, bool eu)
     {
         orig(self,eu);
-        if (self.AbstrConsumable is AbstractConsumable obj && IsDiseased(obj))
+        if (IsDiseased(self.AbstrConsumable))
         {
             self.light.rad = 0f;
             self.lightFade = 0f;
@@ -241,7 +238,7 @@ public class FamineWorld
     public static void GooieDuck_ApplyPalette(On.MoreSlugcats.GooieDuck.orig_ApplyPalette orig, GooieDuck self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
-        if (self.AbstrConsumable is AbstractConsumable obj && IsDiseased(obj))
+        if (IsDiseased(self.AbstrConsumable))
         {
             self.CoreColor = Color.Lerp(new Color(0.2f, 0.21f, 0.32f), palette.blackColor, palette.darkness/ 3f);
             self.HuskColor = Color.Lerp(new Color(0.2f, 0.16f, 0.1f), palette.blackColor, palette.darkness);
@@ -252,7 +249,7 @@ public class FamineWorld
     public static void DandelionPeach_ctor(On.MoreSlugcats.DandelionPeach.orig_ctor orig, DandelionPeach self, AbstractPhysicalObject abstractPhysicalObject)
     {
         orig(self, abstractPhysicalObject);
-        if (self.AbstrConsumable is AbstractConsumable obj && IsDiseased(obj))
+        if (IsDiseased(self.AbstrConsumable))
         {
             self.airFriction = 0.999f;
             self.gravity = 0.9f;
@@ -261,7 +258,7 @@ public class FamineWorld
     public static void DandelionPeach_ApplyPalette(On.MoreSlugcats.DandelionPeach.orig_ApplyPalette orig, DandelionPeach self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
-        if (self.AbstrConsumable is AbstractConsumable obj && IsDiseased(obj))
+        if (IsDiseased(self.AbstrConsumable))
         {
             self.color = Color.Lerp(new Color(0.87f, 0.85f, 0.75f), palette.blackColor, Mathf.Pow(palette.darkness,2f));
             sLeaser.sprites[1].color = Color.Lerp(Color.Lerp(palette.fogColor, new Color(1f, 1f, 1f), 0.5f), palette.blackColor, palette.darkness);
@@ -274,7 +271,7 @@ public class FamineWorld
     public static void Fly_ctor(On.Fly.orig_ctor orig, Fly self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (FamineBool && (world.region.name != "UG" || world.region.name != "SB"))
+        if ((FamineBool && (world.region.name != "UG" || world.region.name != "SB")) || FamineBurdenBool)
         {
             self.Destroy();
         }
@@ -296,7 +293,7 @@ public class FamineWorld
     public static void CentipedeGraphics_InitiateSprites(On.CentipedeGraphics.orig_InitiateSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
-        if (!self.centipede.AquaCenti && FamineBool)
+        if (!self.centipede.AquaCenti && (FamineBool || FamineBurdenBool))
         {
             for (int i = 0; i < self.owner.bodyChunks.Count(); i++)
             {
@@ -308,9 +305,9 @@ public class FamineWorld
     public static void CentipedeGraphics_DrawSprites(On.CentipedeGraphics.orig_DrawSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
-        if (!self.centipede.AquaCenti && FamineBool)
+        if (!self.centipede.AquaCenti && (FamineBool || FamineBurdenBool))
         {
-            for (int i = 0; i < self?.owner?.bodyChunks?.Count(); i++)
+            for (int i = 0; i < self.owner?.bodyChunks?.Count(); i++)
             {
                 sLeaser.sprites[self.SegmentSprite(i)].element = Futile.atlasManager.GetElementWithName("LizardHead3.0");
             }
@@ -321,7 +318,7 @@ public class FamineWorld
         orig(self, abstractCreature, world);
         if (!self.Red && !self.AquaCenti && !abstractCreature.IsVoided() && FamineBool)
         {
-            for (int i = 0; i < self?.bodyChunks?.Count(); i++)
+            for (int i = 0; i < self.bodyChunks?.Count(); i++)
             {
                 self.bodyChunks[i].rad *= 0.6f;
                 self.bodyChunks[i].mass *= 0.4f;
