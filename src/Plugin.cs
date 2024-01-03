@@ -170,6 +170,7 @@ namespace TheFriend
             Futile.atlasManager.LoadAtlas("atlases/dragonskull3");
             Futile.atlasManager.LoadAtlas("atlases/solacesymbols");
             Futile.atlasManager.LoadAtlas("atlases/ForeheadSpots");
+            Futile.atlasManager.LoadAtlas("atlases/CentipedeLegB_Fade");
             DelugeSounds.LoadSounds();
             NoirCatto.LoadSounds();
             NoirCatto.LoadAtlases();

@@ -1,5 +1,6 @@
 using System;
 using System.Security.Permissions;
+using TheFriend;
 using UnityEngine;
 
 /*
@@ -35,6 +36,7 @@ internal static class Extras
             catch (Exception e)
             {
                 Debug.LogException(e);
+                Plugin.LogSource.LogError(e);
             }
         };
     }

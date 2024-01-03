@@ -139,10 +139,6 @@ public class PoacherGameplay
     { // Poacher food parkour
         orig(self, eu);
         if (!Configs.PoacherFoodParkour) return;
-        if (self.room.abstractRoom.name == "VR1" || 
-            self.room.abstractRoom.name == "PUMP03" || 
-            self.room.abstractRoom.name == "PS1") 
-            return;
         if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
@@ -176,10 +172,6 @@ public class PoacherGameplay
     { // Poacher food parkour
         orig(self, eu);
         if (!Configs.PoacherFoodParkour) return;
-        if (self.room.abstractRoom.name == "VR1" || 
-            self.room.abstractRoom.name == "PUMP03" || 
-            self.room.abstractRoom.name == "PS1") 
-            return;
         if (self.grabbedBy?.Count > 0)
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)

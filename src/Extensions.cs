@@ -1,4 +1,5 @@
 using System;
+using RWCustom;
 using UnityEngine;
 
 namespace TheFriend;
@@ -24,6 +25,21 @@ public static class Extensions
     public static float MinValue(this Vector2 vector)
     {
         return Mathf.Min(vector.x, vector.y);
+    }
+
+    public static float Hue(this Color color)
+    {
+        return Custom.RGB2HSL(color).x;
+    }
+    public static void ChangeHue(this ref Color color, float newHue)
+    {
+        var colorHsl = Custom.RGB2HSL(color);
+        colorHsl.x = newHue;
+        color = colorHsl.HSL2RGB();
+    }
+    public static Color HSL2RGB(this Vector3 colorVec)
+    {
+        return Custom.HSL2RGB(colorVec.x, colorVec.y, colorVec.z);
     }
     #endregion
 
