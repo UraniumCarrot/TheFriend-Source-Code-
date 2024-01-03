@@ -35,7 +35,7 @@ public partial class HuntQuestThings
         {
             new[] { HuntQuest.HuntCicada },
             new[] { CreatureTemplate.Type.SmallCentipede },
-            new[] { HuntQuest.HuntEggbug },
+            new[] { HuntQuest.HuntEggBug },
             //new[] { CreatureTemplate.Type.SmallNeedleWorm }, //Nonexistent in SI
             //new[] { CreatureTemplate.Type.LanternMouse }, //Nonexistent in SI
         };
@@ -45,8 +45,8 @@ public partial class HuntQuestThings
         {
             new []{ CreatureTemplate.Type.SmallCentipede, CreatureTemplate.Type.SmallCentipede, CreatureTemplate.Type.SmallCentipede, },
             new []{ HuntQuest.HuntCicada, HuntQuest.HuntCicada, },
-            new []{ HuntQuest.HuntEggbug, HuntQuest.HuntCicada, },
-            new []{ HuntQuest.HuntEggbug, CreatureTemplate.Type.SmallCentipede, },
+            new []{ HuntQuest.HuntEggBug, HuntQuest.HuntCicada, },
+            new []{ HuntQuest.HuntEggBug, CreatureTemplate.Type.SmallCentipede, },
             new []{ CreatureTemplate.Type.YellowLizard, }
         };
 

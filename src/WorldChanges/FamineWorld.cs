@@ -1,5 +1,6 @@
 ﻿using MoreSlugcats;
 using UnityEngine;
+using Expedition;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 using TheFriend.Creatures.FamineCreatures;
@@ -19,25 +20,30 @@ public abstract class FamineWorld
         On.MoreSlugcats.DandelionPeach.ApplyPalette += DandelionPeach_ApplyPalette;
     }
 
-    public static bool HasFamines(RainWorldGame self)
+    public static void FamineBurden(RainWorldGame self)
     {
-        if ((self.StoryCharacter == Plugin.FriendName || 
+        if (self.rainWorld.ExpeditionMode &&
+            ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))
+            FamineBurdenBool = true;
+        FamineBurdenBool = false;
+    }
+    
+    public static void HasFamines(RainWorldGame self)
+    {
+        if ((self.StoryCharacter == Plugin.FriendName ||
              self.StoryCharacter == Plugin.NoirName ||
-            self.StoryCharacter == Plugin.DragonName ||
-             (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode) || 
-            (self.rainWorld.ExpeditionMode && Plugin.ExpeditionFamine())) 
-            && !Plugin.NoFamine() && !self.IsArenaSession)
-        {
+             self.StoryCharacter == Plugin.DragonName ||
+             (Plugin.FaminesForAll() && !self.rainWorld.ExpeditionMode)
+             && !Plugin.NoFamine() && !self.IsArenaSession))
             FamineBool = true;
-            return true;
-        }
-        else 
-        {
+        else if (self.rainWorld.ExpeditionMode &&
+                 ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))
+            FamineBool = true;
+        else
             FamineBool = false;
-            return false;
-        }
     } // Helps majority of the code here tell slugcat has famines
     public static bool FamineBool; // Global bool used to tell if the world has Solace famines, has no requirements unlike above
+    public static bool FamineBurdenBool;
 
     public static bool IsDiseased(PhysicalObject consumable) => IsDiseased(consumable.abstractPhysicalObject);
     public static bool IsDiseased(AbstractPhysicalObject consumable) // General disease bool handler
