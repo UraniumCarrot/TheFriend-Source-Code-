@@ -51,7 +51,7 @@ public abstract partial class HuntQuestThings
             if (type == HuntCicada) sprite.CreatureColor = new Color(0.55f, 0.85f, 0.95f);
             if (type == CreatureTemplate.Type.LanternMouse) sprite.CreatureColor = new Color(0.4f, 0.85f, 0.95f);
             if (type == HuntCentipede || type == CreatureTemplate.Type.Centipede || type == CreatureTemplate.Type.SmallCentipede)
-                sprite.CreatureColor = Color.HSVToRGB(FamineCentipede.defCentiColor, FamineCentipede.defCentiSat, 1f);
+                sprite.CreatureColor = Color.HSVToRGB(0.6f, FamineCentipede.defCentiSat, 1f);
             if (type == HuntEggBug || type == CreatureTemplate.Type.EggBug) sprite.CreatureColor = new Color(0.2f, 0.70f, 1f);
 
             sprite.targetColor = sprite.CreatureColor;

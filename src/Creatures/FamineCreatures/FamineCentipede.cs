@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MoreSlugcats;
@@ -20,62 +22,81 @@ public abstract class FamineCentipede
         On.CentipedeGraphics.DrawSprites += CentipedeGraphics_DrawSprites;
         On.Centipede.Violence += Centipede_Violence;
         On.Centipede.ShortCutColor += Centipede_ShortCutColor;
-        On.Centipede.ctor += Centipede_ctor;
+        //On.Centipede.ctor += Centipede_ctor;
         IL.Player.EatMeatUpdate += Player_EatMeatUpdate;
     }
 
      // Diseased Centipede
-    public static float defCentiColor = 0.6f;
     public static float defCentiSat = 0.5f;
     public static Color Centipede_ShortCutColor(On.Centipede.orig_ShortCutColor orig, Centipede self)
     {
-        if (!FamineWorld.FamineBool) return orig(self);
-        if (self is not null && !self.abstractCreature.IsVoided() && !self.AquaCenti)
+        if (self is not null && 
+            self.TryGet(out var data))
         {
-            if (self.Red) return Custom.HSL2RGB(0.68f, 0, 0.5f);
-            else if (self.Centiwing) return Custom.HSL2RGB(0.68f, defCentiSat, 0.5f);
-            else return Custom.HSL2RGB(defCentiColor, defCentiSat, 0.5f);
+            if (self.Red) return Custom.HSL2RGB(data.sickHue, 0f, 0.5f);
+            else return Custom.HSL2RGB(data.sickHue, defCentiSat, 0.5f);
         }
         else return orig(self);
     }
     public static void CentipedeGraphics_InitiateSprites(On.CentipedeGraphics.orig_InitiateSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
-        if (!self.centipede.AquaCenti && FamineWorld.FamineBool)
+        if (self.centipede != null && self.centipede.TryGet(out var data) && !self.centipede.Red)
         {
             for (int i = 0; i < self.owner.bodyChunks.Count(); i++)
             {
-                sLeaser.sprites[self.SegmentSprite(i)].scaleY *= 0.8f;
-                sLeaser.sprites[self.SegmentSprite(i)].scaleX *= 1.5f;
+                if (!self.centipede.Red)
+                {
+                    sLeaser.sprites[self.SegmentSprite(i)].scaleY *= 0.8f;
+                    sLeaser.sprites[self.SegmentSprite(i)].scaleX *= 1.5f;
+                }
             }
         }
     }
     public static void CentipedeGraphics_DrawSprites(On.CentipedeGraphics.orig_DrawSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
-        if (!self.centipede.AquaCenti && FamineWorld.FamineBool)
+        if (self.centipede != null && self.centipede.TryGet(out var data))
         {
-            for (int i = 0; i < self?.owner?.bodyChunks?.Count(); i++)
+            if (!self.centipede.Red) 
+                (sLeaser.sprites[self.TubeSprite] as TriangleMesh)!.width = 0.8f;
+            for (int i = 0; i < self.owner?.bodyChunks?.Count(); i++)
             {
                 sLeaser.sprites[self.SegmentSprite(i)].element = Futile.atlasManager.GetElementWithName("LizardHead3.0");
+                if (!self.centipede.Red)
+                    if (i > 0)
+                    {
+                        sLeaser.sprites[self.SecondarySegmentSprite(i - 1)].scaleY *= 0.8f;
+                        sLeaser.sprites[self.SecondarySegmentSprite(i - 1)].scaleX *= 0.8f;
+                    }
+                
+                for (int j = 0; j < ((!self.centipede.AquaCenti) ? 1 : 2); j++)
+                {
+                    if (!self.centipede.Red)
+                        sLeaser.sprites[self.ShellSprite(i,j)].scaleY *= 0.8f;
+                    else
+                    {
+                    }
+                }
             }
         }
     }
     public static void Centipede_ctor(On.Centipede.orig_ctor orig, Centipede self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (!self.Red && !self.AquaCenti && !abstractCreature.IsVoided() && FamineWorld.FamineBool)
+        if (self.TryGet(out var data))
         {
-            for (int i = 0; i < self?.bodyChunks?.Count(); i++)
+            for (int i = 0; i < self.bodyChunks?.Count(); i++)
             {
                 self.bodyChunks[i].rad *= 0.6f;
                 self.bodyChunks[i].mass *= 0.4f;
+                
             }
         }
     }
     public static void Centipede_Violence(On.Centipede.orig_Violence orig, Centipede self, BodyChunk source, Vector2? directionAndMomentum, BodyChunk hitChunk, PhysicalObject.Appendage.Pos hitAppendage, Creature.DamageType type, float damage, float stunBonus)
     {
-        if (FamineWorld.FamineBool && !(self.AquaCenti || self.Red))
+        if (self.TryGet(out var centi) && !self.Red)
         {
             if (type == Creature.DamageType.Bite) damage *= 2.6f;
             if (type == Creature.DamageType.Explosion) damage *= 8f;
@@ -87,28 +108,10 @@ public abstract class FamineCentipede
     public static void CentipedeGraphics_ctor(On.CentipedeGraphics.orig_ctor orig, CentipedeGraphics self, PhysicalObject ow)
     {
         orig(self, ow);
-        if (FamineWorld.FamineBool && !self.centipede.abstractCreature.IsVoided())
+        if (self.centipede.TryGet(out var data))
         {
-            if (self.centipede.Red)
-            {
-                self.hue = 0.68f;
-                self.saturation = 0f;
-            }
-            else if (self.centipede.Small && self.centipede.abstractCreature.superSizeMe)
-            {
-                self.hue = defCentiColor;
-                self.saturation = 0.7f;
-            }
-            else if (self.centipede.Centiwing)
-            {
-                self.hue = 0.68f;
-                self.saturation = defCentiSat;
-            }
-            else if (!self.centipede.AquaCenti)
-            {
-                self.hue = defCentiColor;
-                self.saturation = 0.5f;
-            }
+            self.hue = data.sickHue;
+            self.saturation = (self.centipede.Red) ? 0.1f : defCentiSat;
         }
     }
 
@@ -140,7 +143,7 @@ public abstract class FamineCentipede
             return false;
         if (plGrasp.Template.type == CreatureTemplate.Type.RedCentipede ||
             plGrasp.Template.type == MoreSlugcatsEnums.CreatureTemplateType.AquaCenti ||
-            !FamineWorld.FamineBool)
+            !(FamineWorld.FamineBool || FamineWorld.FamineBurdenBool))
             return false;
 
         if ((SlugBaseCharacter.TryGet(pl.SlugCatClass, out var chara) &&
@@ -161,7 +164,6 @@ public abstract class FamineCentipede
 
         return true;
     }
-
     //From FamineWorld.cs
     public static void NourishmentOfCentiEaten(SlugcatStats.Name slugcatIndex, IPlayerEdible eatenobject, ref int num)
     {
@@ -171,4 +173,54 @@ public abstract class FamineCentipede
             else num = centi.FoodPoints;
         }
     }
+}
+
+public static class CentiCWT
+{
+    public class CentiData
+    {
+        public bool naturalSickness;
+        public float sickHue;
+        public CentiData(Centipede self)
+        {
+            var random = Mathf.Lerp(-1, 1, Random.value) * 0.1f;
+            switch (self.Template.type.value)
+            {
+                case nameof(CreatureTemplate.Type.RedCentipede): 
+                    sickHue = Random.value;
+                    break;
+                case nameof(CreatureTemplate.Type.Centiwing):
+                    sickHue = (naturalSickness) ? 
+                        0.68f + random : 0.5f + random;
+                    break;
+                case nameof(CreatureTemplate.Type.SmallCentipede) or 
+                    nameof(CreatureTemplate.Type.Centipede):
+                    sickHue = (naturalSickness) ? 
+                        0.6f + random : 0.4f + random;
+                    break;
+            }
+
+        }
+    }
+    public static readonly ConditionalWeakTable<Centipede, CentiData> CWT = new();
+    public static CentiData GetData(this Centipede centi) => CWT.GetValue(centi, _ => new(centi));
+
+    public static bool TryGet(this Centipede self, out CentiData data)
+    {
+        if ((FamineWorld.FamineBool || 
+            FamineWorld.FamineBurdenBool) && 
+            !self.abstractCreature.IsVoided() &&
+            !self.AquaCenti)
+        {
+            data = self.GetData();
+            if (FamineWorld.FamineBurdenBool && 
+                !FriendWorldState.SolaceWorldstate) 
+                data.naturalSickness = false;
+            else data.naturalSickness = true;
+            return true;
+        }
+        data = null;
+        return false;
+    }
+
 }
