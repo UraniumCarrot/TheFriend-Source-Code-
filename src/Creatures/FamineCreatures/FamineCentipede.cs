@@ -56,28 +56,31 @@ public abstract class FamineCentipede
     public static void CentipedeGraphics_DrawSprites(On.CentipedeGraphics.orig_DrawSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
-        if (self.centipede != null && self.centipede.TryGet(out var data))
+        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+
+        if (!self.centipede.AquaCenti)
         {
-            if (!self.centipede.Red) 
-                (sLeaser.sprites[self.TubeSprite] as TriangleMesh)!.width = 0.8f;
-            for (int i = 0; i < self.owner?.bodyChunks?.Count(); i++)
+            for (var i = 0; i < self?.owner?.bodyChunks?.Count(); i++)
             {
                 sLeaser.sprites[self.SegmentSprite(i)].element = Futile.atlasManager.GetElementWithName("LizardHead3.0");
-                if (!self.centipede.Red)
-                    if (i > 0)
-                    {
-                        sLeaser.sprites[self.SecondarySegmentSprite(i - 1)].scaleY *= 0.8f;
-                        sLeaser.sprites[self.SecondarySegmentSprite(i - 1)].scaleX *= 0.8f;
-                    }
-                
-                for (int j = 0; j < ((!self.centipede.AquaCenti) ? 1 : 2); j++)
-                {
-                    if (!self.centipede.Red)
-                        sLeaser.sprites[self.ShellSprite(i,j)].scaleY *= 0.8f;
-                    else
-                    {
-                    }
-                }
+            }
+        }
+
+        if (!self.centipede.Red) return;
+        var drawPos = self.centipede.bodyChunks.Select(chunk => Vector2.Lerp(chunk.lastPos, chunk.pos, timeStacker)).ToList();
+        var minX = drawPos.Min(pos => pos.x);
+        var maxX = drawPos.Max(pos => pos.x);
+
+        for (var i = 0; i < self.centipede.bodyChunks.Length; i++)
+        {
+            for (var j = 0; j < 2; j++)
+            {
+                var sprite = sLeaser.sprites[self.ShellSprite(i, j)];
+                var col = sprite.color;
+                var hue = Mathf.InverseLerp(minX + 0.01f, maxX - 0.01f, sprite.x) * 2f;
+                if (hue > 1f) hue -= 1f;
+                col.ChangeHue(hue);
+                sprite.color = col;
             }
         }
     }
@@ -90,7 +93,6 @@ public abstract class FamineCentipede
             {
                 self.bodyChunks[i].rad *= 0.6f;
                 self.bodyChunks[i].mass *= 0.4f;
-                
             }
         }
     }
@@ -111,7 +113,7 @@ public abstract class FamineCentipede
         if (self.centipede.TryGet(out var data))
         {
             self.hue = data.sickHue;
-            self.saturation = (self.centipede.Red) ? 0.1f : defCentiSat;
+            self.saturation = (self.centipede.Red) ? 0.15f : defCentiSat;
         }
     }
 
