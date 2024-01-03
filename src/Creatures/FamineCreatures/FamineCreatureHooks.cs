@@ -6,5 +6,6 @@ public abstract class FamineCreatures
     {
         FamineCentipede.Apply();
         FamineBatFly.Apply();
+        FamineEggBug.Apply();
     }
 }

@@ -52,6 +52,7 @@ public abstract partial class HuntQuestThings
             if (type == CreatureTemplate.Type.LanternMouse) sprite.CreatureColor = new Color(0.4f, 0.85f, 0.95f);
             if (type == HuntCentipede || type == CreatureTemplate.Type.Centipede || type == CreatureTemplate.Type.SmallCentipede)
                 sprite.CreatureColor = Color.HSVToRGB(FamineCentipede.defCentiColor, FamineCentipede.defCentiSat, 1f);
+            if (type == HuntEggBug || type == CreatureTemplate.Type.EggBug) sprite.CreatureColor = new Color(0.2f, 0.70f, 1f);
 
             sprite.targetColor = sprite.CreatureColor;
             sprite.color = sprite.CreatureColor;
@@ -64,7 +65,7 @@ public abstract partial class HuntQuestThings
             if (type == CreatureTemplate.Type.CicadaA || type == CreatureTemplate.Type.CicadaB)
                 return HuntCicada;
             if (type == CreatureTemplate.Type.EggBug || type == FireBug)
-                return HuntEggbug;
+                return HuntEggBug;
             if (type == CreatureTemplate.Type.BigSpider || type == MotherSpider || type == CreatureTemplate.Type.SpitterSpider)
                 return HuntSpider;
             if (type == CreatureTemplate.Type.DaddyLongLegs || type == TerrorLongLegs)
@@ -74,7 +75,7 @@ public abstract partial class HuntQuestThings
                 return CreatureTemplate.Type.Centipede;
             if (type == HuntCicada)
                 return CreatureTemplate.Type.CicadaA;
-            if (type == HuntEggbug)
+            if (type == HuntEggBug)
                 return CreatureTemplate.Type.EggBug;
             if (type == HuntSpider)
                 return CreatureTemplate.Type.BigSpider;
@@ -86,13 +87,13 @@ public abstract partial class HuntQuestThings
 
         public static readonly CreatureTemplate.Type HuntCentipede = new CreatureTemplate.Type(nameof(HuntCentipede));
         public static readonly CreatureTemplate.Type HuntCicada = new CreatureTemplate.Type(nameof(HuntCicada));
-        public static readonly CreatureTemplate.Type HuntEggbug = new CreatureTemplate.Type(nameof(HuntEggbug));
+        public static readonly CreatureTemplate.Type HuntEggBug = new CreatureTemplate.Type(nameof(HuntEggBug));
         public static readonly CreatureTemplate.Type HuntSpider = new CreatureTemplate.Type(nameof(HuntSpider));
         public static readonly CreatureTemplate.Type HuntDLL = new CreatureTemplate.Type(nameof(HuntDLL));
 
         public static bool IsHuntType(CreatureTemplate.Type type)
         {
-            return type == HuntCentipede || type == HuntCicada || type == HuntEggbug || type == HuntSpider || type == HuntDLL;
+            return type == HuntCentipede || type == HuntCicada || type == HuntEggBug || type == HuntSpider || type == HuntDLL;
         }
     }
 }
