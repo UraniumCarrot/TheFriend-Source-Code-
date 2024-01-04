@@ -9,12 +9,9 @@ public partial class RemixMain
 {
     public static Configurable<bool> GeneralNoFamine;
     public static Configurable<bool> GeneralFaminesForAll;
-    public static Configurable<bool> GeneralExpeditionFamine;
 
     public static Configurable<bool> GeneralLocalizedLizRep;
     public static Configurable<bool> GeneralLocalizedLizRepForAll;
-    
-    public static Configurable<bool> GeneralSolaceBlizzTimer;
     
     public static Configurable<bool> GeneralLizRideAll;
     public static Configurable<bool> GeneralLizRepMeterForAll;
@@ -22,6 +19,8 @@ public partial class RemixMain
     public static Configurable<bool> GeneralIntroRollBlizzard;
     public static Configurable<bool> GeneralCharselectSnow;
     public static Configurable<bool> GeneralCharCustomHeights;
+    public static Configurable<bool> GeneralSolaceBlizzTimer;
+    public static Configurable<bool> GeneralSolaceTitleCards;
 
     public static Configurable<string> pageValue;
     public static Configurable<string> cosmetic;
@@ -35,14 +34,11 @@ public partial class RemixMain
 
     public void RemixGeneral()
     {
-        GeneralExpeditionFamine = config.Bind("SolaceExpeditionFamine", false, new ConfigAcceptableList<bool>(true, false));
         GeneralNoFamine = config.Bind("SolaceNoFamine", false, new ConfigAcceptableList<bool>(true, false));
         GeneralFaminesForAll = config.Bind("SolaceFaminesForAll", false, new ConfigAcceptableList<bool>(true, false));
         
         GeneralLocalizedLizRep = config.Bind("SolaceLocalizedLizRep", true, new ConfigAcceptableList<bool>(true, false));
         GeneralLocalizedLizRepForAll = config.Bind("SolaceLocalizedLizRepForAll", false, new ConfigAcceptableList<bool>(true, false));
-        
-        GeneralSolaceBlizzTimer = config.Bind("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
         
         GeneralLizRideAll = config.Bind("SolaceLizRideAll", false, new ConfigAcceptableList<bool>(true, false));
         GeneralLizRepMeterForAll = config.Bind("SolaceLizRepMeterForAll", false, new ConfigAcceptableList<bool>(true, false));
@@ -50,6 +46,8 @@ public partial class RemixMain
         GeneralIntroRollBlizzard = config.Bind("SolaceIntroRollBlizzard", true, new ConfigAcceptableList<bool>(true, false));
         GeneralCharselectSnow = config.Bind("SolaceCharselectSnow", true, new ConfigAcceptableList<bool>(true, false));
         GeneralCharCustomHeights = config.Bind("SolaceCharHeights", false, new ConfigAcceptableList<bool>(true, false));
+        GeneralSolaceBlizzTimer = config.Bind("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
+        GeneralSolaceTitleCards = config.Bind("SolaceTitleCards", false, new ConfigAcceptableList<bool>(true, false));
 
         pageValue = config.Bind<string>(null, "Lizards");
         cosmetic = config.Bind<string>(null, "Survivor");
@@ -57,10 +55,6 @@ public partial class RemixMain
     
     public void RemixGeneralUpdate()
     {
-        Debug.Log("slugcatSettings value: " + slugcatSettings.value + ", _value: " + slugcatSettings._value + ", labeltext: " + slugcatSettings._lblText + ", labellist" + slugcatSettings._lblList);
-
-        
-        
         if (GenMiscelList.Count > 0)
         {
             foreach (UIelement elem in GenMiscelList)
@@ -94,7 +88,7 @@ public partial class RemixMain
     { 
         OpTabGeneral = new OpTab(this, "General");
         GenSprites = new OpContainer(Vector2.zero);
-        
+
         page = new OpListBox(
             pageValue,
             new Vector2(column-30, row-20),
@@ -126,8 +120,15 @@ public partial class RemixMain
         //GenSprites.container.AddChild();
 
         OpTabGeneral.AddItems(page,slugcatSettings,
-            new OpLabel(gencolumn,row-(rowMult*4),"Global",true) { alpha = 0.5f }
+            new OpLabel(gencolumn,row-(rowMult*3),"Universal",true) { alpha = 0.5f },
+            new OpLabel(
+                    gencolumn,
+                    row + 25,  
+                    "Editing settings for:", true) 
+                { alpha = 0.5f }
             );
+        var rowseparator1 = MakeLine(new Vector2(gencolumn*2.72f,row-(rowMult*2)), false);
+        GenSprites.container.AddChild(rowseparator1);
 
         GeneralFamine();
         GeneralMiscel();
@@ -139,10 +140,19 @@ public partial class RemixMain
     }
 
     public void GeneralFamine()
-    {
+    { // TODO: Test NoFamine
         GenFamineList.AddRange(new UIelement[]
         {
-            
+            new OpCheckboxLabelled(GeneralFaminesForAll, gencolumn, row-125, "Global Famines")
+            {
+                description =
+                    Translate("Gives famine mechanics and creatures to every character")
+            },
+            new OpCheckboxLabelled(GeneralNoFamine, gencolumn, row-(rowMult)-125, "Famine Disable")
+            {
+                description =
+                    Translate("Stops famine mechanics in all modes except for Expedition mode when using the Famished burden, may be broken")
+            }
         });
         foreach (UIelement elem in GenFamineList.ToArray())
             if (elem is OpCheckboxLabelled item && !GenFamineList.Contains(item.Label))
@@ -150,10 +160,34 @@ public partial class RemixMain
     }
 
     public void GeneralMiscel()
-    {
+    { // TODO: implement these
         GenMiscelList.AddRange(new UIelement[]
         {
-            
+            new OpCheckboxLabelled(GeneralCharselectSnow, gencolumn, row-125, "Snow in Character Select")
+            {
+                description =
+                    Translate("Solace characters (or characters in cold areas) have snow on their Character Select page")
+            },
+            new OpCheckboxLabelled(GeneralIntroRollBlizzard, gencolumn, row-(rowMult)-125, "Intro Roll Blizzard")
+            {
+                description =
+                    Translate("Replaces the intro's rain with a blizzard effect")
+            },
+            new OpCheckboxLabelled(GeneralCharCustomHeights, gencolumn, row-(rowMult*2)-125, "Custom Height")
+            {
+                description =
+                    Translate("Gives some characters a custom height. Disable if physics break too much")
+            },
+            new OpCheckboxLabelled(GeneralSolaceBlizzTimer, gencolumn, row-(rowMult*3)-125, "Blizzard Cycle Timer")
+            {
+                description =
+                    Translate("Makes Saint and Solace characters able to see the cycle timer")
+            },
+            new OpCheckboxLabelled(GeneralSolaceTitleCards, gencolumn, row-(rowMult*4)-125, "Solace Title Cards")
+            {
+                description =
+                    Translate("Replaces all Downpour title cards with Solace ones")
+            }
         });
         foreach (UIelement elem in GenMiscelList.ToArray())
             if (elem is OpCheckboxLabelled item && !GenMiscelList.Contains(item.Label))
@@ -164,26 +198,24 @@ public partial class RemixMain
     {
         GenLizardList.AddRange(new UIelement[]
         {
-            new OpLabel(
-                    gencolumn,
-                    row + 25,  
-                    "Editing settings for:", true) 
-                { alpha = 0.5f },
-            new OpCheckboxLabelled(GeneralLizRideAll, gencolumn, row, "Global Rides", 0)
+            new OpCheckboxLabelled(GeneralLizRideAll, gencolumn, row-125, "Global Rides")
             {
                 description =
-                    Translate("Allows all lizards to be ridden if tamed (excluding Young and Mother lizards)"),
+                    Translate("Allows any lizard to be ridden if tamed (excluding Young and Mother lizards)")
+            },
+            new OpCheckboxLabelled(GeneralLizRepMeterForAll, gencolumn, row-(rowMult)-125, "Universal Reputation Meter")
+            {
+                description =
+                    Translate("Shows all characters, not just Solace ones, their lizard reputation in the current region")
+            },
+            new OpCheckboxLabelled(GeneralLocalizedLizRepForAll, gencolumn, row-(rowMult*2)-125, "Localized Reputation")
+            {
+                description =
+                    Translate("Makes all characters, not just Solace ones, have lizard reputation that is kept entirely within the current region")
             }
         });
         foreach (UIelement elem in GenLizardList.ToArray())
             if (elem is OpCheckboxLabelled item && !GenLizardList.Contains(item.Label))
                 GenLizardList.Add(item.Label);
     }
-    
-    
-    
-    
-    
-    
-    
 }

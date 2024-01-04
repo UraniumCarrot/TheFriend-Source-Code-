@@ -9,18 +9,17 @@ public class Configs
     #region general
     public static bool NoFamine => RemixMain.GeneralNoFamine.Value;
     public static bool GlobalFamine => RemixMain.GeneralFaminesForAll.Value;
-    public static bool ExpeditionFamine => RemixMain.GeneralExpeditionFamine.Value;
     
     public static bool RepMeterAll => RemixMain.GeneralLizRepMeterForAll.Value;
     public static bool LocalRepAll => RemixMain.GeneralLocalizedLizRepForAll.Value;
-    
+    public static bool LizRideAll => RemixMain.GeneralLizRideAll.Value;
+
     public static bool CharSnow => RemixMain.GeneralCharselectSnow.Value;
     public static bool IntroBlizzard => RemixMain.GeneralIntroRollBlizzard.Value;
     public static bool CharHeight => RemixMain.GeneralCharCustomHeights.Value;
-    
     public static bool BlizzTimer => RemixMain.GeneralSolaceBlizzTimer.Value;
+    public static bool TitleCards => RemixMain.GeneralSolaceTitleCards.Value;
     
-    public static bool LizRideAll => RemixMain.GeneralLizRideAll.Value;
     #endregion
     
     #region friend

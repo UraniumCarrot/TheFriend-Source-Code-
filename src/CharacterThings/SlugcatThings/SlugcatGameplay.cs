@@ -245,10 +245,11 @@ public class SlugcatGameplay
         
         orig(self);
         
-        if (isFriend) 
+        if (self.TryGetPoacher(out var poacher) && Configs.PoacherJumpNerf)
+            PoacherGameplay.PoacherJump(self);
+        else if (isFriend)
             FriendGameplay.FriendJump2(self);
-        
-        if (self.TryGetDeluge(out var deluge)) 
+        else if (self.TryGetDeluge(out var deluge)) 
             DelugeGameplay.DelugeSiezeJump(self);
     }
     public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)

@@ -50,8 +50,8 @@ public partial class RemixMain
         NoirOpTabCombat();
         NoirOpTabOther();
         
-        var columnseparator1 = MakeLine(new Vector2((column + (columnMult * 1.5f))/2,300), true);
-        var columnseparator2 = MakeLine(new Vector2((column + (columnMult * 3.54f))/2,300), true);
+        var columnseparator1 = MakeLine(new Vector2((column + (columnMult * 1.5f))/2,320), true);
+        var columnseparator2 = MakeLine(new Vector2((column + (columnMult * 3.54f))/2,320), true);
 
         NoirCattoSprites.container.AddChild(
             new FSprite("symbolnoir")
@@ -68,23 +68,58 @@ public partial class RemixMain
     public void NoirOpTabMovement()
     {
         OpTabNoirCatto.AddItems(
-            new OpLabel(charcolumn, row + 25, "Movement", true) { alpha = 0.5f }
+            new OpLabel(charcolumn, row + 25, "Movement", true) { alpha = 0.5f },
+            new OpCheckboxLabelled(NoirDisableAutoCrouch, charcolumn, row, "Auto Crouch") 
+            { 
+                description =  
+                    Translate("Makes NoirCatto crouch after standing too long, prevented by holding Up") 
+            }
         );
     }
     public void NoirOpTabCombat()
     {
         OpTabNoirCatto.AddItems(
-            new OpLabel(charcolumn + (columnMult * 0.95f), row + 25, "Combat", true) { alpha = 0.5f }
+            new OpLabel(charcolumn + (columnMult * 0.95f), row + 25, "Combat", true) { alpha = 0.5f },
+            new OpCheckboxLabelled(NoirAutoSlash, charcolumn + (columnMult * 0.95f), row, "Auto Slash") 
+            { 
+                description =  
+                    Translate("Auto-repeat slash when holding throw") 
+            },
+            new OpCheckboxLabelled(NoirBuffSlash, charcolumn + (columnMult * 0.95f), row-(rowMult),"Slash Buff") 
+            { 
+                description =
+                    Translate("Buff NoirCatto's slash (stronger stun and damage)") 
+            },
+            new OpCheckboxLabelled(NoirAltSlashConditions, charcolumn + (columnMult * 0.95f), row-(rowMult*2),"Alt Slash") 
+            { 
+                description = 
+                    Translate("Enables alternative slash conditions, which require NoirCatto's main hand to be empty") 
+            },
+            new OpCheckboxLabelled(NoirAttractiveMeow, charcolumn + (columnMult * 0.95f), row-(rowMult*3),"Attractive Meows") 
+            { 
+                description = 
+                    Translate("Makes creatures react to NoirCatto's meows") 
+            },
+            new OpKeyBinderLabelled(NoirMeowKey,new Vector2(charcolumn + (columnMult * 0.92f), row-(rowMult*10)), new Vector2(150f, 30f), "Meow Key")
+            {
+                description = 
+                    Translate("Configure what key makes NoirCatto meow")
+            }
         );
     }
     public void NoirOpTabOther()
     {
         OpTabNoirCatto.AddItems(
             new OpLabel(charcolumn + (columnMult * 1.96f),row + 25, "Other", true) { alpha = 0.5f },
-            new OpComboBoxSolid(NoirUseCustomStart, new Vector2(charcolumn + (columnMult * 1.96f),row), 50, OpResourceSelector.GetEnumNames(null, typeof(NoirCatto.CustomStartMode)).ToList())
+            new OpCheckboxLabelled(NoirHideEars, charcolumn + (columnMult * 1.96f), row-(rowMult),"Disable Cosmetics") 
+            { 
+                description =
+                    Translate("Disables NoirCatto's extra sprite cosmetics, for use with DMS") 
+            },
+            new OpComboBoxSolid(NoirUseCustomStart, new Vector2(charcolumn + (columnMult * 1.86f),row), 150, OpResourceSelector.GetEnumNames(null, typeof(NoirCatto.CustomStartMode)).ToList())
             { 
                 description = 
-                    Translate("Makes Noir use his custom intro. Disable if story mode breaks")
+                    Translate("Choose whether NoirCatto's intro should be used in Story and Expedition modes, disable if broken")
             }
         );
     }

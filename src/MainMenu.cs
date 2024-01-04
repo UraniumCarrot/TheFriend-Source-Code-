@@ -20,9 +20,16 @@ public class MainMenu
         On.Menu.IntroRoll.ctor += IntroRollOnctor;
     }
 
-    private static void IntroRollOnctor(On.Menu.IntroRoll.orig_ctor orig, IntroRoll self, ProcessManager manager)
+    private static float blizzardTicker = 0f;
+    private static MenuMicrophone.MenuSoundLoop BlizzLoop;
+    public static bool blizzardFinished = false;
+    public static bool IntroOrSelect;
+    public static float raindropfader;
+
+    public static void IntroRollOnctor(On.Menu.IntroRoll.orig_ctor orig, IntroRoll self, ProcessManager manager)
     {
         orig(self, manager);
+        if (!Configs.TitleCards) return;
         var oldSplashScreen = self.pages[0].subObjects.FirstOrDefault(x => x is MenuIllustration illu && illu.fileName.Contains("Intro_Roll_C_"));
         if (oldSplashScreen == null) return;
         if (Random.value > 0.5f) return;
@@ -33,17 +40,14 @@ public class MainMenu
         self.pages[0].subObjects.Add(self.illustrations[2]);
         self.illustrations[2].sprite.isVisible = true;
     }
-
-    private static float blizzardTicker = 0f;
-    private static MenuMicrophone.MenuSoundLoop BlizzLoop;
-    public static bool blizzardFinished = false;
-    public static bool IntroOrSelect;
-    public static float raindropfader;
-
-    private static void MenuOnUpdate(On.Menu.Menu.orig_Update orig, Menu.Menu self)
+    
+    public static void MenuOnUpdate(On.Menu.Menu.orig_Update orig, Menu.Menu self)
     { // Handles blizzard's audio
         orig(self);
         IntroOrSelect = self is IntroRoll || self is SlugcatSelectMenu;
+        if ((self is IntroRoll && !Configs.IntroBlizzard) ||
+            (self is SlugcatSelectMenu && !Configs.IntroBlizzard))
+            return;
 
         if (self.manager.menuMic != null && !blizzardFinished && IntroOrSelect)
         {
@@ -74,6 +78,10 @@ public class MainMenu
     { // Blizzard or snow graphics
         orig(self, timestacker);
         if (!IntroOrSelect) return;
+        if ((self.menu is IntroRoll && !Configs.IntroBlizzard) ||
+            (self.menu is SlugcatSelectMenu && !Configs.IntroBlizzard))
+            return;
+        
         var slugMenu = (self.menu as SlugcatSelectMenu);
 
         // Make old raineffect appearance explode!
@@ -107,6 +115,9 @@ public class MainMenu
     { // Initialize important ingredients for Blizzard and Snow shaders
         orig(self, menu, owner);
         if (menu is not IntroRoll && menu is not SlugcatSelectMenu) return;
+        if ((self.menu is IntroRoll && !Configs.IntroBlizzard) ||
+            (self.menu is SlugcatSelectMenu && !Configs.IntroBlizzard))
+            return;
 
         self.bkg.shader = menu is IntroRoll ? RWCustom.Custom.rainWorld.Shaders["LocalBlizzard"] : RWCustom.Custom.rainWorld.Shaders["SnowFall"];
         self.bkg.scale = 50;
@@ -137,9 +148,14 @@ public class MainMenu
     }
     public static void MenuMicrophoneOnPlaySound_SoundID_float_float_float(On.MenuMicrophone.orig_PlaySound_SoundID_float_float_float orig, MenuMicrophone self, SoundID soundid, float pan, float vol, float pitch)
     { // Remove lightning
+        if (!Configs.IntroBlizzard)
+        {
+            orig(self, soundid, pan, vol, pitch);
+            return;
+        }
         if ((soundid == SoundID.Thunder || 
-            soundid == SoundID.Thunder_Close &&
-            self.manager.currentMainLoop.ID == ProcessManager.ProcessID.IntroRoll) && IntroOrSelect)
+             soundid == SoundID.Thunder_Close &&
+             self.manager.currentMainLoop.ID == ProcessManager.ProcessID.IntroRoll) && IntroOrSelect)
             soundid = SoundID.None;
         orig(self, soundid, pan, vol, pitch);
     }

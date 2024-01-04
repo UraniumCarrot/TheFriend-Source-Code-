@@ -84,8 +84,8 @@ public partial class RemixMain : OptionInterface
     {
         var line = new FSprite("pixel");
         line.color = Menu.MenuColorEffect.rgbMediumGrey;
-        line.scaleX = (vertical) ? 2 : 450;
-        line.scaleY = (vertical) ? 450 : 2;
+        line.scaleX = (vertical) ? 2 : 420;
+        line.scaleY = (vertical) ? 420 : 2;
         line.SetPosition(pos);
         return line;
     }

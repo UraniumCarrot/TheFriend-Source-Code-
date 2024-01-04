@@ -10,7 +10,11 @@ public class FirecrackerFix
 {
     // Code mostly done by Slime_Cubed, i have no idea what a lot of it means
     static readonly ConditionalWeakTable<AbstractPhysicalObject, StrongBox<int>> _lumpsLeft = new();
+    
+#pragma warning disable CS0649
     static int lumps;
+#pragma warning restore CS0649
+    
     const string lumpsLeft = "SOLACE_LUMPSLEFT_";
     public static void SetLumpsLeft(AbstractPhysicalObject obj, int amount)
     {

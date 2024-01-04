@@ -95,6 +95,6 @@ internal class Boulder : PlayerCarryableItem, IDrawable
     {
         base.Collide(otherObject, myChunk, otherChunk);
         bool crit = otherObject is Creature;
-        if (crit == true && SlamConditions() == true);
+        //if (crit == true && SlamConditions() == true);
     }
 }

@@ -6,7 +6,7 @@ using TheFriend.RemixMenus.CustomRemixObjects;
 
 namespace TheFriend.RemixMenus;
 public partial class RemixMain
-{
+{ // Friend is done.
     public static Configurable<bool> FriendAutoCrouch;
     public static Configurable<bool> FriendPoleCrawl;
     public static Configurable<bool> FriendBackspear;
@@ -44,8 +44,8 @@ public partial class RemixMain
         FriendOpTabCombat();
         FriendOpTabOther();
 
-        var columnseparator1 = MakeLine(new Vector2((column + (columnMult * 1.5f))/2,300), true);
-        var columnseparator2 = MakeLine(new Vector2((column + (columnMult * 3.54f))/2,300), true);
+        var columnseparator1 = MakeLine(new Vector2((column + (columnMult * 1.5f))/2,320), true);
+        var columnseparator2 = MakeLine(new Vector2((column + (columnMult * 3.54f))/2,320), true);
 
         FriendSprites.container.AddChild(
             new FSprite("symbolfriend")
@@ -65,17 +65,17 @@ public partial class RemixMain
         OpTabFriend.AddItems(
             new OpLabel(charcolumn, row + 25, "Movement", true) { alpha = 0.5f },
             
-            new OpCheckboxLabelled(FriendUnNerf, charcolumn, row, "Legacy Stats", 0) 
+            new OpCheckboxLabelled(FriendUnNerf, charcolumn, row, "Legacy Stats") 
             { 
                 description =  
                 Translate("Changes various Friend stats to be as they were earlier in the mod's development") 
             },
-            new OpCheckboxLabelled(FriendAutoCrouch, charcolumn, row-(rowMult),"Auto Crouch", 0) 
+            new OpCheckboxLabelled(FriendAutoCrouch, charcolumn, row-(rowMult),"Auto Crouch") 
             { 
                 description =
                 Translate("Makes Friend crouch automatically after a standing jump, prevented by holding Up") 
             },
-            new OpCheckboxLabelled(FriendPoleCrawl, charcolumn, row-(rowMult*2),"Pole Crawl", 0) 
+            new OpCheckboxLabelled(FriendPoleCrawl, charcolumn, row-(rowMult*2),"Pole Crawl") 
             { 
                 description = 
                 Translate("Allows Friend to crawl along the tops of poles") 
@@ -87,7 +87,7 @@ public partial class RemixMain
         OpTabFriend.AddItems(
             new OpLabel(charcolumn + (columnMult * 0.95f), row + 25, "Combat", true) { alpha = 0.5f },
             
-            new OpCheckboxLabelled(FriendBackspear, charcolumn + (columnMult * 0.95f), row, "Backspear Enable", 0)
+            new OpCheckboxLabelled(FriendBackspear, charcolumn + (columnMult * 0.95f), row, "Backspear Enable")
             { 
                 description = 
                 Translate("Allows Friend to use a backspear like they could earlier in the mod's development") 
@@ -100,7 +100,7 @@ public partial class RemixMain
         OpTabFriend.AddItems(
             new OpLabel(charcolumn + (columnMult * 1.96f),row + 25, "Other", true) { alpha = 0.5f },
             
-            new OpCheckboxLabelled(FriendRepLock, charcolumn + (columnMult * 1.96f), row, "Rep Lock", 0)
+            new OpCheckboxLabelled(FriendRepLock, charcolumn + (columnMult * 1.96f), row, "Rep Lock")
             { 
                 description = 
                 Translate("Stops changes to lizard reputation happening on cycle 0 for Friend. Lizard reputation may break if disabled")

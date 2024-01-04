@@ -10,7 +10,7 @@ public class OpCheckboxLabelled : OpCheckBox
     // 0 = left
     // 1 = right
     // 2 = middle?
-    public OpCheckboxLabelled(Configurable<bool> config, Vector2 pos, string label, int side) : base(config, pos)
+    public OpCheckboxLabelled(Configurable<bool> config, Vector2 pos, string label, int side = 0) : base(config, pos)
     {
         float x = 0;
         switch (side)
@@ -20,8 +20,9 @@ public class OpCheckboxLabelled : OpCheckBox
             case 2: x = pos.x - (label.Length*3.35f); break;
         }
         Label = new OpLabel(x, (side == 2) ? pos.y - 5 : pos.y + 2, label);
+        Label.MoveBehindElement(this);
     }
-    public OpCheckboxLabelled(Configurable<bool> config, float posX, float posY, string label, int side) : base(config, posX, posY)
+    public OpCheckboxLabelled(Configurable<bool> config, float posX, float posY, string label, int side = 0) : base(config, posX, posY)
     {
         float x = 0;
         switch (side)

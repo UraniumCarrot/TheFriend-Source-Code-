@@ -26,6 +26,13 @@ public class PoacherGameplay
 
     #region main mechanics
 
+    public static void PoacherJump(Player self)
+    {
+        float debuff = 1f;
+        self.bodyChunks[0].vel.y -= debuff;
+        self.bodyChunks[1].vel.y -= debuff;
+    }
+    
     public static void PoacherUpdate(Player self, bool eu)
     {
         if (self.input[0].y < 1 || !self.input[0].pckp) self.GetPoacher().isMakingPoppers = false;
