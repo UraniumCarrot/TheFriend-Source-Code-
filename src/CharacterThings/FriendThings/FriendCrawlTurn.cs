@@ -41,9 +41,8 @@ public class FriendCrawlTurn
 
     public static bool CustomCrawlTurn(Player self)
     {
-        if (self.SlugCatClass != Plugin.FriendName) return false;
+        if (!self.TryGetFriend(out var friendData)) return false;
         if (self.animation != Player.AnimationIndex.CrawlTurn) return false;
-        var friendData = self.GetFriend();
 
         //If we're jumping, don't proceed with other code, it breaks the jump
         if (self.input[0].jmp)
@@ -88,7 +87,7 @@ public class FriendCrawlTurn
     public static void PlayerOnMovementUpdate(On.Player.orig_MovementUpdate orig, Player self, bool eu)
     {
         orig(self, eu);
-        if (self.SlugCatClass != Plugin.FriendName) return;
+        if (!self.TryGetFriend(out _)) return;
         var friendData = self.GetFriend();
 
         if (self.animation != Player.AnimationIndex.CrawlTurn)
@@ -108,7 +107,7 @@ public class FriendCrawlTurn
     public static void PlayerOnUpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     {
         orig(self);
-        if (self.SlugCatClass != Plugin.FriendName) return; 
+        if (!self.TryGetFriend(out _)) return;
         
         //Sparks when changing running direction, now for crawling too!
         if (self.bodyMode == Player.BodyModeIndex.Crawl)

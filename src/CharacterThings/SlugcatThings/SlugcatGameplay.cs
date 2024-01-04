@@ -54,8 +54,8 @@ public class SlugcatGameplay
 
         cursor.Emit(OpCodes.Ldarg_0);
         cursor.EmitDelegate((int originalDistance, Player self) => 
-            (self.TryGetFriend(out var friend) && Configs.CharHeight) ? originalDistance+4 : 
-            (self.TryGetPoacher(out var poacher) && Configs.CharHeight) ? originalDistance-3 :
+            (self.TryGetFriend(out _) && Configs.CharHeight) ? originalDistance+4 : 
+            (self.TryGetPoacher(out _) && Configs.CharHeight) ? originalDistance-3 :
             originalDistance);
     }
 
@@ -65,7 +65,7 @@ public class SlugcatGameplay
     public static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
     {
         var mine = self.grasps[grasp].grabbed as BoomMine;
-        if (self.TryGetBeliever(out var believer)) 
+        if (self.TryGetBeliever(out _)) 
             BelieverGameplay.PacifistThrow(self, grasp, eu);
         
         orig(self, grasp, eu);
@@ -97,7 +97,7 @@ public class SlugcatGameplay
             }
         }
         // Poacher poppers quickcraft
-        if (self.TryGetPoacher(out var poacher))
+        if (self.TryGetPoacher(out _))
             DragonCrafts.PoacherQuickCraft(self);
     }
     public static bool Weapon_HitThisObject(On.Weapon.orig_HitThisObject orig, Weapon self, PhysicalObject obj)
@@ -134,16 +134,16 @@ public class SlugcatGameplay
         
         if (self?.room == null) { Debug.Log("Solace: Player returned null, cancelling PlayerUpdate code"); return; }
         
-        if (self.TryGetPoacher(out var poacher))
+        if (self.TryGetPoacher(out _))
             PoacherGameplay.PoacherUpdate(self, eu);
         
-        if (self.TryGetFriend(out var friend))
+        if (self.TryGetFriend(out _))
             FriendGameplay.FriendUpdate(self, eu);
         
-        if (self.TryGetDeluge(out var deluge))
+        if (self.TryGetDeluge(out _))
             DelugeGameplay.DelugeUpdate(self, eu);
         
-        var coord = self.abstractCreature.pos;
+        //var coord = self.abstractCreature.pos;
         //Debug.Log("Your room coordinate is: room " + coord.room + ", x " + coord.x + ", y " + coord.y + ", abstractNode " + coord.abstractNode);
         // Moon mark
         if (self.GetGeneral().JustGotMoonMark && !self.GetGeneral().MoonMarkPassed)
@@ -219,13 +219,13 @@ public class SlugcatGameplay
         orig(self, abstractCreature, world);
         try
         {
-            if (self.TryGetFriend(out var friend))
+            if (self.TryGetFriend(out _))
                 FriendGameplay.FriendConstructor(self);
             
-            if (self.TryGetPoacher(out var poacher))
+            if (self.TryGetPoacher(out _))
                 PoacherGameplay.PoacherConstructor(self);
             
-            if (self.TryGetDeluge(out var deluge))
+            if (self.TryGetDeluge(out _))
                 DelugeGameplay.DelugeConstructor(self);
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
@@ -233,35 +233,35 @@ public class SlugcatGameplay
     public static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     { // Friend fast crawl
         orig(self);
-        if (self.TryGetFriend(out var friend))
+        if (self.TryGetFriend(out _))
             FriendGameplay.FriendMovement(self);
     }
     public static void Player_Jump(On.Player.orig_Jump orig, Player self)
     {
-        bool isFriend = self.TryGetFriend(out var friend);
+        bool isFriend = self.TryGetFriend(out _);
         
         if (isFriend) 
             FriendGameplay.FriendJump1(self);
         
         orig(self);
         
-        if (self.TryGetPoacher(out var poacher) && Configs.PoacherJumpNerf)
+        if (self.TryGetPoacher(out _) && Configs.PoacherJumpNerf)
             PoacherGameplay.PoacherJump(self);
         else if (isFriend)
             FriendGameplay.FriendJump2(self);
-        else if (self.TryGetDeluge(out var deluge)) 
+        else if (self.TryGetDeluge(out _)) 
             DelugeGameplay.DelugeSiezeJump(self);
     }
     public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
     { 
         orig(self);
-        if (self.TryGetFriend(out var friend))
+        if (self.TryGetFriend(out _))
             FriendGameplay.FriendLedgeFix(self); 
     }
     public static void Player_WallJump(On.Player.orig_WallJump orig, Player self, int direction)
     { 
         orig(self, direction);
-        if (self.TryGetFriend(out var friend)) 
+        if (self.TryGetFriend(out _)) 
             FriendGameplay.FriendWalljumpFix(self);
     }
     public static void SlugcatStats_ctor(On.SlugcatStats.orig_ctor orig, SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
@@ -292,10 +292,10 @@ public class SlugcatGameplay
             self.input[0].jmp = false;
         }
 
-        if (self.TryGetFriend(out var friend)) 
+        if (self.TryGetFriend(out _)) 
             FriendGameplay.FriendLeapController(self, timer);
 
-        if (self.TryGetDeluge(out var deluge)) 
+        if (self.TryGetDeluge(out _)) 
             DelugeGameplay.DelugeSprintCheck(self);
     }
 }

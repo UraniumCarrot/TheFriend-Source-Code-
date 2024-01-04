@@ -62,7 +62,7 @@ public class SlugcatGraphics
     public static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     { // Friend cosmetic movement
         orig(self);
-        if (self.player.TryGetFriend(out var friend))
+        if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendGraphicsUpdate(self);
 
         if (self.player.room.world.rainCycle.RainApproaching < 1f &&
@@ -76,7 +76,7 @@ public class SlugcatGraphics
     { // Poacher hypothermia color fix
         if (self.owner is Player player)
         {
-            if (player.TryGetPoacher(out var poacher))
+            if (player.TryGetPoacher(out _))
                 return PoacherGraphics.PoacherHypothermiaColor(player, oldCol);
         }
         return orig(self, oldCol);
@@ -85,27 +85,27 @@ public class SlugcatGraphics
     public static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
     { // Implement CustomTail
         orig(self, ow);
-        if (self.player.TryGetFriend(out var friend))
+        if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendTailCtor(self);
     }
     
     public static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     { // Detail Sprites init
         orig(self, sLeaser, rCam);
-        if (self.player.TryGetPoacher(out var poacher))
+        if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherSpritesInit(self, sLeaser, rCam);
         
-        else if (self.player.TryGetBeliever(out var believer))
+        else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverSpritesInit(self, sLeaser, rCam);
         
     }
     public static void PlayerGraphics_ApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
-        if (self.player.TryGetPoacher(out var poacher))
+        if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherPalette(self, sLeaser, rCam, palette);
         
-        else if (self.player.TryGetBeliever(out var believer))
+        else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverPalette(self,sLeaser,rCam,palette);
         
     }
@@ -114,10 +114,10 @@ public class SlugcatGraphics
     public static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
     {
         orig(self, sLeaser, rCam, newContainer);
-        if (self.player.TryGetPoacher(out var poacher))
+        if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherSpritesContainer(self, sLeaser, rCam, newContainer);
         
-        else if (self.player.TryGetBeliever(out var believer))
+        else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverSpritesContainer(self, sLeaser, rCam, newContainer);
         
     }
@@ -137,13 +137,13 @@ public class SlugcatGraphics
             sLeaser.sprites[4].isVisible = false;
         }
         
-        if (self.player.TryGetFriend(out var friend))
+        if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendDrawSprites(self, sLeaser, head, legs);
         
-        else if (self.player.TryGetBeliever(out var believer))
+        else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverDrawSprites(self, sLeaser, head, face);
         
-        else if (self.player.TryGetPoacher(out var poacher))
+        else if (self.player.TryGetPoacher(out _))
         {
             PoacherGraphics.PoacherThinness(self, sLeaser, rCam, timeStacker, camPos);
             PoacherGraphics.PoacherAnimator(self, sLeaser, rCam, timeStacker, camPos);

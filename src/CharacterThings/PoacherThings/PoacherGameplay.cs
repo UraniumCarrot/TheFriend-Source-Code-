@@ -59,7 +59,7 @@ public class PoacherGameplay
     public static void Player_Grabbed(On.Player.orig_Grabbed orig, Player self, Creature.Grasp grasp)
     { 
         orig(self, grasp);
-        if (!self.TryGetPoacher(out var poacher)) return;
+        if (!self.TryGetPoacher(out _)) return;
         if (grasp.grabber is Lizard || grasp.grabber is Vulture || grasp.grabber is BigSpider || grasp.grabber is DropBug)
         { // Poacher skull flicker (from grabs)
             PoacherGraphics.PoacherFlicker(self);
@@ -67,7 +67,7 @@ public class PoacherGameplay
     }
     public static void Player_Stun(On.Player.orig_Stun orig, Player self, int st)
     { 
-        if (self.TryGetPoacher(out var poacher) && self.stunDamageType == Creature.DamageType.Blunt && !self.Stunned)
+        if (self.TryGetPoacher(out _) && self.stunDamageType == Creature.DamageType.Blunt && !self.Stunned)
         { // Poacher skull flicker (from rocks)
             if (self.bodyMode == bod.Crawl) { self.firstChunk.vel.y += 10; self.animation = ind.Flip; }
             PoacherGraphics.PoacherFlicker(self);
@@ -127,13 +127,9 @@ public class PoacherGameplay
     #region item carrying
     public static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
     { // Allows Poacher to carry things that they couldn't usually
-        if (self.room?.abstractRoom.name == "VR1" || 
-            self.room?.abstractRoom.name == "PUMP03" || 
-            self.room?.abstractRoom.name == "PS1") 
-            return orig(self,obj);
         if (obj is Creature young && young.Template.type == CreatureTemplateType.YoungLizard) return false;
         else if (obj is Lizard mother && mother.GetLiz() != null && mother.GetLiz().IsRideable) return true;
-        if (self.TryGetPoacher(out var poacher))
+        if (self.TryGetPoacher(out _))
         {
             if (obj is Creature crit && crit is not Hazer && crit is not VultureGrub && crit is not Snail && crit is not SmallNeedleWorm && crit is not TubeWorm) return orig(self, obj);
             else if (obj is DandelionPeach || obj is DangleFruit)
@@ -150,7 +146,7 @@ public class PoacherGameplay
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
             {
-                if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out var poacher))
+                if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out _))
                 {
                     if (player.animation == ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.firstChunk.mass = 0.34f; }
                     else self.firstChunk.mass = 0.0001f;
@@ -166,7 +162,7 @@ public class PoacherGameplay
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
             {
-                if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out var poacher))
+                if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out _))
                 {
                     if (player.animation != ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.bodyChunks[0].mass = 0.2f; self.bodyChunks[1].mass = 0.2f; }
                     else { self.bodyChunks[0].mass = 0.0001f; self.bodyChunks[1].mass = 0.0001f; }
@@ -183,7 +179,7 @@ public class PoacherGameplay
         {
             for (int i = 0; i < self.grabbedBy.Count; i++)
             {
-                if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out var poacher))
+                if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out _))
                 {
                     if (player.animation == ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.firstChunk.mass = 0.2f; }
                     else self.firstChunk.mass = 0.0001f;

@@ -225,10 +225,10 @@ public class FriendGameplay
             self.room.world.GetAbstractRoom(pos).entitiesInDens.Add(guide1);
             guide0.ignoreCycle = true;
             guide1.ignoreCycle = true;
-            (guide0.abstractAI as OverseerAbstractAI).SetAsPlayerGuide(0);
-            (guide1.abstractAI as OverseerAbstractAI).SetAsPlayerGuide(1);
-            (guide0.abstractAI as OverseerAbstractAI).BringToRoomAndGuidePlayer(self.room.abstractRoom.index);
-            (guide1.abstractAI as OverseerAbstractAI).BringToRoomAndGuidePlayer(self.room.abstractRoom.index);
+            (guide0.abstractAI as OverseerAbstractAI)!.SetAsPlayerGuide(0);
+            (guide1.abstractAI as OverseerAbstractAI)!.SetAsPlayerGuide(1);
+            (guide0.abstractAI as OverseerAbstractAI)!.BringToRoomAndGuidePlayer(self.room.abstractRoom.index);
+            (guide1.abstractAI as OverseerAbstractAI)!.BringToRoomAndGuidePlayer(self.room.abstractRoom.index);
             if (self.GetFriend().Wiggy == null) self.GetFriend().Wiggy = guide0.realizedCreature as Overseer;
             if (self.GetFriend().Iggy == null) self.GetFriend().Iggy = guide1.realizedCreature as Overseer;
         }

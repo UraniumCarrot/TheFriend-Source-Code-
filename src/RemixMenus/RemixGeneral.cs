@@ -47,9 +47,9 @@ public partial class RemixMain
         GeneralCharselectSnow = config.Bind("SolaceCharselectSnow", true, new ConfigAcceptableList<bool>(true, false));
         GeneralCharCustomHeights = config.Bind("SolaceCharHeights", false, new ConfigAcceptableList<bool>(true, false));
         GeneralSolaceBlizzTimer = config.Bind("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
-        GeneralSolaceTitleCards = config.Bind("SolaceTitleCards", false, new ConfigAcceptableList<bool>(true, false));
+        GeneralSolaceTitleCards = config.Bind("SolaceTitleCards", true, new ConfigAcceptableList<bool>(true, false));
 
-        pageValue = config.Bind<string>(null, "Lizards");
+        pageValue = config.Bind<string>(null, "Famines");
         cosmetic = config.Bind<string>(null, "Survivor");
     }
     

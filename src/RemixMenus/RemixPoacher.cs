@@ -16,7 +16,7 @@ public partial class RemixMain
         PoacherBackspear = config.Bind("PoacherBackspear", false, new ConfigAcceptableList<bool>(true, false));
         PoacherFreezeFaster = config.Bind("PoacherFreezeFaster", false, new ConfigAcceptableList<bool>(true, false));
         PoacherFoodParkour = config.Bind("PoacherFoodParkour", true, new ConfigAcceptableList<bool>(true, false));
-        PoacherJumpNerf = config.Bind("PoacherJumpNerf", true, new ConfigAcceptableList<bool>(true, false));
+        PoacherJumpNerf = config.Bind("PoacherJumpNerf", false, new ConfigAcceptableList<bool>(true, false));
     }
 
     public void RemixPoacherUpdate()
