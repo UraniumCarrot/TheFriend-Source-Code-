@@ -30,6 +30,7 @@ using TheFriend.CharacterThings.NoirThings;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.SaveThings;
+using UnityEngine;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -58,34 +59,8 @@ namespace TheFriend
         public void OnEnable()
         {
             LogSource = Logger;
-            On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
+            On.RainWorld.OnModsInit += RainWorldOnOnModsInit;
             On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
-
-            // Hooks
-            CharacterHooks.Apply();
-            DelugePearlHooks.Apply();
-
-            AbstractObjectType.Apply();
-            UpdateDeleteCWT.Apply();
-            SolaceSaveData.Apply();
-            SolaceCustom.Apply();
-
-            LizardRideControl.Apply();
-            YoungLizardAI.Apply();
-            SnowSpiderGraphics.Apply();
-            PebblesLL.Apply();
-
-            HudHooks.Apply();
-            MotherKillTracker.Apply();
-            MainMenu.Apply();
-            ExpeditionHooks.Apply();
-            
-            FriendWorldState.Apply();
-            DelugeWorldState.Apply();
-            SLOracleHandler.Apply();
-            FamineWorld.Apply();
-            FamineCreatures.Apply();
-            DangerTypes.Apply();
 
             // Misc IL
             IL.Player.ThrowObject += Player_ThrowObject;
@@ -152,35 +127,73 @@ namespace TheFriend
                     }
                 }
             };
-            Content.Register(new PebblesLLCritob());
-            Content.Register(new MotherLizardCritob());
-            Content.Register(new PilgrimLizardCritob());
-            Content.Register(new YoungLizardCritob());
-            Content.Register(new SnowSpiderCritob());
-            Content.Register(new BoulderFisob());
-            Content.Register(new LittleCrackerFisob());
-            Content.Register(new BoomMineFisob());
         }
-        public void LoadResources(RainWorld rainWorld)
+
+        private bool _modsInit;
+        private void RainWorldOnOnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
         {
-            MachineConnector.SetRegisteredOI("thefriend", new RemixMain());
-            Futile.atlasManager.LoadAtlas("atlases/friendsprites");
-            Futile.atlasManager.LoadAtlas("atlases/friendlegs");
-            Futile.atlasManager.LoadAtlas("atlases/dragonskull2");
-            Futile.atlasManager.LoadAtlas("atlases/dragonskull3");
-            Futile.atlasManager.LoadAtlas("atlases/solacesymbols");
-            Futile.atlasManager.LoadAtlas("atlases/ForeheadSpots");
-            Futile.atlasManager.LoadAtlas("atlases/CentipedeLegB_Fade");
-            DelugeSounds.LoadSounds();
-            NoirCatto.LoadSounds();
-            NoirCatto.LoadAtlases();
+            orig(self);
+            if (_modsInit) return;
+
+            try
+            {
+                _modsInit = true;
+                LoadResources();
+
+                // Hooks
+                CharacterHooks.Apply();
+                DelugePearlHooks.Apply();
+
+                AbstractObjectType.Apply();
+                UpdateDeleteCWT.Apply();
+                SolaceSaveData.Apply();
+                SolaceCustom.Apply();
+
+                LizardRideControl.Apply();
+                YoungLizardAI.Apply();
+                SnowSpiderGraphics.Apply();
+                PebblesLL.Apply();
+
+                HudHooks.Apply();
+                MotherKillTracker.Apply();
+                MainMenu.Apply();
+                ExpeditionHooks.Apply();
+
+                FriendWorldState.Apply();
+                DelugeWorldState.Apply();
+                SLOracleHandler.Apply();
+                FamineWorld.Apply();
+                FamineCreatures.Apply();
+                DangerTypes.Apply();
+
+                // Fisobs
+                Content.Register(new PebblesLLCritob());
+                Content.Register(new MotherLizardCritob());
+                Content.Register(new PilgrimLizardCritob());
+                Content.Register(new YoungLizardCritob());
+                Content.Register(new SnowSpiderCritob());
+                Content.Register(new BoulderFisob());
+                Content.Register(new LittleCrackerFisob());
+                Content.Register(new BoomMineFisob());
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex);
+                Logger.LogError(ex);
+            }
         }
+
+        private bool _postModsInit;
         private void RainWorldOnPostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
         {
             orig(self);
+            if (_postModsInit) return;
+
             try
             {
+                _postModsInit = true;
                 SlugcatNameFix.Apply();
+
                 if (ModManager.ActiveMods.Any(x => x.id == "willowwisp.bellyplus"))
                 {
                     RotundWorld = true;
@@ -196,6 +209,22 @@ namespace TheFriend
                 Logger.LogError(ex);
             }
         }
+
+        private void LoadResources()
+        {
+            MachineConnector.SetRegisteredOI("thefriend", new RemixMain());
+            Futile.atlasManager.LoadAtlas("atlases/friendsprites");
+            Futile.atlasManager.LoadAtlas("atlases/friendlegs");
+            Futile.atlasManager.LoadAtlas("atlases/dragonskull2");
+            Futile.atlasManager.LoadAtlas("atlases/dragonskull3");
+            Futile.atlasManager.LoadAtlas("atlases/solacesymbols");
+            Futile.atlasManager.LoadAtlas("atlases/ForeheadSpots");
+            Futile.atlasManager.LoadAtlas("atlases/CentipedeLegB_Fade");
+            DelugeSounds.LoadSounds();
+            NoirCatto.LoadSounds();
+            NoirCatto.LoadAtlases();
+        }
+
         public static void Player_ThrowObject(ILContext il)
         {
             var cursor = new ILCursor(il);
