@@ -1,0 +1,20 @@
+{"frames": {
+
+"NoirLightBodyA.png":
+{
+	"frame": {"x":0,"y":0,"w":28,"h":25},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":28,"h":25},
+	"sourceSize": {"w":28,"h":25}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "NoirLightBodyA.png",
+	"format": "RGBA8888",
+	"size": {"w":28,"h":25},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:81446d8a18f725613701b942af613f78:8bdf5c1ff5cf8b025e85af8d2aa0c6af:0853c5f7bf6d1d4c89b18d184342c9cb$"
+}
+}

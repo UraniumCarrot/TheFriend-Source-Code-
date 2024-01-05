@@ -1,0 +1,20 @@
+{"frames": {
+
+"NoirLightLeftHipsA.png":
+{
+	"frame": {"x":0,"y":0,"w":32,"h":38},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":38},
+	"sourceSize": {"w":32,"h":38}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/tgreenturepacker",
+	"version": "1.0",
+	"image": "NoirLightLeftHipsA.png",
+	"format": "RGBA8888",
+	"size": {"w":32,"h":38},
+	"scale": "1",
+	"smartupdate": "$TgreenturePacker:SmartUpdate:997a41558186e7354dcc8a4fce8a7c99:6b57016163b442e8a481e7af7dc3e9cf:47c195541bd5851e1cf2127685e38d61$"
+}
+}

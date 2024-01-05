@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using RWCustom;
 using TheFriend.RemixMenus;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace TheFriend.CharacterThings.NoirThings;
 
-public abstract partial class NoirCatto // Noir master class
+public static partial class NoirCatto // Noir master class
 {
     public class NoirData
     {
@@ -14,6 +15,11 @@ public abstract partial class NoirCatto // Noir master class
         public readonly Player.InputPackage[] UnchangedInput;
         public Player.AnimationIndex LastAnimation;
         public Player.AnimationIndex SpearThrownAnimation;
+
+        public const int NewSprites = 13;
+        public readonly int[] EarSpr = new int[2];
+        public readonly int[] SlugSpr = new int[11];
+        public int TotalSprites;
 
         public readonly TailSegment[][] Ears = new[]
         {
@@ -278,6 +284,20 @@ public abstract partial class NoirCatto // Noir master class
         {
             MeowUpdate(this);
         }
+
+        #region Graphics
+
+        public Dictionary<string, FAtlasElement> RecoloredElements = new Dictionary<string, FAtlasElement>();
+        public FAtlasElement ElementFromTexture(Texture2D texture)
+        {
+            var atlas = new FAtlas(TailTexture.name + Cat.playerState.playerNumber, texture, FAtlasManager._nextAtlasIndex++, false);
+            if (Futile.atlasManager._allElementsByName.ContainsKey(atlas.elements[0].name)) Futile.atlasManager._allElementsByName[atlas.elements[0].name].atlas.Unload();
+            atlas.elements[0].atlas = atlas;
+            atlas.elements[0].atlasIndex = atlas.index;
+            Futile.atlasManager._allElementsByName[atlas.elements[0].name] = atlas.elements[0];
+            return atlas.elements[0];
+        }
+        #endregion
     }
 
     public const float DefaultFirstChunkMass = 0.315f;
