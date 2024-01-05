@@ -102,7 +102,7 @@ public partial class RemixMain
 
         slugcatSettings = new OpResourceSelector(
             cosmetic, 
-            new Vector2(gencolumn + (columnMult - 30), row + 25), 
+            new Vector2(gencolumn + (columnMult - 30), row-(rowMult*12)), 
             100,
             (OpResourceSelector.SpecialEnum)6);
         
@@ -120,14 +120,14 @@ public partial class RemixMain
         //GenSprites.container.AddChild();
 
         OpTabGeneral.AddItems(page,slugcatSettings,
-            new OpLabel(gencolumn,row-(rowMult*3),"Universal",true) { alpha = 0.5f },
+            new OpLabel(gencolumn,row+25,"Universal",true) { alpha = 0.8f },
             new OpLabel(
                     gencolumn,
-                    row + 25,  
+                    row-(rowMult*12),  
                     "Editing settings for:", true) 
-                { alpha = 0.5f }
+                { alpha = 0.8f }
             );
-        var rowseparator1 = MakeLine(new Vector2(gencolumn*2.72f,row-(rowMult*2)), false);
+        var rowseparator1 = MakeLine(new Vector2(gencolumn*2.72f,row-(rowMult*11)), false);
         GenSprites.container.AddChild(rowseparator1);
 
         GeneralFamine();
@@ -143,12 +143,12 @@ public partial class RemixMain
     { // TODO: Test NoFamine
         GenFamineList.AddRange(new UIelement[]
         {
-            new OpCheckboxLabelled(GeneralFaminesForAll, gencolumn, row-125, "Global Famines")
+            new OpCheckboxLabelled(GeneralFaminesForAll, gencolumn, row, "Global Famines")
             {
                 description =
                     Translate("Gives famine mechanics and creatures to every character")
             },
-            new OpCheckboxLabelled(GeneralNoFamine, gencolumn, row-(rowMult)-125, "Famine Disable")
+            new OpCheckboxLabelled(GeneralNoFamine, gencolumn, row-(rowMult), "Famine Disable")
             {
                 description =
                     Translate("Stops famine mechanics in all modes except for Expedition mode when using the Famished burden, may be broken")
@@ -163,27 +163,27 @@ public partial class RemixMain
     { // TODO: implement these
         GenMiscelList.AddRange(new UIelement[]
         {
-            new OpCheckboxLabelled(GeneralCharselectSnow, gencolumn, row-125, "Snow in Character Select")
+            new OpCheckboxLabelled(GeneralCharselectSnow, gencolumn, row, "Snow in Character Select")
             {
                 description =
                     Translate("Solace characters (or characters in cold areas) have snow on their Character Select page")
             },
-            new OpCheckboxLabelled(GeneralIntroRollBlizzard, gencolumn, row-(rowMult)-125, "Intro Roll Blizzard")
+            new OpCheckboxLabelled(GeneralIntroRollBlizzard, gencolumn, row-(rowMult), "Intro Roll Blizzard")
             {
                 description =
                     Translate("Replaces the intro's rain with a blizzard effect")
             },
-            new OpCheckboxLabelled(GeneralCharCustomHeights, gencolumn, row-(rowMult*2)-125, "Custom Height")
+            new OpCheckboxLabelled(GeneralCharCustomHeights, gencolumn, row-(rowMult*2), "Custom Height")
             {
                 description =
                     Translate("Gives some characters a custom height. Disable if physics break too much")
             },
-            new OpCheckboxLabelled(GeneralSolaceBlizzTimer, gencolumn, row-(rowMult*3)-125, "Blizzard Cycle Timer")
+            new OpCheckboxLabelled(GeneralSolaceBlizzTimer, gencolumn, row-(rowMult*3), "Blizzard Cycle Timer")
             {
                 description =
                     Translate("Makes Saint and Solace characters able to see the cycle timer")
             },
-            new OpCheckboxLabelled(GeneralSolaceTitleCards, gencolumn, row-(rowMult*4)-125, "Solace Title Cards")
+            new OpCheckboxLabelled(GeneralSolaceTitleCards, gencolumn, row-(rowMult*4), "Solace Title Cards")
             {
                 description =
                     Translate("Replaces all Downpour title cards with Solace ones")
@@ -198,17 +198,17 @@ public partial class RemixMain
     {
         GenLizardList.AddRange(new UIelement[]
         {
-            new OpCheckboxLabelled(GeneralLizRideAll, gencolumn, row-125, "Global Rides")
+            new OpCheckboxLabelled(GeneralLizRideAll, gencolumn, row, "Global Rides")
             {
                 description =
-                    Translate("Allows any lizard to be ridden if tamed (excluding Young and Mother lizards)")
+                    Translate("Allows any lizard to be ridden if tamed")
             },
-            new OpCheckboxLabelled(GeneralLizRepMeterForAll, gencolumn, row-(rowMult)-125, "Universal Reputation Meter")
+            new OpCheckboxLabelled(GeneralLizRepMeterForAll, gencolumn, row-(rowMult), "Universal Reputation Meter")
             {
                 description =
                     Translate("Shows all characters, not just Solace ones, their lizard reputation in the current region")
             },
-            new OpCheckboxLabelled(GeneralLocalizedLizRepForAll, gencolumn, row-(rowMult*2)-125, "Localized Reputation")
+            new OpCheckboxLabelled(GeneralLocalizedLizRepForAll, gencolumn, row-(rowMult*2)-25, "Localized Reputation")
             {
                 description =
                     Translate("Makes all characters, not just Solace ones, have lizard reputation that is kept entirely within the current region")

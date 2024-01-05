@@ -15,24 +15,28 @@ public class OpCheckboxLabelled : OpCheckBox
         float x = 0;
         switch (side)
         {
-            case 0: x = pos.x + 28; break;
-            case 1: x = pos.x - (label.Length*6.7f); break;
-            case 2: x = pos.x - (label.Length*3.35f); break;
+            case 0: x = 28; break;
+            case 1: x = label.Length*6.7f; break;
+            case 2: x = label.Length*3.35f; break;
         }
-        Label = new OpLabel(x, (side == 2) ? pos.y - 5 : pos.y + 2, label);
-        Label.MoveBehindElement(this);
+        Label = new OpLabel(0, 0, label);
+        myContainer.AddChild(Label.label);
+        myContainer.GetChildAt(myContainer.GetChildIndex(Label.label)).x = x;
+        myContainer.GetChildAt(myContainer.GetChildIndex(Label.label)).y = (side == 2) ? -5 : 12;
     }
     public OpCheckboxLabelled(Configurable<bool> config, float posX, float posY, string label, int side = 0) : base(config, posX, posY)
     {
         float x = 0;
         switch (side)
         {
-            case 0: x = posX + 28; break;
-            case 1: x = posX - (label.Length*6.7f); break;
-            case 2: x = posX - (label.Length*3.35f); break;
+            case 0: x = 28; break;
+            case 1: x = label.Length*6.7f; break;
+            case 2: x = label.Length*3.35f; break;
         }
-        Label = new OpLabel(x, (side == 2) ? pos.y - 5 : posY + 2, label);
-        myContainer.AddChild(Label.myContainer);
+        Label = new OpLabel(0, 0, label);
+        myContainer.AddChild(Label.label);
+        myContainer.GetChildAt(myContainer.GetChildIndex(Label.label)).x = x;
+        myContainer.GetChildAt(myContainer.GetChildIndex(Label.label)).y = (side == 2) ? -5 : 12;
     }
 
     public override void Update()
