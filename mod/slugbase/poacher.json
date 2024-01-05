@@ -21,7 +21,6 @@
 		"friend/friendhead": false,
 		"friend/is_the_friend": false,
 		
-		"expedition_enabled": false,
 		"expedition_description": "In the destruction of their home, The Poacher<LINE>fights to keep their family's legacy alive",
 		"world_state": ["Friend","Saint","Rivulet","Monk","Survivor"],
 		"story_regions": ["RM","SH","-CL","-HR"],

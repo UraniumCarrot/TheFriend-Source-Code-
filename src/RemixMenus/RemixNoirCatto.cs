@@ -72,7 +72,7 @@ public partial class RemixMain
             new OpCheckboxLabelled(NoirDisableAutoCrouch, charcolumn, row, "Auto Crouch") 
             { 
                 description =  
-                    Translate("Makes NoirCatto crouch after standing too long, prevented by holding Up") 
+                    Translate("Stops NoirCatto from crouching after standing too long, prevented by holding Up") 
             }
         );
     }

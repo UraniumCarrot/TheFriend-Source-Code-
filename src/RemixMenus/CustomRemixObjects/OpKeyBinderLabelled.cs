@@ -16,12 +16,14 @@ public class OpKeyBinderLabelled : OpKeyBinder
         float x = 0;
         switch (side)
         {
-            case 0: x = pos.x + 28; break;
-            case 1: x = pos.x - (label.Length*6.7f); break;
-            case 2: x = pos.x + (size.x / 3.2f); break;
+            case 0: x = 28; break;
+            case 1: x = label.Length*6.7f; break;
+            case 2: x = size.x / 3.2f; break;
         }
-        Label = new OpLabel(x, pos.y-20, label);
-        Label.MoveBehindElement(this);
+        Label = new OpLabel(0, 0, label);
+        myContainer.AddChild(Label.label);
+        myContainer.GetChildAt(myContainer.GetChildIndex(Label.label)).x = x;
+        myContainer.GetChildAt(myContainer.GetChildIndex(Label.label)).y = (side == 2) ? -15 : 12;
     }
     public override void Update()
     {
