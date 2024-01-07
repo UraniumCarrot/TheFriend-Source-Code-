@@ -96,6 +96,7 @@ public partial class NoirCatto
     public static readonly Color NoirBlack = Extensions.ColorFromHEX("2f2e34");
     public static readonly Color NoirBlackPaws = Extensions.ColorFromHEX("2e2d33");
     public static readonly Color NoirPurple = Extensions.ColorFromHEX("6f5569");
+    public static readonly Color NoirBlueEyesDefault = Extensions.ColorFromHEX("6b8de5");
     public static Color[] NoirBlueEyes;
 
     public static Texture2D EyeTexture;
@@ -105,7 +106,7 @@ public partial class NoirCatto
 
     private static List<int> SprToReplace = new List<int>()
     {
-        HeadSpr, FaceSpr, BodySpr, ArmSpr, ArmSpr2, OTOTArmSpr, OTOTArmSpr2,  HipsSpr, LegsSpr, TailSpr
+        HeadSpr, FaceSpr, BodySpr, ArmSpr, ArmSpr2, OTOTArmSpr, OTOTArmSpr2,  HipsSpr, LegsSpr, //TailSpr
     };
 
 
@@ -142,14 +143,7 @@ public partial class NoirCatto
                     }
                 }
 
-                if (num == TailSpr)
-                {
-
-                }
-                else
-                {
-                    sleaser.sprites[num].element = Futile.atlasManager.GetElementWithName(Noir + spr.name);
-                }
+                sleaser.sprites[num].element = Futile.atlasManager.GetElementWithName(Noir + spr.name);
             }
         }
 

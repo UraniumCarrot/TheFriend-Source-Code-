@@ -5,7 +5,16 @@
 
 	"features": 
 	{
-		"karma_cap": 2,
+		"custom_colors": 
+		[
+			{ "name": "Body", "story": "2f2e34" },
+			{ "name": "Eyes", "story": "6b8de5" },
+			{ "name": "Fluff", "story": "e6e1e5" },
+			{ "name": "Nose", "story": "6f5569" },
+			{ "name": "Paws", "story": "2e2d33" }
+		],
+
+		"karma_cap": 0,
 		"can_maul": true,
 		"diet": 
 		{

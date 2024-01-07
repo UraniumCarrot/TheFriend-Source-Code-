@@ -1,4 +1,6 @@
 using System;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RWCustom;
 using UnityEngine;
 
@@ -69,6 +71,16 @@ public static partial class Extensions
         if (result == null)
             throw new ArgumentNullException($"Property {propertyName} of {type.Name} returned null!");
         return result;
+    }
+    //For ILHooking
+    public static bool MatchGetterCall<T>(this Instruction i, string methodName)
+    {
+        return i.MatchCallOrCallvirt<T>(typeof(T).GetGetterMethodName(methodName));
+    }
+    //For ILHooking
+    public static bool MatchSetterCall<T>(this Instruction i, string methodName)
+    {
+        return i.MatchCallOrCallvirt<T>(typeof(T).GetSetterMethodName(methodName));
     }
 
     #endregion

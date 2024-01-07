@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
 using RWCustom;
 using TheFriend.RemixMenus;
-using TheFriend.SlugcatThings;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TheFriend.CharacterThings.NoirThings;
 
@@ -76,7 +75,7 @@ public static partial class NoirCatto // Noir master class
 
         private Player.AnimationIndex lastAnimationInternal;
         private Player.BodyModeIndex lastBodyModeInternal;
-        public NoirData(Player cat)
+        public NoirData(Player cat) //todo: use abstractCreature
         {
             Cat = cat;
             UnchangedInput = new Player.InputPackage[cat.input.Length];
@@ -286,15 +285,21 @@ public static partial class NoirCatto // Noir master class
         }
 
         #region Graphics
-
-        public Dictionary<string, FAtlasElement> RecoloredElements = new Dictionary<string, FAtlasElement>();
-        public FAtlasElement ElementFromTexture(Texture2D texture)
+        public FAtlasElement ElementFromTexture(Texture2D texture, bool forceRedraw = false)
         {
-            var atlas = new FAtlas(TailTexture.name + Cat.playerState.playerNumber, texture, FAtlasManager._nextAtlasIndex++, false);
-            if (Futile.atlasManager._allElementsByName.ContainsKey(atlas.elements[0].name)) Futile.atlasManager._allElementsByName[atlas.elements[0].name].atlas.Unload();
-            atlas.elements[0].atlas = atlas;
-            atlas.elements[0].atlasIndex = atlas.index;
-            Futile.atlasManager._allElementsByName[atlas.elements[0].name] = atlas.elements[0];
+            var name = texture.name + "_" + Cat.playerState.playerNumber;
+            if (forceRedraw)
+            {
+                var oldAtlas = Futile.atlasManager._atlases.FirstOrDefault(x => x.name == name);
+                if (oldAtlas != null)
+                {
+                    Futile.atlasManager._allElementsByName.Remove(oldAtlas.name);
+                    oldAtlas.Unload();
+                    Object.Destroy(oldAtlas.texture);
+                    Futile.atlasManager._atlases.Remove(oldAtlas);
+                }
+            }
+            var atlas = Futile.atlasManager.LoadAtlasFromTexture(name, texture, false);
             return atlas.elements[0];
         }
         #endregion
