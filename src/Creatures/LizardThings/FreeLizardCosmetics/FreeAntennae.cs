@@ -92,22 +92,22 @@ public class FreeAntennae : Antennae
 					{
 						if (darkenWithHead)
 						{
-							var alpha = 1f - Mathf.Pow(0.5f + 0.5f * Mathf.Sin(Mathf.Lerp(lGraphics.lastBlink, lGraphics.blink, timeStacker) * 2f * (float)Math.PI), 1.5f + lGraphics.lizard.AI.excitement * 1.5f);
+							var dark = 1f - Mathf.Pow(0.5f + 0.5f * Mathf.Sin(Mathf.Lerp(lGraphics.lastBlink, lGraphics.blink, timeStacker) * 2f * (float)Math.PI), 1.5f + lGraphics.lizard.AI.excitement * 1.5f);
 							if (lGraphics.headColorSetter != 0f)
-								alpha = Mathf.Lerp(alpha, (lGraphics.headColorSetter > 0f) ? 1f : 0f, Mathf.Abs(lGraphics.headColorSetter));
+								dark = Mathf.Lerp(dark, (lGraphics.headColorSetter > 0f) ? 1f : 0f, Mathf.Abs(lGraphics.headColorSetter));
 							if (lGraphics.flicker > 10)
-								alpha = lGraphics.flickerColor;
-							alpha = Mathf.Lerp(alpha, Mathf.Pow(Mathf.Max(0f, Mathf.Lerp(lGraphics.lastVoiceVisualization, lGraphics.voiceVisualization, timeStacker)), 0.75f), Mathf.Lerp(lGraphics.lastVoiceVisualizationIntensity, lGraphics.voiceVisualizationIntensity, timeStacker));
+								dark = lGraphics.flickerColor;
+							dark = Mathf.Lerp(dark, Mathf.Pow(Mathf.Max(0f, Mathf.Lerp(lGraphics.lastVoiceVisualization, lGraphics.voiceVisualization, timeStacker)), 0.75f), Mathf.Lerp(lGraphics.lastVoiceVisualizationIntensity, lGraphics.voiceVisualizationIntensity, timeStacker));
 							
 
 							var baseBrightness = Custom.RGB2HSL(col).z;
 							var tintVec = Custom.RGB2HSL(redderTint);
-							var tintBrightness = Mathf.Lerp(baseBrightness, tintVec.z, alpha);
+							var tintBrightness = Mathf.Lerp(baseBrightness, tintVec.z, dark);
 							moddedTint = Custom.HSL2RGB(tintVec.x, tintVec.y, tintBrightness);
-							if (moddedTip != null)
+							if (tipColor != null)
 							{
 								var tipVec = Custom.RGB2HSL(tipColor.Value);
-								var tipBrightness = Mathf.Lerp(baseBrightness, tipVec.z, alpha);
+								var tipBrightness = Mathf.Lerp(baseBrightness, tipVec.z, dark);
 								moddedTip = Custom.HSL2RGB(tipVec.x, tipVec.y, tipBrightness);
 							}
 						}
