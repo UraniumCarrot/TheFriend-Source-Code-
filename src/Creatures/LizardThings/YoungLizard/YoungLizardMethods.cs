@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using MoreSlugcats;
+﻿using MoreSlugcats;
+using UnityEngine;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.YoungLizard;
 
 public class YoungLizardMethods
 {
@@ -149,4 +149,12 @@ public class YoungLizardMethods
         return relationship;
     }
 
+    public static void YoungLizardBite(Lizard self, BodyChunk chunk)
+    {
+        if (chunk.owner is Creature crit && 
+            (crit.Template.type == CreatureTemplate.Type.Hazer || 
+             crit.Template.type == CreatureTemplate.Type.VultureGrub || 
+             crit.Template.type == CreatureTemplate.Type.Fly))
+            crit.Die();
+    }
 }

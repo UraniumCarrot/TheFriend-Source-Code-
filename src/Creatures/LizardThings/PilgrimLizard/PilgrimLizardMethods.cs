@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.PilgrimLizard;
 
 public class PilgrimLizardMethods
 {
@@ -110,5 +110,9 @@ public class PilgrimLizardMethods
             temp.throwAction = "Hiss";
             temp.pickupAction = "Bite";
             return temp;
+    }
+    public static void PilgrimLizardGraphicsCtor(LizardGraphics self, PhysicalObject ow)
+    {
+        
     }
 }

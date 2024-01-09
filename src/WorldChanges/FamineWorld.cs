@@ -20,27 +20,16 @@ public abstract class FamineWorld
         On.MoreSlugcats.DandelionPeach.ApplyPalette += DandelionPeach_ApplyPalette;
     }
 
-    public static void FamineBurden(RainWorldGame self)
+    public static void HasFamines(RainWorldGame self)
     {
+        if (FriendWorldState.SolaceWorldstate && !Configs.NoFamine) FamineBool = true;
+        
         if (self.rainWorld.ExpeditionMode &&
             ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))
             FamineBurdenBool = true;
-        FamineBurdenBool = false;
-    }
-    
-    public static void HasFamines(RainWorldGame self)
-    {
-        if ((self.StoryCharacter == Plugin.FriendName ||
-             self.StoryCharacter == Plugin.NoirName ||
-             self.StoryCharacter == Plugin.DragonName ||
-             (Configs.GlobalFamine && !self.rainWorld.ExpeditionMode)
-             && !Configs.NoFamine && !self.IsArenaSession))
-            FamineBool = true;
-        else if (self.rainWorld.ExpeditionMode &&
-                 ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))
-            FamineBool = true;
-        else
-            FamineBool = false;
+        else FamineBurdenBool = false;
+
+        if (Configs.NoFamine) FamineBool = false;
     }
 
     // Helps majority of the code here tell slugcat has famines
@@ -50,19 +39,31 @@ public abstract class FamineWorld
     public static bool IsDiseased(PhysicalObject consumable) => IsDiseased(consumable.abstractPhysicalObject);
     public static bool IsDiseased(AbstractPhysicalObject consumable) // General disease bool handler
     {
-        if (consumable is not AbstractConsumable) return false;
-        if (!FamineBool && !FamineBurdenBool) return false;
-        if (consumable.world.name == "UG" && !FamineBurdenBool) return false;
+        var region = consumable.world.name;
+        bool value = false;
+        
         var oldState = Random.state;
         try
         {
             var newState = consumable.ID.RandomSeed; //c.placedObjectIndex != -1 ? ((c.world.GetAbstractRoom(c.originRoom)?.name.GetHashCode() ?? 0) ^ c.placedObjectIndex) : c.ID.number;
             Random.InitState(newState);
-            if (consumable.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit) return (FamineBurdenBool) ? true : Random.value > 0.2;
-            if (consumable.type == MoreSlugcatsEnums.AbstractObjectType.LillyPuck) return (FamineBurdenBool) ? true : Random.value > 0.05;
-            if (consumable.type == MoreSlugcatsEnums.AbstractObjectType.GooieDuck) return (FamineBurdenBool) ? true : Random.value > 0.9;
-            if (consumable.type == MoreSlugcatsEnums.AbstractObjectType.DandelionPeach) return (FamineBurdenBool) ? true : Random.value > 0.4;
-            else return false;
+            switch (consumable.type.value)
+            {
+                case nameof(AbstractPhysicalObject.AbstractObjectType.DangleFruit): 
+                    value = FamineBurdenBool || Random.value > 0.2; break;
+                case nameof(MoreSlugcatsEnums.AbstractObjectType.LillyPuck): 
+                    value = FamineBurdenBool || Random.value > 0.05; break;
+                case nameof(MoreSlugcatsEnums.AbstractObjectType.GooieDuck): 
+                    value = FamineBurdenBool || Random.value > 0.9; break;
+                case nameof(MoreSlugcatsEnums.AbstractObjectType.DandelionPeach): 
+                    value = FamineBurdenBool || Random.value > 0.4; break;
+                    default: return false;
+            }
+            if (consumable is not AbstractConsumable) value = false;
+            if (!FamineBool && !FamineBurdenBool) value = false;
+            if (region == "UG" && !FamineBurdenBool) value = false;
+            
+            return value;
         }
         finally
         {

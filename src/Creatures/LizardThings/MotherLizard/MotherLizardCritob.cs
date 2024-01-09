@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using DevInterface;
-using MoreSlugcats;
 using Fisobs.Core;
 using Fisobs.Creatures;
 using Fisobs.Sandbox;
+using MoreSlugcats;
+using RWCustom;
+using TheFriend.DragonRideThings;
 using UnityEngine;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.MotherLizard;
 public class MotherLizardCritob : Critob
 {
     public MotherLizardCritob() : base(CreatureTemplateType.MotherLizard)
@@ -15,7 +17,6 @@ public class MotherLizardCritob : Critob
         LoadedPerformanceCost = 100f;
         SandboxPerformanceCost = new(0.8f, 0.8f);
         RegisterUnlock(KillScore.Configurable(50), SandboxUnlockID.MotherLizard);
-        Hooks.Apply();
     }
     public override int ExpeditionScore() => 50;
     public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
@@ -105,13 +106,37 @@ public class MotherLizardCritob : Critob
     public override CreatureState CreateState(AbstractCreature acrit) => new LizardState(acrit);
     public override void LoadResources(RainWorld rainWorld) { }
     public override CreatureTemplate.Type ArenaFallback() => CreatureTemplate.Type.GreenLizard;
-    /*public override ItemProperties Properties(Creature crit)
+
+    public static void MotherLizardCtor(Lizard self, AbstractCreature abstractCreature, World world)
     {
-        if (crit is Lizard motherLizard)
+        var state = Random.state;
+        Random.InitState(abstractCreature.ID.RandomSeed);
+        self.effectColor = Custom.HSL2RGB(
+            Custom.WrappedRandomVariation(0.9f, 0.1f, 0.6f), 
+            1f,
+            Custom.ClampedRandomVariation(0.85f, 0.15f, 0.2f));
+        self.GetLiz().IsRideable = true;
+        Random.state = state;
+    }
+
+    public static SoundID MotherLizardVoice(Lizard self, SoundID res)
+    {
+        var array = new[] { "A", "B", "C", "D", "E" };
+        var list = new List<SoundID>();
+        for (int i = 0; i < array.Length; i++)
         {
-            return new MotherLizardProperties(motherLizard);
+            var soundID = SoundID.None;
+            var text2 = "Lizard_Voice_Red_" + array[i];
+            if (SoundID.values.entries.Contains(text2))
+                soundID = new(text2);
+            if (soundID != SoundID.None && soundID.Index != -1 && self.abstractCreature.world.game.soundLoader.workingTriggers[soundID.Index])
+                list.Add(soundID);
         }
-        return null;
-    }*/
+        if (list.Count == 0)
+            res = SoundID.None;
+        else
+            res = list[Random.Range(0, list.Count)];
+        return res;
+    }
 }
 

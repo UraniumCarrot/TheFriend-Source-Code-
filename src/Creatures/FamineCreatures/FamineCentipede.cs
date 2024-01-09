@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Mono.Cecil.Cil;
@@ -27,21 +26,20 @@ public abstract class FamineCentipede
     }
 
      // Diseased Centipede
-    public static float defCentiSat = 0.5f;
     public static Color Centipede_ShortCutColor(On.Centipede.orig_ShortCutColor orig, Centipede self)
     {
         if (self is not null && 
             self.TryGet(out var data))
         {
             if (self.Red) return Custom.HSL2RGB(data.sickHue, 0f, 0.5f);
-            else return Custom.HSL2RGB(data.sickHue, defCentiSat, 0.5f);
+            else return Custom.HSL2RGB(data.sickHue, data.sickSat, 0.5f);
         }
         else return orig(self);
     }
     public static void CentipedeGraphics_InitiateSprites(On.CentipedeGraphics.orig_InitiateSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
-        if (self.centipede != null && self.centipede.TryGet(out var data) && !self.centipede.Red)
+        if (self.centipede != null && self.centipede.TryGet(out _) && !self.centipede.Red)
         {
             for (int i = 0; i < self.owner.bodyChunks.Count(); i++)
             {
@@ -53,13 +51,14 @@ public abstract class FamineCentipede
     public static void CentipedeGraphics_DrawSprites(On.CentipedeGraphics.orig_DrawSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
-        if (self.centipede != null && self.centipede.TryGet(out var data))
+        if (self.centipede == null) return;
+        if (self.centipede.TryGet(out _))
             for (var i = 0; i < self.owner?.bodyChunks?.Count(); i++)
-                sLeaser.sprites[self.SegmentSprite(i)].element = Futile.atlasManager.GetElementWithName("LizardHead3.0");
-            
-        
+                sLeaser.sprites[self.SegmentSprite(i)].element =
+                    Futile.atlasManager.GetElementWithName("LizardHead3.0");
+        else return;
 
-        if (!self.centipede.Red) return;
+        if (!self.centipede.Red) return; // Iridescipede
         var drawPos = self.centipede.bodyChunks.Select(chunk => Vector2.Lerp(chunk.lastPos, chunk.pos, timeStacker)).ToList();
         var minX = drawPos.Min(pos => pos.x);
         var maxX = drawPos.Max(pos => pos.x);
@@ -80,7 +79,7 @@ public abstract class FamineCentipede
     public static void Centipede_ctor(On.Centipede.orig_ctor orig, Centipede self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (self.TryGet(out var data))
+        if (self.TryGet(out _))
         {
             for (int i = 0; i < self.bodyChunks?.Count(); i++)
             {
@@ -91,7 +90,7 @@ public abstract class FamineCentipede
     }
     public static void Centipede_Violence(On.Centipede.orig_Violence orig, Centipede self, BodyChunk source, Vector2? directionAndMomentum, BodyChunk hitChunk, PhysicalObject.Appendage.Pos hitAppendage, Creature.DamageType type, float damage, float stunBonus)
     {
-        if (self.TryGet(out var centi) && !self.Red)
+        if (self.TryGet(out _) && !self.Red)
         {
             if (type == Creature.DamageType.Bite) damage *= 2.6f;
             if (type == Creature.DamageType.Explosion) damage *= 8f;
@@ -106,22 +105,21 @@ public abstract class FamineCentipede
         if (self.centipede.TryGet(out var data))
         {
             self.hue = data.sickHue;
-            self.saturation = (self.centipede.Red) ? 0.15f : defCentiSat;
+            self.saturation = data.sickSat;
         }
     }
 
     // Diseased centipede food
-    public static void Player_EatMeatUpdate(MonoMod.Cil.ILContext il)
+    public static void Player_EatMeatUpdate(ILContext il)
     {
         try
         {
             var c = new ILCursor(il);
-            ILLabel label = null;
 
             c.GotoNext(i => i.MatchIsinst<Centipede>()); // Find a unique thing closest to where you want to be
             c.GotoNext(i => i.MatchLdsfld<SoundID>("Slugcat_Eat_Meat_B")); // Looking for jump destination
             c.GotoPrev(i => i.MatchLdarg(0)); // THE jump destination
-            label = il.DefineLabel(c.Next); // This is where the jump destination is! New code location will be right here
+            ILLabel label = il.DefineLabel(c.Next); // This is where the jump destination is! New code location will be right here
             c.GotoPrev(MoveType.Before, i => i.MatchLdsfld<ModManager>("MSC")); // The jump beginning, finds match nearest to the unique thing
             // With both the jump beginning and destination set, the code between is selected
             c.Emit(OpCodes.Ldarg_0); // Hook's argument 1 (Player, for this)
@@ -174,24 +172,29 @@ public static class CentiCWT
 {
     public class CentiData
     {
-        public bool naturalSickness;
+        public bool naturalSickness => !FamineWorld.FamineBurdenBool && FriendWorldState.SolaceWorldstate;
         public float sickHue;
+        public float sickSat;
         public CentiData(Centipede self)
         {
-            var random = Mathf.Lerp(-1, 1, Random.value) * 0.1f;
+            Debug.Log("naturalsickness " + naturalSickness);
+            var random = Random.Range(-1,1) * 0.05f;
             switch (self.Template.type.value)
             {
                 case nameof(CreatureTemplate.Type.RedCentipede): 
                     sickHue = Random.value;
+                    sickSat = (naturalSickness) ? 0 : 0.15f;
                     break;
                 case nameof(CreatureTemplate.Type.Centiwing):
                     sickHue = (naturalSickness) ? 
                         0.68f + random : 0.5f + random;
+                    sickSat = (naturalSickness) ? 0.5f : 0.3f;
                     break;
                 case nameof(CreatureTemplate.Type.SmallCentipede) or 
                     nameof(CreatureTemplate.Type.Centipede):
                     sickHue = (naturalSickness) ? 
-                        0.6f + random : 0.4f + random;
+                        0.65f + random : 0.38f + random;
+                    sickSat = (naturalSickness) ? 0.5f : 0.3f;
                     break;
             }
 
@@ -208,10 +211,6 @@ public static class CentiCWT
             !self.AquaCenti)
         {
             data = self.GetData();
-            if (FamineWorld.FamineBurdenBool && 
-                !FriendWorldState.SolaceWorldstate) 
-                data.naturalSickness = false;
-            else data.naturalSickness = true;
             return true;
         }
         data = null;

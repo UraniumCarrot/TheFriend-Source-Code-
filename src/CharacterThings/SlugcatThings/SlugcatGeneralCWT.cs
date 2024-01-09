@@ -19,7 +19,6 @@ public static class SlugcatGeneralCWT
         
         // General player variables
         public bool squint;
-        public OverseerHologram sensoryHolo;
         public bool iHaveSenses;
         
         public bool JustGotMoonMark;

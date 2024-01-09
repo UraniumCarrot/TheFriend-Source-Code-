@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using MoreSlugcats;
+﻿using MoreSlugcats;
+using UnityEngine;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.MotherLizard;
 
 public class MotherLizardMethods
 {
@@ -143,4 +143,5 @@ public class MotherLizardMethods
         
         return relationship;
     }
+    
 }

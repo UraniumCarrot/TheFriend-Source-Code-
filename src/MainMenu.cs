@@ -79,7 +79,7 @@ public class MainMenu
         orig(self, timestacker);
         if (!IntroOrSelect) return;
         if ((self.menu is IntroRoll && !Configs.IntroBlizzard) ||
-            (self.menu is SlugcatSelectMenu && !Configs.IntroBlizzard))
+            (self.menu is SlugcatSelectMenu && !Configs.CharSnow))
             return;
         
         var slugMenu = (self.menu as SlugcatSelectMenu);

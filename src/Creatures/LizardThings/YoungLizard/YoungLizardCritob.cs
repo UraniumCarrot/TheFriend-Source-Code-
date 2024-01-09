@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using DevInterface;
-using MoreSlugcats;
 using Fisobs.Core;
 using Fisobs.Creatures;
-using Fisobs.Sandbox;
-using UnityEngine;
 using Fisobs.Properties;
+using Fisobs.Sandbox;
+using MoreSlugcats;
+using UnityEngine;
+using RWCustom;
+using TheFriend.DragonRideThings;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.YoungLizard;
 public class YoungLizardCritob : Critob
 {
     public YoungLizardCritob() : base(CreatureTemplateType.YoungLizard)
@@ -16,7 +18,6 @@ public class YoungLizardCritob : Critob
         LoadedPerformanceCost = 100f;
         SandboxPerformanceCost = new(0.3f, 0.3f);
         RegisterUnlock(KillScore.Configurable(2), SandboxUnlockID.YoungLizard);
-        Hooks.Apply();
     }
     public override int ExpeditionScore() => 3;
     public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
@@ -96,5 +97,38 @@ public class YoungLizardCritob : Critob
             return new YoungLizardProperties(youngLizard);
         }
         return null;
+    }
+
+    public static void YoungLizardCtor(Lizard self, AbstractCreature abstractCreature, World world)
+    {
+        var state = Random.state;
+        Random.InitState(abstractCreature.ID.RandomSeed);
+        self.effectColor = Custom.HSL2RGB(
+            Custom.WrappedRandomVariation(0.1f, 1f, 1f), 
+            1f, 
+            Custom.ClampedRandomVariation(0.8f, 0.2f, 0f));
+        AbstractCreature creature = self.abstractCreature;
+        self.GetLiz().IsRideable = false;
+        Random.state = state;
+    }
+
+    public static SoundID YoungLizardVoice(Lizard self, SoundID res)
+    {
+        var array = new[] { "A", "B", "C", "D", "E" };
+        var list = new List<SoundID>();
+        for (int i = 0; i < array.Length; i++)
+        {
+            var soundID = SoundID.None;
+            var text2 = "Lizard_Voice_Blue_" + array[i];
+            if (SoundID.values.entries.Contains(text2))
+                soundID = new(text2);
+            if (soundID != SoundID.None && soundID.Index != -1 && self.abstractCreature.world.game.soundLoader.workingTriggers[soundID.Index])
+                list.Add(soundID);
+        }
+        if (list.Count == 0)
+            res = SoundID.None;
+        else
+            res = list[Random.Range(0, list.Count)];
+        return res;
     }
 }

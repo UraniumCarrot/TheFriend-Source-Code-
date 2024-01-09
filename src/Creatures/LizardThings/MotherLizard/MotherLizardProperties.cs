@@ -1,6 +1,6 @@
 ﻿using Fisobs.Properties;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.MotherLizard;
 public class MotherLizardProperties : ItemProperties
 {
     public readonly Lizard motherLizard;

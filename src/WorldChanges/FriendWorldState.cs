@@ -12,7 +12,7 @@ public class FriendWorldState
         if ((game?.StoryCharacter == Plugin.FriendName || 
              game?.StoryCharacter == Plugin.DragonName || 
              game?.StoryCharacter == Plugin.NoirName) && 
-            game != null) 
+            game != null && !game.IsArenaSession) 
         { SolaceWorldstate = true; return true; }
         else { SolaceWorldstate = false; return false; }
     }
@@ -72,7 +72,6 @@ public class FriendWorldState
         if (game != null)
         {
             FamineWorld.HasFamines(game);
-            FamineWorld.FamineBurden(game);
         }
         orig(self, game, playerCharacter, singleRoomWorld, worldName, region, setupValues);
     }

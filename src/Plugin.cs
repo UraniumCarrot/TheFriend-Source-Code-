@@ -27,6 +27,9 @@ using TheFriend.Expedition;
 using TheFriend.RemixMenus;
 using TheFriend.Creatures.FamineCreatures;
 using TheFriend.CharacterThings.NoirThings;
+using TheFriend.Creatures.LizardThings.MotherLizard;
+using TheFriend.Creatures.LizardThings.PilgrimLizard;
+using TheFriend.Creatures.LizardThings.YoungLizard;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.SaveThings;
@@ -151,6 +154,7 @@ namespace TheFriend
 
                 LizardRideControl.Apply();
                 YoungLizardAI.Apply();
+                Hooks.Apply();
                 SnowSpiderGraphics.Apply();
                 PebblesLL.Apply();
 

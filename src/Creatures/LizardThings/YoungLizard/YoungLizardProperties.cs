@@ -1,6 +1,6 @@
 ﻿using Fisobs.Properties;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.YoungLizard;
 public class YoungLizardProperties : ItemProperties
 {
     public readonly Lizard youngLizard;

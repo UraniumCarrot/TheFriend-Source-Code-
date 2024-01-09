@@ -2,11 +2,12 @@
 using DevInterface;
 using Fisobs.Core;
 using Fisobs.Creatures;
-using Fisobs.Sandbox;
 using MoreSlugcats;
+using TheFriend.DragonRideThings;
 using UnityEngine;
+using RWCustom;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.PilgrimLizard;
 public class PilgrimLizardCritob : Critob
 {
     public PilgrimLizardCritob() : base(CreatureTemplateType.PilgrimLizard)
@@ -14,7 +15,6 @@ public class PilgrimLizardCritob : Critob
         Icon = new SimpleIcon("Kill_Standard_Lizard", new(1f, 1f, 1f));
         LoadedPerformanceCost = 1f;
         SandboxPerformanceCost = new(0.8f, 0.8f);
-        Hooks.Apply();
     }
     public override int ExpeditionScore() => 50;
     public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
@@ -104,13 +104,35 @@ public class PilgrimLizardCritob : Critob
     public override CreatureState CreateState(AbstractCreature acrit) => new LizardState(acrit);
     public override void LoadResources(RainWorld rainWorld) { }
     public override CreatureTemplate.Type ArenaFallback() => CreatureTemplate.Type.CyanLizard;
-    /*public override ItemProperties Properties(Creature crit)
+
+    public static void PilgrimLizardCtor(Lizard self, AbstractCreature abstractCreature, World world)
     {
-        if (crit is Lizard motherLizard)
+        var state = Random.state;
+        Random.InitState(abstractCreature.ID.RandomSeed);
+        self.effectColor = Color.red;
+        AbstractCreature creature = self.abstractCreature;
+        self.GetLiz().IsRideable = false;
+        Random.state = state;
+    }
+
+    public static SoundID PilgrimLizardVoice(Lizard self, SoundID res)
+    {
+        var array = new[] { "A", "B", "C", "D", "E" };
+        var list = new List<SoundID>();
+        for (int i = 0; i < array.Length; i++)
         {
-            return new MotherLizardProperties(motherLizard);
+            var soundID = SoundID.None;
+            var text2 = "Lizard_Voice_Black_" + array[i];
+            if (SoundID.values.entries.Contains(text2))
+                soundID = new(text2);
+            if (soundID != SoundID.None && soundID.Index != -1 && self.abstractCreature.world.game.soundLoader.workingTriggers[soundID.Index])
+                list.Add(soundID);
         }
-        return null;
-    }*/
+        if (list.Count == 0)
+            res = SoundID.None;
+        else
+            res = list[Random.Range(0, list.Count)];
+        return res;
+    }
 }
 

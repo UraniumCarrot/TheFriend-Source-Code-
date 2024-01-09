@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using MonoMod.RuntimeDetour;
-using MoreSlugcats;
 using RWCustom;
-using UnityEngine;
 
-namespace TheFriend.Creatures.LizardThings;
+namespace TheFriend.Creatures.LizardThings.YoungLizard;
 
 public class YoungLizardAI : LizardAI
 {

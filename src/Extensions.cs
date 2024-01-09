@@ -34,7 +34,7 @@ public static class Extensions
     public static void ChangeHue(this ref Color color, float newHue)
     {
         var colorHsl = Custom.RGB2HSL(color);
-        colorHsl.x = newHue;
+        colorHsl.x = newHue - Mathf.Floor(newHue);
         color = colorHsl.HSL2RGB();
     }
     public static Color HSL2RGB(this Vector3 colorVec)
