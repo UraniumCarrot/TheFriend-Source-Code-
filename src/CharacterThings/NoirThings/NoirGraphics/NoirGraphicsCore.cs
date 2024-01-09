@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Menu;
 using RWCustom;
 using TheFriend.RemixMenus;
-using TheFriend.SlugcatThings;
+using SlugBase.DataTypes;
 using UnityEngine;
 
 namespace TheFriend.CharacterThings.NoirThings;
@@ -62,10 +64,14 @@ public partial class NoirCatto //Sprite replacement and layer management is here
 
         if (!self.owner.room.game.DEBUGMODE)
         {
-            TotalSprites = sleaser.sprites.Length;
-            EarSpr[0] = TotalSprites;
-            EarSpr[1] = TotalSprites + 1;
-            Array.Resize(ref sleaser.sprites, TotalSprites + NewSprites);
+            noirData.TotalSprites = sleaser.sprites.Length;
+            noirData.EarSpr[0] = noirData.TotalSprites;
+            noirData.EarSpr[1] = noirData.TotalSprites + 1;
+            for (var i = 0; i < noirData.SlugSpr.Length; i++)
+            {
+                noirData.SlugSpr[i] = noirData.TotalSprites + noirData.EarSpr.Length + i;
+            }
+            Array.Resize(ref sleaser.sprites, noirData.TotalSprites + NoirData.NewSprites);
 
             #region Init Tail + Ear arrays
             var tailArray = new TriangleMesh.Triangle[(self.tail.Length - 1) * 4 + 1];
@@ -90,7 +96,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                 }
             }
             earArray[(noirData.Ears[0].Length - 1) * 4] = new TriangleMesh.Triangle((noirData.Ears[0].Length - 1) * 4, (noirData.Ears[0].Length - 1) * 4 + 1, (noirData.Ears[0].Length - 1) * 4 + 2);
-            foreach (var sprNum in EarSpr)
+            foreach (var sprNum in noirData.EarSpr)
             {
                 sleaser.sprites[sprNum] = new TriangleMesh("Futile_White", earArray, false, false);
             }
@@ -98,13 +104,64 @@ public partial class NoirCatto //Sprite replacement and layer management is here
 
             if (RemixMain.NoirHideEars.Value) //For.. DMS?
             {
-                foreach (var sprNum in EarSpr)
+                foreach (var sprNum in noirData.EarSpr)
                 {
                     sleaser.sprites[sprNum].isVisible = false;
                 }
             }
 
             ReplaceSprites(sleaser, self);
+
+            #region Light sprites
+
+            sleaser.sprites[noirData.SlugSpr[LightBodySpr]] = new FSprite(NoirLight + BodyA);
+            sleaser.sprites[noirData.SlugSpr[LightHipsSpr]] = new FSprite(NoirLight + HipsA);
+            sleaser.sprites[noirData.SlugSpr[LightHeadSpr]] = new FSprite(NoirLight + Head + "A0");
+            sleaser.sprites[noirData.SlugSpr[LightLegsSpr]] = new FSprite(NoirLight + Legs + "A0");
+            sleaser.sprites[noirData.SlugSpr[LightPawLegsSpr]] = new FSprite(NoirLight + "Paw" + Legs + "A0");
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr]] = new FSprite(NoirLight + PlayerArm + "0");
+            sleaser.sprites[noirData.SlugSpr[LightPawArmSpr]] = new FSprite(NoirLight + "Paw" + PlayerArm + "0");
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr2]] = new FSprite(NoirLight + PlayerArm + "0");
+            sleaser.sprites[noirData.SlugSpr[LightPawArmSpr2]] = new FSprite(NoirLight + "Paw" + PlayerArm + "0");
+            sleaser.sprites[noirData.SlugSpr[LightFaceSpr]] = new FSprite(NoirLight + Face + "A0");
+            sleaser.sprites[noirData.SlugSpr[LightNoseFaceSpr]] = new FSprite(NoirLight + "Nose" + Face + "A0");
+
+            for (var i = 0; i < noirData.SlugSpr.Length; i++)
+            {
+                if (!sleaser.sprites[noirData.SlugSpr[i]].element.name.StartsWith(Noir)) //DMS compat
+                    sleaser.sprites[noirData.SlugSpr[i]].isVisible = false;
+            }
+
+            #endregion
+
+            #region Recoloring eyes
+
+            Color? eyeColor = null;
+            if (PlayerGraphics.CustomColorsEnabled())
+                eyeColor = PlayerColor.GetCustomColor(self, CustomColorEyes);
+            if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+                eyeColor = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorEyes);
+            if (eyeColor != null && eyeColor.Value != NoirBlueEyesDefault) //Don't replace default color
+            {
+                var faceNames = new List<string>(); //I could just get this from Futile.atlasManager._allElementsByName, but I don't like something about that approach
+                for (var i = 0; i <= 8; i++)
+                    faceNames.Add("NoirFaceA" + i);
+                for (var i = 0; i <= 8; i++)
+                    faceNames.Add("NoirFaceB" + i);
+                faceNames.Add("NoirFaceDead");
+                faceNames.Add("NoirFaceStunned");
+                foreach (var name in faceNames)
+                {
+                    var texture = GetTextureFromFAtlasElement(Futile.atlasManager.GetElementWithName(name), EyeTexture);
+                    texture.RecolorTextureMagically(NoirBlueEyes, eyeColor.Value);
+                    texture.name = name;
+                    noirData.ElementFromTexture(texture, true);
+                }
+            }
+
+            #endregion
+
+
             noirData.CallingAddToContainerFromOrigInitiateSprites = false;
             self.AddToContainer(sleaser, rcam, null);
         }
@@ -125,19 +182,42 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         if (!self.owner.room.game.DEBUGMODE)
         {
             var container = rcam.ReturnFContainer("Midground");
-            container.AddChild(sleaser.sprites[EarSpr[0]]);
-            container.AddChild(sleaser.sprites[EarSpr[1]]);
+            container.AddChild(sleaser.sprites[noirData.EarSpr[0]]);
+            container.AddChild(sleaser.sprites[noirData.EarSpr[1]]);
 
-            sleaser.sprites[ArmSpr].MoveBehindOtherNode(sleaser.sprites[HeadSpr]);
-            sleaser.sprites[ArmSpr2].MoveBehindOtherNode(sleaser.sprites[HeadSpr]);
+            for (var i = 0; i < noirData.SlugSpr.Length; i++)
+            {
+                container.AddChild(sleaser.sprites[noirData.SlugSpr[i]]);
+            }
 
-            sleaser.sprites[EarSpr[0]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
-            sleaser.sprites[EarSpr[1]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightHeadSpr]].MoveBehindOtherNode(sleaser.sprites[HeadSpr]);
+
+            sleaser.sprites[ArmSpr].MoveBehindOtherNode(sleaser.sprites[noirData.SlugSpr[LightHeadSpr]]);
+            sleaser.sprites[ArmSpr2].MoveBehindOtherNode(sleaser.sprites[noirData.SlugSpr[LightHeadSpr]]);
+
+            sleaser.sprites[noirData.SlugSpr[LightPawArmSpr]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr]);
+
+            sleaser.sprites[noirData.SlugSpr[LightPawArmSpr2]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr2]);
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr2]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr2]);
+
+            sleaser.sprites[noirData.EarSpr[0]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
+            sleaser.sprites[noirData.EarSpr[1]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
+
+            sleaser.sprites[noirData.SlugSpr[LightBodySpr]].MoveInFrontOfOtherNode(sleaser.sprites[BodySpr]);
+            sleaser.sprites[noirData.SlugSpr[LightHipsSpr]].MoveInFrontOfOtherNode(sleaser.sprites[HipsSpr]);
 
             sleaser.sprites[TailSpr].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
             sleaser.sprites[LegsSpr].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
+
+            sleaser.sprites[noirData.SlugSpr[LightPawLegsSpr]].MoveInFrontOfOtherNode(sleaser.sprites[LegsSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightLegsSpr]].MoveInFrontOfOtherNode(sleaser.sprites[LegsSpr]);
+
+            sleaser.sprites[noirData.SlugSpr[LightFaceSpr]].MoveBehindOtherNode(sleaser.sprites[FaceSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightNoseFaceSpr]].MoveInFrontOfOtherNode(sleaser.sprites[FaceSpr]);
         }
     }
+
     private static void PlayerGraphicsOnDrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
     {
         orig(self, sleaser, rcam, timestacker, campos);
@@ -145,39 +225,43 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         if (rcam.room.game.DEBUGMODE) return;
 
         ReplaceSprites(sleaser, self);
-
-        if (sleaser.sprites[FaceSpr].element.name.StartsWith(Noir)) //For DMS compatibility :)
-            sleaser.sprites[FaceSpr].color = Color.white;
-
         MoveMeshes(noirData, sleaser, timestacker, campos);
 
         #region Moving Sprites to front/back
         if (noirData.FlipDirection == 1)
         {
-            sleaser.sprites[ArmSpr].MoveBehindOtherNode(sleaser.sprites[HeadSpr]);
+            sleaser.sprites[ArmSpr].MoveBehindOtherNode(sleaser.sprites[noirData.SlugSpr[LightHeadSpr]]);
             sleaser.sprites[ArmSpr2].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr2]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr2]);
 
-            sleaser.sprites[EarSpr[0]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
-            sleaser.sprites[EarSpr[1]].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
+            sleaser.sprites[noirData.EarSpr[0]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
+            sleaser.sprites[noirData.EarSpr[1]].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
         }
         else
         {
             sleaser.sprites[ArmSpr].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
-            sleaser.sprites[ArmSpr2].MoveBehindOtherNode(sleaser.sprites[HeadSpr]);
+            sleaser.sprites[ArmSpr2].MoveBehindOtherNode(sleaser.sprites[noirData.SlugSpr[LightHeadSpr]]);
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightArmSpr2]].MoveInFrontOfOtherNode(sleaser.sprites[ArmSpr2]);
 
-            sleaser.sprites[EarSpr[0]].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
-            sleaser.sprites[EarSpr[1]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
+            sleaser.sprites[noirData.EarSpr[0]].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
+            sleaser.sprites[noirData.EarSpr[1]].MoveInFrontOfOtherNode(sleaser.sprites[HeadSpr]);
         }
 
         if ((self.player.animation == Player.AnimationIndex.None && (self.player.input[0].x != 0 && self.player.input[4].x != 0)) ||
             self.player.bodyMode == Player.BodyModeIndex.Crawl ||
             self.player.animation != Player.AnimationIndex.None && self.player.animation != Player.AnimationIndex.Flip && !noirData.OnAnyBeam())
         {
-            sleaser.sprites[LegsSpr].MoveInFrontOfOtherNode(sleaser.sprites[HipsSpr]);
+            sleaser.sprites[LegsSpr].MoveInFrontOfOtherNode(sleaser.sprites[noirData.SlugSpr[LightHipsSpr]]);
+            sleaser.sprites[noirData.SlugSpr[LightPawLegsSpr]].MoveInFrontOfOtherNode(sleaser.sprites[LegsSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightLegsSpr]].MoveInFrontOfOtherNode(sleaser.sprites[LegsSpr]);
         }
         else
         {
             sleaser.sprites[LegsSpr].MoveBehindOtherNode(sleaser.sprites[BodySpr]);
+            sleaser.sprites[noirData.SlugSpr[LightPawLegsSpr]].MoveInFrontOfOtherNode(sleaser.sprites[LegsSpr]);
+            sleaser.sprites[noirData.SlugSpr[LightLegsSpr]].MoveInFrontOfOtherNode(sleaser.sprites[LegsSpr]);
         }
         #endregion
 
@@ -186,41 +270,131 @@ public partial class NoirCatto //Sprite replacement and layer management is here
             if (sleaser.sprites[LegsSpr].element.name.Contains(Noir))
                 sleaser.sprites[LegsSpr].y -= 6f; //Adjustment for the limited space in leg sprite
         }
+
+        #region Light sprites
+        AttachLightSprite(noirData.SlugSpr[LightBodySpr], BodySpr, sleaser);
+        AttachLightSprite(noirData.SlugSpr[LightHipsSpr], HipsSpr, sleaser);
+        AttachLightSprite(noirData.SlugSpr[LightHeadSpr], HeadSpr, sleaser);
+        AttachLightSprite(noirData.SlugSpr[LightLegsSpr], LegsSpr, sleaser);
+        AttachLightSprite(noirData.SlugSpr[LightPawLegsSpr], LegsSpr, sleaser, NoirLight + "Paw");
+        AttachLightSprite(noirData.SlugSpr[LightArmSpr], ArmSpr, sleaser);
+        AttachLightSprite(noirData.SlugSpr[LightPawArmSpr], ArmSpr, sleaser, NoirLight + "Paw");
+        AttachLightSprite(noirData.SlugSpr[LightArmSpr2], ArmSpr2, sleaser);
+        AttachLightSprite(noirData.SlugSpr[LightPawArmSpr2], ArmSpr2, sleaser, NoirLight + "Paw");
+        AttachLightSprite(noirData.SlugSpr[LightFaceSpr], FaceSpr, sleaser);
+        AttachLightSprite(noirData.SlugSpr[LightNoseFaceSpr], FaceSpr, sleaser, NoirLight + "Nose");
+        #endregion
+
+        //Recoloring eyes
+        if (sleaser.sprites[FaceSpr].element.name.StartsWith(Noir)) //For DMS compatibility :)
+        {
+            sleaser.sprites[FaceSpr].color = Color.white;
+
+            if (PlayerGraphics.CustomColorsEnabled() || ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+            {
+                sleaser.sprites[FaceSpr].element = Futile.atlasManager.GetElementWithName(sleaser.sprites[FaceSpr].element.name + "_" + self.player.playerState.playerNumber);
+            }
+        }
     }
     private static void PlayerGraphicsOnApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
     {
         orig(self, sleaser, rcam, palette);
-        if (self.player.SlugCatClass != Plugin.NoirName) return;
+        if (!self.player.TryGetNoir(out var noirData)) return;
 
-        //Recolor Noir to a more white
-        for (var index = 0; index < sleaser.sprites.Length; ++index)
+        for (var index = 0; index < sleaser.sprites.Length; index++)
         {
             if (!sleaser.sprites[index].element.name.StartsWith(Noir)) continue; //For DMS compatibility :)
 
-            switch (index)
+            if (index == BodySpr || index == HipsSpr ||
+                index == HeadSpr || index == LegsSpr ||
+                index == ArmSpr || index == ArmSpr2)
             {
-                case OTOTArmSpr:
-                case OTOTArmSpr2:
-                    sleaser.sprites[index].color = ReColor(sleaser.sprites[index].color, true);
-                    break;
-                case FaceSpr:
-                    break; //why do you change this in drawsprites Rain World...
-                default:
-                    sleaser.sprites[index].color = ReColor(sleaser.sprites[index].color, false);
-                    break;
+                if (PlayerGraphics.CustomColorsEnabled())
+                    sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorBody);
+                else if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+                    sleaser.sprites[index].color = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorBody);
+                else
+                    sleaser.sprites[index].color = NoirBlack;
+            }
+
+            if ( index == OTOTArmSpr || index == OTOTArmSpr2 ||
+                 index == noirData.SlugSpr[LightBodySpr] ||
+                 index == noirData.SlugSpr[LightHipsSpr] ||
+                 index == noirData.SlugSpr[LightHeadSpr] ||
+                 index == noirData.SlugSpr[LightLegsSpr] ||
+                 index == noirData.SlugSpr[LightArmSpr] ||
+                 index == noirData.SlugSpr[LightArmSpr2] ||
+                 index == noirData.SlugSpr[LightFaceSpr])
+            {
+                if (PlayerGraphics.CustomColorsEnabled())
+                    sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorFluff);
+                else if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+                    sleaser.sprites[index].color = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorFluff);
+                else
+                    sleaser.sprites[index].color = NoirWhite;
+            }
+
+            if (index == noirData.SlugSpr[LightPawArmSpr] ||
+                index == noirData.SlugSpr[LightPawArmSpr2] ||
+                index == noirData.SlugSpr[LightPawLegsSpr])
+            {
+                if (PlayerGraphics.CustomColorsEnabled())
+                    sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorPaws);
+                else if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+                    sleaser.sprites[index].color = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorPaws);
+                else
+                    sleaser.sprites[index].color = NoirBlackPaws;
+            }
+
+            if (index == noirData.SlugSpr[LightNoseFaceSpr])
+            {
+                if (PlayerGraphics.CustomColorsEnabled())
+                    sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorNose);
+                else if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+                    sleaser.sprites[index].color = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorNose);
+                else
+                    sleaser.sprites[index].color = NoirPurple;
             }
         }
 
         if (sleaser.sprites[TailSpr] is TriangleMesh tailMesh)
-            ApplyMeshTexture(tailMesh);
-
-        foreach (var sprNum in EarSpr)
-            if (sleaser.sprites[sprNum] is TriangleMesh earMesh)
+        {
+            var tailTexture = TailTexture.Clone();
+            tailTexture.name = nameof(TailTexture);
+            if (PlayerGraphics.CustomColorsEnabled())
             {
-                earMesh.element = Futile.atlasManager.GetElementWithName(NoirEars);
+                tailTexture.RecolorTexture(NoirBlack, PlayerColor.GetCustomColor(self, CustomColorBody));
+                tailTexture.RecolorTexture(NoirWhite, PlayerColor.GetCustomColor(self, CustomColorFluff));
+            }
+            else if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+            {
+                tailTexture.RecolorTexture(NoirBlack, PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorBody));
+                tailTexture.RecolorTexture(NoirWhite, PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorFluff));
+            }
+            tailMesh.element = noirData.ElementFromTexture(tailTexture, true);
+            ApplyMeshTexture(tailMesh);
+        }
+
+        for (var i = 0; i < noirData.EarSpr.Length; i++)
+        {
+            if (sleaser.sprites[noirData.EarSpr[i]] is TriangleMesh earMesh)
+            {
+                var earTexture = EarTexture.Clone();
+                earTexture.name = nameof(EarTexture) + "_" + i;
+                if (PlayerGraphics.CustomColorsEnabled())
+                {
+                    earTexture.RecolorTexture(NoirBlack, PlayerColor.GetCustomColor(self, CustomColorBody));
+                    earTexture.RecolorTexture(NoirWhite, PlayerColor.GetCustomColor(self, CustomColorFluff));
+                }
+                else if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+                {
+                    earTexture.RecolorTexture(NoirBlack, PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorBody));
+                    earTexture.RecolorTexture(NoirWhite, PlayerGraphics.JollyColor(self.player.playerState.playerNumber, CustomColorFluff));
+                }
+                earMesh.element = noirData.ElementFromTexture(earTexture, true);
                 ApplyMeshTexture(earMesh);
             }
-
+        }
     }
 
     private static void PlayerGraphicsOnReset(On.PlayerGraphics.orig_Reset orig, PlayerGraphics self)
@@ -284,7 +458,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         var earRad = noirData.Ears[0][0].rad;
         for (var index = 0; index < noirData.Ears[0].Length; ++index)
         {
-            var earMesh = (TriangleMesh)sleaser.sprites[EarSpr[0]];
+            var earMesh = (TriangleMesh)sleaser.sprites[noirData.EarSpr[0]];
             var earPos = Vector2.Lerp(noirData.Ears[0][index].lastPos, noirData.Ears[0][index].pos, timestacker);
             var normalized = (earPos - earAttachPos).normalized;
             var vector2_3 = Custom.PerpendicularVector(normalized);
@@ -309,7 +483,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         for (var index = 0; index < noirData.Ears[1].Length; ++index)
         {
 
-            var ear2Mesh = (TriangleMesh)sleaser.sprites[EarSpr[1]];
+            var ear2Mesh = (TriangleMesh)sleaser.sprites[noirData.EarSpr[1]];
             var ear2Pos = Vector2.Lerp(noirData.Ears[1][index].lastPos, noirData.Ears[1][index].pos, timestacker);
             var normalized = (ear2Pos - ear2AttachPos).normalized;
             var vector2_3 = Custom.PerpendicularVector(normalized);
@@ -336,6 +510,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         {
             triMesh.verticeColors = new Color[triMesh.vertices.Length];
         }
+        triMesh.color = Color.white;
         triMesh.customColor = true;
 
         for (var j = triMesh.verticeColors.Length - 1; j >= 0; j--)
@@ -360,6 +535,65 @@ public partial class NoirCatto //Sprite replacement and layer management is here
             triMesh.UVvertices[j] = vector;
         }
         triMesh.Refresh();
+    }
+
+    private static Texture2D GetTextureFromFAtlasElement(FAtlasElement element, Texture2D texture = null)
+    {
+        texture ??= (Texture2D)element.atlas.texture;
+        var pos = Vector2Int.RoundToInt(element.uvRect.position * element.atlas.textureSize);
+        var size = Vector2Int.RoundToInt(element.sourceSize);
+        var spriteTexture = new Texture2D(size.x, size.y, texture.format, false);
+        spriteTexture.filterMode = FilterMode.Point;
+
+        var pixels = texture.GetPixels(pos.x, pos.y, size.x, size.y);
+        spriteTexture.SetPixels(pixels);
+        spriteTexture.Apply();
+        return spriteTexture;
+    }
+
+    private static void RecolorTexture(this Texture2D texture, Color from, Color to)
+    {
+        var colors = texture.GetPixels32();
+        for (var i = 0; i < colors.Length; i++)
+        {
+            if (colors[i] == from)
+            {
+                colors[i] = to;
+            }
+        }
+        texture.SetPixels32(colors);
+        texture.Apply();
+    }
+    private static void RecolorTexture(this Texture2D texture, Color[] from, Color to)
+    {
+        var colors = texture.GetPixels32();
+        for (var i = 0; i < colors.Length; i++)
+        {
+            if (from.Contains(colors[i]))
+            {
+                colors[i] = to;
+            }
+        }
+        texture.SetPixels32(colors);
+        texture.Apply();
+    }
+    private static void RecolorTextureMagically(this Texture2D texture, Color[] from, Color to)
+    {
+        var colors = texture.GetPixels32();
+        for (var i = 0; i < colors.Length; i++)
+        {
+            if (from.Contains(colors[i]))
+            {
+                var lch = ((Color)colors[i]).RGBtoLCH();
+                var targetLch = to.RGBtoLCH();
+                lch.z = targetLch.z;
+                Color.RGBToHSV(lch.LCHtoRGB(), out var h, out var s, out var v);
+                Color.RGBToHSV(to, out _, out _, out v);
+                colors[i] = Color.HSVToRGB(h, s, v);
+            }
+        }
+        texture.SetPixels32(colors);
+        texture.Apply();
     }
 
 }

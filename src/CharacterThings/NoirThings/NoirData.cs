@@ -1,12 +1,12 @@
 using System.Linq;
 using RWCustom;
 using TheFriend.RemixMenus;
-using TheFriend.SlugcatThings;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TheFriend.CharacterThings.NoirThings;
 
-public abstract partial class NoirCatto // Noir master class
+public static partial class NoirCatto // Noir master class
 {
     public class NoirData
     {
@@ -14,6 +14,11 @@ public abstract partial class NoirCatto // Noir master class
         public readonly Player.InputPackage[] UnchangedInput;
         public Player.AnimationIndex LastAnimation;
         public Player.AnimationIndex SpearThrownAnimation;
+
+        public const int NewSprites = 13;
+        public readonly int[] EarSpr = new int[2];
+        public readonly int[] SlugSpr = new int[11];
+        public int TotalSprites;
 
         public readonly TailSegment[][] Ears = new[]
         {
@@ -70,7 +75,7 @@ public abstract partial class NoirCatto // Noir master class
 
         private Player.AnimationIndex lastAnimationInternal;
         private Player.BodyModeIndex lastBodyModeInternal;
-        public NoirData(Player cat)
+        public NoirData(Player cat) //todo: use abstractCreature
         {
             Cat = cat;
             UnchangedInput = new Player.InputPackage[cat.input.Length];
@@ -278,6 +283,26 @@ public abstract partial class NoirCatto // Noir master class
         {
             MeowUpdate(this);
         }
+
+        #region Graphics
+        public FAtlasElement ElementFromTexture(Texture2D texture, bool forceRedraw = false)
+        {
+            var name = texture.name + "_" + Cat.playerState.playerNumber;
+            if (forceRedraw)
+            {
+                var oldAtlas = Futile.atlasManager._atlases.FirstOrDefault(x => x.name == name);
+                if (oldAtlas != null)
+                {
+                    Futile.atlasManager._allElementsByName.Remove(oldAtlas.name);
+                    oldAtlas.Unload();
+                    Object.Destroy(oldAtlas.texture);
+                    Futile.atlasManager._atlases.Remove(oldAtlas);
+                }
+            }
+            var atlas = Futile.atlasManager.LoadAtlasFromTexture(name, texture, false);
+            return atlas.elements[0];
+        }
+        #endregion
     }
 
     public const float DefaultFirstChunkMass = 0.315f;

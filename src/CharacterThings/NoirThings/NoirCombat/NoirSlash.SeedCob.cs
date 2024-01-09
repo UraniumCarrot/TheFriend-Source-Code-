@@ -102,7 +102,7 @@ public partial class NoirCatto
 
             c.GotoNext(MoveType.AfterLabel,
                 i => i.MatchLdarg(0),
-                i => i.MatchCallOrCallvirt<SeedCob>(typeof(SeedCob).GetGetterMethodName(nameof(SeedCob.AbstractCob))),
+                i => i.MatchGetterCall<SeedCob>(nameof(SeedCob.AbstractCob)),
                 i => i.MatchLdfld<AbstractSeedCob>(nameof(AbstractSeedCob.dead)),
                 i => i.MatchBrtrue(out label)
             );
