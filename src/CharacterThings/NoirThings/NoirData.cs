@@ -27,6 +27,7 @@ public static partial class NoirCatto // Noir master class
         };
         public readonly int[] EarsFlip = new[] { 1, 1 };
         public Vector2 LastHeadRotation;
+        public bool SpritesInit;
         public bool CallingAddToContainerFromOrigInitiateSprites;
 
         public int StandCounter;

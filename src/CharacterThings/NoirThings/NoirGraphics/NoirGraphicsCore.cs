@@ -15,6 +15,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
     {
         orig(self, ow);
         if (!self.player.TryGetNoir(out var noirData)) return;
+        noirData.SpritesInit = false;
 
         foreach (var ear in noirData.Ears)
         {
@@ -161,7 +162,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
 
             #endregion
 
-
+            noirData.SpritesInit = true;
             noirData.CallingAddToContainerFromOrigInitiateSprites = false;
             self.AddToContainer(sleaser, rcam, null);
         }
@@ -223,6 +224,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         orig(self, sleaser, rcam, timestacker, campos);
         if (!self.player.TryGetNoir(out var noirData)) return;
         if (rcam.room.game.DEBUGMODE) return;
+        if (!noirData.SpritesInit) return;
 
         ReplaceSprites(sleaser, self);
         MoveMeshes(noirData, sleaser, timestacker, campos);
