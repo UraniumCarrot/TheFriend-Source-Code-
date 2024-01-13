@@ -75,4 +75,25 @@ public class CharacterTools
         if (color == Vector3.zero) return Color.magenta;
         return Custom.Vec3ToColor(color);
     }
+
+    public static bool TryGetCustomJollyColor(int playerNumber, int bodyPartIndex, out Color color)
+    {
+        if (ModManager.CoopAvailable && Custom.rainWorld.options.jollyColorMode == Options.JollyColorMode.CUSTOM)
+        {
+            var col = PlayerGraphics.jollyColors;
+            if (col.GetLength(0) > playerNumber)
+            {
+                if (col[playerNumber].Length > bodyPartIndex)
+                {
+                    if (col[playerNumber][bodyPartIndex].HasValue)
+                    {
+                        color = col[playerNumber][bodyPartIndex].Value;
+                        return true;
+                    }
+                }
+            }
+        }
+        color = default;
+        return false;
+    }
 }
