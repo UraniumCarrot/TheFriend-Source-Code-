@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
 namespace TheFriend.CharacterThings;
 
-public class CharacterTools
+public static class CharacterTools
 {
-    public static void Squint(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser)
+    public static void Squint(this PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser)
     {
         var face = sLeaser.sprites[9];
         if (self.player.dead) return;
@@ -15,16 +16,22 @@ public class CharacterTools
                 Futile.atlasManager.GetElementWithName(face.element.name.Remove(face.element.name.Length-2, 2) + "Stunned");
     }
 
-    public static void HeadShiver(PlayerGraphics self, float intensity)
+    public static void HeadShiver(this PlayerGraphics self, float intensity)
     {
         self.head.vel += Custom.RNV() * intensity;
     }
-    public static void LookAtRain(PlayerGraphics self)
+    public static void LookAtRain(this PlayerGraphics self)
     {
         self.objectLooker.LookAtPoint(new Vector2(
-            self.player.room.PixelWidth * UnityEngine.Random.value,
+            self.player.room.PixelWidth * Random.value,
             self.player.room.PixelHeight + 100f),
             (1f - self.player.room.world.rainCycle.RainApproaching) * 0.6f);
+    }
+
+    public static void ColorChange(this PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, Color color, List<int> indexesToChange)
+    {
+        foreach (int i in indexesToChange)
+            sLeaser.sprites[i].color = color;
     }
 
     public enum colormode

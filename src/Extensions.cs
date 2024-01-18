@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RWCustom;
 using UnityEngine;
 
 namespace TheFriend;
@@ -41,6 +41,67 @@ public static partial class Extensions
     public static void Tick(this ref int counter)
     {
         if (counter > 0) counter--;
+    }
+
+    public static bool IsEven(this int number)
+    {
+        return number % 2 == 0;
+    }
+
+    public static int Floor(this ref float number)
+    {
+        return Mathf.FloorToInt(number);
+    }
+    
+    public static float FloatMultiLerp(IList<float> map, float value)
+    { // Most Multilerp code was created by Vigaro, ask Vigaro if you can use them in your own work
+        value = Mathf.Clamp01(value);
+
+        var pos = Mathf.Lerp(0, map.Count - 1, value);
+        var a = Mathf.FloorToInt(pos);
+        var b = a + 1;
+        var lerpValue = pos - a;
+
+        if (b >= map.Count-1)
+        {
+            b = 0;
+            if (value >= 1) {
+                lerpValue = 1;
+            }
+        }
+
+        return Mathf.Lerp(map[a], map[b], lerpValue);
+    }
+    
+    public static Vector3 V3MultiLerp(IList<Vector3> map, float value)
+    {
+        value = Mathf.Clamp01(value);
+
+        var pos = Mathf.Lerp(0, map.Count - 1, value);
+        var a = Mathf.FloorToInt(pos);
+        var b = a + 1;
+        var lerpValue = pos - a;
+
+        if (b >= map.Count-1)
+        {
+            b = 0;
+            if (value >= 1) {
+                lerpValue = 1;
+            }
+        }
+
+        return Vector3.Lerp(map[a], map[b], lerpValue);
+    }
+
+    public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> list)
+    {
+        foreach (var element in list)
+            set.Add(element);
+    }
+    public static void RemoveRange<T>(this HashSet<T> set, IEnumerable<T> list)
+    {
+        foreach (var element in list)
+            set.Remove(element);
     }
     #endregion
 

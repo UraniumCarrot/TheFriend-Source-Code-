@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using RWCustom;
 using UnityEngine;
 
@@ -14,13 +15,43 @@ public partial class Extensions
     public static void ChangeHue(this ref Color color, float newHue)
     {
         var colorHsl = Custom.RGB2HSL(color);
-        colorHsl.x = Mathf.Abs(newHue - Mathf.Floor(newHue));
+        colorHsl.x = Mathf.Abs(newHue % 1);
         color = colorHsl.HSL2RGB();
     }
 
     public static Color HSL2RGB(this Vector3 colorVec)
     {
         return Custom.HSL2RGB(colorVec.x, colorVec.y, colorVec.z);
+    }
+
+    public static Color HSLMultiLerp(IList<Color> map, float value)
+    { // Most Multilerp code was created by Vigaro, ask Vigaro if you can use them in your own work
+        List<Vector3> newMap = new List<Vector3>();
+        foreach (Color col in map)
+            newMap.Add(Custom.RGB2HSL(col));
+        
+        return V3MultiLerp(newMap, value).HSL2RGB();
+    } // HSLMultiLerp is a small mutation of it made by me, Elliot; feed it colors and get colors back, but internally
+      // work inside an HSL space for more vibrant transitioning.
+
+    public static Color RGBMultiLerp(IList<Color> map, float value)
+    {
+        value = Mathf.Clamp01(value);
+
+        var pos = Mathf.Lerp(0, map.Count - 1, value);
+        var a = Mathf.FloorToInt(pos);
+        var b = a + 1;
+        var lerpValue = pos - a;
+
+        if (b >= map.Count-1)
+        {
+            b = 0;
+            if (value >= 1) {
+                lerpValue = 1;
+            }
+        }
+
+        return Color.Lerp(map[a], map[b], lerpValue);
     }
 
     public static Color ColorFromHEX(string hex) //Apparently similar also exists in RWCustom.Custom; Whoops.
