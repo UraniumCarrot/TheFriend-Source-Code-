@@ -23,35 +23,44 @@ public partial class Extensions
     {
         return Custom.HSL2RGB(colorVec.x, colorVec.y, colorVec.z);
     }
+    public static Vector3 RGB2HSL(this Color color)
+    {
+        var col = Custom.RGB2HSL(color);
+        return new Vector3(col.x, col.y, col.z);
+    }
 
-    public static Color HSLMultiLerp(IList<Color> map, float value)
+    public static Color HSLMultiLerp(IList<Color> map, float value, bool cycle = false)
     { // Most Multilerp code was created by Vigaro, ask Vigaro if you can use them in your own work
         List<Vector3> newMap = new List<Vector3>();
         foreach (Color col in map)
             newMap.Add(Custom.RGB2HSL(col));
+        if (cycle) newMap.Add(Custom.RGB2HSL(map[0]));
         
         return V3MultiLerp(newMap, value).HSL2RGB();
     } // HSLMultiLerp is a small mutation of it made by me, Elliot; feed it colors and get colors back, but internally
       // work inside an HSL space for more vibrant transitioning.
 
-    public static Color RGBMultiLerp(IList<Color> map, float value)
+    public static Color RGBMultiLerp(IList<Color> map, float value, bool cycle = false)
     {
+        List<Color> newMap = new List<Color>();
+        foreach (Color col in map)
+            newMap.Add(col);
+        if (cycle) newMap.Add(map[0]);
         value = Mathf.Clamp01(value);
 
-        var pos = Mathf.Lerp(0, map.Count - 1, value);
+        var pos = Mathf.Lerp(0, newMap.Count - 1, value);
         var a = Mathf.FloorToInt(pos);
         var b = a + 1;
         var lerpValue = pos - a;
 
-        if (b >= map.Count-1)
+        if (b >= newMap.Count)
         {
-            b = 0;
-            if (value >= 1) {
+            b -= 1;
+            if (value >= 1) 
                 lerpValue = 1;
-            }
         }
 
-        return Color.Lerp(map[a], map[b], lerpValue);
+        return Color.Lerp(newMap[a], newMap[b], lerpValue);
     }
 
     public static Color ColorFromHEX(string hex) //Apparently similar also exists in RWCustom.Custom; Whoops.

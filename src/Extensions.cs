@@ -53,44 +53,51 @@ public static partial class Extensions
         return Mathf.FloorToInt(number);
     }
     
-    public static float FloatMultiLerp(IList<float> map, float value)
+    public static float FloatMultiLerp(IList<float> map, float value, bool cycle = false)
     { // Most Multilerp code was created by Vigaro, ask Vigaro if you can use them in your own work
+        List<float> newMap = new List<float>();
+        foreach (float fl in map)
+            newMap.Add(fl);
+        if (cycle) newMap.Add(map[0]);
         value = Mathf.Clamp01(value);
 
-        var pos = Mathf.Lerp(0, map.Count - 1, value);
+        var pos = Mathf.Lerp(0, newMap.Count - 1, value);
         var a = Mathf.FloorToInt(pos);
         var b = a + 1;
         var lerpValue = pos - a;
 
-        if (b >= map.Count-1)
+        if (b >= newMap.Count)
         {
-            b = 0;
-            if (value >= 1) {
+            b -= 1;
+            if (value >= 1)
                 lerpValue = 1;
-            }
         }
 
-        return Mathf.Lerp(map[a], map[b], lerpValue);
+        return Mathf.Lerp(newMap[a], newMap[b], lerpValue);
     }
     
-    public static Vector3 V3MultiLerp(IList<Vector3> map, float value)
+    public static Vector3 V3MultiLerp(IList<Vector3> map, float value, bool cycle = false)
     {
+        List<Vector3> newMap = new List<Vector3>();
+        foreach (Vector3 v3 in map)
+            newMap.Add(v3);
+        if (cycle) newMap.Add(map[0]);
         value = Mathf.Clamp01(value);
 
-        var pos = Mathf.Lerp(0, map.Count - 1, value);
+        var pos = Mathf.Lerp(0, newMap.Count - 1, value);
         var a = Mathf.FloorToInt(pos);
         var b = a + 1;
         var lerpValue = pos - a;
 
-        if (b >= map.Count-1)
+        if (b >= newMap.Count)
         {
-            b = 0;
+            b -= 1;
             if (value >= 1) {
                 lerpValue = 1;
             }
         }
 
-        return Vector3.Lerp(map[a], map[b], lerpValue);
+        return Vector3.Lerp(newMap[a], newMap[b], lerpValue);
     }
 
     public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> list)
