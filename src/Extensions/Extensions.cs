@@ -120,11 +120,11 @@ public static partial class Extensions
     /// <param name="type">The class the property originates from</param>
     /// <param name="propertyName">The name of the property;</param>
     /// <example>GetGetterMethodName(nameof(<paramref name="propertyName"/>))</example>
-    public static string GetGetterMethodName(this Type type, string propertyName)
+    public static string GetGetMethodName<T>(string propertyName)
     {
-        var result = type.GetProperty(propertyName)?.GetGetMethod().Name;
+        var result = typeof(T).GetProperty(propertyName)?.GetGetMethod().Name;
         if (result == null)
-            throw new ArgumentNullException($"Property {propertyName} of {type.Name} returned null!");
+            throw new ArgumentNullException($"Property {propertyName} of {typeof(T).Name} returned null!");
         return result;
     }
     /// <summary>
@@ -133,22 +133,22 @@ public static partial class Extensions
     /// <param name="type">The class the property originates from</param>
     /// <param name="propertyName">The name of the property;</param>
     /// <example>GetSetterMethodName(nameof(<paramref name="propertyName"/>))</example>
-    public static string GetSetterMethodName(this Type type, string propertyName)
+    public static string GetSetMethodName<T>(string propertyName)
     {
-        var result = type.GetProperty(propertyName)?.GetGetMethod().Name;
+        var result = typeof(T).GetProperty(propertyName)?.GetGetMethod().Name;
         if (result == null)
-            throw new ArgumentNullException($"Property {propertyName} of {type.Name} returned null!");
+            throw new ArgumentNullException($"Property {propertyName} of {typeof(T).Name} returned null!");
         return result;
     }
     //For ILHooking
     public static bool MatchGetterCall<T>(this Instruction i, string methodName)
     {
-        return i.MatchCallOrCallvirt<T>(typeof(T).GetGetterMethodName(methodName));
+        return i.MatchCallOrCallvirt<T>(GetGetMethodName<T>(methodName));
     }
     //For ILHooking
     public static bool MatchSetterCall<T>(this Instruction i, string methodName)
     {
-        return i.MatchCallOrCallvirt<T>(typeof(T).GetSetterMethodName(methodName));
+        return i.MatchCallOrCallvirt<T>(GetSetMethodName<T>(methodName));
     }
 
     #endregion
