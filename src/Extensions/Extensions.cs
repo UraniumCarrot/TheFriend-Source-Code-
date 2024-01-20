@@ -117,9 +117,9 @@ public static partial class Extensions
     /// <summary>
     /// Returns the name of the getter method for the property
     /// </summary>
-    /// <param name="type">The class the property originates from</param>
-    /// <param name="propertyName">The name of the property;</param>
-    /// <example>GetGetterMethodName(nameof(<paramref name="propertyName"/>))</example>
+    /// <param name="T">The class the property originates from</param>
+    /// <param name="propertyName">The name of the property</param>
+    /// <example><code>GetGetMethodName&lt;MyClass&gt;(nameof(MyClass.MyProperty))</code></example>
     public static string GetGetMethodName<T>(string propertyName)
     {
         var result = typeof(T).GetProperty(propertyName)?.GetGetMethod().Name;
@@ -128,11 +128,11 @@ public static partial class Extensions
         return result;
     }
     /// <summary>
-    /// Returns the name of the setter method for the property
+    /// Returns the name of the getter method for the property
     /// </summary>
-    /// <param name="type">The class the property originates from</param>
-    /// <param name="propertyName">The name of the property;</param>
-    /// <example>GetSetterMethodName(nameof(<paramref name="propertyName"/>))</example>
+    /// <param name="T">The class the property originates from</param>
+    /// <param name="propertyName">The name of the property</param>
+    /// <example><code>GetSetMethodName&lt;MyClass&gt;(nameof(MyClass.MyProperty))</code></example>
     public static string GetSetMethodName<T>(string propertyName)
     {
         var result = typeof(T).GetProperty(propertyName)?.GetGetMethod().Name;
