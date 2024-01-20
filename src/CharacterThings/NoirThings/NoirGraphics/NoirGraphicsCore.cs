@@ -84,7 +84,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                 }
             }
             tailArray[(self.tail.Length - 1) * 4] = new TriangleMesh.Triangle((self.tail.Length - 1) * 4, (self.tail.Length - 1) * 4 + 1, (self.tail.Length - 1) * 4 + 2);
-            sleaser.sprites[TailSpr] = new TriangleMesh("Futile_White", tailArray, false, false);
+            sleaser.sprites[TailSpr] = new TriangleMesh(NoirTail, tailArray, false, false);
 
             var earArray = new TriangleMesh.Triangle[(noirData.Ears[0].Length - 1) * 4 + 1];
             for (var i = 0; i < noirData.Ears[0].Length - 1; i++)
@@ -98,7 +98,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
             earArray[(noirData.Ears[0].Length - 1) * 4] = new TriangleMesh.Triangle((noirData.Ears[0].Length - 1) * 4, (noirData.Ears[0].Length - 1) * 4 + 1, (noirData.Ears[0].Length - 1) * 4 + 2);
             foreach (var sprNum in noirData.EarSpr)
             {
-                sleaser.sprites[sprNum] = new TriangleMesh("Futile_White", earArray, false, false);
+                sleaser.sprites[sprNum] = new TriangleMesh(NoirEars, earArray, false, false);
             }
             #endregion
 
@@ -134,13 +134,26 @@ public partial class NoirCatto //Sprite replacement and layer management is here
 
             #endregion
 
-            #region Recoloring eyes
+            #region Recoloring Sprites
 
             Color? eyeColor = null;
+            Color? bodyColor = null;
+            Color? fluffColor = null;
+            var playerNum = self.player.playerState.playerNumber;
+
             if (PlayerGraphics.CustomColorsEnabled())
+            {
                 eyeColor = PlayerColor.GetCustomColor(self, CustomColorEyes);
-            if (CharacterTools.TryGetCustomJollyColor(self.player.playerState.playerNumber, CustomColorEyes, out var customColor))
-                eyeColor = customColor;
+                bodyColor = PlayerColor.GetCustomColor(self, CustomColorBody);
+                fluffColor = PlayerColor.GetCustomColor(self, CustomColorFluff);
+            }
+            if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorEyes, out var customColorEye))
+                eyeColor = customColorEye;
+            if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorBody, out var customColorBody))
+                bodyColor = customColorBody;
+            if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorFluff, out var customColorFluff))
+                fluffColor = customColorFluff;
+
             if (eyeColor != null && eyeColor.Value != NoirBlueEyesDefault) //Don't replace default color
             {
                 var faceNames = new List<string>(); //I could just get this from Futile.atlasManager._allElementsByName, but I don't like something about that approach
@@ -153,11 +166,34 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                 foreach (var name in faceNames)
                 {
                     var texture = GetTextureFromFAtlasElement(Futile.atlasManager.GetElementWithName(name), EyeTexture);
-                    texture.RecolorTextureMagically(NoirBlueEyes, eyeColor.Value);
                     texture.name = name;
+                    texture.RecolorTextureMagically(NoirBlueEyes, eyeColor.Value);
                     noirData.ElementFromTexture(texture, true);
                 }
             }
+
+            var recolorBlack = bodyColor != null && bodyColor.Value != NoirBlack;
+            var recolorWhite = fluffColor != null && fluffColor.Value != NoirWhite;
+            if (recolorBlack || recolorWhite)
+            {
+                var tailTexture = TailTexture.Clone();
+                tailTexture.name = NoirTail;
+
+                if (recolorBlack) tailTexture.RecolorTexture(NoirBlack, bodyColor.Value);
+                if (recolorWhite) tailTexture.RecolorTexture(NoirWhite, fluffColor.Value);
+                noirData.ElementFromTexture(tailTexture, true);
+
+                for (var i = 0; i < noirData.EarSpr.Length; i++)
+                {
+                    var earTexture = EarTexture.Clone();
+                    earTexture.name = NoirEars + "_" + i;
+
+                    if (recolorBlack) earTexture.RecolorTexture(NoirBlack, bodyColor.Value);
+                    if (recolorWhite) earTexture.RecolorTexture(NoirWhite, fluffColor.Value);
+                    noirData.ElementFromTexture(earTexture, true);
+                }
+            }
+
 
             #endregion
 
@@ -284,21 +320,51 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         AttachLightSprite(noirData.SlugSpr[LightNoseFaceSpr], FaceSpr, sleaser, NoirLight + "Nose");
         #endregion
 
-        //Recoloring eyes
+        #region Recoloring sprites
+        sleaser.sprites[FaceSpr].color = Color.white;
+
+        Color? eyeColor = null;
+        Color? bodyColor = null;
+        Color? fluffColor = null;
+        var playerNum = self.player.playerState.playerNumber;
+
+        if (PlayerGraphics.CustomColorsEnabled())
+        {
+            eyeColor = PlayerColor.GetCustomColor(self, CustomColorEyes);
+            bodyColor = PlayerColor.GetCustomColor(self, CustomColorBody);
+            fluffColor = PlayerColor.GetCustomColor(self, CustomColorFluff);
+        }
+        if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorEyes, out var customColorEye))
+            eyeColor = customColorEye;
+        if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorBody, out var customColorBody))
+            bodyColor = customColorBody;
+        if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorFluff, out var customColorFluff))
+            fluffColor = customColorFluff;
+
         if (sleaser.sprites[FaceSpr].element.name.StartsWith(Noir)) //For DMS compatibility :)
         {
-            sleaser.sprites[FaceSpr].color = Color.white;
-
-            Color? eyeColor = null;
-            if (PlayerGraphics.CustomColorsEnabled())
-                eyeColor = PlayerColor.GetCustomColor(self, CustomColorEyes);
-            if (CharacterTools.TryGetCustomJollyColor(self.player.playerState.playerNumber, CustomColorEyes, out var customColor))
-                eyeColor = customColor;
             if (eyeColor != null && eyeColor.Value != NoirBlueEyesDefault)
+                sleaser.sprites[FaceSpr].element = Futile.atlasManager.GetElementWithName(sleaser.sprites[FaceSpr].element.name + "_" + playerNum);
+        }
+        if (sleaser.sprites[TailSpr].element.name.StartsWith(Noir))
+        {
+            if ((bodyColor != null && bodyColor.Value != NoirBlack) || (fluffColor != null && fluffColor.Value != NoirWhite))
+                sleaser.sprites[TailSpr].element = Futile.atlasManager.GetElementWithName(NoirTail + "_" + playerNum);
+            ApplyMeshTexture(sleaser.sprites[TailSpr] as TriangleMesh);
+        }
+        for (var i = 0; i < noirData.EarSpr.Length; i++)
+        {
+            var EarSprite = noirData.EarSpr[i];
+            var name = NoirEars + "_" + i;
+            if (sleaser.sprites[EarSprite].element.name.StartsWith(Noir))
             {
-                sleaser.sprites[FaceSpr].element = Futile.atlasManager.GetElementWithName(sleaser.sprites[FaceSpr].element.name + "_" + self.player.playerState.playerNumber);
+                if ((bodyColor != null && bodyColor.Value != NoirBlack) || (fluffColor != null && fluffColor.Value != NoirWhite))
+                    sleaser.sprites[EarSprite].element = Futile.atlasManager.GetElementWithName(name + "_" + playerNum);
+                ApplyMeshTexture(sleaser.sprites[EarSprite] as TriangleMesh);
             }
         }
+
+        #endregion
     }
     private static void PlayerGraphicsOnApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
     {
@@ -359,49 +425,6 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                     sleaser.sprites[index].color = color;
                 else
                     sleaser.sprites[index].color = NoirPurple;
-            }
-        }
-
-        if (sleaser.sprites[TailSpr] is TriangleMesh tailMesh)
-        {
-            var tailTexture = TailTexture.Clone();
-            tailTexture.name = nameof(TailTexture);
-            if (PlayerGraphics.CustomColorsEnabled())
-            {
-                tailTexture.RecolorTexture(NoirBlack, PlayerColor.GetCustomColor(self, CustomColorBody));
-                tailTexture.RecolorTexture(NoirWhite, PlayerColor.GetCustomColor(self, CustomColorFluff));
-            }
-            else
-            {
-                if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorBody, out var color))
-                    tailTexture.RecolorTexture(NoirBlack, color);
-                if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorFluff, out var color2))
-                    tailTexture.RecolorTexture(NoirWhite, color2);
-            }
-            tailMesh.element = noirData.ElementFromTexture(tailTexture, true);
-            ApplyMeshTexture(tailMesh);
-        }
-
-        for (var i = 0; i < noirData.EarSpr.Length; i++)
-        {
-            if (sleaser.sprites[noirData.EarSpr[i]] is TriangleMesh earMesh)
-            {
-                var earTexture = EarTexture.Clone();
-                earTexture.name = nameof(EarTexture) + "_" + i;
-                if (PlayerGraphics.CustomColorsEnabled())
-                {
-                    earTexture.RecolorTexture(NoirBlack, PlayerColor.GetCustomColor(self, CustomColorBody));
-                    earTexture.RecolorTexture(NoirWhite, PlayerColor.GetCustomColor(self, CustomColorFluff));
-                }
-                else
-                {
-                    if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorBody, out var color))
-                        earTexture.RecolorTexture(NoirBlack, color);
-                    if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorFluff, out var color2))
-                        earTexture.RecolorTexture(NoirWhite, color2);
-                }
-                earMesh.element = noirData.ElementFromTexture(earTexture, true);
-                ApplyMeshTexture(earMesh);
             }
         }
     }
@@ -515,6 +538,8 @@ public partial class NoirCatto //Sprite replacement and layer management is here
 
     private static void ApplyMeshTexture(TriangleMesh triMesh) //Code adapted from SlimeCubed's CustomTails
     {
+        if (triMesh == null) return;
+
         if (triMesh.verticeColors == null || triMesh.verticeColors.Length != triMesh.vertices.Length)
         {
             triMesh.verticeColors = new Color[triMesh.vertices.Length];
