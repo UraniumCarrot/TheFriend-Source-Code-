@@ -16,14 +16,6 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":309,"h":435},
 	"sourceSize": {"w":309,"h":435}
 },
-"symbolpilgrim.png":
-{
-	"frame": {"x":651,"y":2,"w":247,"h":438},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":247,"h":438},
-	"sourceSize": {"w":247,"h":438}
-},
 "symbolpoacher.png":
 {
 	"frame": {"x":900,"y":2,"w":459,"h":417},

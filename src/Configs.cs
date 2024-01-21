@@ -50,10 +50,4 @@ public class Configs
     public static bool NoirAttractiveMeow => RemixMain.NoirAttractiveMeow.Value;
     public static KeyCode NoirMeowKey => RemixMain.NoirMeowKey.Value;
     #endregion
-    
-    #region deluge
-    #endregion
-    
-    #region believer
-    #endregion
 }

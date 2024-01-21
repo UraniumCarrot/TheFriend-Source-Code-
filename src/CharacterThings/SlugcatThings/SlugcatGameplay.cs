@@ -4,8 +4,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
 using SlugBase;
-using TheFriend.CharacterThings.BelieverThings;
-using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
 using TheFriend.DragonRideThings;
 using TheFriend.FriendThings;
@@ -36,7 +34,7 @@ public class SlugcatGameplay
         On.Player.checkInput += Player_checkInput;
         On.SlugcatStats.SlugcatCanMaul += SlugcatStats_SlugcatCanMaul;
         On.SlugcatStats.ctor += SlugcatStats_ctor;
-        
+
         IL.Player.MovementUpdate += PlayerOnMovementUpdate;
     }
 
@@ -53,21 +51,19 @@ public class SlugcatGameplay
         cursor.MoveAfterLabels();
 
         cursor.Emit(OpCodes.Ldarg_0);
-        cursor.EmitDelegate((int originalDistance, Player self) => 
-            (self.TryGetFriend(out _) && Configs.CharHeight) ? originalDistance+4 : 
-            (self.TryGetPoacher(out _) && Configs.CharHeight) ? originalDistance-3 :
+        cursor.EmitDelegate((int originalDistance, Player self) =>
+            (self.TryGetFriend(out _) && Configs.CharHeight) ? originalDistance + 4 :
+            (self.TryGetPoacher(out _) && Configs.CharHeight) ? originalDistance - 3 :
             originalDistance);
     }
 
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
-    
+
     public static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
     {
         var mine = self.grasps[grasp].grabbed as BoomMine;
-        if (self.TryGetBeliever(out _)) 
-            BelieverGameplay.PacifistThrow(self, grasp, eu);
-        
+
         orig(self, grasp, eu);
         if (mine != null) mine.ExplodeTimer = 5;  // Boommine cooldown reduction if thrown
     }
@@ -78,11 +74,11 @@ public class SlugcatGameplay
 
         for (int i = 0; i < 2; i++)
         {
-            if (self.grasps[i]?.grabbed is Lizard liz && 
-                liz.GetLiz() != null && 
-                liz.GetLiz().IsRideable && 
-                !liz.dead && 
-                !liz.Stunned && 
+            if (self.grasps[i]?.grabbed is Lizard liz &&
+                liz.GetLiz() != null &&
+                liz.GetLiz().IsRideable &&
+                !liz.dead &&
+                !liz.Stunned &&
                 liz.AI?.LikeOfPlayer(liz.AI?.tracker?.RepresentationForCreature(self.abstractCreature, true)) > 0)
             {
                 if (!liz.GetLiz().boolseat0)
@@ -103,46 +99,43 @@ public class SlugcatGameplay
     public static bool Weapon_HitThisObject(On.Weapon.orig_HitThisObject orig, Weapon self, PhysicalObject obj)
     { // Lizard mount will not be hit by owner's weapons
         if (obj is Lizard liz &&
-            liz.GetLiz().rider != null && 
-            self.thrownBy is Player pl && 
-            pl.GetGeneral().dragonSteed == liz) 
+            liz.GetLiz().rider != null &&
+            self.thrownBy is Player pl &&
+            pl.GetGeneral().dragonSteed == liz)
             return false;
         else return orig(self, obj);
     }
-    
+
     public static Player.ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
-    { 
+    {
         if (obj is Lizard liz)
         { // Lizard grabability for dragonriding and young lizards
             var grab = DragonRiding.LizardGrabability(self, liz);
-        
+
             if (grab == Player.ObjectGrabability.TwoHands)
                 return orig(self, obj);
             else return grab;
         }
-        
-        if (self.TryGetPoacher( out var poacher) && poacher.IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
+
+        if (self.TryGetPoacher(out var poacher) && poacher.IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
         if (obj is FakePlayerEdible edible) return edible.grabability;
         return orig(self, obj);
     }
     public static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
-        
-        if (self.GetGeneral().iHaveSenses) 
+
+        if (self.GetGeneral().iHaveSenses)
             SensoryHolograms.PlayerSensesUpdate(self);
-        
+
         if (self?.room == null) { Debug.Log("Solace: Player returned null, cancelling PlayerUpdate code"); return; }
-        
+
         if (self.TryGetPoacher(out _))
             PoacherGameplay.PoacherUpdate(self, eu);
-        
+
         if (self.TryGetFriend(out _))
             FriendGameplay.FriendUpdate(self, eu);
-        
-        if (self.TryGetDeluge(out _))
-            DelugeGameplay.DelugeUpdate(self, eu);
-        
+
         //var coord = self.abstractCreature.pos;
         //Debug.Log("Your room coordinate is: room " + coord.room + ", x " + coord.x + ", y " + coord.y + ", abstractNode " + coord.abstractNode);
         // Moon mark
@@ -158,7 +151,7 @@ public class SlugcatGameplay
             self.aerobicLevel = (self.slugcatStats.bodyWeightFac < 0.5f) ? 1.5f : 1.1f;
             (self.graphicsModule as PlayerGraphics).head.vel += Custom.RNV() * 0.2f;
         }
-        
+
         // Dragonriding
         if (self.GetGeneral().grabCounter > 0) // Stops player from getting slam dunked into the floor when they dismount
         {
@@ -193,7 +186,7 @@ public class SlugcatGameplay
                 }
             }
             catch (Exception e) { Debug.Log("Solace: Exception occurred in Player.Update LizRide" + e); }
-            
+
             DragonRiding.DragonRiderPoint(self);
         }
     }
@@ -206,7 +199,7 @@ public class SlugcatGameplay
         }
         catch (Exception e) { Debug.Log("Solace: Exception occurred in Player.GraphicsModuleUpdated" + e); }
     }
-    
+
     public static bool SlugcatStats_SlugcatCanMaul(On.SlugcatStats.orig_SlugcatCanMaul orig, SlugcatStats.Name slugcatNum)
     {
         if (slugcatNum == FriendName)
@@ -221,12 +214,9 @@ public class SlugcatGameplay
         {
             if (self.TryGetFriend(out _))
                 FriendGameplay.FriendConstructor(self);
-            
+
             if (self.TryGetPoacher(out _))
                 PoacherGameplay.PoacherConstructor(self);
-            
-            if (self.TryGetDeluge(out _))
-                DelugeGameplay.DelugeConstructor(self);
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
     }
@@ -239,29 +229,27 @@ public class SlugcatGameplay
     public static void Player_Jump(On.Player.orig_Jump orig, Player self)
     {
         bool isFriend = self.TryGetFriend(out _);
-        
-        if (isFriend) 
+
+        if (isFriend)
             FriendGameplay.FriendJump1(self);
-        
+
         orig(self);
-        
+
         if (self.TryGetPoacher(out _) && Configs.PoacherJumpNerf)
             PoacherGameplay.PoacherJump(self);
         else if (isFriend)
             FriendGameplay.FriendJump2(self);
-        else if (self.TryGetDeluge(out _)) 
-            DelugeGameplay.DelugeSiezeJump(self);
     }
     public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
-    { 
+    {
         orig(self);
         if (self.TryGetFriend(out _))
-            FriendGameplay.FriendLedgeFix(self); 
+            FriendGameplay.FriendLedgeFix(self);
     }
     public static void Player_WallJump(On.Player.orig_WallJump orig, Player self, int direction)
-    { 
+    {
         orig(self, direction);
-        if (self.TryGetFriend(out _)) 
+        if (self.TryGetFriend(out _))
             FriendGameplay.FriendWalljumpFix(self);
     }
     public static void SlugcatStats_ctor(On.SlugcatStats.orig_ctor orig, SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
@@ -274,13 +262,13 @@ public class SlugcatGameplay
     {
         var timer = self.GetFriend().poleSuperJumpTimer;
         orig(self);
-        
+
         //Moving all inputs one slot up
         for (var i = self.GetGeneral().UnchangedInputForLizRide.Length - 1; i > 0; i--)
         {
             self.GetGeneral().UnchangedInputForLizRide[i] = self.GetGeneral().UnchangedInputForLizRide[i - 1];
         }
-        
+
         //Copying original unmodified input
         self.GetGeneral().UnchangedInputForLizRide[0] = self.input[0];
         // Elliot note: Thanks Noir <3
@@ -292,10 +280,7 @@ public class SlugcatGameplay
             self.input[0].jmp = false;
         }
 
-        if (self.TryGetFriend(out _)) 
+        if (self.TryGetFriend(out _))
             FriendGameplay.FriendLeapController(self, timer);
-
-        if (self.TryGetDeluge(out _)) 
-            DelugeGameplay.DelugeSprintCheck(self);
     }
 }

@@ -166,8 +166,6 @@ public class MainMenu
         if (name.Contains(Plugin.FriendName.value) ||
             name.Contains(Plugin.DragonName.value) ||
             name.Contains(Plugin.NoirName.value) ||
-            name.Contains(Plugin.BelieverName.value) ||
-            name.Contains(Plugin.DelugeName.value) ||
             name.Contains(MoreSlugcats.MoreSlugcatsEnums.SlugcatStatsName.Saint.value))
             return true;
         return false;
