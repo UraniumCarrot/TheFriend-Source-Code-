@@ -3,9 +3,9 @@ using DevInterface;
 using Fisobs.Core;
 using Fisobs.Creatures;
 using MoreSlugcats;
-using TheFriend.DragonRideThings;
 using UnityEngine;
 using RWCustom;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 
 namespace TheFriend.Creatures.LizardThings.PilgrimLizard;
 public class PilgrimLizardCritob : Critob
@@ -110,8 +110,7 @@ public class PilgrimLizardCritob : Critob
         var state = Random.state;
         Random.InitState(abstractCreature.ID.RandomSeed);
         self.effectColor = Color.red;
-        AbstractCreature creature = self.abstractCreature;
-        self.GetLiz().IsRideable = false;
+        self.Liz().RideEnabled = false;
         Random.state = state;
     }
 

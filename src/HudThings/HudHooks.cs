@@ -45,7 +45,7 @@ public class HudHooks
                 self.mySoundLoopID = MoreSlugcats.MoreSlugcatsEnums.MSCSoundID.Sleep_Blizzard_Loop;
             }
 
-            if (package.saveState.miscWorldSaveData.GetSlugBaseData().TryGet("MothersKilledInRegionStr", out List<string> killedInRegion) && killedInRegion.Any())
+            if (package.saveState.miscWorldSaveData.GetSlugBaseData().TryGet(Plugin.MothersKilled, out List<string> killedInRegion) && killedInRegion.Any())
             {
                 if (self.pages[0].subObjects.FirstOrDefault(i => i is MoreSlugcats.CollectiblesTracker) is not MoreSlugcats.CollectiblesTracker tracker) return;
                 self.pages[0].subObjects.Add(new MotherKillTracker(

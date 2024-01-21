@@ -1,9 +1,10 @@
-﻿using MoreSlugcats;
+﻿using System.Linq;
+using MoreSlugcats;
 using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 
-namespace TheFriend.DragonRideThings;
+namespace TheFriend.Creatures.LizardThings.DragonRideThings;
 
 public class LizardRideControl
 {
@@ -15,14 +16,14 @@ public class LizardRideControl
     public static void LizardOnUpdate(On.Lizard.orig_Update orig, Lizard self, bool eu)
     {
         orig(self, eu);
-        if (self.GetLiz().rider != null)
+        if (self.Liz().mainRiders.Any())
         {
             self.AI.behavior = LizardAI.Behavior.FollowFriend;
             var breedparams = self.Template.breedParameters as LizardBreedParams;
             float runspeed = breedparams.baseSpeed/3;
             float swimspeed = breedparams.swimSpeed;
 
-            var rider = self.GetLiz().rider;
+            var rider = self.Liz().mainRiders.First(x => x != null);
             var input = rider.GetGeneral().UnchangedInputForLizRide;
             Vector2 inputvec = new Vector2(input[0].x, input[0].y);
             DragonRiding.DragonRideCommands(self,rider);
@@ -31,7 +32,7 @@ public class LizardRideControl
             if (input[0].AnyDirectionalInput)
             {
                 // modified rideable lizards code, thanks noir <3
-                if ((self.Submersion > 0.5f && self.GetLiz().aquatic) || self.room.GetTile(self.mainBodyChunk.pos).WaterSurface)
+                if ((self.Submersion > 0.5f && self.Liz().aquatic) || self.room.GetTile(self.mainBodyChunk.pos).WaterSurface)
                 {
                     self.mainBodyChunk.vel.y += Custom.DirVec(self.mainBodyChunk.pos, self.mainBodyChunk.pos + (inputvec * 20)).y * Mathf.Lerp(1.4f, 1.0f, 0.1f) * swimspeed; //Surprisingly, thi s works well enough.
                     self.mainBodyChunk.vel.x += Custom.DirVec(self.mainBodyChunk.pos, self.mainBodyChunk.pos + (inputvec * 20)).x * Mathf.Lerp(1.4f, 1.0f, 0.1f) * swimspeed; //Horizontal boost for some slower lizzies

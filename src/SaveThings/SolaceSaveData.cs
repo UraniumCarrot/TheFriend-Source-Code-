@@ -4,6 +4,7 @@ using System.Linq;
 using On.MoreSlugcats;
 using RWCustom;
 using SlugBase.SaveData;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.SlugcatThings;
 using TheFriend.WorldChanges;
 using UnityEngine;
@@ -25,16 +26,10 @@ public class SolaceSaveData
         if (!self.room.game.IsStorySession) return;
         if (self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData()
             .TryGet(Plugin.MothersKilled, out List<string> regionsKilledInStr))
-        {
             if (regionsKilledInStr.Contains(self.room.world.name.ToLower()))
-            {
                 FriendWorldState.customLock = true;
-            }
             else
-            {
                 FriendWorldState.customLock = false;
-            }
-        }
         else FriendWorldState.customLock = false;
     }
 
@@ -43,10 +38,14 @@ public class SolaceSaveData
         orig(self);
         if (self.room == null) return;
         if (!self.room.game.IsStorySession) return;
-        if (self.Template.type == CreatureTemplateType.MotherLizard && self.killTag.realizedCreature is Player player)
+
+        if (self is Lizard liz)
         {
-            if (player.room == null) return;
-            else MotherKilled(player);
+            if (self.Template.type == CreatureTemplateType.MotherLizard && self.killTag.realizedCreature is Player player)
+                MotherKilled(player);
+            if (self.TryGetLiz(out var data) && data.seats.Any())
+                foreach (DragonRiderSeat seat in data.seats) seat.Destroy();
+            liz.Liz().RideEnabled = false;
         }
     }
 

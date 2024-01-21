@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using LizardCosmetics;
-using MoreSlugcats;
 using RWCustom;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.Creatures.LizardThings.FreeLizardCosmetics;
+using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Unique;
 using TheFriend.Creatures.LizardThings.MotherLizard;
 using TheFriend.Creatures.LizardThings.PilgrimLizard;
 using TheFriend.Creatures.LizardThings.YoungLizard;
-using TheFriend.SlugcatThings;
-using TheFriend.DragonRideThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
@@ -28,12 +25,6 @@ public class Hooks
         On.Lizard.Update += Lizard_Update;
         On.LizardAI.IUseARelationshipTracker_UpdateDynamicRelationship += LizardAI_IUseARelationshipTracker_UpdateDynamicRelationship;
 
-        On.LizardAI.SocialEvent += LizardAI_SocialEvent;
-        On.Creature.NewRoom += Creature_NewRoom;
-        On.Player.IsCreatureLegalToHoldWithoutStun += Player_IsCreatureLegalToHoldWithoutStun;
-        On.Creature.Grab += Creature_Grab;
-        WormGrassImmunizer.Apply();
-
         On.LizardGraphics.ctor += LizardGraphics_ctor;
         On.LizardGraphics.ApplyPalette += LizardGraphics_ApplyPalette;
         On.LizardGraphics.BodyColor += LizardGraphics_BodyColor;
@@ -41,6 +32,8 @@ public class Hooks
         On.LizardGraphics.InitiateSprites += LizardGraphics_InitiateSprites;
         On.LizardGraphics.AddToContainer += LizardGraphics_AddToContainer;
         On.LizardGraphics.DrawSprites += LizardGraphics_DrawSprites;
+        
+        LizardRideFixes.Apply();
         LizardCosmeticHooks.Apply();
     }
 
@@ -112,14 +105,9 @@ public class Hooks
         if (Configs.LizRideAll && 
             self.Template.type != CreatureTemplateType.YoungLizard && 
             self.Template.type != CreatureTemplateType.MotherLizard) 
-            self.GetLiz().IsRideable = true;
+            self.Liz().RideEnabled = true;
 
-        // Is this lizard aquatic? (Allows swimming during LizRide)
-        if (self.Template.type == CreatureTemplate.Type.Salamander ||
-            self.Template.type == MoreSlugcatsEnums.CreatureTemplateType.EelLizard)
-            self.GetLiz().aquatic = true;
-
-        // Properly randomize each kind of new lizard
+        // Properly randomize and construct each kind of new lizard
         if (self.Template.type == CreatureTemplateType.MotherLizard)
             MotherLizardCritob.MotherLizardCtor(self, abstractCreature, world);
         else if (self.Template.type == CreatureTemplateType.YoungLizard)
@@ -153,100 +141,46 @@ public class Hooks
     }
     public static void Lizard_Update(On.Lizard.orig_Update orig, Lizard self, bool eu)
     {
-        try { orig(self, eu); }
-        catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update orig " + e); }
-        if (self == null) return;
+        orig(self, eu);
+        if (self.room == null) return;
         if (self.Template.type == CreatureTemplateType.PilgrimLizard) self.Destroy(); // TODO: GET RID OF THIS LATER
+        
+        if (!self.dead && self.LizardState?.health > 0f && self.Template?.type == CreatureTemplateType.YoungLizard)
+            self.LizardState.health = Mathf.Min(0.5f, self.LizardState.health + 0.001f); // young lizard health regen
+        
+        LizardRideFixes.LizardRideabilityAndSeats(self);
+        
         try
         {
-            if (self.GetLiz() != null)
-            {
-                self.GetLiz().seat0 = Vector2.Lerp(self.bodyChunks[1].pos, self.bodyChunks[0].pos, 0.5f) + new Vector2(0, 15);
-            }
-            if (!self.dead && self.LizardState?.health > 0f && self.Template?.type == CreatureTemplateType.YoungLizard)
-            {
-                self.LizardState.health = Mathf.Min(0.5f, self.LizardState.health + 0.001f);
-            }
-            if (self.grabbedBy?.Count > 0 && self.grabbedBy[0]?.grabber is Player player && self.grabbedBy[0]?.grabber is not null)
-            {
-                if (self.Template?.type == CreatureTemplateType.YoungLizard)
-                {
-                    self.grabbedAttackCounter = 0;
-                    self.JawOpen = 0;
-                }
-                if ((self.Template?.type == CreatureTemplateType.MotherLizard || 
-                     self.GetLiz().IsRideable) && 
-                    self.AI?.LikeOfPlayer(self.AI?.tracker?.RepresentationForCreature(player.abstractCreature, true)) > 0)
-                {
-                    self.grabbedAttackCounter = 0;
-                    self.JawOpen = 0;
-                }
-            }
+            var data = self.Liz();
+            
+            if (data.seats.Any())
+                foreach (DragonRiderSeat seat in data.seats) seat.Update(eu);
+            
+            if (self.AI?.focusCreature?.representedCreature != null)
+                data.target = self.AI.focusCreature.representedCreature;
+            else data.target = null;
+            
+            if (self.grabbedBy?.Count > 0 && self.grabbedBy[0]?.grabber is Player pl)
+                if (self.Template?.type == CreatureTemplateType.YoungLizard || data.DoILikeYou(pl))
+                    LizardRideFixes.LizardNoBiting(self);
         }
         catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update GeneralLizardCode " + e); }
-        if (self.GetLiz() != null && self?.GetLiz()?.rider != null)
-        {
-            if (self?.graphicsModule != null) (self?.graphicsModule as LizardGraphics)?.BringSpritesToFront();
-            try
-            {
-                if (self?.room?.GetTile(self.firstChunk.pos)?.Solid == true)
-                {
-                    if (self?.firstChunk?.collideWithTerrain == true && self?.room?.GetTile(self.firstChunk.lastPos)?.Solid == true && self?.room?.GetTile(self.firstChunk.lastLastPos)?.Solid == true && self.GetLiz().lastOutsideTerrainPos.HasValue)
-                    {
-                        Debug.Log("Solace: Resetting ridden lizard to outside terrain");
-                        for (int i = 0; i < self?.bodyChunks?.Length; i++)
-                        {
-                            self.bodyChunks[i].HardSetPosition(self.GetLiz().lastOutsideTerrainPos.Value + Custom.RNV() * Random.value);
-                            self.bodyChunks[i].vel /= 2f;
-                        }
-                    }
-                }
-                else if (self != null) self.GetLiz().lastOutsideTerrainPos = self.firstChunk.pos;
-            }
-            catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update LizardRideTerrainPositionReset" + e); }
-        }
-        else if (self?.Template?.type == CreatureTemplateType.MotherLizard) for (int i = 0; i < self?.bodyChunks?.Length; i++) self.bodyChunks[i].mass = 10;
-        try
-        {
-            WormGrassImmunizer.WormGrassLizardRepulsor(self);
-        }
-        catch (Exception e) { Debug.Log("Solace: Exception happened in Lizard.Update WormGrassRepulse " + e); }
-    }
-    #endregion
-    #region misc data
-    public static void LizardAI_SocialEvent(On.LizardAI.orig_SocialEvent orig, LizardAI self, SocialEventRecognizer.EventID ID, Creature subjectCrit, Creature objectCrit, PhysicalObject involvedItem)
-    {
-        if (self.lizard.GetLiz().rider != null && subjectCrit is Player pl && pl?.GetGeneral()?.dragonSteed == self.lizard) return;
-        else orig(self, ID, subjectCrit, objectCrit, involvedItem);
-    }
-    public static void Creature_NewRoom(On.Creature.orig_NewRoom orig, Creature self, Room newRoom)
-    {
-        orig(self, newRoom);
-        if (self is Lizard liz && liz.GetLiz() != null) liz.GetLiz().lastOutsideTerrainPos = null;
-    }
-    public static bool Player_IsCreatureLegalToHoldWithoutStun(On.Player.orig_IsCreatureLegalToHoldWithoutStun orig, Player self, Creature grabCheck)
-    {
-        return grabCheck is Lizard liz && 
-            (liz.Template.type == CreatureTemplateType.YoungLizard || liz.Template.type == CreatureTemplateType.MotherLizard) 
-            || orig(self, grabCheck);
-    }
-    public static bool Creature_Grab(On.Creature.orig_Grab orig, Creature self, PhysicalObject obj, int graspUsed, int chunkGrabbed, Creature.Grasp.Shareability shareability, float dominance, bool overrideEquallyDominant, bool pacifying)
-    {
-        if (self is Player && 
-            obj is Lizard liz && 
-            (liz.Template.type == CreatureTemplateType.YoungLizard || 
-             liz.Template.type == CreatureTemplateType.MotherLizard))
-        {
-            shareability = Creature.Grasp.Shareability.CanNotShare;
-            pacifying = false;
-        }
-        return orig(self, obj, graspUsed, chunkGrabbed, shareability, dominance, overrideEquallyDominant, pacifying);
+        
+        if (self.Liz().mainRiders.Count > 0)
+            DragonRiding.DragonRideTerrainReset(self);
     }
     #endregion
     #region lizard cosmetics
     public static void LizardGraphics_ctor(On.LizardGraphics.orig_ctor orig, LizardGraphics self, PhysicalObject ow)
     {
         orig(self, ow);
+
+        if (self.lizard.abstractCreature.Liz().blockCosmetics)
+        {
+            self.cosmetics.Clear();
+            self.extraSprites = 0;
+        }
         var state = Random.state;
         Random.InitState(self.lizard.abstractCreature.ID.RandomSeed);
         
@@ -299,6 +233,15 @@ public class Hooks
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         
+        // just... Don't touch this.
+        float dark = 1f - Mathf.Pow(0.5f + 0.5f * Mathf.Sin(Mathf.Lerp(self.lastBlink, self.blink, timeStacker) * 2f * (float)Math.PI), 1.5f + self.lizard.AI.excitement * 1.5f);
+        if (self.headColorSetter != 0f)
+            dark = Mathf.Lerp(dark, (self.headColorSetter > 0f) ? 1f : 0f, Mathf.Abs(self.headColorSetter));
+        if (self.flicker > 10)
+            dark = self.flickerColor;
+        dark = Mathf.Lerp(dark, Mathf.Pow(Mathf.Max(0f, Mathf.Lerp(self.lastVoiceVisualization, self.voiceVisualization, timeStacker)), 0.75f), Mathf.Lerp(self.lastVoiceVisualizationIntensity, self.voiceVisualizationIntensity, timeStacker));
+        self.lizard.Liz().dark = dark;
+
         // Motherlizard custom head
         if (self.lizard.Template.type == CreatureTemplateType.MotherLizard)
             MotherLizardGraphics.MotherLizardDrawSprites(self,sLeaser);

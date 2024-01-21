@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using Color = UnityEngine.Color;
-using UnityEngine;
+using MoreSlugcats;
 
 namespace TheFriend.PoacherThings;
 
@@ -22,15 +21,19 @@ public static class PoacherCWT
     public static readonly ConditionalWeakTable<Player, Poacher> CWT = new();
     public static Poacher GetPoacher(this Player player) => CWT.GetValue(player, _ => new(player));
 
-    public static bool TryGetPoacher(this Player player, out Poacher data)
+    public static bool TryGetPoacher(this AbstractCreature crit, out Poacher data)
     {
-        if (player.SlugCatClass == Plugin.DragonName)
-        {
-            data = player.GetPoacher();
-            return true;
-        }
+        var template = crit.creatureTemplate.type;
+        if (template == CreatureTemplate.Type.Slugcat || template == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC)
+            if (crit.realizedCreature is Player player && player.SlugCatClass == Plugin.DragonName)
+            {
+                data = player.GetPoacher();
+                return true;
+            }
         data = null;
         return false;
     }
-    
+
+    public static bool TryGetPoacher(this Player player, out Poacher data) => player.abstractCreature.TryGetPoacher(out data);
+    public static bool TryGetPoacher(this Creature player, out Poacher data) => player.abstractCreature.TryGetPoacher(out data);
 }

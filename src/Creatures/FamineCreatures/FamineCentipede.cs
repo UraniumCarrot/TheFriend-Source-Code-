@@ -177,7 +177,6 @@ public static class CentiCWT
         public float sickSat;
         public CentiData(Centipede self)
         {
-            Debug.Log("naturalsickness " + naturalSickness);
             var random = Random.Range(-1,1) * 0.05f;
             switch (self.Template.type.value)
             {

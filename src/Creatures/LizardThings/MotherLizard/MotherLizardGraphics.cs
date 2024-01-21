@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using LizardCosmetics;
-using TheFriend.DragonRideThings;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
+using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Custom;
+using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Dependencies;
+using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Unique;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,18 +14,21 @@ public class MotherLizardGraphics
 {
     public static void MotherLizardSpritesInit(LizardGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
-        Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
-        if (self.lizard.GetLiz() != null) self.lizard.GetLiz().hybridHead = sLeaser.sprites.Length - 1;
-        if (self.lizard.GetLiz() != null) sLeaser.sprites[self.lizard.GetLiz().hybridHead] = new FSprite("LizardHead3.0");
-        self.AddToContainer(sLeaser, rCam, null);
+        if (self.TryGetLiz(out var data))
+        {
+            Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
+            data.hybridHead = sLeaser.sprites.Length - 1;
+            sLeaser.sprites[data.hybridHead] = new FSprite("LizardHead3.0");
+            self.AddToContainer(sLeaser, rCam, null);
+        }
     }
 
     public static void MotherLizardSpritesAddToContainer(LizardGraphics self, RoomCamera.SpriteLeaser sLeaser, FContainer newContainer)
     {
-        if (self.lizard.GetLiz() != null && self.lizard.GetLiz().hybridHead < sLeaser.sprites.Length)
+        if (self.TryGetLiz(out var data) && data.hybridHead < sLeaser.sprites.Length)
         {
             if (newContainer == null) newContainer = sLeaser.sprites[self.SpriteHeadStart].container;
-            newContainer.AddChild(sLeaser.sprites[self.lizard.GetLiz().hybridHead]);
+            newContainer.AddChild(sLeaser.sprites[data.hybridHead]);
         }
     }
 
@@ -30,7 +37,7 @@ public class MotherLizardGraphics
         bool rCol = Random.value > 0.5f;
         float r1 = Random.value;
         var num = self.startOfExtraSprites + self.extraSprites;
-
+        
         var shoulder = new LongShoulderScales(self, num);
         shoulder.graphic = r1 > 0.5f ? 6 : 2;
         shoulder.graphicHeight /= r1 > 0.5f ? 3.5f : 2f;
@@ -60,28 +67,28 @@ public class MotherLizardGraphics
             sLeaser.sprites[self.SpriteHeadStart + 3].color = self.palette.blackColor; // Top jaw
 
             // Custom head
-            if (self.lizard.GetLiz() != null)
+            if (self.TryGetLiz(out var data))
             {
-                sLeaser.sprites[self.lizard.GetLiz().hybridHead].color = sLeaser.sprites[self.SpriteHeadStart + 3].color;
-                sLeaser.sprites[self.lizard.GetLiz().hybridHead].scaleX = sLeaser.sprites[self.SpriteHeadStart + 3].scaleX;
-                sLeaser.sprites[self.lizard.GetLiz().hybridHead].scaleY = sLeaser.sprites[self.SpriteHeadStart + 3].scaleY * 0.6f;
-                sLeaser.sprites[self.lizard.GetLiz().hybridHead].rotation = sLeaser.sprites[self.SpriteHeadStart + 3].rotation;
-                sLeaser.sprites[self.lizard.GetLiz().hybridHead].SetPosition(sLeaser.sprites[self.SpriteHeadStart + 3].GetPosition());
-                sLeaser.sprites[self.lizard.GetLiz().hybridHead].MoveBehindOtherNode(sLeaser.sprites[self.SpriteHeadStart]);
+                sLeaser.sprites[data.hybridHead].color = sLeaser.sprites[self.SpriteHeadStart + 3].color;
+                sLeaser.sprites[data.hybridHead].scaleX = sLeaser.sprites[self.SpriteHeadStart + 3].scaleX;
+                sLeaser.sprites[data.hybridHead].scaleY = sLeaser.sprites[self.SpriteHeadStart + 3].scaleY * 0.6f;
+                sLeaser.sprites[data.hybridHead].rotation = sLeaser.sprites[self.SpriteHeadStart + 3].rotation;
+                sLeaser.sprites[data.hybridHead].SetPosition(sLeaser.sprites[self.SpriteHeadStart + 3].GetPosition());
+                sLeaser.sprites[data.hybridHead].MoveBehindOtherNode(sLeaser.sprites[self.SpriteHeadStart]);
 
                 switch (sLeaser.sprites[self.SpriteHeadStart + 3].element.name)
                 {
                     case "LizardHead0.5":
-                        sLeaser.sprites[self.lizard.GetLiz().hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead0.0");
+                        sLeaser.sprites[data.hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead0.0");
                         break;
                     case "LizardHead1.5":
-                        sLeaser.sprites[self.lizard.GetLiz().hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead1.0");
+                        sLeaser.sprites[data.hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead1.0");
                         break;
                     case "LizardHead2.5":
-                        sLeaser.sprites[self.lizard.GetLiz().hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead2.0");
+                        sLeaser.sprites[data.hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead2.0");
                         break;
                     case "LizardHead3.5":
-                        sLeaser.sprites[self.lizard.GetLiz().hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead3.0");
+                        sLeaser.sprites[data.hybridHead].element = Futile.atlasManager.GetElementWithName("LizardHead3.0");
                         break;
                 }
             }

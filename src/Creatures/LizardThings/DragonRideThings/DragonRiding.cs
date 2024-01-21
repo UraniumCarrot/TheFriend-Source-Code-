@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-namespace TheFriend.DragonRideThings;
+namespace TheFriend.Creatures.LizardThings.DragonRideThings;
 
 public class DragonRiding
 {
@@ -21,35 +23,46 @@ public class DragonRiding
         }
         public AbstractDragonRider(AbstractPhysicalObject self, AbstractPhysicalObject obj) : base(self, obj) { }
     }
-    public static void DragonRiderSafety(Player self, Creature crit, Vector2 seat) // Values for the rider of mother lizard
+    public static void DragonRiderSafety(Player self, Creature crit, Vector2 seat, bool eu)
     {
-        if (!(crit as Lizard).GetLiz().IsRideable && (crit as Lizard).GetLiz() != null) { DragonRideReset(crit, self); return; }
-        self.GetGeneral().rideStick ??= new AbstractDragonRider(self.abstractPhysicalObject, crit.abstractPhysicalObject);
+        if (crit.TryGetLiz(out var data)) 
+            if (!data.DoILikeYou(self)) { DragonRideReset(crit, self); return; }
+
+        for (int i = 0; i < self.grasps?.Length; i++)
+            if (self.grasps[i]?.grabbed == crit) self.grasps[i].Release();
+        
+        self.GetGeneral().rideStick ??= new AbstractDragonRider(self.abstractPhysicalObject, crit.abstractPhysicalObject); // Make player and lizard go through rooms in sync
         self.GetGeneral().isRidingLizard = true;
-        self.GetGeneral().grabCounter = 15;
-        self.bodyChunks[1].pos = seat;
-        self.bodyChunks[0].pos = Vector2.Lerp(seat,seat + new Vector2(0,crit.firstChunk.rad),0.5f);
-        self.CollideWithTerrain = false;
+        
+        if (!self.standing && self.animation != Player.AnimationIndex.None && self.bodyMode != Player.BodyModeIndex.Stand) self.Jump();
+        self.animation = Player.AnimationIndex.None;
+        self.bodyMode = Player.BodyModeIndex.Stand;
+        self.standing = true; // Make player unable to crouch because it would look weird
+        
+        foreach (BodyChunk chunk in self.bodyChunks) chunk.vel = new Vector2(0f, 1f); // Fix fucked up player physics
+        self.bodyChunks[1].HardSetPosition(seat); // Set player's position to the seat with the same index as them
+        self.bodyChunks[0].HardSetPosition(new Vector2(self.bodyChunks[1].lastPos.x,self.bodyChunks[1].lastPos.y + self.bodyChunkConnections[0].distance));
+
+        //var connectedChunk = data.self.bodyChunks[data.seats.IndexOf(seat)];
+        
+        self.CollideWithTerrain = false; // Prevent terrain and objects from messing with riders
         self.CollideWithObjects = false;
-        if (!self.abstractCreature.stuckObjects.Contains(self.GetGeneral()?.rideStick)) self.abstractCreature.stuckObjects.Add(self.GetGeneral()?.rideStick);
-    }
-    public static void DragonRidden(Creature crit, Player player) // Values for the lizard being ridden
-    {
-        var self = crit as Lizard;
-        if (!self.GetLiz().IsRideable) { DragonRideReset(crit,player); }
-        //self.GetLiz().IsBeingRidden = true;
+        
+        if (!self.abstractCreature.stuckObjects.Contains(self.GetGeneral()?.rideStick)) 
+            self.abstractCreature.stuckObjects.Add(self.GetGeneral()?.rideStick);
+        DragonRiderAddItems(self, self.GetGeneral().dragonSteed);
     }
     public static void DragonRideReset(Creature crit, Player player) // Performed after riding stops
     {
         player.CollideWithTerrain = true;
         player.CollideWithObjects = true;
         player.GetGeneral().dragonSteed = null;
-        if (crit is Lizard liz)
+        if (crit.TryGetLiz(out var data))
         {
-            liz.GetLiz().boolseat0 = false;
-            //liz.GetLiz().IsBeingRidden = false;
-            liz.GetLiz().rider = null;
+            data.mainRiders.Remove(player);
+            DragonRiderRemoveItems(player, data.self);
         }
+        
         player.GetGeneral().isRidingLizard = false;
         if (player.GetGeneral()?.rideStick != null)
         {
@@ -67,9 +80,7 @@ public class DragonRiding
         if (input[0].y < 0)
         {
             if (!(input[1].y < 0))
-            {
                 for (int i = 2; i < input.Length - 1; i++)
-                {
                     if (input[i].y < 0 && !(input[i + 1].y < 0))
                     {
                         liz.ReleaseGrasp(0);
@@ -78,9 +89,27 @@ public class DragonRiding
                         rider.room.PlaySound(SoundID.Vulture_Grab_Player, rider.firstChunk.pos,0.5f,1);
                         rider.room.AddObject(new ExplosionSpikes(rider.room, rider.bodyChunks[1].pos + new Vector2(0.0f, -rider.bodyChunks[1].rad), 8, 7f, 5f, 5.5f, 40f, new Color(1f, 1f, 1f, 0.5f)));
                     }
+        }
+    }
+
+    public static void DragonRideTerrainReset(Lizard self)
+    { // Prevents lizards and players from falling outside of the map during lizard ride. It may surprise you how important this is
+        if (self.room.GetTile(self.firstChunk.pos)?.Solid == true)
+        {
+            if (self.firstChunk?.collideWithTerrain == true && 
+                self.room.GetTile(self.firstChunk.lastPos)?.Solid == true && 
+                self.room.GetTile(self.firstChunk.lastLastPos)?.Solid == true && 
+                self.Liz().lastOutsideTerrainPos.HasValue)
+            {
+                Debug.Log("Solace: Resetting ridden lizard to outside terrain");
+                for (int i = 0; i < self.bodyChunks?.Length; i++)
+                {
+                    self.bodyChunks[i].HardSetPosition(self.Liz().lastOutsideTerrainPos.Value + Custom.RNV() * Random.value);
+                    self.bodyChunks[i].vel /= 2f;
                 }
             }
         }
+        else self.Liz().lastOutsideTerrainPos = self.firstChunk.pos;
     }
 
     public static void DragonRiderPoint(Player self)
@@ -93,9 +122,8 @@ public class DragonRiding
         var nothand = (hand == 1) ? 0 : 1;
 
         for (int i = 0; i < 2; i++)
-        {
             if (self.grasps[i]?.grabbed is Spear && self.grasps[0]?.grabbed != self.grasps[1]?.grabbed) hand = i;
-        }
+        
         try
         {
             if (graph == null) return;
@@ -114,7 +142,7 @@ public class DragonRiding
         {
             for (int i = 0; i < 2; i++)
             {
-                if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Weapon wep)
+                if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Spear wep)
                 {
                     float rotation = i == 1 ? self.GetGeneral().pointDir1 + 90 : self.GetGeneral().pointDir0 + 90f;
                     Vector2 vec = Custom.DegToVec(rotation);
@@ -125,37 +153,21 @@ public class DragonRiding
         }
     }
 
-    public static Player.ObjectGrabability LizardGrabability(Player self, Lizard liz)
+    public static void DragonRiderAddItems(Player self, Lizard mount)
     {
-        if (liz.Template.type != CreatureTemplateType.YoungLizard)
-        {
-            if (liz.GetLiz().IsRideable)
-            {
-                if (liz.Template?.type != CreatureTemplateType.MotherLizard && 
-                    liz.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Attacks && 
-                    liz.AI?.DynamicRelationship(self?.abstractCreature).type != CreatureTemplate.Relationship.Type.Eats && 
-                    liz.AI?.friendTracker?.friend != null && 
-                    liz.AI?.friendTracker?.friendRel?.like < 0.5f && 
-                    !liz.dead && 
-                    !liz.Stunned) 
-                    return Player.ObjectGrabability.CantGrab;
-                if ((liz.GetLiz().rider != null || 
-                     self.GetGeneral().grabCounter > 0 || 
-                     liz.AI?.LikeOfPlayer(liz.AI?.tracker?.RepresentationForCreature(self?.abstractCreature, true)) < 0) && 
-                    !liz.dead && 
-                    !liz.Stunned) 
-                    return Player.ObjectGrabability.CantGrab;
-                self.GetGeneral().grabCounter = 15;
-                return Player.ObjectGrabability.OneHand;
-            }
-        }
-        else if (liz.Template.type == CreatureTemplateType.YoungLizard)
-        {
-            for (int i = 0; i < self?.grasps?.Length; i++) 
-                if ((self.grasps[i]?.grabbed as Creature)?.Template?.type == CreatureTemplateType.YoungLizard) 
-                    return Player.ObjectGrabability.CantGrab; // If already holding a young lizard, you can't grab a second one
-            return Player.ObjectGrabability.OneHand;
-        }
-        return Player.ObjectGrabability.TwoHands;
+        var data = mount.Liz();
+
+        foreach (AbstractPhysicalObject obj in self.abstractCreature.GetAllConnectedObjects())
+            if (obj is AbstractCreature crit)
+                data.riderFriends.Add(crit);
+    }
+
+    public static void DragonRiderRemoveItems(Player self, Lizard mount)
+    {
+        var data = mount.Liz();
+
+        foreach (AbstractPhysicalObject obj in self.abstractCreature.GetAllConnectedObjects())
+                if (obj is AbstractCreature crit)
+                    data.riderFriends.Remove(crit);
     }
 }

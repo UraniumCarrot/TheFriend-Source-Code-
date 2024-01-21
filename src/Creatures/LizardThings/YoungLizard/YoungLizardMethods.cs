@@ -33,7 +33,6 @@ public class YoungLizardMethods
             breedParams.headGraphics = new int[5];
 
             breedParams.standardColor = new(1f, 1f, 1f);
-            breedParams.standardColor = new Color(0.80f, 0.75f, 0.6f);
             breedParams.bodyMass = 0.5f;
             breedParams.bodySizeFac = 0.73f;
             breedParams.bodyLengthFac = 0.6f;

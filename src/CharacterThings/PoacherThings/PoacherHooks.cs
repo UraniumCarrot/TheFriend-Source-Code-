@@ -8,6 +8,6 @@ public class PoacherHooks
         PoacherGraphics.Apply();
         FirecrackerFix.Apply();
         DragonCrafts.Apply();
-        DragonClassFeatures.Apply();
+        PoacherSkullFeatures.Apply();
     }
 }

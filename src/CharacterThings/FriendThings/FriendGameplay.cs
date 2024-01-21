@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Linq;
 using System;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RWCustom;
 using TheFriend.FriendThings;
+using TheFriend.Objects.LittleCrackerObject;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 using Random = UnityEngine.Random;
@@ -15,6 +18,7 @@ public class FriendGameplay
 {
     public static void Apply()
     {
+        IL.Player.ThrowObject += Player_ThrowObject;
     }
 
     #region movement
@@ -265,5 +269,35 @@ public class FriendGameplay
     }
 
     #endregion
+    
+    public static void Player_ThrowObject(ILContext il)
+    {
+        var cursor = new ILCursor(il);
+
+        if (!cursor.TryGotoNext(MoveType.Before, i => i.MatchLdsfld<Player.AnimationIndex>("Flip")))
+        {
+            return;
+        }
+
+        if (!cursor.TryGotoNext(MoveType.Before, i => i.MatchLdloc(1)))
+        {
+            return;
+        }
+
+        cursor.MoveAfterLabels();
+
+        cursor.Emit(OpCodes.Ldarg_0);
+        cursor.EmitDelegate<Func<Player, bool>>(player =>
+        {
+            return (player.TryGetFriend(out _) &&
+                    player.bodyChunks[1].ContactPoint.y != -1 && 
+                    !(player.bodyMode == Player.BodyModeIndex.Crawl || 
+                      player.standing)) 
+                   || 
+                   (player.grasps[0]?.grabbed is LittleCracker ||
+                    (player.grasps[0]?.grabbed == null && player.grasps[1]?.grabbed is LittleCracker));
+        });
+        cursor.Emit(OpCodes.Or);
+    }
 
 }
