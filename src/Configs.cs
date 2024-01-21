@@ -53,7 +53,4 @@ public class Configs
     
     #region deluge
     #endregion
-    
-    #region believer
-    #endregion
 }

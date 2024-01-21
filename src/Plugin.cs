@@ -265,8 +265,7 @@ namespace TheFriend
         public static readonly SlugcatStats.Name DragonName = new SlugcatStats.Name("FriendDragonslayer", false); // Makes Poacher's campaign more accessible to me
         public static readonly SlugcatStats.Name NoirName = new SlugcatStats.Name("NoirCatto", false);
         public static readonly SlugcatStats.Name DelugeName = new SlugcatStats.Name("FriendDeluge", false);
-        public static readonly SlugcatStats.Name BelieverName = new SlugcatStats.Name("FriendBeliever", false);
-        
+
         public const string MothersKilled = "MothersKilledInRegionStr";
         public const string MotherKillNum = "MotherKillCount";
         

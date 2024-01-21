@@ -7,7 +7,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
 using TheFriend.CharacterThings;
-using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.FriendThings;
 using UnityEngine;
@@ -35,7 +34,6 @@ public class SlugcatGraphics
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
     public static readonly SlugcatStats.Name DelugeName = Plugin.DelugeName;
-    public static readonly SlugcatStats.Name BelieverName = Plugin.BelieverName;
 
     public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)
     { // Spear pointing while riding a lizard
@@ -81,33 +79,25 @@ public class SlugcatGraphics
         }
         return orig(self, oldCol);
     }
-    
+
     public static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
     { // Implement CustomTail
         orig(self, ow);
         if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendTailCtor(self);
     }
-    
+
     public static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     { // Detail Sprites init
         orig(self, sLeaser, rCam);
         if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherSpritesInit(self, sLeaser, rCam);
-        
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverSpritesInit(self, sLeaser, rCam);
-        
     }
     public static void PlayerGraphics_ApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
         if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherPalette(self, sLeaser, rCam, palette);
-        
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverPalette(self,sLeaser,rCam,palette);
-        
     }
 
     // Fix layering and force to render
@@ -116,10 +106,6 @@ public class SlugcatGraphics
         orig(self, sLeaser, rCam, newContainer);
         if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherSpritesContainer(self, sLeaser, rCam, newContainer);
-        
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverSpritesContainer(self, sLeaser, rCam, newContainer);
-        
     }
     // Implement FriendHead, Poacher graphics
     public static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -139,10 +125,7 @@ public class SlugcatGraphics
         
         if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendDrawSprites(self, sLeaser, head, legs);
-        
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverDrawSprites(self, sLeaser, head, face);
-        
+
         else if (self.player.TryGetPoacher(out _))
         {
             PoacherGraphics.PoacherThinness(self, sLeaser, rCam, timeStacker, camPos);

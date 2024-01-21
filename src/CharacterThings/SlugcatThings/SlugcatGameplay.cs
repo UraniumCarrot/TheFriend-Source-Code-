@@ -4,7 +4,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
 using SlugBase;
-using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
 using TheFriend.DragonRideThings;
@@ -65,8 +64,6 @@ public class SlugcatGameplay
     public static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
     {
         var mine = self.grasps[grasp].grabbed as BoomMine;
-        if (self.TryGetBeliever(out _)) 
-            BelieverGameplay.PacifistThrow(self, grasp, eu);
         
         orig(self, grasp, eu);
         if (mine != null) mine.ExplodeTimer = 5;  // Boommine cooldown reduction if thrown
