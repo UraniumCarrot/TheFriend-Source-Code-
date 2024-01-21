@@ -7,7 +7,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
 using TheFriend.CharacterThings;
-using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.FriendThings;
 using TheFriend.Objects.SolaceScarfObject;
@@ -25,7 +24,6 @@ public class SlugcatGraphics
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
     public static readonly SlugcatStats.Name DelugeName = Plugin.DelugeName;
-    public static readonly SlugcatStats.Name BelieverName = Plugin.BelieverName;
     
     public static void PlayerGraphics_Update(PlayerGraphics self)
     { // Cosmetic movement
@@ -59,16 +57,12 @@ public class SlugcatGraphics
         if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherSpritesInit(self, sLeaser, rCam);
         
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverSpritesInit(self, sLeaser, rCam);
     }
     public static void PlayerGraphics_ApplyPalette(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherPalette(self, sLeaser, rCam, palette);
         
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverPalette(self,sLeaser,rCam,palette);
     }
 
     // Fix layering and force to render
@@ -78,8 +72,6 @@ public class SlugcatGraphics
         if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherSpritesContainer(self, sLeaser, rCam, newContainer);
         
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverSpritesContainer(self, sLeaser, rCam, newContainer);
     }
     // Implement FriendHead, Poacher graphics
     public static void PlayerGraphics_DrawSprites(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -99,9 +91,6 @@ public class SlugcatGraphics
 
         if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendDrawSprites(self, sLeaser, head, legs);
-        
-        else if (self.player.TryGetBeliever(out _))
-            BelieverGraphics.BelieverDrawSprites(self, sLeaser, head, face);
         
         else if (self.player.TryGetPoacher(out _))
         {
@@ -128,7 +117,6 @@ public class SlugcatGraphics
         return self.symbolNameOff.Contains("noir") || 
                self.symbolNameOff.Contains("poacher") || 
                self.symbolNameOff.Contains("deluge") || 
-               self.symbolNameOff.Contains("believer") || 
                orig(self);
     }
 
@@ -144,7 +132,6 @@ public class SlugcatGraphics
                 "Friend" => "friend_pup_off",
                 "NoirCatto" => "noir_pup_off",
                 "FriendDragonslayer" => "poacher_pup_off",
-                "FriendBeliever" => "believer_pup_off",
                 "FriendDeluge" => "deluge_pup_off",
                 _ => orig(self)
             };
@@ -161,7 +148,6 @@ public class SlugcatGraphics
         if (slugname == Plugin.NoirName) return CharacterThings.NoirThings.NoirCatto.NoirWhite;
         if (slugname == Plugin.DragonName) return Custom.hexToColor("735a7f");
         if (slugname == Plugin.DelugeName) return Custom.hexToColor("FF6700");
-        if (slugname == Plugin.BelieverName) return Custom.hexToColor("FF6600");
         return orig(slugname, reference, playernumber);
     }
 
@@ -173,8 +159,7 @@ public class SlugcatGraphics
             
         if (slugname == Plugin.NoirName) return CharacterThings.NoirThings.NoirCatto.NoirBlueEyesDefault;
         if (slugname == Plugin.DragonName) return Custom.hexToColor("6d3868");
-        if (slugname == Plugin.FriendName || 
-            slugname == Plugin.BelieverName) return Custom.hexToColor("101010");
+        if (slugname == Plugin.FriendName) return Custom.hexToColor("101010");
         if (slugname == Plugin.DelugeName) return Custom.hexToColor("F0F0FF");
         return orig(slugname, reference, playernumber);
     }
