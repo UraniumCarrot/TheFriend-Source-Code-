@@ -5,7 +5,7 @@ using Fisobs.Creatures;
 using Fisobs.Sandbox;
 using MoreSlugcats;
 using RWCustom;
-using TheFriend.DragonRideThings;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 using UnityEngine;
 
 namespace TheFriend.Creatures.LizardThings.MotherLizard;
@@ -115,7 +115,8 @@ public class MotherLizardCritob : Critob
             Custom.WrappedRandomVariation(0.9f, 0.1f, 0.6f), 
             1f,
             Custom.ClampedRandomVariation(0.85f, 0.15f, 0.2f));
-        self.GetLiz().IsRideable = true;
+        self.Liz().RideEnabled = true;
+        self.Liz().blockCosmetics = true;
         Random.state = state;
     }
 

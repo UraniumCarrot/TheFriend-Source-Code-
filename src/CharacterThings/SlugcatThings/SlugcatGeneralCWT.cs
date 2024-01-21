@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using TheFriend.DragonRideThings;
 using Color = UnityEngine.Color;
 using OverseerHolograms;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 using UnityEngine;
 
 namespace TheFriend.SlugcatThings;
@@ -30,14 +30,16 @@ public static class SlugcatGeneralCWT
         public int spearRotationTimer;
         public bool RainTimerExists;
         
+        
         public readonly Player.InputPackage[] UnchangedInputForLizRide;
         public DragonRiding.AbstractDragonRider rideStick;
-        public Creature dragonSteed;
-        public int grabCounter;
+        public Lizard dragonSteed;
+        public int riderAnimChangeTimer;
         public int glanceDir;
         public GeneralCWT(Player player)
         {
             UnchangedInputForLizRide = new Player.InputPackage[player.input.Length];
+            riderAnimChangeTimer = 20;
         }
     }
     

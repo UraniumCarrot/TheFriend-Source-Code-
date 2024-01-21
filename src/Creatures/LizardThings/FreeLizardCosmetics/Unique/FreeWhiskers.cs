@@ -1,48 +1,24 @@
-﻿using System.Linq;
+﻿using LizardCosmetics;
 using RWCustom;
-using LizardCosmetics;
+using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Dependencies;
 using UnityEngine;
-using MonoMod.RuntimeDetour;
 using Color = UnityEngine.Color;
 
-namespace TheFriend.Creatures.LizardThings.FreeLizardCosmetics;
+namespace TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Unique;
 
-public class FreeWhiskers : Whiskers
-{
-    public static void Apply()
-    {
-        On.LizardGraphics.CreatureSpotted += LizardGraphicsOnCreatureSpotted;
-        new Hook(typeof(LizardGraphics).GetProperty(nameof(LizardGraphics.HeadColor1))!.GetGetMethod(), WhiskerCol1);
-        new Hook(typeof(LizardGraphics).GetProperty(nameof(LizardGraphics.HeadColor2))!.GetGetMethod(), WhiskerCol2);
-    }
-    public delegate Color orig_HeadColor1(LizardGraphics self);
-    public static Color WhiskerCol1(orig_HeadColor1 orig, LizardGraphics self)
-    {
-        var i = self.cosmetics.FirstOrDefault(x => x is FreeWhiskers i && i.IGlow);
-        if (i != null && i is FreeWhiskers whisker)
-            return Color.Lerp(self.effectColor, whisker.lightUpColor, whisker.LightUp);
-        return orig(self);
-    }
-    public delegate Color orig_HeadColor2(LizardGraphics self);
-    public static Color WhiskerCol2(orig_HeadColor2 orig, LizardGraphics self)
-    {
-        var i = self.cosmetics.FirstOrDefault(x => x is FreeWhiskers i && i.IGlow);
-        if (i != null && i is FreeWhiskers whisker)
-            return Color.Lerp(self.effectColor, whisker.lightUpColor, whisker.LightUp);
-        return orig(self);
-    }
-
-    public static void LizardGraphicsOnCreatureSpotted(On.LizardGraphics.orig_CreatureSpotted orig, LizardGraphics self, bool firstspot, Tracker.CreatureRepresentation crit)
-    {
-        orig(self, firstspot, crit);
-        var i = self.cosmetics.FirstOrDefault(x => x is FreeWhiskers i && i.IGlow);
-        if (i != null && i is FreeWhiskers whisker)
-            whisker.LightUp = Mathf.Min(whisker.LightUp + 0.5f, 1f);
-    }
+public class FreeWhiskers : Whiskers, IFreedCosmetic
+{ // Unfinished
+    public LizColorMode[] colorMode => new LizColorMode[3];
     public bool IGlow;
     public float LightUp;
     public Color lightUpColor;
-    public FreeWhiskers(LizardGraphics lGraphics, int startSprite, Color lightUpColor, bool IGlow = false) : base(lGraphics,startSprite)
+    public bool darkenWithHead { get; }
+    public float dark { get; set; }
+    public FreeWhiskers(
+        LizardGraphics lGraphics, 
+        int startSprite, 
+        Color lightUpColor, 
+        bool IGlow = false) : base(lGraphics,startSprite)
     {
         this.IGlow = IGlow;
         this.lightUpColor = lightUpColor;
@@ -73,7 +49,7 @@ public class FreeWhiskers : Whiskers
                 }
                 whiskers[i, j].Update();
                 whiskers[i, j].ConnectToPoint(AnchorPoint(i, j, 1f), whiskerProps[j, 0], push: false, 0f, lGraphics.lizard.mainBodyChunk.vel, 0f, 0f);
-                if (!Custom.DistLess(lGraphics.head.pos, whiskers[i, j].pos, 200f))
+                if (!RWCustom.Custom.DistLess(lGraphics.head.pos, whiskers[i, j].pos, 200f))
                 {
                     whiskers[i, j].pos = lGraphics.head.pos;
                 }

@@ -1,9 +1,7 @@
 ﻿using MoreSlugcats;
 using UnityEngine;
-using RWCustom;
 using TheFriend.CharacterThings;
-using TheFriend.DragonRideThings;
-using TheFriend.SlugcatThings;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 using Random = UnityEngine.Random;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
@@ -15,8 +13,6 @@ public class PoacherGameplay
     public static void Apply()
     {
         On.Player.ObjectEaten += PlayerOnObjectEaten;
-        On.Player.Grabbed += Player_Grabbed;
-        On.Player.Stun += Player_Stun;
         On.Player.HeavyCarry += Player_HeavyCarry;
         On.DangleFruit.Update += DangleFruit_Update;
         On.LanternMouse.Update += LanternMouse_Update;
@@ -55,26 +51,6 @@ public class PoacherGameplay
     
     #endregion
     
-    #region misc mechanics
-    public static void Player_Grabbed(On.Player.orig_Grabbed orig, Player self, Creature.Grasp grasp)
-    { 
-        orig(self, grasp);
-        if (!self.TryGetPoacher(out _)) return;
-        if (grasp.grabber is Lizard || grasp.grabber is Vulture || grasp.grabber is BigSpider || grasp.grabber is DropBug)
-        { // Poacher skull flicker (from grabs)
-            PoacherGraphics.PoacherFlicker(self);
-        }
-    }
-    public static void Player_Stun(On.Player.orig_Stun orig, Player self, int st)
-    { 
-        if (self.TryGetPoacher(out _) && self.stunDamageType == Creature.DamageType.Blunt && !self.Stunned)
-        { // Poacher skull flicker (from rocks)
-            if (self.bodyMode == bod.Crawl) { self.firstChunk.vel.y += 10; self.animation = ind.Flip; }
-            PoacherGraphics.PoacherFlicker(self);
-        }
-        orig(self, st);
-    }
-    #endregion
     #region food
     public static void PlayerOnObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible eatenobject)
     {
@@ -127,8 +103,11 @@ public class PoacherGameplay
     #region item carrying
     public static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
     { // Allows Poacher to carry things that they couldn't usually
-        if (obj is Creature young && young.Template.type == CreatureTemplateType.YoungLizard) return false;
-        else if (obj is Lizard mother && mother.GetLiz() != null && mother.GetLiz().IsRideable) return true;
+        if (obj.TryGetLiz(out var data))
+        {
+            if (data.myTemplate.type == CreatureTemplateType.YoungLizard) return false;
+            else if (data.DoILikeYou(self)) return true;
+        }
         if (self.TryGetPoacher(out _))
         {
             if (obj is Creature crit && crit is not Hazer && crit is not VultureGrub && crit is not Snail && crit is not SmallNeedleWorm && crit is not TubeWorm) return orig(self, obj);

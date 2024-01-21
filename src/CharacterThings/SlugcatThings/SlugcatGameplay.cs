@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
-using SlugBase;
 using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
-using TheFriend.DragonRideThings;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.FriendThings;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.Objects.FakePlayerEdible;
@@ -25,7 +23,6 @@ public class SlugcatGameplay
     {
         On.Player.Update += Player_Update;
         On.Player.ThrowObject += PlayerOnThrowObject;
-        On.Weapon.HitThisObject += Weapon_HitThisObject;
         On.Player.WallJump += Player_WallJump;
         On.Player.Jump += Player_Jump;
         On.Player.ctor += Player_ctor;
@@ -74,53 +71,33 @@ public class SlugcatGameplay
     public static void Player_GrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
     { // Makes player ride lizard
         orig(self, eu);
-        if (self == null) return;
 
         for (int i = 0; i < 2; i++)
-        {
-            if (self.grasps[i]?.grabbed is Lizard liz && 
-                liz.GetLiz() != null && 
-                liz.GetLiz().IsRideable && 
-                !liz.dead && 
-                !liz.Stunned && 
-                liz.AI?.LikeOfPlayer(liz.AI?.tracker?.RepresentationForCreature(self.abstractCreature, true)) > 0)
-            {
-                if (!liz.GetLiz().boolseat0)
+            if (self.grasps[i] != null && self.grasps[i].grabbed.TryGetLiz(out var data))
+                if (data.RideEnabled &&
+                    data.DoILikeYou(self))
                 {
-                    self.grasps[i].Release();
+                    self.GetGeneral().dragonSteed = self.grasps[i]?.grabbed as Lizard;
                     self.GetGeneral().isRidingLizard = true;
-                    DragonRiding.DragonRidden(liz, self);
-                    liz.GetLiz().boolseat0 = true;
-                    self.GetGeneral().dragonSteed = liz;
-                    liz.GetLiz().rider = self;
+                    if (!data.mainRiders.Contains(self)) data.mainRiders.Add(self);
                 }
-            }
-        }
         // Poacher poppers quickcraft
         if (self.TryGetPoacher(out _))
             DragonCrafts.PoacherQuickCraft(self);
     }
-    public static bool Weapon_HitThisObject(On.Weapon.orig_HitThisObject orig, Weapon self, PhysicalObject obj)
-    { // Lizard mount will not be hit by owner's weapons
-        if (obj is Lizard liz &&
-            liz.GetLiz().rider != null && 
-            self.thrownBy is Player pl && 
-            pl.GetGeneral().dragonSteed == liz) 
-            return false;
-        else return orig(self, obj);
-    }
-    
+
     public static Player.ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     { 
         if (obj is Lizard liz)
         { // Lizard grabability for dragonriding and young lizards
-            var grab = DragonRiding.LizardGrabability(self, liz);
-        
+            var grab = LizardRideFixes.LizardGrabability(self, liz);
+            
             if (grab == Player.ObjectGrabability.TwoHands)
                 return orig(self, obj);
             else return grab;
         }
         
+        if (obj is Player pl && pl.GetGeneral().dragonSteed != null) return Player.ObjectGrabability.CantGrab;
         if (self.TryGetPoacher( out var poacher) && poacher.IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
         if (obj is FakePlayerEdible edible) return edible.grabability;
         return orig(self, obj);
@@ -160,37 +137,19 @@ public class SlugcatGameplay
         }
         
         // Dragonriding
-        if (self.GetGeneral().grabCounter > 0) // Stops player from getting slam dunked into the floor when they dismount
+        if (self.GetGeneral().isRidingLizard && self.GetGeneral().dragonSteed != null)
         {
-            self.GetGeneral().grabCounter--;
-            for (int i = 0; i < 2; i++)
-                if (self.bodyChunks[i].vel.y < -20) self.bodyChunks[i].vel.y = -20;
-        }
-        if (self.GetGeneral().isRidingLizard && (self.GetGeneral().dragonSteed as Lizard).GetLiz() != null)
-        {
-            var liz = self.GetGeneral()?.dragonSteed as Lizard;
+            var liz = self.GetGeneral().dragonSteed;
+            var myIndex = liz.Liz().mainRiders.IndexOf(self);
+            var seat = liz.Liz().seats[myIndex];
             try
             {
-                self.standing = true;
-                if (liz != null)
-                {
-                    if (liz.animation != Lizard.Animation.Lounge &&
-                        liz.animation != Lizard.Animation.PrepareToLounge &&
-                        liz.animation != Lizard.Animation.ShootTongue &&
-                        liz.animation != Lizard.Animation.Spit &&
-                        liz.animation != Lizard.Animation.HearSound &&
-                        liz.animation != Lizard.Animation.PreyReSpotted &&
-                        liz.animation != Lizard.Animation.PreySpotted &&
-                        liz.animation != Lizard.Animation.ThreatReSpotted &&
-                        liz.animation != Lizard.Animation.ThreatSpotted) liz.JawOpen = 0;
-                    DragonRiding.DragonRiderSafety(self, self.GetGeneral().dragonSteed, (self.GetGeneral().dragonSteed as Lizard).GetLiz().seat0);
-                    if ((self.GetGeneral().UnchangedInputForLizRide[0].y < 0 && self.input[0].pckp) ||
-                        (self.GetGeneral().dragonSteed as Lizard)?.AI?.LikeOfPlayer((self.GetGeneral().dragonSteed as Lizard)?.AI?.tracker?.RepresentationForCreature(self.abstractCreature, true)) <= 0 ||
-                        self.dead ||
-                        self.Stunned ||
-                        (self.room != self.GetGeneral()?.dragonSteed?.room && self.room != null))
-                        DragonRiding.DragonRideReset(self.GetGeneral().dragonSteed, self);
-                }
+                liz.JawOpen = 0;
+                DragonRiding.DragonRiderSafety(self, liz, seat.pos, eu);
+                if ((self.GetGeneral().UnchangedInputForLizRide[0].y < 0 && self.input[0].pckp) ||
+                    !liz.Liz().DoILikeYou(self) ||
+                    (self.room != liz.room && self.room != null))
+                    DragonRiding.DragonRideReset(liz, self);
             }
             catch (Exception e) { Debug.Log("Solace: Exception occurred in Player.Update LizRide" + e); }
             
@@ -211,8 +170,7 @@ public class SlugcatGameplay
     {
         if (slugcatNum == FriendName)
             return true; // Friend maul
-        else
-            return orig(slugcatNum);
+        return orig(slugcatNum);
     }
     public static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     { // Friend and Poacher backspears, Poacher cutscene preparation
@@ -277,9 +235,7 @@ public class SlugcatGameplay
         
         //Moving all inputs one slot up
         for (var i = self.GetGeneral().UnchangedInputForLizRide.Length - 1; i > 0; i--)
-        {
             self.GetGeneral().UnchangedInputForLizRide[i] = self.GetGeneral().UnchangedInputForLizRide[i - 1];
-        }
         
         //Copying original unmodified input
         self.GetGeneral().UnchangedInputForLizRide[0] = self.input[0];

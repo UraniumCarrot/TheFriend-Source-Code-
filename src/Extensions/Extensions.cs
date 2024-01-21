@@ -52,6 +52,23 @@ public static partial class Extensions
     {
         return Mathf.FloorToInt(number);
     }
+
+    public static float Abs(this float number)
+    {
+        return Mathf.Abs(number);
+    }
+    public static int Abs(this int number)
+    {
+        return Mathf.Abs(number);
+    }
+    public static float Sign(this float number)
+    {
+        return (int)Mathf.Sign(number);
+    }
+    public static int Sign(this int number)
+    {
+        return (int)Mathf.Sign(number);
+    }
     
     public static float FloatMultiLerp(IList<float> map, float value, bool cycle = false)
     { // Most Multilerp code was created by Vigaro, ask Vigaro if you can use them in your own work

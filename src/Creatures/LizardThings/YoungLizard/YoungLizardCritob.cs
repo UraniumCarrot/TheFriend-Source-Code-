@@ -7,7 +7,7 @@ using Fisobs.Sandbox;
 using MoreSlugcats;
 using UnityEngine;
 using RWCustom;
-using TheFriend.DragonRideThings;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 
 namespace TheFriend.Creatures.LizardThings.YoungLizard;
 public class YoungLizardCritob : Critob
@@ -93,9 +93,7 @@ public class YoungLizardCritob : Critob
     public override ItemProperties Properties(Creature crit)
     {
         if (crit is Lizard youngLizard)
-        {
             return new YoungLizardProperties(youngLizard);
-        }
         return null;
     }
 
@@ -107,8 +105,8 @@ public class YoungLizardCritob : Critob
             Custom.WrappedRandomVariation(0.1f, 1f, 1f), 
             1f, 
             Custom.ClampedRandomVariation(0.8f, 0.2f, 0f));
-        AbstractCreature creature = self.abstractCreature;
-        self.GetLiz().IsRideable = false;
+        self.Liz().RideEnabled = false;
+        self.Liz().blockCosmetics = true;
         Random.state = state;
     }
 

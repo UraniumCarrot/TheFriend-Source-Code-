@@ -4,8 +4,6 @@ using BepInEx;
 using SlugBase.Features;
 using static SlugBase.Features.FeatureTypes;
 using System.Security.Permissions;
-using MonoMod.Cil;
-using Mono.Cecil.Cil;
 using Fisobs.Core;
 using System.Security;
 using TheFriend.WorldChanges;
@@ -20,13 +18,13 @@ using bod = Player.BodyModeIndex;
 using TheFriend.Creatures.PebblesLLCreature;
 using TheFriend.Creatures.LizardThings;
 using TheFriend.Creatures.SnowSpiderCreature;
-using TheFriend.DragonRideThings;
 using TheFriend.SlugcatThings;
 using TheFriend.HudThings;
 using TheFriend.Expedition;
 using TheFriend.RemixMenus;
 using TheFriend.Creatures.FamineCreatures;
 using TheFriend.CharacterThings.NoirThings;
+using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.Creatures.LizardThings.MotherLizard;
 using TheFriend.Creatures.LizardThings.PilgrimLizard;
 using TheFriend.Creatures.LizardThings.YoungLizard;
@@ -50,7 +48,6 @@ namespace TheFriend
 
         public static readonly PlayerFeature<float> SuperJump = PlayerFloat("friend/super_jump");
         public static readonly PlayerFeature<float> SuperCrawl = PlayerFloat("friend/super_crawl");
-        public static readonly PlayerFeature<bool> SuperSlide = PlayerBool("friend/super_slide");
         public static readonly PlayerFeature<bool> FriendHead = PlayerBool("friend/friendhead");
         public static readonly PlayerFeature<bool> IsFriendChar = PlayerBool("friend/is_the_friend");
         public static readonly PlayerFeature<bool> CustomTail = PlayerBool("friend/fancytail");
@@ -64,46 +61,6 @@ namespace TheFriend
             LogSource = Logger;
             On.RainWorld.OnModsInit += RainWorldOnOnModsInit;
             On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
-
-            // Misc IL
-            IL.Player.ThrowObject += Player_ThrowObject;
-            IL.Player.UpdateAnimation += ilcontext =>
-            {
-                var cursor = new ILCursor(ilcontext);
-                if (!cursor.TryGotoNext(MoveType.Before, i => i.MatchLdcR4(18.1f)))
-                {
-                    return;
-                }
-
-                cursor.MoveAfterLabels();
-                cursor.RemoveRange(2);
-                cursor.Emit(OpCodes.Ldarg_0);
-                cursor.EmitDelegate((Player player) =>
-                {
-                    if (player != null)
-                    {
-                        return 14f;
-                    }
-                    else
-                    {
-                        return 18.1f;
-                    }
-                });
-                cursor.Emit(OpCodes.Stloc, 24);
-                cursor.Emit(OpCodes.Ldarg_0);
-                cursor.EmitDelegate((Player player) =>
-                {
-                    if (SuperSlide.TryGet(player, out bool slideup) && slideup)
-                    {
-                        return 22f;
-                    }
-                    else
-                    {
-                        return 28f;
-                    }
-                });
-                cursor.Emit(OpCodes.Stloc, 25);
-            };
 
             On.RainWorld.OnModsDisabled += (orig, self, newlyDisabledMods) =>
             {
@@ -227,37 +184,6 @@ namespace TheFriend
             DelugeSounds.LoadSounds();
             NoirCatto.LoadSounds();
             NoirCatto.LoadAtlases();
-        }
-
-        public static void Player_ThrowObject(ILContext il)
-        {
-            var cursor = new ILCursor(il);
-
-            if (!cursor.TryGotoNext(MoveType.Before, i => i.MatchLdsfld<Player.AnimationIndex>("Flip")))
-            {
-                return;
-            }
-
-            if (!cursor.TryGotoNext(MoveType.Before, i => i.MatchLdloc(1)))
-            {
-                return;
-            }
-
-            cursor.MoveAfterLabels();
-
-            cursor.Emit(OpCodes.Ldarg_0);
-            cursor.EmitDelegate<Func<Player, bool>>(player =>
-            {
-                return (IsFriendChar.TryGet(player, out var isFriend) && 
-                        isFriend && 
-                        player.bodyChunks[1].ContactPoint.y != -1 && 
-                        !(player.bodyMode == Player.BodyModeIndex.Crawl || 
-                          player.standing)) 
-                       || 
-                       (player.grasps[0]?.grabbed is LittleCracker ||
-                        (player.grasps[0]?.grabbed == null && player.grasps[1]?.grabbed is LittleCracker));
-            });
-            cursor.Emit(OpCodes.Or);
         }
         #endregion
 

@@ -24,7 +24,6 @@ public class SlugcatGraphics
     {
         On.PlayerGraphics.ApplyPalette += PlayerGraphics_ApplyPalette;
         On.PlayerGraphics.Update += PlayerGraphics_Update;
-        On.Player.GraphicsModuleUpdated += Player_GraphicsModuleUpdated;
         On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
@@ -36,31 +35,9 @@ public class SlugcatGraphics
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
     public static readonly SlugcatStats.Name DelugeName = Plugin.DelugeName;
     public static readonly SlugcatStats.Name BelieverName = Plugin.BelieverName;
-
-    public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)
-    { // Spear pointing while riding a lizard
-        orig(self, actuallyViewed, eu);
-        if (self == null) return;
-        try
-        {
-            if (self.GetGeneral().dragonSteed != null && self.GetGeneral().isRidingLizard)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    if (self.grasps[i] != null && self.grasps[i]?.grabbed != null && self.grasps[i]?.grabbed is Weapon)
-                    {
-                        float rotation = (i == 1) ? self.GetGeneral().pointDir1 + 90 : self.GetGeneral().pointDir0 + 90f;
-                        Vector2 vec = Custom.DegToVec(rotation);
-                        (self.grasps[i]?.grabbed as Weapon).setRotation = vec; //new Vector2(self.input[0].x*10, self.input[0].y*10);
-                        (self.grasps[i]?.grabbed as Weapon).rotationSpeed = 0f;
-                    }
-                }
-            }
-        }
-        catch (Exception e) { Debug.Log("Solace: Exception occurred in Player.GraphicsModuleUpdated" + e); }
-    }
+    
     public static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
-    { // Friend cosmetic movement
+    { // Cosmetic movement
         orig(self);
         if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendGraphicsUpdate(self);
@@ -69,16 +46,14 @@ public class SlugcatGraphics
             UnityEngine.Random.value > self.player.room.world.rainCycle.RainApproaching &&
             UnityEngine.Random.value < 1f / 102f &&
             (self.player.room.roomSettings.DangerType == DangerType.FloodAndAerie)) 
-            CharacterTools.LookAtRain(self);
+            self.LookAtRain();
     }
     
     public static Color GraphicsModule_HypothermiaColorBlend(On.GraphicsModule.orig_HypothermiaColorBlend orig, GraphicsModule self, Color oldCol)
     { // Poacher hypothermia color fix
         if (self.owner is Player player)
-        {
             if (player.TryGetPoacher(out _))
                 return PoacherGraphics.PoacherHypothermiaColor(player, oldCol);
-        }
         return orig(self, oldCol);
     }
     
@@ -97,7 +72,6 @@ public class SlugcatGraphics
         
         else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverSpritesInit(self, sLeaser, rCam);
-        
     }
     public static void PlayerGraphics_ApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
@@ -107,7 +81,6 @@ public class SlugcatGraphics
         
         else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverPalette(self,sLeaser,rCam,palette);
-        
     }
 
     // Fix layering and force to render
@@ -119,7 +92,6 @@ public class SlugcatGraphics
         
         else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverSpritesContainer(self, sLeaser, rCam, newContainer);
-        
     }
     // Implement FriendHead, Poacher graphics
     public static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -135,8 +107,9 @@ public class SlugcatGraphics
         if (self.player.GetGeneral().dragonSteed != null)
         {
             sLeaser.sprites[4].isVisible = false;
+            sLeaser.sprites[0].rotation = 0;
         }
-        
+
         if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendDrawSprites(self, sLeaser, head, legs);
         
@@ -149,7 +122,6 @@ public class SlugcatGraphics
             PoacherGraphics.PoacherAnimator(self, sLeaser, rCam, timeStacker, camPos);
         }
         
-        
-        CharacterTools.Squint(self,sLeaser);
+        self.Squint(sLeaser);
     }
 }

@@ -68,11 +68,10 @@ public class PoacherGraphics
         if (color2 != null) self.player.GetGeneral().customColor2 = color2.Value;
     }
     
-    public static void PoacherFlicker(Player self)
+    public static void PoacherFlicker(Player self, bool stopSound = false)
     {
         self.GetPoacher().flicker = Custom.IntClamp(200 / 3, 3, 15);
-        self.room.PlaySound(SoundID.Lizard_Head_Shield_Deflect, self.firstChunk, false, 1, 1);
-
+        if (!stopSound) self.room.PlaySound(SoundID.Lizard_Head_Shield_Deflect, self.firstChunk, false, 1, 1);
     }
     public static void PoacherThinness(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
@@ -85,7 +84,7 @@ public class PoacherGraphics
         sLeaser.sprites[1].scaleX = 0.8f + self.player.sleepCurlUp * 0.2f + 0.05f * num - 0.05f * self.malnourished;
         for (int i = 0; i < 2; i++)
         {
-            float num9 = 4.5f / ((float)self.hands[i].retractCounter + 1f);
+            float num9 = 4.5f / (self.hands[i].retractCounter + 1f);
             Vector2 vector10 = Vector2.Lerp(self.hands[i].lastPos, self.hands[i].pos, timeStacker);
             Vector2 vector11 = vector + Custom.RotateAroundOrigo(new Vector2((-1f + 2f * (float)i) * (num9 * 0.6f), -3.5f), Custom.AimFromOneVectorToAnother(vector2, vector));
             sLeaser.sprites[5 + i].element = Futile.atlasManager.GetElementWithName("PlayerArm" + Mathf.RoundToInt(Mathf.Clamp(Vector2.Distance(vector10, vector11) / 2f, 0f, 12f)));

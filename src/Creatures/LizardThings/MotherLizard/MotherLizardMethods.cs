@@ -29,10 +29,10 @@ public class MotherLizardMethods
             breedParams.jawOpenAngle = 100f;
             breedParams.jawOpenLowerJawFac = .65f;
             breedParams.jawOpenMoveJawsApart = 18.5f;
-            breedParams.headGraphics = new int[5] { 0, 0, 0, 5, 3 };
+            breedParams.headGraphics = new[] { 0, 0, 0, 5, 3 };
 
             breedParams.standardColor = new(1f, 1f, 1f);
-            breedParams.bodyMass = 10f;
+            breedParams.bodyMass = 12f;
             breedParams.bodySizeFac = 1.8f;
             breedParams.bodyLengthFac = 1.7f;
             breedParams.bodyRadFac = 1f;
@@ -136,8 +136,7 @@ public class MotherLizardMethods
                 relationship.type = CreatureTemplate.Relationship.Type.Ignores;
         }
         if (trackedcreature is Lizard liz && 
-            liz != null && 
-            liz?.Template?.type == CreatureTemplateType.YoungLizard && 
+            liz.Template?.type == CreatureTemplateType.YoungLizard && 
             relationship.type == CreatureTemplate.Relationship.Type.Attacks) 
             relationship.type = CreatureTemplate.Relationship.Type.Ignores;
         
