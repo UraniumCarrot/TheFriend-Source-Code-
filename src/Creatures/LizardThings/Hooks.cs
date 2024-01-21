@@ -148,7 +148,7 @@ public class Hooks
         if (!self.dead && self.LizardState?.health > 0f && self.Template?.type == CreatureTemplateType.YoungLizard)
             self.LizardState.health = Mathf.Min(0.5f, self.LizardState.health + 0.001f); // young lizard health regen
         
-        LizardRideFixes.LizardRideabilityAndSeats(self);
+        if (!self.dead) LizardRideFixes.LizardRideabilityAndSeats(self);
         
         try
         {

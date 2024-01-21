@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TheFriend.Creatures.LizardThings.DragonRideThings;
 
-public class DragonRiderSeat : UpdatableAndDeletable, IDrawable
+public class DragonRiderSeat : UpdatableAndDeletable //IDrawable
 {
     public Vector2 Position() => pos;
     public Lizard host;
@@ -24,6 +24,7 @@ public class DragonRiderSeat : UpdatableAndDeletable, IDrawable
 
     public override void Update(bool eu)
     {
+        if (slatedForDeletetion) return;
         if (host == null || !host.Liz().seats.Contains(this) || host.dead)
         {
             Destroy();
@@ -32,20 +33,16 @@ public class DragonRiderSeat : UpdatableAndDeletable, IDrawable
         pos = Vector2.Lerp(startChunk.pos,endChunk.pos, lerpFactor);
         room = host.room;
     }
-
-    public override void Destroy()
-    {
-        Debug.Log("Solace: Destroying lizard seats");
-        base.Destroy();
-    }
     
     public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
+        if (slatedForDeletetion) return;
         sLeaser.sprites[0].SetPosition(pos - camPos);
     }
 
     public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
+        if (slatedForDeletetion) return;
         sLeaser.sprites = new FSprite[1];
         sLeaser.sprites[0] = new FSprite("Futile_White");
         sLeaser.sprites[0].color = Custom.HSL2RGB(Random.value, 1, 0.5f);
@@ -60,6 +57,7 @@ public class DragonRiderSeat : UpdatableAndDeletable, IDrawable
 
     public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
     {
+        if (slatedForDeletetion) return;
         if (newContainer == null)
             newContainer = rCam.ReturnFContainer("Items");
         newContainer.AddChild(sLeaser.sprites[0]);
