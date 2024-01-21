@@ -5,7 +5,6 @@ using MonoMod.Cil;
 using RWCustom;
 using SlugBase;
 using TheFriend.CharacterThings.BelieverThings;
-using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
 using TheFriend.DragonRideThings;
 using TheFriend.FriendThings;
@@ -139,10 +138,7 @@ public class SlugcatGameplay
         
         if (self.TryGetFriend(out _))
             FriendGameplay.FriendUpdate(self, eu);
-        
-        if (self.TryGetDeluge(out _))
-            DelugeGameplay.DelugeUpdate(self, eu);
-        
+
         //var coord = self.abstractCreature.pos;
         //Debug.Log("Your room coordinate is: room " + coord.room + ", x " + coord.x + ", y " + coord.y + ", abstractNode " + coord.abstractNode);
         // Moon mark
@@ -224,9 +220,6 @@ public class SlugcatGameplay
             
             if (self.TryGetPoacher(out _))
                 PoacherGameplay.PoacherConstructor(self);
-            
-            if (self.TryGetDeluge(out _))
-                DelugeGameplay.DelugeConstructor(self);
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
     }
@@ -249,8 +242,6 @@ public class SlugcatGameplay
             PoacherGameplay.PoacherJump(self);
         else if (isFriend)
             FriendGameplay.FriendJump2(self);
-        else if (self.TryGetDeluge(out _)) 
-            DelugeGameplay.DelugeSiezeJump(self);
     }
     public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
     { 
@@ -294,8 +285,5 @@ public class SlugcatGameplay
 
         if (self.TryGetFriend(out _)) 
             FriendGameplay.FriendLeapController(self, timer);
-
-        if (self.TryGetDeluge(out _)) 
-            DelugeGameplay.DelugeSprintCheck(self);
     }
 }

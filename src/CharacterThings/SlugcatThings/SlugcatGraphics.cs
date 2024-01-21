@@ -8,7 +8,6 @@ using MonoMod.Cil;
 using RWCustom;
 using TheFriend.CharacterThings;
 using TheFriend.CharacterThings.BelieverThings;
-using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.FriendThings;
 using UnityEngine;
 using bod = Player.BodyModeIndex;
@@ -34,7 +33,6 @@ public class SlugcatGraphics
 
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
-    public static readonly SlugcatStats.Name DelugeName = Plugin.DelugeName;
     public static readonly SlugcatStats.Name BelieverName = Plugin.BelieverName;
 
     public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)

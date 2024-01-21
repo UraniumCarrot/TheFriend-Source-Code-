@@ -1,5 +1,4 @@
 ﻿using TheFriend.CharacterThings.BelieverThings;
-using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
 using TheFriend.CharacterThings.NoirThings;
 using TheFriend.CharacterThings.NoirThings.HuntThings;
@@ -17,8 +16,7 @@ public class CharacterHooks
         NoirCatto.Apply();
         HuntQuestThings.Apply();
         BelieverHooks.Apply();
-        DelugeHooks.Apply();
-        
+
         SlugcatGameplay.Apply();
         SlugcatGraphics.Apply();
         SensoryHolograms.Apply();
