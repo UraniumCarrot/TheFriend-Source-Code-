@@ -8,7 +8,6 @@ using MonoMod.Cil;
 using RWCustom;
 using TheFriend.CharacterThings;
 using TheFriend.CharacterThings.BelieverThings;
-using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.FriendThings;
 using TheFriend.Objects.SolaceScarfObject;
 using UnityEngine;
@@ -24,7 +23,6 @@ public class SlugcatGraphics
 {
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
-    public static readonly SlugcatStats.Name DelugeName = Plugin.DelugeName;
     public static readonly SlugcatStats.Name BelieverName = Plugin.BelieverName;
     
     public static void PlayerGraphics_Update(PlayerGraphics self)
@@ -127,7 +125,6 @@ public class SlugcatGraphics
         
         return self.symbolNameOff.Contains("noir") || 
                self.symbolNameOff.Contains("poacher") || 
-               self.symbolNameOff.Contains("deluge") || 
                self.symbolNameOff.Contains("believer") || 
                orig(self);
     }
@@ -145,7 +142,6 @@ public class SlugcatGraphics
                 "NoirCatto" => "noir_pup_off",
                 "FriendDragonslayer" => "poacher_pup_off",
                 "FriendBeliever" => "believer_pup_off",
-                "FriendDeluge" => "deluge_pup_off",
                 _ => orig(self)
             };
         }
@@ -160,7 +156,6 @@ public class SlugcatGraphics
             
         if (slugname == Plugin.NoirName) return CharacterThings.NoirThings.NoirCatto.NoirWhite;
         if (slugname == Plugin.DragonName) return Custom.hexToColor("735a7f");
-        if (slugname == Plugin.DelugeName) return Custom.hexToColor("FF6700");
         if (slugname == Plugin.BelieverName) return Custom.hexToColor("FF6600");
         return orig(slugname, reference, playernumber);
     }
@@ -175,7 +170,6 @@ public class SlugcatGraphics
         if (slugname == Plugin.DragonName) return Custom.hexToColor("6d3868");
         if (slugname == Plugin.FriendName || 
             slugname == Plugin.BelieverName) return Custom.hexToColor("101010");
-        if (slugname == Plugin.DelugeName) return Custom.hexToColor("F0F0FF");
         return orig(slugname, reference, playernumber);
     }
     #endregion

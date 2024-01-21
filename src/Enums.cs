@@ -3,20 +3,6 @@ using TheFriend.CharacterThings.NoirThings;
 
 namespace TheFriend;
 
-public static class DataPearlType
-{
-    [AllowNull] public static DataPearl.AbstractDataPearl.DataPearlType DelugePearl = new(nameof(DelugePearl), true);
-
-    public static void UnregisterValues()
-    {
-        if (DelugePearl != null)
-        {
-            DelugePearl.Unregister();
-            DelugePearl = null;
-        }
-    }
-}
-
 public static class DangerType
 {
     [AllowNull] public static RoomRain.DangerType FloodAndAerie = new(nameof(FloodAndAerie), true);

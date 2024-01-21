@@ -40,9 +40,6 @@ public class FriendWorldState
                 self.roomSettings.wetTerrain = false;
                 self.roomSettings.CeilingDrips = 0f;
             }
-            if (DelugeWorldState.Deluge)
-                DelugeWorldState.DelugeRoomSettings(self, game);
-            
         }
     } // Default room settings
     public static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
@@ -58,7 +55,6 @@ public class FriendWorldState
     public static void WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues(On.WorldLoader.orig_ctor_RainWorldGame_Name_bool_string_Region_SetupValues orig, WorldLoader self, RainWorldGame game, SlugcatStats.Name playerCharacter, bool singleRoomWorld, string worldName, Region region, RainWorldGame.SetupValues setupValues)
     {
         FaminePlayer(game);
-        DelugeWorldState.DelugeWorld(game);
         if (game != null)
         {
             FamineWorld.HasFamines(game);

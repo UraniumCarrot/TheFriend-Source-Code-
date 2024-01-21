@@ -22,7 +22,6 @@ using TheFriend.Expedition;
 using TheFriend.HudThings;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.Objects.BoulderObject;
-using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.WorldChanges;
@@ -292,24 +291,6 @@ namespace TheFriend
                 On.Player.MovementUpdate += FriendCrawlTurn.PlayerOnMovementUpdate;
                 IL.Player.ThrowObject += CharacterThings.FriendThings.FriendGameplay.Player_ThrowObject;
                 #endregion
-                #region Deluge
-                On.DataPearl.ctor += DelugePearlMechanics.DataPearlOnctor;
-                On.DataPearl.DrawSprites += DelugePearlGraphics.DataPearlOnDrawSprites;
-                On.DataPearl.Update += DelugePearlMechanics.DataPearlOnUpdate;
-                On.PhysicalObject.Grabbed += DelugePearlMechanics.PhysicalObjectOnGrabbed;
-                On.Player.NewRoom += DelugePearlMechanics.PlayerOnNewRoom;
-                On.SaveState.SessionEnded += DelugePearlMechanics.SaveStateOnSessionEnded;
-                
-                ColdRoom.ColdBreath.Update += DelugeWorldState.ColdBreathOnUpdate;
-                On.RoofTopView.DustpuffSpawner.DustPuff.Update += DelugeWorldState.DustPuffOnUpdate;
-                On.Room.ctor += DelugeWorldState.RoomOnctor;
-                On.Room.Update += DelugeWorldState.RoomOnUpdate;
-                On.FlyAI.RoomNotACycleHazard += DelugeWorldState.FlyAIOnRoomNotACycleHazard;
-                // Shaded Citadel hooks
-                IL.Creature.HypothermiaUpdate += DelugeWorldState.CreatureOnHypothermiaUpdate;
-                
-                On.DeafLoopHolder.Update += CharacterThings.DelugeThings.DelugeGameplay.DeafLoopHolderOnUpdate;
-                #endregion
                 #endregion
                 
                 #region SolaceCustom
@@ -358,7 +339,6 @@ namespace TheFriend
                 On.Player.Grabability += (orig, player, obj) =>
                 {
                     Player.ObjectGrabability? result = SlugcatGameplay.Player_Grabability(player, obj);
-                    result ??= DelugePearlMechanics.PlayerOnGrabability(player, obj);
                     return result ?? orig(player, obj);
                 };
                 On.Player.GraphicsModuleUpdated += (orig, player, actuallyviewed, eu) =>
@@ -390,7 +370,6 @@ namespace TheFriend
                     orig(self, eu);
                     SlugcatGameplay.Player_Update(self, eu);
                     NoirCatto.PlayerOnUpdate(self, eu);
-                    DelugePearlMechanics.PlayerOnUpdate(self, eu);
                     SaveThings.SolaceSaveData.PlayerOnUpdate(self, eu);
                 };
                 On.Player.UpdateBodyMode += (orig, self) =>
