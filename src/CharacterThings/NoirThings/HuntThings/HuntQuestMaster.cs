@@ -87,7 +87,7 @@ public partial class HuntQuestThings
         {
             var huntedCreatures = new List<AbstractCreature>();
 
-            foreach (var weakref in _huntedCreatures)
+            foreach (var weakref in _huntedCreatures.ToArray())
             {
                 if (weakref.Target is not AbstractCreature crit)
                     _huntedCreatures.Remove(weakref);
