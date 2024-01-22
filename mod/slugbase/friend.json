@@ -22,7 +22,6 @@
 		"friend/friendhead": true,
 		"friend/super_jump": 0.5,
 		"friend/super_crawl": 3.5,
-		"friend/super_slide": true,
 		"friend/maul": true,
 		"friend/is_the_friend": true,
 		
