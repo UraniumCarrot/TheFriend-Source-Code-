@@ -7,9 +7,32 @@ namespace TheFriend;
 
 public partial class Extensions
 {
+    public static Color RandomRGB(float r = 0, float g = 0, float b = 0)
+    {
+        r = r == 0 ? UnityEngine.Random.value : r;
+        g = g == 0 ? UnityEngine.Random.value : g;
+        b = b == 0 ? UnityEngine.Random.value : b;
+        return new Color(r, g, b);
+    }
+    public static Vector3 RandomHSL(float h = 0, float s = 0, float l = 0)
+    {
+        h = h == 0 ? UnityEngine.Random.value : h;
+        s = s == 0 ? UnityEngine.Random.value : s;
+        l = l == 0 ? UnityEngine.Random.value : l;
+        return new Vector3(h,s,l);
+    }
+    
     public static float Hue(this Color color)
     {
         return Custom.RGB2HSL(color).x;
+    }
+    public static float Sat(this Color color)
+    {
+        return Custom.RGB2HSL(color).y;
+    }
+    public static float Lit(this Color color)
+    {
+        return Custom.RGB2HSL(color).z;
     }
 
     public static void ChangeHue(this ref Color color, float newHue)

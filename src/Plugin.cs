@@ -30,6 +30,7 @@ using TheFriend.Creatures.LizardThings.PilgrimLizard;
 using TheFriend.Creatures.LizardThings.YoungLizard;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
+using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.SaveThings;
 using UnityEngine;
 
@@ -136,6 +137,7 @@ namespace TheFriend
                 Content.Register(new BoulderFisob());
                 Content.Register(new LittleCrackerFisob());
                 Content.Register(new BoomMineFisob());
+                Content.Register(new SolaceScarfFisob());
             }
             catch (Exception ex)
             {

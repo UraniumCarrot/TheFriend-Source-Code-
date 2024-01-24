@@ -34,8 +34,15 @@ public class FriendWorldState
         On.FireFly.ctor += FireFly_ctor;
         On.CreatureCommunities.InfluenceCell += CreatureCommunitiesOnInfluenceCell;
         On.CreatureCommunities.LoadDefaultCommunityAlignments += CreatureCommunitiesOnLoadDefaultCommunityAlignments;
+        On.RoomSpecificScript.SU_A43SuperJumpOnly.Update += SU_A43SuperJumpOnlyOnUpdate;
     }
-    
+
+    public static void SU_A43SuperJumpOnlyOnUpdate(On.RoomSpecificScript.SU_A43SuperJumpOnly.orig_Update orig, RoomSpecificScript.SU_A43SuperJumpOnly self, bool eu)
+    { // Cure for that ANNOYING outskirts room that forces you to leap.
+        orig(self, eu);
+        if (SolaceWorldstate) self.Destroy();
+    }
+
     public static void Room_SlugcatGamemodeUniqueRoomSettings(On.Room.orig_SlugcatGamemodeUniqueRoomSettings orig, Room self, RainWorldGame game)
     {
         orig(self, game);

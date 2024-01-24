@@ -10,6 +10,7 @@ using TheFriend.CharacterThings;
 using TheFriend.CharacterThings.BelieverThings;
 using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.FriendThings;
+using TheFriend.Objects.SolaceScarfObject;
 using UnityEngine;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
@@ -121,7 +122,14 @@ public class SlugcatGraphics
             PoacherGraphics.PoacherThinness(self, sLeaser, rCam, timeStacker, camPos);
             PoacherGraphics.PoacherAnimator(self, sLeaser, rCam, timeStacker, camPos);
         }
-        
+        self.player.GetGeneral().scarfPos = Vector2.Lerp(sLeaser.sprites[0].GetPosition(),sLeaser.sprites[1].GetPosition(),0.4f);
+        self.player.GetGeneral().scarfRotation = head.rotation;
+        self.player.GetGeneral().head = sLeaser.sprites[3];
+        if (self.player.abstractCreature.stuckObjects.Exists(x => x.A.realizedObject is SolaceScarf || x.B.realizedObject is SolaceScarf))
+        {
+            sLeaser.sprites[5].MoveBehindOtherNode(sLeaser.sprites[0]);
+            sLeaser.sprites[6].MoveBehindOtherNode(sLeaser.sprites[0]);
+        }
         self.Squint(sLeaser);
     }
 }

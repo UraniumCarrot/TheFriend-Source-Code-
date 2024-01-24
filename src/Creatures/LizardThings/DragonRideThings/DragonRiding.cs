@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using RWCustom;
+using TheFriend.Objects;
 using TheFriend.SlugcatThings;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,20 +10,6 @@ namespace TheFriend.Creatures.LizardThings.DragonRideThings;
 
 public class DragonRiding
 {
-    public class AbstractDragonRider : AbstractPhysicalObject.AbstractObjectStick
-    {
-        public AbstractPhysicalObject self
-        {
-            get => A;
-            set => A = value;
-        }
-        public AbstractPhysicalObject obj
-        {
-            get => B;
-            set => B = value;
-        }
-        public AbstractDragonRider(AbstractPhysicalObject self, AbstractPhysicalObject obj) : base(self, obj) { }
-    }
     public static void DragonRiderSafety(Player self, Creature crit, Vector2 seat, bool eu)
     {
         if (crit.TryGetLiz(out var data)) 
@@ -31,7 +18,7 @@ public class DragonRiding
         for (int i = 0; i < self.grasps?.Length; i++)
             if (self.grasps[i]?.grabbed == crit) self.grasps[i].Release();
         
-        self.GetGeneral().rideStick ??= new AbstractDragonRider(self.abstractPhysicalObject, crit.abstractPhysicalObject); // Make player and lizard go through rooms in sync
+        self.GetGeneral().rideStick ??= new GenericObjectStick(self.abstractPhysicalObject, crit.abstractPhysicalObject); // Make player and lizard go through rooms in sync
         self.GetGeneral().isRidingLizard = true;
         
         if (!self.standing && self.animation != Player.AnimationIndex.None && self.bodyMode != Player.BodyModeIndex.Stand) self.Jump();

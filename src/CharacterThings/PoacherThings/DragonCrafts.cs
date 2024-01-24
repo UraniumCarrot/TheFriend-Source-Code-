@@ -8,6 +8,7 @@ using System.Linq;
 using ObjType = AbstractPhysicalObject.AbstractObjectType;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.BoomMineObject;
+using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.SlugcatThings;
 using TheFriend.WorldChanges;
 
@@ -107,10 +108,14 @@ public class DragonCrafts
     public static bool Player_GraspsCanBeCrafted(On.Player.orig_GraspsCanBeCrafted orig, Player self)
     {
         if (self.slugcatStats.name == Plugin.DragonName && self.input[0].y > 0) return true;
+        //if (self.grasps.Any(x => x?.grabbed is SolaceScarf)) return SolaceScarfDyes.SolaceScarfCanDyeCheck(self);
         return orig(self);
     }
     public static void Player_SpitUpCraftedObject(On.Player.orig_SpitUpCraftedObject orig, Player self)
     {
+        //if (self.grasps.Any(x => x?.grabbed is SolaceScarf) && SolaceScarfDyes.SolaceScarfCanDyeCheck(self))
+        //{ SolaceScarfDyes.SolaceScarfDye(self); return; }
+        
         if (self.slugcatStats.name != Plugin.DragonName) { orig(self); return; }
         int vargrasp = self.grasps[1]?.grabbed is FirecrackerPlant || self.grasps[1]?.grabbed is BoomMine ? 1 : 0;
         var vargraspmat = self.grasps[vargrasp]?.grabbed;

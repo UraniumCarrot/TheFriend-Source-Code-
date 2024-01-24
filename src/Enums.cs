@@ -88,6 +88,7 @@ public static class AbstractObjectType
     [AllowNull] public static AbstractPhysicalObject.AbstractObjectType LittleCracker = new(nameof(LittleCracker), true);
     [AllowNull] public static AbstractPhysicalObject.AbstractObjectType Boulder = new(nameof(Boulder), true);
     [AllowNull] public static AbstractPhysicalObject.AbstractObjectType BoomMine = new(nameof(BoomMine), true);
+    [AllowNull] public static AbstractPhysicalObject.AbstractObjectType SolaceScarf = new(nameof(SolaceScarf), true);
     public static void UnregisterValues()
     {
         if (LittleCracker != null)
@@ -104,6 +105,11 @@ public static class AbstractObjectType
         {
             BoomMine.Unregister();
             BoomMine = null;
+        }
+        if (SolaceScarf != null)
+        {
+            SolaceScarf.Unregister();
+            SolaceScarf = null;
         }
     }
 }

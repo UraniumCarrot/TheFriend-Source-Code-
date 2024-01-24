@@ -9,6 +9,7 @@ using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.FriendThings;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.Objects.FakePlayerEdible;
+using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.PoacherThings;
 using UnityEngine;
 using bod = Player.BodyModeIndex;
@@ -88,6 +89,9 @@ public class SlugcatGameplay
 
     public static Player.ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     { 
+        if (obj is SolaceScarf scarf) 
+            if (scarf.wearer != null) return Player.ObjectGrabability.CantGrab;
+            else return Player.ObjectGrabability.OneHand;
         if (obj is Lizard liz)
         { // Lizard grabability for dragonriding and young lizards
             var grab = LizardRideFixes.LizardGrabability(self, liz);
@@ -133,7 +137,7 @@ public class SlugcatGameplay
             self.GetGeneral().MarkExhaustion--;
             self.exhausted = true;
             self.aerobicLevel = (self.slugcatStats.bodyWeightFac < 0.5f) ? 1.5f : 1.1f;
-            (self.graphicsModule as PlayerGraphics).head.vel += Custom.RNV() * 0.2f;
+            (self.graphicsModule as PlayerGraphics)!.head.vel += Custom.RNV() * 0.2f;
         }
         
         // Dragonriding
@@ -175,6 +179,11 @@ public class SlugcatGameplay
     public static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     { // Friend and Poacher backspears, Poacher cutscene preparation
         orig(self, abstractCreature, world);
+
+        var abstr = new SolaceScarfAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
+        self.room.abstractRoom.AddEntity(abstr);
+        abstr.RealizeInRoom();
+        
         try
         {
             if (self.TryGetFriend(out _))

@@ -2,6 +2,7 @@
 using Color = UnityEngine.Color;
 using OverseerHolograms;
 using TheFriend.Creatures.LizardThings.DragonRideThings;
+using TheFriend.Objects;
 using UnityEngine;
 
 namespace TheFriend.SlugcatThings;
@@ -16,6 +17,10 @@ public static class SlugcatGeneralCWT
         public int customSprite3;
         public Color customColor1;
         public Color customColor2;
+
+        public Vector2 scarfPos;
+        public float scarfRotation;
+        public FNode head;
         
         // General player variables
         public bool squint;
@@ -32,7 +37,7 @@ public static class SlugcatGeneralCWT
         
         
         public readonly Player.InputPackage[] UnchangedInputForLizRide;
-        public DragonRiding.AbstractDragonRider rideStick;
+        public GenericObjectStick rideStick;
         public Lizard dragonSteed;
         public int riderAnimChangeTimer;
         public int glanceDir;
