@@ -22,6 +22,7 @@ public partial class Extensions
         return new Vector3(h,s,l);
     }
     
+    // Retrieve the hsl values of a color
     public static float Hue(this Color color)
     {
         return Custom.RGB2HSL(color).x;
@@ -35,11 +36,44 @@ public partial class Extensions
         return Custom.RGB2HSL(color).z;
     }
 
+    // Change hsl values of an existing color
     public static void ChangeHue(this ref Color color, float newHue)
     {
         var colorHsl = Custom.RGB2HSL(color);
         colorHsl.x = Mathf.Abs(newHue % 1);
         color = colorHsl.HSL2RGB();
+    }
+    public static void ChangeLit(this ref Color color, float newLit)
+    {
+        var colorHsl = Custom.RGB2HSL(color);
+        colorHsl.z = Mathf.Abs(newLit % 1);
+        color = colorHsl.HSL2RGB();
+    }
+    public static void ChangeSat(this ref Color color, float newSat)
+    {
+        var colorHsl = Custom.RGB2HSL(color);
+        colorHsl.y = Mathf.Abs(newSat % 1);
+        color = colorHsl.HSL2RGB();
+    }
+    
+    // Make new colors instead of changing old ones
+    public static Color MakeHue(this ref Color color, float newHue)
+    {
+        var colorHsl = Custom.RGB2HSL(color);
+        colorHsl.x = Mathf.Abs(newHue % 1);
+        return colorHsl.HSL2RGB();
+    }
+    public static Color MakeLit(this Color color, float newLit)
+    {
+        var colorHsl = Custom.RGB2HSL(color);
+        colorHsl.z = Mathf.Abs(newLit % 1);
+        return colorHsl.HSL2RGB();
+    }
+    public static Color MakeSat(this Color color, float newSat)
+    {
+        var colorHsl = Custom.RGB2HSL(color);
+        colorHsl.y = Mathf.Abs(newSat % 1);
+        return colorHsl.HSL2RGB();
     }
 
     public static Color HSL2RGB(this Vector3 colorVec)
