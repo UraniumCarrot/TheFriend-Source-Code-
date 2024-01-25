@@ -5,43 +5,47 @@ using MoreSlugcats;
 using RWCustom;
 using TheFriend.Objects.LittleCrackerObject;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TheFriend.Objects.SolaceScarfObject;
 
 public class SolaceScarfDyes
 {
-    /*public static void Apply()
+    public static void Apply()
     {
-        new Hook(typeof())
+        On.Player.ObjectEaten += PlayerOnObjectEaten;
+    }
+
+    public static void PlayerOnObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible edible)
+    {
+        if (self.craftingObject && self.grasps.Any(x => x?.grabbed is SolaceScarf)) return;
+        orig(self, edible);
     }
 
     public static bool SolaceScarfCanDyeCheck(Player self)
     {
-        if (self.grasps.Any(x => x?.grabbed?.abstractPhysicalObject is AbstractConsumable))
-        {
-            var grasp = self.grasps.IndexOf(self.grasps.First(x => x?.grabbed?.abstractPhysicalObject is AbstractConsumable));
-            var item = self.grasps[grasp].grabbed;
-            if (item is IPlayerEdible edible)
-                switch (edible)
-                {
-                    case VultureGrub grub: return grub.dead;
-                    case Hazer hazer: return hazer.dead && hazer.hasSprayed;
-                    case Centipede centi: return centi.dead;
-                    case GooieDuck duck: return duck.bites < 2;
-                    case SwollenWaterNut nut: return nut.bites > 1;
-                    default: return true;
-                }
-            else if (self.CanBeSwallowed(item))
-                switch (item)
-                {
-                    case BubbleGrass: return false;
-                    case SingularityBomb: return false;
-                    case Rock and not LittleCracker: return false;
-                    case NSHSwarmer: return false;
-                    case ScavengerBomb: return false;
-                    default: return true;
-                }
-        }
+        var grasp = self.grasps.IndexOf(self.grasps.First(x => x?.grabbed is not SolaceScarf));
+        var item = self.grasps[grasp].grabbed;
+        if (item is IPlayerEdible edible)
+            switch (edible)
+            {
+                case VultureGrub grub: return grub.dead;
+                case Hazer hazer: return hazer.dead && hazer.hasSprayed;
+                case Centipede centi: return centi.dead;
+                case GooieDuck duck: return duck.bites < 2;
+                case SwollenWaterNut nut: return nut.bites > 1;
+                default: return true;
+            }
+        else if (self.CanBeSwallowed(item))
+            switch (item)
+            {
+                case BubbleGrass: return false;
+                case SingularityBomb: return false;
+                case Rock and not LittleCracker: return false;
+                case NSHSwarmer: return false;
+                case ScavengerBomb: return false;
+                default: return true;
+            }
         return false;
     }
 
@@ -57,33 +61,28 @@ public class SolaceScarfDyes
         
         List<Color> colors = SolaceScarfDyeColor(item);
         if (item is IPlayerEdible edible)
+        {
+            edible.BitByPlayer(self.grasps[itemInd], true);
             switch (edible)
             {
-                case SlimeMold mold: if (colors[0] != Color.black) scarf.Abstr.IGlow += 1; mold.bites--; break;
-                case LillyPuck puck: scarf.Abstr.IGlow += 2; puck.AbstrLillyPuck.bites--; break;
-                case GlowWeed weed: scarf.Abstr.IGlow += 2; weed.bites--; break;
-                case SwollenWaterNut nut: scarf.Abstr.IGlow = 0; scarf.Abstr.IBurn = 0; nut.bites--; break;
-                case FireEgg fire: scarf.Abstr.IBurn += 3; fire.bites--; break;
-                
-                case DangleFruit fruit: fruit.bites--; break;
-                case GooieDuck duck: duck.bites--; break;
-                case OracleSwarmer neur: neur.bites--; break;
-                case JellyFish fish: fish.bites--; break;
-                case DandelionPeach peach: peach.bites--; break;
-                case Hazer hazer: hazer.bites--; break;
-                case VultureGrub grub: grub.bites--; break;
-                case Fly fly: fly.bites--; break;
-                case Centipede pede: pede.bites--; break;
-                case EggBugEgg egg: egg.bites--; break;
+                case SlimeMold: if (colors[0] != Color.black) scarf.Abstr.IGlow += 1; break;
+                case LillyPuck: scarf.Abstr.IGlow += 2; break;
+                case GlowWeed: scarf.Abstr.IGlow += 2; break;
+                case SwollenWaterNut: scarf.Abstr.IGlow = 0; scarf.Abstr.IBurn = 0; break;
+                case FireEgg: scarf.Abstr.IBurn += 3; break;
+                case OracleSwarmer: scarf.Abstr.IGlow += 2; break;
             }
+        }
         
         else if (self.CanBeSwallowed(item))
+        {
             switch (item)
             {
                 case FirecrackerPlant or LittleCracker: scarf.Abstr.IBurn += 3; break;
                 case FlareBomb: scarf.Abstr.IGlow += 1; break;
                 case Lantern: scarf.Abstr.IGlow += 5; break;
             }
+        }
 
         if (scarf.Abstr.IGlow > 10) scarf.Abstr.IGlow = 10;
         if (scarf.Abstr.IBurn > 10) scarf.Abstr.IBurn = 10;
@@ -94,8 +93,7 @@ public class SolaceScarfDyes
         scarf.color = colors[0];
         scarf.highlightColor = colors[1];
     }
-
-
+    
     public static List<Color> SolaceScarfDyeColor(PhysicalObject obj)
     {
         List<Color> list;
@@ -163,5 +161,43 @@ public class SolaceScarfDyes
         Debug.Log("Solace: Dye item did not have an associated color, returning magenta");
         list = [Color.magenta, Color.magenta];
         return list;
-    }*/
+    }
+
+    public static void SolaceScarfDyeSplat(PhysicalObject obj, List<Color> color)
+    {
+        int missingColors = color.FindAll(x => x == Color.black).Count;
+        bool watery = false;
+        Color? col;
+        if (missingColors == 2) col = null;
+        else if (missingColors == 1) col = color.Find(x => x != Color.black);
+        else col = Color.black;
+        
+        if (obj is IPlayerEdible)
+        {
+            obj.room.PlaySound(SoundID.Swollen_Water_Nut_Terrain_Impact, obj.firstChunk.pos);
+            watery = true;
+        }
+        else
+        {
+            obj.room.PlaySound(SoundID.Snail_Warning_Click, obj.firstChunk.pos);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            if (col != null) 
+            {
+                if (col == Color.black) col = (Random.value > 0.5f) ? color[0] : color[1];
+                obj.room.AddObject(
+                new Spark(
+                    obj.bodyChunks[0].pos, 
+                    Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value),
+                    col.Value,null,
+                    7,17));
+            }
+            if (watery) obj.room.AddObject(
+                new WaterDrip(
+                    obj.firstChunk.pos, 
+                    Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), 
+                    waterColor: true));
+        }
+    }
 }

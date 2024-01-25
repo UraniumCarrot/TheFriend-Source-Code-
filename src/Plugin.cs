@@ -115,6 +115,7 @@ namespace TheFriend
                 Hooks.Apply();
                 SnowSpiderGraphics.Apply();
                 PebblesLL.Apply();
+                SolaceScarfDyes.Apply();
 
                 HudHooks.Apply();
                 MotherKillTracker.Apply();
