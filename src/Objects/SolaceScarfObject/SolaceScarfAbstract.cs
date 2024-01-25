@@ -39,6 +39,16 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
     
     public override string ToString()
     {
-        return this.SaveToString($"{mr};{mg};{mb};{hr};{hg};{hb};{wearerID};{regionOrigin};{IGlow};{IBurn}");
+        return this.SaveToString($"" +
+                                 $"{mr};" +
+                                 $"{mg};" +
+                                 $"{mb};" +
+                                 $"{hr};" +
+                                 $"{hg};" +
+                                 $"{hb};" +
+                                 $"{wearerID};" +
+                                 $"{regionOrigin};" +
+                                 $"{IGlow};" +
+                                 $"{IBurn}");
     }
 }

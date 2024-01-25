@@ -204,6 +204,8 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         {
             var a = grabbedBy.Find(x => x.grabbed == this);
             var grabber = a.grabber;
+            if (wearer != null) 
+                grabber.ReleaseGrasp(grabber.grasps.IndexOf(a));
             if (grabber != null) 
                 if (grabber is Player player) GrabbedUpdate(player);
         }
@@ -308,7 +310,8 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         {
             if (player.FreeHand() != -1 && 
                 player.objectInStomach == null && 
-                !imHoldingFood)
+                !player.craftingObject &&
+                !(imHoldingFood && player.FoodInStomach < player.MaxFoodInStomach))
                 grabTimer++;
             else grabTimer = 0;
         }
@@ -332,13 +335,20 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
             light = new LightSource(firstChunk.pos, false, highlightColor, this)
             { affectedByPaletteDarkness = 0.5f };
             room.AddObject(light);
+            Debug.Log("Solace: Making scarf light");
         }
         else if (light != null)
         {
-            light.color = highlightColor;
+            light.color = Color.Lerp(light.color,highlightColor,0.05f);
             light.setPos = firstChunk.pos;
-            light.setRad = Abstr.IGlow * 25;
-            if (light.slatedForDeletetion || light.room != room || Abstr.IGlow <= 0) light = null;
+            if (light.rad == 0) light.setRad = Abstr.IGlow * 15;
+            else light.setRad = Mathf.Lerp(light.rad,Abstr.IGlow * 15,0.05f);
+            light.setAlpha = 1;
+            if (light.slatedForDeletetion || light.room != room || Abstr.IGlow <= 0)
+            {
+                Debug.Log("Solace: Destroying scarf light");
+                light = null;
+            }
         }
     }
 

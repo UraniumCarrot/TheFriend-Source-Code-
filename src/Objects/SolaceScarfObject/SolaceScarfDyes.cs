@@ -57,10 +57,13 @@ public class SolaceScarfDyes
         var item = self.grasps[itemInd].grabbed;
         var scarf = self.grasps[scarfInd].grabbed as SolaceScarf;
 
-        if (scarf.Abstr.IBurn>0) scarf.Abstr.IBurn--;
-        if (scarf.Abstr.IGlow>0) scarf.Abstr.IGlow--;
+        if (scarf == null) {Debug.Log("Solace: Scarf dyeing failed!");return;}
+
+        if (scarf.Abstr.IBurn > 0) scarf.Abstr.IBurn--;
+        if (scarf.Abstr.IGlow > 0) scarf.Abstr.IGlow--;
         
         List<Color> colors = SolaceScarfDyeColor(item);
+        SolaceScarfDyeSplat(item, colors);
         if (item is IPlayerEdible edible)
         {
             edible.BitByPlayer(self.grasps[itemInd], true);
@@ -80,8 +83,19 @@ public class SolaceScarfDyes
             switch (item)
             {
                 case FirecrackerPlant or LittleCracker: scarf.Abstr.IBurn += 3; break;
-                case FlareBomb: scarf.Abstr.IGlow += 1; break;
+                case FlareBomb bomb: scarf.Abstr.IGlow += 1; 
+                    bomb.StartBurn();
+                    break;
                 case Lantern: scarf.Abstr.IGlow += 5; break;
+            }
+
+            if (item is not FlareBomb)
+            {
+                if (self.room?.world.game.IsStorySession == true)
+                    (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(self.grasps[itemInd].grabbed.abstractPhysicalObject);
+                self.grasps[itemInd].grabbed.RemoveFromRoom();
+                self.room?.abstractRoom.RemoveEntity(self.grasps[itemInd].grabbed.abstractPhysicalObject);
+                self.ReleaseGrasp(itemInd);   
             }
         }
 
@@ -93,6 +107,7 @@ public class SolaceScarfDyes
         
         scarf.color = colors[0];
         scarf.highlightColor = colors[1];
+        Debug.Log($"glow {scarf.Abstr.IGlow}, burn {scarf.Abstr.IBurn}");
     }
     
     public static List<Color> SolaceScarfDyeColor(PhysicalObject obj)
@@ -149,8 +164,9 @@ public class SolaceScarfDyes
                 { list = [mold.color, mold.color]; return list; }
             case LillyPuck puck: 
                 list = [puck.flowerColor, puck.flowerColor]; return list;
-            case Lantern lant:
-                list = [lant.color, Color.Lerp(lant.color,Color.white, 0.99f)]; return list;
+            case Lantern:
+                Color col = new Color(1f, 0.2f, 0f);
+                list = [ col.MakeLit(0.99f), col]; return list;
             case FirecrackerPlant or LittleCracker: 
                 list = [Color.red, Color.red]; return list;
             case GlowWeed weed: 
@@ -158,8 +174,12 @@ public class SolaceScarfDyes
             case FireEgg fire: 
                 list = [fire.eggColors[1],fire.eggColors[1]]; return list;
         }
-        
-        Debug.Log("Solace: Dye item did not have an associated color, returning magenta");
+        if (obj is PlayerCarryableItem item)
+        {
+            list = [item.color, item.color];
+            return list;
+        }
+        Debug.Log("Solace: Dye item did not have a proper associated color, returning magenta");
         list = [Color.magenta, Color.magenta];
         return list;
     }
