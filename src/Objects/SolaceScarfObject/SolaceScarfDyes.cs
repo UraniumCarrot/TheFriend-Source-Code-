@@ -24,6 +24,7 @@ public class SolaceScarfDyes
 
     public static bool SolaceScarfCanDyeCheck(Player self)
     {
+        if (self.grasps.Count(x => x.grabbed is SolaceScarf) == 2) return false;
         var grasp = self.grasps.IndexOf(self.grasps.First(x => x?.grabbed is not SolaceScarf));
         var item = self.grasps[grasp].grabbed;
         if (item is IPlayerEdible edible)

@@ -284,13 +284,17 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public int grabTimer;
     public void GrabbedUpdate(Player player)
     {
-        if (player.input[0].pckp && !player.craftingObject) 
+        if (player.input[0].pckp && 
+            !player.craftingObject && 
+            wearer == null && 
+            !player.GetGeneral().wearingAScarf) 
             grabTimer++;
         else grabTimer = 0;
         if (grabTimer > 25)
         {
             wearer = player.abstractCreature;
             Abstr.wearerID = player.abstractCreature.ID.number;
+            player.GetGeneral().wearingAScarf = true;
             player.ReleaseGrasp(player.grasps.IndexOf(player.grasps.First(x => x.grabbed == this)));
             grabTimer = 0;
         }
@@ -317,6 +321,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
             Abstr.wearerID = -10;
             grabTimer = 0;
             wearer = null;
+            player.GetGeneral().wearingAScarf = false;
             player.SlugcatGrab(this,player.FreeHand());
         }
     }

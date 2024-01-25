@@ -20,6 +20,7 @@ public static class SlugcatGeneralCWT
 
         public Vector2 scarfPos;
         public float scarfRotation;
+        public bool wearingAScarf;
         public FNode head;
         
         // General player variables
