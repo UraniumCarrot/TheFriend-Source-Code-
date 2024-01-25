@@ -15,6 +15,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public List<FSprite> spriteList = new List<FSprite>();
     public float maxDarkness;
     public Color highlightColor;
+    public LightSource light;
     
     public Vector2[,] rag = new Vector2[6,6];
     public TriangleMesh ragMesh;
@@ -126,8 +127,9 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         maxDarkness = palette.blackColor.Lit();
         if (color == Color.black) color = new Color(1,0.5f,0);
         spriteList[0].color = color;
+        List<Color> col = [color, highlightColor];
         for (int i = 0; i < ragMesh.verticeColors.Length; i++)
-            (spriteList[1] as TriangleMesh)!.verticeColors[i] = Color.Lerp(color, Color.white, (float)(i-4) / 20);
+            (spriteList[1] as TriangleMesh)!.verticeColors[i] = Extensions.HSLMultiLerp((col), (float)(i-4) / 20);
     }
     public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
@@ -141,10 +143,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         }
         else
         {
-            Color othercol = Custom.HSL2RGB(color.Hue() + 0.05f, 1,
-                (FriendWorldState.SolaceWorldstate) ? 0.999f : color.Lit());
-            
-            List<Color> col = [color, othercol];
+            List<Color> col = [color, highlightColor];
             if (spriteList[0].color != color) spriteList[0].color = color;
                 for (int i = 0; i < ragMesh.verticeColors.Length; i++)
                     (sLeaser.sprites[1] as TriangleMesh)!.verticeColors[i] = Extensions.HSLMultiLerp((col), (float)(i-4) / 20);
@@ -186,6 +185,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public override void Update(bool eu)
     {
         base.Update(eu);
+        LightnessUpdate();
         RagUpdate1();
         RagUpdate2();
         if (wearer != null)
@@ -284,7 +284,8 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public int grabTimer;
     public void GrabbedUpdate(Player player)
     {
-        if (player.input[0].pckp) grabTimer++;
+        if (player.input[0].pckp && !player.craftingObject) 
+            grabTimer++;
         else grabTimer = 0;
         if (grabTimer > 25)
         {
@@ -294,17 +295,16 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
             grabTimer = 0;
         }
     }
-
     public void WearerUpdate(Player player)
     {
         bool imHoldingFood = player.grasps.Any(x => x?.grabbed?.abstractPhysicalObject is AbstractConsumable);
         player.HypothermiaGain -= 0.0005f;
         firstChunk.vel = player.firstChunk.vel;
-        if (player.input[0].pckp)
+        if (player.input[0].pckp && player.input[0].y > 0)
         {
             if (player.FreeHand() != -1 && 
                 player.objectInStomach == null && 
-                !imHoldingFood && player.input[0].pckp)
+                !imHoldingFood)
                 grabTimer++;
             else grabTimer = 0;
         }
@@ -318,6 +318,22 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
             grabTimer = 0;
             wearer = null;
             player.SlugcatGrab(this,player.FreeHand());
+        }
+    }
+    public void LightnessUpdate()
+    {
+        if (light == null && Abstr.IGlow > 0)
+        {
+            light = new LightSource(firstChunk.pos, false, highlightColor, this)
+            { affectedByPaletteDarkness = 0.5f };
+            room.AddObject(light);
+        }
+        else if (light != null)
+        {
+            light.color = highlightColor;
+            light.setPos = firstChunk.pos;
+            light.setRad = Abstr.IGlow * 25;
+            if (light.slatedForDeletetion || light.room != room || Abstr.IGlow <= 0) light = null;
         }
     }
 
