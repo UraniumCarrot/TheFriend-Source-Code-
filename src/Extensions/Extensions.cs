@@ -116,6 +116,38 @@ public static partial class Extensions
 
         return Vector3.Lerp(newMap[a], newMap[b], lerpValue);
     }
+    
+    /// <summary>
+    /// Performs a lerp from a to b using t, but goes the opposite way than normal, wrapping around the boundary
+    /// </summary>
+    /// <param name="a">the value to lerp from</param>
+    /// <param name="b">the value to lerp to</param>
+    /// <param name="t">The the "progress" of the lerp (0-1)</param>
+    /// <param name="max_value">The point at which the lerp should wrap around</param>
+    /// <remarks>
+    /// <para>normal lerp:  a = 20, b = 80 would go 20>40>50>60>80</para>
+    /// <para>rev lerp: a = 20, b = 80, max_value = 100 would go 20>10>00>90>80</para>
+    /// <para>Only works for value ranges that start at 0 and go to "max_value".</para>
+    /// </remarks>
+    public static float ReverseLerp(float a, float b, float t, float max_value)
+    {
+        // get the distance between "a" and "b", but going opposite way than normal and looping around
+        // do this by getting the normal lerp distance and subtracting that from the max value
+        var maxDisplacement = max_value - (b - a);
+
+        // Calculate how much we are actually going to move based on t
+        var lerpDistance = maxDisplacement * Mathf.Clamp01(t);
+
+        // Add max_value to the starting term
+        // this is needed because the modulo operator does not wrap around when going to negative numbers, it just inverts its operation
+        // ex: mod 3: 4 = 1, 3 = 0, 2 = 2, 1 = 1, 0 = 0, -1 = -1, etc...
+        // We need -1 to be max_value-1 for wrapping to work properly
+        var startingValue = max_value + a;
+
+        // Lerp distance is - instead of + here compared to a normal lerp because we are going backwards
+        // Modulo handles wrapping around, when lerpDistance is lower than a, which would otherwise go over max value
+        return (startingValue - lerpDistance) % max_value;
+    }
 
     public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> list)
     {
