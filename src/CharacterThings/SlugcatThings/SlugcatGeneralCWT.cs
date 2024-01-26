@@ -1,7 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Color = UnityEngine.Color;
-using OverseerHolograms;
-using TheFriend.Creatures.LizardThings.DragonRideThings;
+using MoreSlugcats;
 using TheFriend.Objects;
 using UnityEngine;
 
@@ -42,13 +42,30 @@ public static class SlugcatGeneralCWT
         public Lizard dragonSteed;
         public int riderAnimChangeTimer;
         public int glanceDir;
-        public GeneralCWT(Player player)
+        public GeneralCWT(AbstractCreature crit)
         {
+            var player = crit.realizedCreature as Player;
             UnchangedInputForLizRide = new Player.InputPackage[player.input.Length];
             riderAnimChangeTimer = 20;
         }
     }
     
-    public static readonly ConditionalWeakTable<Player, GeneralCWT> CWT = new();
-    public static GeneralCWT GetGeneral(this Player player) => CWT.GetValue(player, _ => new(player));
+    public static readonly ConditionalWeakTable<AbstractCreature, GeneralCWT> CWT = new();
+    //public static GeneralCWT GetGeneral(this AbstractCreature crit) => CWT.GetValue(crit, _ => new(crit));
+    public static GeneralCWT GetGeneral(this Player crit) => CWT.GetValue(crit.abstractCreature, _ => new GeneralCWT(crit.abstractCreature));
+    
+    public static bool TryGetGeneral(this AbstractCreature crit, out GeneralCWT data)
+    {
+        var template = crit.creatureTemplate.type;
+        if (template == CreatureTemplate.Type.Slugcat || template == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC)
+            if (crit.realizedCreature is Player pl)
+            {
+                data = pl.GetGeneral();
+                return true;
+            }
+        data = null;
+        return false;
+    }
+    public static bool TryGetGeneral(this Player player, out GeneralCWT data) => player.abstractCreature.TryGetGeneral(out data);
+    public static bool TryGetGeneral(this Creature player, out GeneralCWT data) => player.abstractCreature.TryGetGeneral(out data);
 }

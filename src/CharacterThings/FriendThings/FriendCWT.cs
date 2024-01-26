@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using Color = UnityEngine.Color;
-using UnityEngine;
+using MoreSlugcats;
 
 namespace TheFriend.FriendThings;
 
@@ -24,23 +23,26 @@ public static class FriendCWT
         public Overseer Iggy; // Yellow / 1
         public Overseer Wiggy; // Blue / 0
         public bool TriedSpawningOverseerInThisRoom;
-        public Friend(Player player)
+        public Friend(AbstractCreature player)
         {
             
         }
     }
-    public static readonly ConditionalWeakTable<Player, Friend> CWT = new();
-    public static Friend GetFriend(this Player player) => CWT.GetValue(player, _ => new(player));
+    public static readonly ConditionalWeakTable<AbstractCreature, Friend> CWT = new();
+    public static Friend GetFriend(this Player player) => CWT.GetValue(player.abstractCreature, _ => new(player.abstractCreature));
 
-    public static bool TryGetFriend(this Player player, out Friend data)
+    public static bool TryGetFriend(this AbstractCreature crit, out Friend data)
     {
-        if (player.SlugCatClass == Plugin.FriendName)
-        {
-            data = player.GetFriend();
-            return true;
-        }
+        var template = crit.creatureTemplate.type;
+        if (template == CreatureTemplate.Type.Slugcat || template == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC)
+            if (crit.realizedCreature is Player player && player.SlugCatClass == Plugin.FriendName)
+            {
+                data = player.GetFriend();
+                return true;
+            }
         data = null;
         return false;
     }
-    
+    public static bool TryGetFriend(this Player player, out Friend data) => player.abstractCreature.TryGetFriend(out data);
+    public static bool TryGetFriend(this Creature player, out Friend data) => player.abstractCreature.TryGetFriend(out data);
 }
