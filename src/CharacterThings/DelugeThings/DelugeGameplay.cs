@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using RWCustom;
-using System;
 using System.Linq;
-using On.MoreSlugcats;
 using TheFriend.Objects.DelugePearlObject;
 using TheFriend.SlugcatThings;
 using Random = UnityEngine.Random;
@@ -180,7 +178,7 @@ public class DelugeGameplay
     public static void DelugeOverloadEffects(Player self, int intensity, bool eu)
     {
         if (self.room != null && self.room.game.IsArenaSession) return;
-        float percent = (float)intensity / (float)DelugeCWT.Deluge.OverloadLimit;
+        float percent = (float)intensity / DelugeCWT.Deluge.OverloadLimit;
 
         self.deaf = Mathf.RoundToInt(Mathf.Lerp(1f, 90f, percent));
     }
@@ -192,7 +190,7 @@ public class DelugeGameplay
         {
             var deafener = self.deafLoop;
             var intensity = scug.Overload;
-            float percent = (float)intensity / (float)DelugeCWT.Deluge.OverloadLimit;
+            float percent = (float)intensity / DelugeCWT.Deluge.OverloadLimit;
 
             deafener.sound = DelugeSounds.DelugeHeartbeatSine;
             deafener.Volume = Mathf.Lerp(0.1f, DelugeCWT.Deluge.OverloadIntensity, percent);
@@ -201,7 +199,6 @@ public class DelugeGameplay
     
     public static bool DelugeIdleCheck(Player self)
     { // Is the Deluge doing something?
-        var scug = self.GetDeluge();
         if (self.stun > 0 && !self.dead) return true;
 
         if ((self.firstChunk.vel.magnitude + self.bodyChunks[1].vel.magnitude) / 2 > 3) return false;

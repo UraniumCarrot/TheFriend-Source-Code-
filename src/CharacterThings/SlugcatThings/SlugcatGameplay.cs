@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
@@ -102,7 +103,7 @@ public class SlugcatGameplay
         }
         
         if (obj is Player pl && pl.GetGeneral().dragonSteed != null) return Player.ObjectGrabability.CantGrab;
-        if (self.TryGetPoacher( out var poacher) && poacher.IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
+        if (self.TryGetPoacher(out var poacher) && poacher.IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
         if (obj is FakePlayerEdible edible) return edible.grabability;
         return orig(self, obj);
     }
@@ -180,9 +181,12 @@ public class SlugcatGameplay
     { // Friend and Poacher backspears, Poacher cutscene preparation
         orig(self, abstractCreature, world);
 
-        var abstr = new SolaceScarfAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
-        self.room.abstractRoom.AddEntity(abstr);
-        abstr.RealizeInRoom();
+        if (self.room != null && !self.room.abstractRoom.entities.Any(x => x is SolaceScarfAbstract))
+        {
+            var abstr = new SolaceScarfAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
+            self.room.abstractRoom.AddEntity(abstr);
+            abstr.RealizeInRoom();
+        }
         
         try
         {

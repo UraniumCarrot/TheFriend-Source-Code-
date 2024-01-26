@@ -49,7 +49,7 @@ public class DelugeWorldState
     {
         orig(self, sleaser, rcam);
         if (self.room == null) return;
-        if (self.room.roomSettings.DangerType == RoomRain.DangerType.AerieBlizzard && Deluge)
+        if ((self.room.roomSettings.DangerType == RoomRain.DangerType.AerieBlizzard || self.room.roomSettings.DangerType == DangerType.FloodAndAerie) && Deluge)
             sleaser.sprites[0].shader = self.room.game.rainWorld.Shaders["WaterSlush"];
     }
     public static void DustPuffOnUpdate(On.RoofTopView.DustpuffSpawner.DustPuff.orig_Update orig, RoofTopView.DustpuffSpawner.DustPuff self, bool eu)
@@ -70,7 +70,8 @@ public class DelugeWorldState
     {
         orig(self);
         if (!Deluge) return;
-        if (self.roomSettings.DangerType == RoomRain.DangerType.AerieBlizzard)
+        if (self.roomSettings.DangerType == RoomRain.DangerType.AerieBlizzard || 
+            self.roomSettings.DangerType == DangerType.FloodAndAerie)
         {
             if (self.world.rainCycle == null) return;
             self.roomSettings.RainIntensity = self.world.rainCycle.CycleProgression;
@@ -91,20 +92,30 @@ public class DelugeWorldState
         if (saints.filePath != null && !self.snow)
         {
             for (int i = 0; i < saints.placedObjects.Count; i++)
-                if (saints.placedObjects[i].data is PlacedObject.SnowSourceData)
+                if (saints.placedObjects[i].type == PlacedObject.Type.SnowSource || 
+                    saints.placedObjects[i].type == PlacedObject.Type.LanternOnStick ||
+                    saints.placedObjects[i].type == PlacedObject.Type.LocalBlizzard)
                     self.roomSettings.placedObjects.Add(saints.placedObjects[i]);
-            
-            for (int i = 0; i < saints.effects.Count; i++)
-                self.roomSettings.effects.Add(saints.effects[i]);
+            if (world.region.name != "UG")
+                for (int i = 0; i < saints.effects.Count; i++)
+                    self.roomSettings.effects.Add(saints.effects[i]);
+            if (world.region.name == "SB")
+                self.roomSettings.pal = saints.pal;
         }
     }
 
     public static void DelugeRoomSettings(Room self, RainWorldGame game)
     {
-        if (self.roomSettings.DangerType == MoreSlugcatsEnums.RoomRainDangerType.Blizzard || self.roomSettings.DangerType == RoomRain.DangerType.Rain) 
+        if (self.roomSettings.DangerType == MoreSlugcatsEnums.RoomRainDangerType.Blizzard || 
+            self.roomSettings.DangerType == RoomRain.DangerType.Rain) 
             self.roomSettings.DangerType = RoomRain.DangerType.AerieBlizzard;
-        else if (self.roomSettings.DangerType == RoomRain.DangerType.FloodAndRain || self.roomSettings.DangerType == RoomRain.DangerType.Flood)
+        
+        else if ((self.roomSettings.DangerType == RoomRain.DangerType.FloodAndRain || 
+                  self.roomSettings.DangerType == RoomRain.DangerType.Flood) && self.snow)
             self.roomSettings.DangerType = DangerType.FloodAndAerie;
+        
+        else if (self.roomSettings.DangerType == RoomRain.DangerType.FloodAndRain)
+            self.roomSettings.DangerType = RoomRain.DangerType.Flood;
     }
     
     public static void CreatureOnHypothermiaUpdate(ILContext il)
