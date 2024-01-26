@@ -92,8 +92,29 @@ public partial class Extensions
         foreach (Color col in map)
             newMap.Add(Custom.RGB2HSL(col));
         if (cycle) newMap.Add(Custom.RGB2HSL(map[0]));
-        
-        return V3MultiLerp(newMap, value).HSL2RGB();
+
+        value = Mathf.Clamp01(value);
+
+        var pos = Mathf.Lerp(0, newMap.Count - 1, value);
+        var a = Mathf.FloorToInt(pos);
+        var b = a + 1;
+        var lerpValue = pos - a;
+
+        if (b >= newMap.Count)
+        {
+            b -= 1;
+            if (value >= 1)
+            {
+                lerpValue = 1;
+            }
+        }
+
+        var hslLerpResult = Vector3.Lerp(newMap[a], newMap[b], lerpValue);
+
+        if (Mathf.Abs(newMap[b].x - newMap[a].y) > 180) // if its shorter to go the other way (180 is half of the color wheel)
+            hslLerpResult.x = ReverseLerp(newMap[a].x, newMap[b].x, lerpValue, 360); // reverse the lerp
+
+        return hslLerpResult.HSL2RGB();
     } // HSLMultiLerp is a small mutation of it made by me, Elliot; feed it colors and get colors back, but internally
       // work inside an HSL space for more vibrant transitioning.
 
