@@ -7,15 +7,9 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
 {
     public SolaceScarfAbstract(World world, WorldCoordinate pos, EntityID ID) : base(world, SolaceScarfFisob.SolaceScarf, null, pos, ID)
     {
-        //Main
-        mr = 0;
-        mg = 0;
-        mb = 0;
-        
-        //Highlight
-        hr = 0;
-        hg = 0;
-        hb = 0;
+        wearerID = -10;
+        baseCol = Color.black;
+        highCol = Color.black;
     }
     public override void Realize()
     {
@@ -26,12 +20,9 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
                 Room.realizedRoom.MiddleOfTile(pos.Tile), 
                 Vector2.zero);
     }
-    public float mr;
-    public float mg;
-    public float mb;
-    public float hr;
-    public float hg;
-    public float hb;
+
+    public Color baseCol;
+    public Color highCol;
     public int wearerID;
     public string regionOrigin;
     public int IGlow;
@@ -40,12 +31,8 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
     public override string ToString()
     {
         return this.SaveToString($"" +
-                                 $"{mr};" +
-                                 $"{mg};" +
-                                 $"{mb};" +
-                                 $"{hr};" +
-                                 $"{hg};" +
-                                 $"{hb};" +
+                                 $"{RWCustom.Custom.colorToHex(baseCol)};" +
+                                 $"{RWCustom.Custom.colorToHex(highCol)};" +
                                  $"{wearerID};" +
                                  $"{regionOrigin};" +
                                  $"{IGlow};" +

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using RWCustom;
 using TheFriend.SlugcatThings;
-using TheFriend.WorldChanges;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -38,19 +36,18 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public SolaceScarf(SolaceScarfAbstract abstr, Vector2 pos, Vector2 vel) : base(abstr)
     {
         Abstr = abstr;
-        abstr.wearerID = (wearer != null) ? wearer.ID.number : -10;
         bodyChunks = new BodyChunk[1];
         bodyChunks = new[] { new BodyChunk(this, 0, abstractPhysicalObject.Room.realizedRoom.MiddleOfTile(abstractPhysicalObject.pos.Tile), 6f, 0.07f) { goThroughFloors = false } };
         bodyChunkConnections = new BodyChunkConnection[0];
         airFriction = 0.999f;
         gravity = 0.9f;
-        bounce = 0f;
-        surfaceFriction = 0f;
+        bounce = 0.5f;
+        surfaceFriction = 0.4f;
         collisionLayer = 2;
         waterFriction = 0.98f;
-        buoyancy = 0.4f;
-        color = new Color(abstr.mr, abstr.mg, abstr.mb);
-        highlightColor = new Color(abstr.hr, abstr.hg, abstr.hb);
+        buoyancy = 1.1f;
+        color = Abstr.baseCol;
+        highlightColor = Abstr.highCol;
     }
 
     #region cosmetics
@@ -126,8 +123,11 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     {
         maxDarkness = palette.blackColor.Lit();
         if (color == Color.black) color = new Color(1,0.5f,0);
-        spriteList[0].color = color;
-        List<Color> col = [color, highlightColor];
+        
+        var limitedColor = color.MakeLit((color.Lit() > maxDarkness) ? color.Lit() : maxDarkness);
+        var limitedHiCol = highlightColor.MakeLit((color.Lit() > maxDarkness) ? highlightColor.Lit() : maxDarkness);
+        spriteList[0].color = limitedColor;
+        List<Color> col = [limitedColor, limitedHiCol];
         for (int i = 0; i < ragMesh.verticeColors.Length; i++)
             (spriteList[1] as TriangleMesh)!.verticeColors[i] = Extensions.HSLMultiLerp((col), (float)(i-4) / 20);
     }
@@ -143,11 +143,17 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         }
         else
         {
-            List<Color> col = [color, highlightColor];
-            if (spriteList[0].color != color) spriteList[0].color = color;
+            var limitedColor = color.MakeLit((color.Lit() > maxDarkness) ? color.Lit() : maxDarkness);
+            var limitedHiCol = highlightColor.MakeLit((color.Lit() > maxDarkness) ? highlightColor.Lit() : maxDarkness);
+            spriteList[0].color = limitedColor;
+            List<Color> col = [limitedColor, limitedHiCol];
+
+            if (spriteList[0].color != color) spriteList[0].color = limitedColor;
                 for (int i = 0; i < ragMesh.verticeColors.Length; i++)
                     (sLeaser.sprites[1] as TriangleMesh)!.verticeColors[i] = Extensions.HSLMultiLerp((col), (float)(i-4) / 20);
         }
+        if (Abstr.baseCol != color!) Abstr.baseCol = color;
+        if (Abstr.highCol != highlightColor!) Abstr.highCol = highlightColor;
 
         if (wearer != null && wearer.realizedCreature != null)
         {
@@ -185,6 +191,17 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public override void Update(bool eu)
     {
         base.Update(eu);
+        if (room != null && room.PlayersInRoom.Any() &&
+            room.PlayersInRoom.Exists(x => x.abstractCreature.ID.number == Abstr.wearerID))
+        {
+            var user = room.PlayersInRoom.Find(x => x.abstractCreature.ID.number == Abstr.wearerID).abstractCreature;
+            if (!(user.realizedCreature as Player).GetGeneral().wearingAScarf)
+            {
+                wearer = user;
+                (user.realizedCreature as Player).GetGeneral().wearingAScarf = true;
+            }
+        }
+        
         LightnessUpdate();
         RagUpdate1();
         RagUpdate2();
@@ -196,7 +213,6 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
                 Vector2 pos = Vector2.Lerp(pl.bodyChunks[0].pos, pl.bodyChunks[1].pos, 0.15f);
                 firstChunk.pos = pos;
             }
-            
             stick ??= new GenericObjectStick(this.abstractPhysicalObject, wearer);
             WearerUpdate(wearer.realizedCreature as Player);
         }
@@ -204,8 +220,6 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         {
             var a = grabbedBy.Find(x => x.grabbed == this);
             var grabber = a.grabber;
-            if (wearer != null) 
-                grabber.ReleaseGrasp(grabber.grasps.IndexOf(a));
             if (grabber != null) 
                 if (grabber is Player player) GrabbedUpdate(player);
         }
@@ -297,13 +311,19 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
             wearer = player.abstractCreature;
             Abstr.wearerID = player.abstractCreature.ID.number;
             player.GetGeneral().wearingAScarf = true;
-            player.ReleaseGrasp(player.grasps.IndexOf(player.grasps.First(x => x.grabbed == this)));
+            player.ReleaseGrasp(player.grasps.IndexOf(player.grasps.First((x => x?.grabbed == this))));
             grabTimer = 0;
         }
     }
     public void WearerUpdate(Player player)
     {
-        bool imHoldingFood = player.grasps.Any(x => x?.grabbed?.abstractPhysicalObject is AbstractConsumable);
+        bool imHoldingFood = false;
+        if (player.grasps != null)
+        {
+            imHoldingFood = player.grasps.Any(x => x?.grabbed is IPlayerEdible);
+            player.grasps.FirstOrDefault(x => x?.grabbed?.firstChunk == firstChunk)?.Release();
+        }
+        
         player.HypothermiaGain -= 0.0005f;
         firstChunk.vel = player.firstChunk.vel;
         if (player.input[0].pckp && player.input[0].y > 0)
@@ -340,7 +360,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         else if (light != null)
         {
             light.color = Color.Lerp(light.color,highlightColor,0.05f);
-            light.setPos = firstChunk.pos;
+            light.setPos = spriteList[0].GetPosition();
             if (light.rad == 0) light.setRad = Abstr.IGlow * 15;
             else light.setRad = Mathf.Lerp(light.rad,Abstr.IGlow * 15,0.05f);
             light.setAlpha = 1;
