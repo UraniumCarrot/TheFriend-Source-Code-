@@ -111,8 +111,8 @@ public partial class Extensions
 
         var hslLerpResult = Vector3.Lerp(newMap[a], newMap[b], lerpValue);
 
-        if (Mathf.Abs(newMap[b].x - newMap[a].x) > 180) // if its shorter to go the other way (180 is half of the color wheel)
-            hslLerpResult.x = ReverseLerp(newMap[a].x, newMap[b].x, lerpValue, 360); // reverse the lerp
+        if (Mathf.Abs(newMap[b].x - newMap[a].x) > 0.5) // if its shorter to go the other way (180 is half of the color wheel)
+            hslLerpResult.x = ReverseLerp(newMap[a].x, newMap[b].x, lerpValue, 1); // reverse the lerp
 
         return hslLerpResult.HSL2RGB();
     } // HSLMultiLerp is a small mutation of it made by me, Elliot; feed it colors and get colors back, but internally

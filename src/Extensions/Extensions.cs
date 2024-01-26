@@ -133,10 +133,10 @@ public static partial class Extensions
     {
         // get the distance between "a" and "b", but going opposite way than normal and looping around
         // do this by getting the normal lerp distance and subtracting that from the max value
-        var maxDisplacement = max_value - (b - a);
+        var maxDisplacement = max_value - Math.Abs(b - a);
 
-        // Calculate how much we are actually going to move based on t
-        var lerpDistance = maxDisplacement * Mathf.Clamp01(t);
+        // Calculate how much we are actually going to move based on t (invert the sign if the terms are backwards)
+        var lerpDistance = maxDisplacement * ((b < a) ? Mathf.Clamp01(t) : -Mathf.Clamp01(t));
 
         // Add max_value to the starting term
         // this is needed because the modulo operator does not wrap around when going to negative numbers, it just inverts its operation
@@ -144,9 +144,8 @@ public static partial class Extensions
         // We need -1 to be max_value-1 for wrapping to work properly
         var startingValue = max_value + a;
 
-        // Lerp distance is - instead of + here compared to a normal lerp because we are going backwards
-        // Modulo handles wrapping around, when lerpDistance is lower than a, which would otherwise go over max value
-        return (startingValue - lerpDistance) % max_value;
+        // Modulo handles wrapping around when lerpDistance is positive
+        return (startingValue + lerpDistance) % max_value;
     }
 
     public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> list)
