@@ -360,7 +360,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         else if (light != null)
         {
             light.color = Color.Lerp(light.color,highlightColor,0.05f);
-            light.setPos = spriteList[0].GetPosition();
+            light.setPos = firstChunk.pos;
             if (light.rad == 0) light.setRad = Abstr.IGlow * 15;
             else light.setRad = Mathf.Lerp(light.rad,Abstr.IGlow * 15,0.05f);
             light.setAlpha = 1;
