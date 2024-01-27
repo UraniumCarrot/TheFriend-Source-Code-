@@ -68,7 +68,7 @@ public class PoacherSkullFeatures
     { // Poacher skull flicker from rocks
         orig(self, source, directionandmomentum, hitchunk, hitappendage, type, damage, stunbonus);
         if (self is Player pl && pl.TryGetPoacher(out _))
-            if (source.owner is Rock && source.owner is not LittleCracker)
+            if (source?.owner is Rock && source?.owner is not LittleCracker)
             {
                 if (pl.bodyMode == bod.Crawl) { self.firstChunk.vel.y += 10; pl.animation = ind.Flip; }
                 PoacherGraphics.PoacherFlicker(pl);
