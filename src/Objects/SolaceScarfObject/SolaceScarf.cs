@@ -46,6 +46,9 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         collisionLayer = 2;
         waterFriction = 0.98f;
         buoyancy = 1.1f;
+        
+        if (abstr.baseCol == Color.clear) abstr.baseCol = SolaceScarfDefaultColors.SolaceScarfDefaultColor(abstr)[0];
+        if (abstr.highCol == Color.clear) abstr.highCol = SolaceScarfDefaultColors.SolaceScarfDefaultColor(abstr)[1];
         color = Abstr.baseCol;
         highlightColor = Abstr.highCol;
     }
@@ -69,7 +72,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         float num = 0;
         for (int i = 0; i < rag.GetLength(0); i++)
         {
-            float f = (float)i / (float)(rag.GetLength(0) - 1);
+            float f = (float)i / (rag.GetLength(0) - 1);
             Vector2 vector2 = Vector2.Lerp(rag[i, 1], rag[i, 0], timeStacker);
             float num2 = (2f + 2f * Mathf.Sin(Mathf.Pow(f, 2f) * (float)Math.PI)) *
                          Vector3.Slerp(rag[i, 4], rag[i, 3], timeStacker).x;
@@ -122,7 +125,6 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         maxDarkness = palette.blackColor.Lit();
-        if (color == Color.black) color = new Color(1,0.5f,0);
         
         var limitedColor = color.MakeLit((color.Lit() > maxDarkness) ? color.Lit() : maxDarkness);
         var limitedHiCol = highlightColor.MakeLit((color.Lit() > maxDarkness) ? highlightColor.Lit() : maxDarkness);
@@ -181,6 +183,9 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         }
         rotation = spriteList[0].rotation;
         
+        if (light != null)
+            light.setPos = firstChunk.pos;
+        
         if (slatedForDeletetion || room != rCam.room)
         {
             sLeaser.CleanSpritesAndRemove();
@@ -191,20 +196,21 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public override void Update(bool eu)
     {
         base.Update(eu);
-        if (room != null && room.PlayersInRoom.Any() &&
-            room.PlayersInRoom.Exists(x => x.abstractCreature.ID.number == Abstr.wearerID))
-        {
-            var user = room.PlayersInRoom.Find(x => x.abstractCreature.ID.number == Abstr.wearerID).abstractCreature;
-            if (!(user.realizedCreature as Player).GetGeneral().wearingAScarf)
-            {
-                wearer = user;
-                (user.realizedCreature as Player).GetGeneral().wearingAScarf = true;
-            }
-        }
-        
         LightnessUpdate();
         RagUpdate1();
         RagUpdate2();
+        if (wearer == null)
+            if (room != null)
+                if (room.PlayersInRoom.Any())
+                    if (room.PlayersInRoom.Exists(x => x.abstractCreature.ID.number == Abstr.wearerID))
+                    {
+                        var user = room.PlayersInRoom.Find(x => x.abstractCreature.ID.number == Abstr.wearerID)?.abstractCreature;
+                        if (!(user?.realizedCreature as Player).GetGeneral().wearingAScarf)
+                        {
+                            wearer = user;
+                            (user?.realizedCreature as Player).GetGeneral().wearingAScarf = true;
+                        }
+                    }
         if (wearer != null)
         {
             if (wearer.realizedCreature != null)
@@ -300,43 +306,46 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public int grabTimer;
     public void GrabbedUpdate(Player player)
     {
+        bool imNibblingFood = false;
         if (player.input[0].pckp && 
             !player.craftingObject && 
             wearer == null && 
             !player.GetGeneral().wearingAScarf) 
             grabTimer++;
         else grabTimer = 0;
-        if (grabTimer > 25)
+        if (player.input[0].y == 0 && player.FreeHand() == -1 && player.grasps.Any(x => x.grabbed is IPlayerEdible))
+            imNibblingFood = true;
+        
+        if (grabTimer > 40)
         {
-            wearer = player.abstractCreature;
-            Abstr.wearerID = player.abstractCreature.ID.number;
-            player.GetGeneral().wearingAScarf = true;
-            player.ReleaseGrasp(player.grasps.IndexOf(player.grasps.First((x => x?.grabbed == this))));
+            if (!imNibblingFood && player.input[0].y > 0)
+            {
+                wearer = player.abstractCreature;
+                Abstr.wearerID = player.abstractCreature.ID.number;
+                player.GetGeneral().wearingAScarf = true;
+                player.ReleaseGrasp(player.grasps.IndexOf(player.grasps.First((x => x?.grabbed == this))));
+            }
             grabTimer = 0;
         }
     }
     public void WearerUpdate(Player player)
     {
-        bool imHoldingFood = false;
         if (player.grasps != null)
-        {
-            imHoldingFood = player.grasps.Any(x => x?.grabbed is IPlayerEdible);
             player.grasps.FirstOrDefault(x => x?.grabbed?.firstChunk == firstChunk)?.Release();
-        }
         
-        player.HypothermiaGain -= 0.0005f;
+        if (player.HypothermiaGain > 0.0005f) 
+            player.HypothermiaGain -= 0.0005f;
+        
         firstChunk.vel = player.firstChunk.vel;
         if (player.input[0].pckp && player.input[0].y > 0)
         {
             if (player.FreeHand() != -1 && 
-                player.objectInStomach == null && 
-                !player.craftingObject &&
-                !(imHoldingFood && player.FoodInStomach < player.MaxFoodInStomach))
+                !player.craftingObject && player.firstChunk.vel.magnitude.Abs() < 2)
                 grabTimer++;
             else grabTimer = 0;
         }
         else grabTimer = 0;
-        if (grabTimer > 25)
+        if (grabTimer > 40)
         {
             wearer.stuckObjects.Remove(stick);
             stick.Deactivate();
@@ -360,7 +369,6 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         else if (light != null)
         {
             light.color = Color.Lerp(light.color,highlightColor,0.05f);
-            light.setPos = firstChunk.pos;
             if (light.rad == 0) light.setRad = Abstr.IGlow * 15;
             else light.setRad = Mathf.Lerp(light.rad,Abstr.IGlow * 15,0.05f);
             light.setAlpha = 1;

@@ -1,4 +1,5 @@
-﻿using Fisobs.Core;
+﻿using System.Linq;
+using Fisobs.Core;
 using UnityEngine;
 
 namespace TheFriend.Objects.SolaceScarfObject;
@@ -8,8 +9,8 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
     public SolaceScarfAbstract(World world, WorldCoordinate pos, EntityID ID) : base(world, SolaceScarfFisob.SolaceScarf, null, pos, ID)
     {
         wearerID = -10;
-        baseCol = Color.black;
-        highCol = Color.black;
+        baseCol = Color.clear;
+        highCol = Color.clear;
     }
     public override void Realize()
     {
@@ -27,6 +28,7 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
     public string regionOrigin;
     public int IGlow;
     public int IBurn;
+    public bool IVoid;
     
     public override string ToString()
     {
@@ -36,6 +38,7 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
                                  $"{wearerID};" +
                                  $"{regionOrigin};" +
                                  $"{IGlow};" +
-                                 $"{IBurn}");
+                                 $"{IBurn};" +
+                                 $"{IVoid}");
     }
 }

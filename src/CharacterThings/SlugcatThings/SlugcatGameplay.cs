@@ -13,8 +13,6 @@ using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.PoacherThings;
 using UnityEngine;
-using bod = Player.BodyModeIndex;
-using ind = Player.AnimationIndex;
 
 
 namespace TheFriend.SlugcatThings;
@@ -73,7 +71,7 @@ public class SlugcatGameplay
     public static void Player_GrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
     { // Makes player ride lizard
         orig(self, eu);
-
+        
         for (int i = 0; i < 2; i++)
             if (self.grasps[i] != null && self.grasps[i].grabbed.TryGetLiz(out var data))
                 if (data.RideEnabled &&
@@ -83,6 +81,10 @@ public class SlugcatGameplay
                     self.GetGeneral().isRidingLizard = true;
                     if (!data.mainRiders.Contains(self)) data.mainRiders.Add(self);
                 }
+        // Nibble food items while holding a scarf
+        if (self.FreeHand() == -1 && self.grasps.Any(x => x.grabbed is SolaceScarf) && self.grasps.Any(x => x.grabbed is IPlayerEdible))
+            SolaceScarfDyes.SolaceScarfBiteUpdate(self, eu);
+
         // Poacher poppers quickcraft
         if (self.TryGetPoacher(out _))
             DragonCrafts.PoacherQuickCraft(self);
@@ -184,6 +186,7 @@ public class SlugcatGameplay
         if (self.room != null && !self.room.abstractRoom.entities.Any(x => x is SolaceScarfAbstract))
         {
             var abstr = new SolaceScarfAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
+            abstr.regionOrigin = self.room.world.name;
             self.room.abstractRoom.AddEntity(abstr);
             abstr.RealizeInRoom();
         }
