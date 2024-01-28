@@ -202,7 +202,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
         if (wearer == null)
             if (room != null)
                 if (room.PlayersInRoom.Any())
-                    if (room.PlayersInRoom.Exists(x => x.abstractCreature.ID.number == Abstr.wearerID))
+                    if (room.PlayersInRoom.Exists(x => x?.abstractCreature.ID.number == Abstr.wearerID))
                     {
                         var user = room.PlayersInRoom.Find(x => x.abstractCreature.ID.number == Abstr.wearerID)?.abstractCreature;
                         if (!(user?.realizedCreature as Player).GetGeneral().wearingAScarf)
