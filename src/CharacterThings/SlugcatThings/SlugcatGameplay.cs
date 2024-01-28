@@ -82,7 +82,7 @@ public class SlugcatGameplay
                     if (!data.mainRiders.Contains(self)) data.mainRiders.Add(self);
                 }
         // Nibble food items while holding a scarf
-        if (self.FreeHand() == -1 && self.grasps.Any(x => x.grabbed is SolaceScarf) && self.grasps.Any(x => x.grabbed is IPlayerEdible))
+        if (self.FreeHand() == -1 && self.grasps.Any(x => x?.grabbed is SolaceScarf) && self.grasps.Any(x => x?.grabbed is IPlayerEdible))
             SolaceScarfDyes.SolaceScarfBiteUpdate(self, eu);
 
         // Poacher poppers quickcraft
