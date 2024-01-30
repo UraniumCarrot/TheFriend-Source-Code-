@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RWCustom;
 using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.Creatures.LizardThings.FreeLizardCosmetics;
@@ -35,6 +37,31 @@ public class Hooks
         
         LizardRideFixes.Apply();
         LizardCosmeticHooks.Apply();
+
+        IL.SaveState.SessionEnded += HandleYoungLizardMotherPassage;
+    }
+
+    private static void HandleYoungLizardMotherPassage(ILContext il)
+    {
+        var c = new ILCursor(il);
+        if (c.TryGotoNext(MoveType.After,
+                x => x.MatchCallvirt<SocialMemory>("GetLike"),
+                x => x.MatchLdcR4(0.0f),
+                x => x.MatchBleUn(out _)
+            )) {
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdfld<CreatureTemplate>("type")))
+            {
+                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldloc_3);
+                c.EmitDelegate((CreatureTemplate.Type creature, RainWorldGame game, int index) =>
+                {
+                    if (creature != TheFriend.CreatureTemplateType.YoungLizard) return creature;
+                    Plugin.LogSource.LogMessage("YoungLizard in den!, incrementing pupCountInDen");
+                    game.GetStorySession.playerSessionRecords[index].pupCountInDen++;
+                    return creature;
+                });
+            } else { Plugin.LogSource.LogError("failed to hook HandleYoungLizardMotherPassage pt2!"); }
+        } else { Plugin.LogSource.LogError("failed to hook HandleYoungLizardMotherPassage pt1!"); }
     }
 
     #region misc cosmetics
