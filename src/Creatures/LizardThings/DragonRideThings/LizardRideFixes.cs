@@ -168,7 +168,6 @@ public class LizardRideFixes
                     break;
                 }
                 else point -= self.bodyChunkConnections[i].distance;
-                Debug.Log($"i={i},a={a},point={point},connLength={connectionLength},point={point},seatsLength={seatsLength},length={length}");
             }
         }
         Debug.Log($"Solace: Seats made for rideable lizard, created {self.Liz().seats.Count}");
