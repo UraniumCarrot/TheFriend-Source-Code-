@@ -1,4 +1,5 @@
 ﻿using MoreSlugcats;
+using TheFriend.WorldChanges.ScarfScripts;
 using UnityEngine;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
@@ -65,6 +66,7 @@ public class FriendWorldState
     } // Default room settings
     public static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
     {
+        RoomScript.ScriptMaker(self);
         orig(self);
         if (SolaceWorldstate && self.world.region.name == "SH")
         {
