@@ -70,17 +70,13 @@ public class DragonCrafts
     {
         orig(self, spear);
         if (FriendWorldState.SolaceWorldstate && self.room.world.region.name != "HR" && spear.bugSpear)
-        {
             spear.spearDamageBonus *= 0.4f;
-        }
     }
     public static void Weapon_NewRoom(On.Weapon.orig_NewRoom orig, Weapon self, Room newRoom)
     {
         orig(self, newRoom);
         if (self is Spear spear && spear.bugSpear)
-        {
             spear.room.AddObject(new SpearHeatSource(spear, spear.firstChunk.pos));
-        }
     }
     class SpearHeatSource : UpdatableAndDeletable, IProvideWarmth
     {
@@ -99,7 +95,11 @@ public class DragonCrafts
         {
             base.Update(eu);
             pos = spear.firstChunk.pos;
-            if (!spear.bugSpear || spear.room == null || spear != spear.abstractPhysicalObject.realizedObject || spear.room != loadedRoom || loadedRoom != room.abstractRoom.realizedRoom) base.Destroy();
+            if (!spear.bugSpear || 
+                spear.room == null || 
+                spear != spear.abstractPhysicalObject.realizedObject || 
+                spear.room != loadedRoom || 
+                loadedRoom != room.abstractRoom.realizedRoom) base.Destroy();
         }
     }
     #endregion
@@ -108,7 +108,8 @@ public class DragonCrafts
     public static bool Player_GraspsCanBeCrafted(On.Player.orig_GraspsCanBeCrafted orig, Player self)
     {
         if (self.slugcatStats.name == Plugin.DragonName && self.input[0].y > 0) return true;
-        if (self.grasps.Any(x => x?.grabbed is SolaceScarf) && self.input[0].y > 0 && self.FreeHand() == -1) return SolaceScarfDyes.SolaceScarfCanDyeCheck(self);
+        if (self.grasps.Any(x => x?.grabbed is SolaceScarf) && self.input[0].y > 0 && self.FreeHand() == -1) 
+            return SolaceScarfDyes.SolaceScarfCanDyeCheck(self);
         return orig(self);
     }
     public static void Player_SpitUpCraftedObject(On.Player.orig_SpitUpCraftedObject orig, Player self)
@@ -117,6 +118,7 @@ public class DragonCrafts
         { SolaceScarfDyes.SolaceScarfDye(self); return; }
         
         if (self.slugcatStats.name != Plugin.DragonName) { orig(self); return; }
+
         int vargrasp = self.grasps[1]?.grabbed is FirecrackerPlant || self.grasps[1]?.grabbed is BoomMine ? 1 : 0;
         var vargraspmat = self.grasps[vargrasp]?.grabbed;
         var obj0 = self.grasps[0]?.grabbed?.abstractPhysicalObject;
