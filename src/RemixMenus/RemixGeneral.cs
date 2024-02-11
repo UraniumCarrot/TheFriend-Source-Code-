@@ -55,30 +55,9 @@ public partial class RemixMain
     
     public void RemixGeneralUpdate()
     {
-        if (GenMiscelList.Count > 0)
-        {
-            foreach (UIelement elem in GenMiscelList)
-            {
-                if (page._value == StrMiscel) elem.Show();
-                else elem.Hide();
-            }
-        }
-        if (GenLizardList.Count > 0)
-        {
-            foreach (UIelement elem in GenLizardList)
-            {
-                if (page._value == StrLizard) elem.Show();
-                else elem.Hide();
-            }
-        }
-        if (GenFamineList.Count > 0)
-        {
-            foreach (UIelement elem in GenFamineList)
-            {
-                if (page._value == StrFamine) elem.Show();
-                else elem.Hide();
-            }
-        }
+        GenMiscelList.ForEach(x => { if (page.value == StrMiscel) x?.Show(); else x?.Hide();});
+        GenLizardList.ForEach(x => { if (page.value == StrLizard) x?.Show(); else x?.Hide();});
+        GenFamineList.ForEach(x => { if (page.value == StrFamine) x?.Show(); else x?.Hide();});
     }
 
     public OpTab OpTabGeneral;
