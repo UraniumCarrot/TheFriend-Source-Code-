@@ -81,9 +81,6 @@ public class SlugcatGameplay
                     self.GetGeneral().isRidingLizard = true;
                     if (!data.mainRiders.Contains(self)) data.mainRiders.Add(self);
                 }
-        // Nibble food items while holding a scarf
-        if (self.FreeHand() == -1 && self.grasps.Any(x => x?.grabbed is SolaceScarf) && self.grasps.Any(x => x?.grabbed is IPlayerEdible))
-            SolaceScarfDyes.SolaceScarfBiteUpdate(self, eu);
 
         // Poacher poppers quickcraft
         if (self.TryGetPoacher(out _))
@@ -182,15 +179,6 @@ public class SlugcatGameplay
     public static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     { // Friend and Poacher backspears, Poacher cutscene preparation
         orig(self, abstractCreature, world);
-
-        if (self.room != null && !self.room.abstractRoom.entities.Any(x => x is SolaceScarfAbstract))
-        {
-            var abstr = new SolaceScarfAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
-            abstr.regionOrigin = self.room.world.name;
-            self.room.abstractRoom.AddEntity(abstr);
-            abstr.RealizeInRoom();
-        }
-        
         try
         {
             if (self.TryGetFriend(out _))

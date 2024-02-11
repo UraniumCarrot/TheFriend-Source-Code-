@@ -6,8 +6,9 @@ namespace TheFriend.Objects.SolaceScarfObject;
 
 public class SolaceScarfAbstract : AbstractPhysicalObject
 {
-    public SolaceScarfAbstract(World world, WorldCoordinate pos, EntityID ID) : base(world, SolaceScarfFisob.SolaceScarf, null, pos, ID)
+    public SolaceScarfAbstract(World world, WorldCoordinate pos, EntityID ID, string regionOrigin) : base(world, SolaceScarfFisob.SolaceScarf, null, pos, ID)
     {
+        this.regionOrigin = regionOrigin;
         wearerID = -10;
         baseCol = Color.clear;
         highCol = Color.clear;
@@ -26,9 +27,9 @@ public class SolaceScarfAbstract : AbstractPhysicalObject
     public Color highCol;
     public int wearerID;
     public string regionOrigin;
-    public int IGlow;
-    public int IBurn;
-    public bool IVoid;
+    public int IGlow; // Gives scarf a lightsource
+    public int IBurn; // Will make scarf explosive (UNIMPLEMENTED)
+    public bool IVoid; // Will give scarf a strange shader (UNIMPLEMENTED)
     
     public override string ToString()
     {

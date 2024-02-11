@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
 using SlugBase.Features;
@@ -32,6 +33,7 @@ using TheFriend.Objects.DelugePearlObject;
 using TheFriend.Objects.FakePlayerEdible;
 using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.SaveThings;
+using TheFriend.WorldChanges.ScarfScripts;
 using UnityEngine;
 
 #pragma warning disable CS0618
@@ -106,7 +108,7 @@ namespace TheFriend
                 DelugePearlHooks.Apply();
 
                 AbstractObjectType.Apply();
-                UpdateDeleteCWT.Apply();
+                //UpdateDeleteCWT.Apply();
                 SolaceSaveData.Apply();
                 SolaceCustom.Apply();
 
@@ -128,6 +130,7 @@ namespace TheFriend
                 FamineWorld.Apply();
                 FamineCreatures.Apply();
                 DangerTypes.Apply();
+                RoomScript.Apply();
 
                 // Fisobs
                 Content.Register(new PebblesLLCritob());
@@ -198,6 +201,5 @@ namespace TheFriend
         
         public const string MothersKilled = "MothersKilledInRegionStr";
         public const string MotherKillNum = "MotherKillCount";
-        
     }
 }

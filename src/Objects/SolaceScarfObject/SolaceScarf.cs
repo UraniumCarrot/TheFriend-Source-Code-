@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MoreSlugcats;
 using RWCustom;
 using TheFriend.SlugcatThings;
+using TheFriend.WorldChanges.ScarfScripts;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,13 +13,13 @@ namespace TheFriend.Objects.SolaceScarfObject;
 public class SolaceScarf : PlayerCarryableItem, IDrawable
 {
     public List<FSprite> spriteList = new List<FSprite>();
-    public float maxDarkness;
-    public Color highlightColor;
-    public LightSource light;
+    public float maxDarkness; // Limits how dark the scarf can be so it doesn't become invisible
+    public Color highlightColor; // Color used for tip of scarf
+    public LightSource light; // Light source from IGlow having value
     
     public Vector2[,] rag = new Vector2[6,6];
     public TriangleMesh ragMesh;
-    public Vector2 ragAttachPos;
+    public Vector2 ragAttachPos; // Currently unused
     // rag[i,0] - gravity direction
     // rag[i,1] - ? something fucked up
     // rag[i,2] - movement, multiplying it makes the scarf wag!
@@ -28,9 +30,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     
     public AbstractCreature wearer;
     public GenericObjectStick stick;
-    public float rotation;
-    private float conRad = 7f;
-    private SharedPhysics.TerrainCollisionData scratchTerrainCollisionData = new SharedPhysics.TerrainCollisionData();
+    public readonly SharedPhysics.TerrainCollisionData scratchTerrainCollisionData = new SharedPhysics.TerrainCollisionData();
     
     public SolaceScarfAbstract Abstr { get; }
     public SolaceScarf(SolaceScarfAbstract abstr, Vector2 pos, Vector2 vel) : base(abstr)
@@ -136,7 +136,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         RagDraw(sLeaser,camPos,timeStacker);
-
+        
         if (blink > 1 && Random.value > 0.5f)
         {
             spriteList[0].color = Color.white;
@@ -181,22 +181,20 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
             spriteList[0].scaleX = 0.5f;
             spriteList[0].scaleY = 0.5f;
         }
-        rotation = spriteList[0].rotation;
+        //rotation = spriteList[0].rotation;
         
         if (light != null)
             light.setPos = firstChunk.pos;
         
         if (slatedForDeletetion || room != rCam.room)
-        {
             sLeaser.CleanSpritesAndRemove();
-        }
     }
     #endregion
 
     public override void Update(bool eu)
     {
         base.Update(eu);
-        LightnessUpdate();
+        LightSourceUpdate();
         RagUpdate1();
         RagUpdate2();
         if (wearer == null)
@@ -272,6 +270,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     }
     public void RagUpdate2()
     {
+        var conRad = 7f;
         for (int j = 0; j < rag.GetLength(0); j++)
         {
             if (j > 0)
@@ -306,19 +305,16 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
     public int grabTimer;
     public void GrabbedUpdate(Player player)
     {
-        bool imNibblingFood = false;
         if (player.input[0].pckp && 
             !player.craftingObject && 
             wearer == null && 
             !player.GetGeneral().wearingAScarf) 
             grabTimer++;
         else grabTimer = 0;
-        if (player.input[0].y == 0 && player.FreeHand() == -1 && player.grasps.Any(x => x.grabbed is IPlayerEdible))
-            imNibblingFood = true;
         
         if (grabTimer > 40)
         {
-            if (!imNibblingFood && player.input[0].y > 0)
+            if (player.input[0].y > 0)
             {
                 wearer = player.abstractCreature;
                 Abstr.wearerID = player.abstractCreature.ID.number;
@@ -357,7 +353,7 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
             player.SlugcatGrab(this,player.FreeHand());
         }
     }
-    public void LightnessUpdate()
+    public void LightSourceUpdate()
     {
         if (light == null && Abstr.IGlow > 0)
         {
@@ -382,11 +378,30 @@ public class SolaceScarf : PlayerCarryableItem, IDrawable
 
     public void ScarfContainerReset(RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
-        spriteList[0].SetPosition(Vector2.Lerp(firstChunk.lastPos, firstChunk.pos, timeStacker)-camPos);
-        if (spriteList[0].container != rCam.ReturnFContainer("Items"))
+        if (spriteList[0] == null || spriteList[1] == null) return;
+        if (firstChunk != null) spriteList[0].SetPosition(Vector2.Lerp(firstChunk.lastPos, firstChunk.pos, timeStacker)-camPos);
+        if (room?.updateList?.Any(x => x is ScarfScript s && s.scarf == Abstr) ?? false)
         {
-            spriteList[0].RemoveFromContainer();
-            rCam.ReturnFContainer("Items").AddChild(spriteList[0]);
+            if (spriteList[0].container != rCam.ReturnFContainer("Foreground"))
+            {
+                spriteList[0].RemoveFromContainer();
+                spriteList[1].RemoveFromContainer();
+                rCam.ReturnFContainer("Foreground").AddChild(spriteList[0]);
+                rCam.ReturnFContainer("Foreground").AddChild(spriteList[1]);
+            }
+        }
+        else
+        {
+            if (spriteList[0].container != rCam.ReturnFContainer("Items"))
+            {
+                spriteList[0].RemoveFromContainer();
+                rCam.ReturnFContainer("Items").AddChild(spriteList[0]);
+            }
+            if (spriteList[1].container != rCam.ReturnFContainer("Background"))
+            {
+                spriteList[1].RemoveFromContainer();
+                rCam.ReturnFContainer("Background").AddChild(spriteList[1]);
+            }
         }
     }
 }

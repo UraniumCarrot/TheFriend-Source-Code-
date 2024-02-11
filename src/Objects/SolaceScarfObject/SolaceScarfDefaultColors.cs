@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 namespace TheFriend.Objects.SolaceScarfObject;
 
 public class SolaceScarfDefaultColors
@@ -31,15 +33,28 @@ public class SolaceScarfDefaultColors
             case "RM": list = [new Color(0.00f,0.0f,0.0f),new Color(0.0f,0.0f,1.0f)]; break; // The Rot
             case "UG": list = [new Color(0.20f,0.5f,0.0f),new Color(0f,0.12f,0.15f)]; break; // Undergrowth
             case "LM": list = [new Color(0.20f,0.0f,0.0f),new Color(0.7f,1.0f,0.0f)]; break; // Waterfront Facility
-            case "MS": list = [new Color(1.00f,0.5f,0.0f),new Color(1.0f,0.2f,0.0f)]; break; // Submerged Superstructure
             case "HR": list = [new Color(1.00f,0.0f,0.0f),new Color(1.0f,1.0f,0.0f)]; break; // Rubicon
 
+            case "MS": list = [new Vector3(0.38f,0.01f,0.7f).HSL2RGB(), // Submerged Superstructure
+                               new Vector3(0.32f,0.5f,0.3f).HSL2RGB()]; 
+                               break;
             case "NotARegion" or "": list = [Color.white,Color.white]; break;
-            default:
+            default: // Modded region color support
+                int seed = 0;
+                foreach (Char ch in scarf.regionOrigin)
+                {
+                    if (scarf.regionOrigin.IndexOf(ch) == 0) seed += (int)ch * 256;
+                    else seed += (int)ch;
+                }
+                if (seed == 0)
+                {
+                    list = [Color.white, Color.white];
+                    break;
+                }
                 var state = Random.state;
-                Random.InitState(scarf.regionOrigin.First()+scarf.regionOrigin.Last());
-                list = [Extensions.RandomRGB(), Extensions.RandomRGB()];
-                scarf.ID = new EntityID(-1, scarf.regionOrigin.First()+scarf.regionOrigin.Last());
+                Random.InitState(seed);
+                list = [Extensions.RandomRGB(), Extensions.RandomHSL().HSL2RGB()];
+                scarf.ID = new EntityID(-1, seed);
                 Random.state = state;
                 break;
         }
