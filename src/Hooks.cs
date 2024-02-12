@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using Fisobs.Core;
 using Mono.Cecil.Cil;
@@ -28,7 +27,6 @@ using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.WorldChanges;
 using ColdRoom = On.MoreSlugcats.ColdRoom;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace TheFriend
@@ -36,9 +34,9 @@ namespace TheFriend
     public class Hooks
     {
         private static bool _modsInit;
-        public static void RainWorldOnOnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
+        public static void RainWorldOnOnModsInit(On.RainWorld.orig_OnModsInit initOrig, RainWorld initSelf)
         {
-            orig(self);
+            initOrig(initSelf);
             if (_modsInit) return;
             
             try
@@ -328,46 +326,145 @@ namespace TheFriend
                 #endregion
                 
                 #region Shared Hooks
-                On.Creature.Die += (die, creature) =>
+                On.Creature.Die += (orig, creature) =>
                 {
                     HuntQuestThings.CreatureOnDie(creature);
-                    die(creature);
+                    orig(creature);
                     SaveThings.SolaceSaveData.CreatureOnDie(creature);
                 };
-                On.HUD.HUD.InitSinglePlayerHud += (init, hud, cam) => 
+                On.HUD.HUD.InitSinglePlayerHud += (orig, hud, cam) => 
                 { 
-                    init(hud, cam);
+                    orig(hud, cam);
                     HuntQuestThings.HUDOnInitSinglePlayerHud(hud, cam);
                     HudHooks.HUDOnInitSinglePlayerHud(hud, cam);
                 };
-                On.Menu.Menu.Update += (update, menu) =>
+                On.Menu.Menu.Update += (orig, menu) =>
                 {
-                    update(menu);
+                    orig(menu);
                     MainMenu.MenuOnUpdate(menu);
                     NoirCatto.MenuOnUpdate(menu);
                 };
-                On.Player.checkInput += (checkInput, player) =>
+                On.Player.checkInput += (orig, player) =>
                 {
                     var timer = player.GetFriend().poleSuperJumpTimer;
-                    checkInput(player);
+                    orig(player);
                     SlugcatGameplay.Player_checkInput(timer, player);
                     NoirCatto.PlayerOncheckInput(player);
                 };
-                On.Player.Grabability += On_Player_Grabability;
-                On.Player.GraphicsModuleUpdated += On_Player_GraphicsModuleUpdated;
-                On.Player.GrabUpdate += On_Player_GrabUpdate;
-                On.Player.ThrownSpear += On_Player_ThrownSpear;
-                On.Player.UpdateAnimation += On_Player_UpdateAnimation;
-                On.Player.Update += On_Player_Update;
-                On.Player.UpdateBodyMode += On_Player_UpdateBodyMode;
-                On.PlayerGraphics.ApplyPalette += On_PlayerGraphics_ApplyPalette;
-                On.PlayerGraphics.ctor += On_PlayerGraphics_Ctor;
-                On.PlayerGraphics.DrawSprites += On_PlayerGaphics_DrawSprites;
-                On.PlayerGraphics.Update += On_PlayerGraphics_Update;
-                On.SlugcatHand.EngageInMovement += On_SlugcatHand_Engage_In_Movement;
-                On.SlugcatStats.ctor += On_SlugcatStats_Ctor;
-                On.StoryGameSession.ctor += On_StoryGameSession_Ctor;
-                IL.Player.UpdateAnimation += IL_Player_UpdateAnimation;
+                On.Player.Grabability += (orig, player, obj) =>
+                {
+                    Player.ObjectGrabability? result = SlugcatGameplay.Player_Grabability(player, obj);
+                    result ??= DelugePearlMechanics.PlayerOnGrabability(player, obj);
+                    return result ?? orig(player, obj);
+                };
+                On.Player.GraphicsModuleUpdated += (orig, player, actuallyviewed, eu) =>
+                {
+                    orig(player, actuallyviewed, eu);
+                    NoirCatto.PlayerOnGraphicsModuleUpdated(player, actuallyviewed, eu);
+                    LizardRideFixes.Player_GraphicsModuleUpdated(player, actuallyviewed, eu);
+                };
+                On.Player.GrabUpdate += (orig, self1, eu) =>
+                {
+                    orig(self1, eu);
+                    SlugcatGameplay.Player_GrabUpdate(self1, eu);
+                    NoirCatto.PlayerOnGrabUpdate(self1, eu);
+                };
+                On.Player.ThrownSpear += (orig, self, spear) =>
+                {
+                    orig(self, spear);
+                    DragonCrafts.Player_ThrownSpear(self, spear);
+                    NoirCatto.PlayerOnThrownSpear(self, spear);
+                };
+                On.Player.UpdateAnimation += (orig, self) =>
+                {
+                    orig(self);
+                    SlugcatGameplay.Player_UpdateAnimation(self);
+                    NoirCatto.PlayerOnUpdateAnimation(self);
+                };
+                On.Player.Update += (orig, self, eu) =>
+                {
+                    orig(self, eu);
+                    SlugcatGameplay.Player_Update(self, eu);
+                    NoirCatto.PlayerOnUpdate(self, eu);
+                    DelugePearlMechanics.PlayerOnUpdate(self, eu);
+                    SaveThings.SolaceSaveData.PlayerOnUpdate(self, eu);
+                };
+                On.Player.UpdateBodyMode += (orig, self) =>
+                {
+                    orig(self);
+                    FriendCrawlTurn.PlayerOnUpdateBodyMode(self);
+                    SlugcatGameplay.Player_UpdateBodyMode(self);
+                    NoirCatto.PlayerOnUpdateBodyMode(self);
+                };
+                On.PlayerGraphics.ApplyPalette += (orig, self, sleaser, rcam, palette) =>
+                {
+                    orig(self, sleaser, rcam, palette);
+                    SlugcatGraphics.PlayerGraphics_ApplyPalette(self, sleaser, rcam, palette);
+                    NoirCatto.PlayerGraphicsOnApplyPalette(self, sleaser, rcam, palette);
+                };
+                On.PlayerGraphics.ctor += (orig, self, ow) =>
+                {
+                    orig(self, ow);
+                    SlugcatGraphics.PlayerGraphics_ctor(self, ow);
+                    NoirCatto.PlayerGraphicsOnctor(self, ow);
+                };
+                On.PlayerGraphics.DrawSprites += (orig, self, sleaser, rcam, timestacker, campos) =>
+                {
+                    orig(self, sleaser, rcam, timestacker, campos);
+                    SlugcatGraphics.PlayerGraphics_DrawSprites(self, sleaser, rcam, timestacker, campos);
+                    NoirCatto.PlayerGraphicsOnDrawSprites(self, sleaser, rcam, timestacker, campos);
+                };
+                On.PlayerGraphics.Update += (orig, self) =>
+                {
+                    orig(self);
+                    SlugcatGraphics.PlayerGraphics_Update(self);
+                    FriendCrawl.PlayerGraphics_Update(self);
+                    NoirCatto.PlayerGraphicsOnUpdate(self);
+                };
+                On.SlugcatHand.EngageInMovement += (orig, self) =>
+                {
+                    bool? result = FriendCrawl.SlugcatHand_EngageInMovement(self);
+                    result ??= NoirCatto.SlugcatHandOnEngageInMovement(self);
+                    return result ?? orig(self);
+                };
+                On.SlugcatStats.ctor += (orig, self, slugcat, malnourished) =>
+                {
+                    orig(self, slugcat, malnourished);
+                    SlugcatGameplay.SlugcatStats_ctor(self, slugcat, malnourished);
+                    NoirCatto.SlugcatStatsOnctor(self, slugcat, malnourished);
+                };
+                On.StoryGameSession.ctor += (orig, self, savestatenumber, game) =>
+                {
+                    orig(self, savestatenumber, game);
+                    HuntQuestThings.StoryGameSessionOnctor(self, savestatenumber, game);
+                    WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
+                };
+                
+                // Crawl turn IL Hook for Friend & Noir
+                IL.Player.UpdateAnimation += il =>
+                {
+                    try
+                    {
+                        var c = new ILCursor(il);
+                        ILLabel label = null;
+                        c.GotoNext(
+                            i => i.MatchLdsfld<Player.AnimationIndex>("CrawlTurn"),
+                            i => i.MatchCall(out _),
+                            i => i.MatchBrfalse(out label)
+                        );
+                        c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
+                        c.Emit(OpCodes.Ldarg_0);
+                        c.EmitDelegate(FriendCrawlTurn.CustomCrawlTurn);
+                        c.Emit(OpCodes.Brtrue, label);
+                        c.Emit(OpCodes.Ldarg_0);
+                        c.EmitDelegate(NoirCatto.CustomCrawlTurn);
+                        c.Emit(OpCodes.Brtrue, label);
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.LogSource.LogError($"ILHook failed for CrawlTurn (Friend & Noir) due to {ex}");
+                    }
+                };
                 #endregion
                 
                 On.AbstractPhysicalObject.Realize += AbstractObjectType.AbstractPhysicalObjectOnRealize;
@@ -377,134 +474,6 @@ namespace TheFriend
                 Debug.LogError(ex);
                 Plugin.LogSource.LogError(ex);
             }
-        }
-
-        private static void On_StoryGameSession_Ctor(On.StoryGameSession.orig_ctor orig, StoryGameSession self, SlugcatStats.Name savestatenumber, RainWorldGame game)
-        {
-            orig(self, savestatenumber, game);
-            HuntQuestThings.StoryGameSessionOnctor(self, savestatenumber, game);
-            WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
-        }
-
-        private static void On_PlayerGraphics_ApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
-        {
-            orig(self, sleaser, rcam, palette);
-            SlugcatGraphics.PlayerGraphics_ApplyPalette(self, sleaser, rcam, palette);
-            NoirCatto.PlayerGraphicsOnApplyPalette(self, sleaser, rcam, palette);
-        }
-
-        private static void On_PlayerGaphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
-        {
-            orig(self, sleaser, rcam, timestacker, campos);
-            SlugcatGraphics.PlayerGraphics_DrawSprites(self, sleaser, rcam, timestacker, campos);
-            NoirCatto.PlayerGraphicsOnDrawSprites(self, sleaser, rcam, timestacker, campos);
-        }
-
-        private static void On_PlayerGraphics_Ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
-        {
-            orig(self, ow);
-            SlugcatGraphics.PlayerGraphics_ctor(self, ow);
-            NoirCatto.PlayerGraphicsOnctor(self, ow);
-        }
-
-        private static void On_Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyviewed, bool eu)
-        {
-            orig(self, actuallyviewed, eu);
-            NoirCatto.PlayerOnGraphicsModuleUpdated(self, actuallyviewed, eu);
-            LizardRideFixes.Player_GraphicsModuleUpdated(self, actuallyviewed, eu);
-        }
-
-        private static void On_Player_Update(On.Player.orig_Update orig, Player self, bool eu)
-        {
-            orig(self, eu);
-            SlugcatGameplay.Player_Update(self, eu);
-            NoirCatto.PlayerOnUpdate(self, eu);
-            DelugePearlMechanics.PlayerOnUpdate(self, eu);
-            SaveThings.SolaceSaveData.PlayerOnUpdate(self, eu);
-        }
-
-        private static void On_Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
-        {
-            orig(self);
-            SlugcatGameplay.Player_UpdateAnimation(self);
-            NoirCatto.PlayerOnUpdateAnimation(self);
-        }
-
-        private static void On_Player_GrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
-        {
-            orig(self, eu);
-            SlugcatGameplay.Player_GrabUpdate(self, eu);
-            NoirCatto.PlayerOnGrabUpdate(self, eu);
-        }
-
-        private static Player.ObjectGrabability On_Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
-        {
-            Player.ObjectGrabability? result = SlugcatGameplay.Player_Grabability(self, obj);
-            result ??= DelugePearlMechanics.PlayerOnGrabability(self, obj);
-            return result ?? orig(self, obj);
-        }
-
-        private static void On_SlugcatStats_Ctor(On.SlugcatStats.orig_ctor orig, SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
-        {
-            orig(self, slugcat, malnourished);
-            SlugcatGameplay.SlugcatStats_ctor(self, slugcat, malnourished);
-            NoirCatto.SlugcatStatsOnctor(self, slugcat, malnourished);
-        }
-
-        private static void On_Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
-        {
-            orig(self);
-            FriendCrawlTurn.PlayerOnUpdateBodyMode(self);
-            SlugcatGameplay.Player_UpdateBodyMode(self);
-            NoirCatto.PlayerOnUpdateBodyMode(self);
-        }
-
-        // Crawl turn IL Hook for Friend & Noir
-        private static void IL_Player_UpdateAnimation(ILContext il)
-        {
-            try
-            {
-                var c = new ILCursor(il);
-                ILLabel label = null;
-                c.GotoNext(
-                    i => i.MatchLdsfld<Player.AnimationIndex>("CrawlTurn"),
-                    i => i.MatchCall(out _),
-                    i => i.MatchBrfalse(out label)
-                );
-                c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate(FriendCrawlTurn.CustomCrawlTurn);
-                c.Emit(OpCodes.Brtrue, label);
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate(NoirCatto.CustomCrawlTurn);
-                c.Emit(OpCodes.Brtrue, label);
-            }
-            catch (Exception ex)
-            {
-                Plugin.LogSource.LogError($"ILHook failed for CrawlTurn (Friend & Noir) due to {ex}");
-            }
-        }
-
-        private static bool On_SlugcatHand_Engage_In_Movement(On.SlugcatHand.orig_EngageInMovement orig, SlugcatHand self)
-        {
-            bool? result = FriendCrawl.SlugcatHand_EngageInMovement(self);
-            result ??= NoirCatto.SlugcatHandOnEngageInMovement(self);
-            return result ?? orig(self);
-        }
-
-        private static void On_PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
-        {
-            orig(self);
-            SlugcatGraphics.PlayerGraphics_Update(self);
-            FriendCrawl.PlayerGraphics_Update(self);
-            NoirCatto.PlayerGraphicsOnUpdate(self);
-        }
-
-        private static void On_Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
-        {
-            orig(self, spear);
-            DragonCrafts.Player_ThrownSpear(self, spear);
-            NoirCatto.PlayerOnThrownSpear(self, spear);
         }
     }
 }
