@@ -10,35 +10,6 @@ namespace TheFriend.FriendThings;
 // Hiiii it's a me, Noir - please don't use this code without my permission also!
 public class FriendCrawlTurn
 {
-    public static void Apply()
-    {
-        IL.Player.UpdateAnimation += PlayerOnUpdateAnimation;
-        On.Player.MovementUpdate += PlayerOnMovementUpdate;
-        On.Player.UpdateBodyMode += PlayerOnUpdateBodyMode;
-    }
-
-    public static void PlayerOnUpdateAnimation(ILContext il)
-    {
-        try
-        {
-            var c = new ILCursor(il);
-            ILLabel label = null;
-            c.GotoNext(
-                i => i.MatchLdsfld<Player.AnimationIndex>("CrawlTurn"),
-                i => i.MatchCall(out _),
-                i => i.MatchBrfalse(out label)
-            );
-            c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate(CustomCrawlTurn);
-            c.Emit(OpCodes.Brtrue, label);
-        }
-        catch (Exception ex)
-        {
-            Plugin.LogSource.LogError(ex);;
-        }
-    }
-
     public static bool CustomCrawlTurn(Player self)
     {
         if (!self.TryGetFriend(out var friendData)) return false;
@@ -104,9 +75,8 @@ public class FriendCrawlTurn
         friendData.LastAnimation = self.animation;
     }
 
-    public static void PlayerOnUpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
+    public static void PlayerOnUpdateBodyMode(Player self)
     {
-        orig(self);
         if (!self.TryGetFriend(out _)) return;
         
         //Sparks when changing running direction, now for crawling too!

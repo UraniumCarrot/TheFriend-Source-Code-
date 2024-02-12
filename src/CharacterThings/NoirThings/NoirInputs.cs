@@ -4,9 +4,8 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {
-    private static void PlayerOncheckInput(On.Player.orig_checkInput orig, Player self)
+    public static void PlayerOncheckInput(Player self)
     {
-        orig(self);
         if (!self.TryGetNoir(out var noirData)) return;
 
         //Moving all inputs one slot up

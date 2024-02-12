@@ -8,12 +8,6 @@ namespace TheFriend.Creatures.SnowSpiderCreature;
 
 public class SnowSpiderGraphics : BigSpiderGraphics
 {
-    public static void Apply()
-    {
-        On.BigSpiderGraphics.ScaleAttachPos += BigSpiderGraphics_ScaleAttachPos;
-        On.BigSpider.Violence += BigSpider_Violence;
-    }
-
     // Overrides
     public static float originalBodyThickness;
     public SnowSpiderGraphics(PhysicalObject ow) : base(ow)

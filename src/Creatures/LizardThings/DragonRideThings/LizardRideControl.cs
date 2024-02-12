@@ -8,14 +8,8 @@ namespace TheFriend.Creatures.LizardThings.DragonRideThings;
 
 public class LizardRideControl
 {
-    public static void Apply()
+    public static void LizardOnUpdate(Lizard self, bool eu)
     {
-        On.Lizard.Update += LizardOnUpdate;
-    }
-
-    public static void LizardOnUpdate(On.Lizard.orig_Update orig, Lizard self, bool eu)
-    {
-        orig(self, eu);
         if (self.Liz().mainRiders.Any())
         {
             self.AI.behavior = LizardAI.Behavior.FollowFriend;

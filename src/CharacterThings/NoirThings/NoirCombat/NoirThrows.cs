@@ -7,7 +7,7 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {
-    private static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
+    public static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
     {
         if (!self.TryGetNoir(out var noirData))
         {
@@ -44,9 +44,8 @@ public partial class NoirCatto
         }
     }
     
-    private static void PlayerOnThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
+    public static void PlayerOnThrownSpear(Player self, Spear spear)
     {
-        orig(self, spear);
         if (!self.TryGetNoir(out var noirData)) return;
 
         noirData.SpearThrownAnimation = self.animation;
@@ -68,7 +67,7 @@ public partial class NoirCatto
         }
     }
 
-    private static void SpearOnUpdate(On.Spear.orig_Update orig, Spear self, bool eu)
+    public static void SpearOnUpdate(On.Spear.orig_Update orig, Spear self, bool eu)
     {
         if (self.thrownBy is Player pl && pl.TryGetNoir(out var noirData))
         {

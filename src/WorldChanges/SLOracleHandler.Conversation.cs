@@ -4,7 +4,7 @@ namespace TheFriend.WorldChanges;
 
 public partial class SLOracleHandler
 {
-    private static void MoonConversationOnAddEvents(On.SLOracleBehaviorHasMark.MoonConversation.orig_AddEvents orig, SLOracleBehaviorHasMark.MoonConversation self)
+    internal static void MoonConversationOnAddEvents(On.SLOracleBehaviorHasMark.MoonConversation.orig_AddEvents orig, SLOracleBehaviorHasMark.MoonConversation self)
     {
         if (!FriendWorldState.SolaceWorldstate)
         {

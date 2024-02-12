@@ -16,22 +16,6 @@ public class ExpeditionBurdens
 {
     public const string famine = "bur-famined";
 
-    public static void Apply()
-    {
-        On.Menu.UnlockDialog.UpdateBurdens += UnlockDialogOnUpdateBurdens;
-        On.Menu.UnlockDialog.SetUpBurdenDescriptions += UnlockDialogOnSetUpBurdenDescriptions;
-        On.Menu.UnlockDialog.Update += UnlockDialogOnUpdate;
-        On.Menu.UnlockDialog.ctor += UnlockDialogOnctor;
-        IL.Menu.UnlockDialog.ctor += UnlockDialogOnctor;
-        
-        On.Expedition.ExpeditionProgression.BurdenMenuColor += ExpeditionProgressionOnBurdenMenuColor;
-        On.Expedition.ExpeditionProgression.SetupBurdenGroups += ExpeditionProgressionOnSetupBurdenGroups;
-        On.Expedition.ExpeditionProgression.BurdenName += ExpeditionProgressionOnBurdenName;
-        On.Expedition.ExpeditionProgression.BurdenManualDescription += ExpeditionProgressionOnBurdenManualDescription;
-        On.Expedition.ExpeditionProgression.BurdenScoreMultiplier += ExpeditionProgressionOnBurdenScoreMultiplier;
-        On.Expedition.ExpeditionProgression.CountUnlockables += ExpeditionProgressionOnCountUnlockables;
-    }
-
     #region ExpeditionProgression
     public static void ExpeditionProgressionOnCountUnlockables(On.Expedition.ExpeditionProgression.orig_CountUnlockables orig)
     {

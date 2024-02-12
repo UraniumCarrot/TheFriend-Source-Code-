@@ -9,12 +9,6 @@ namespace TheFriend.SaveThings;
 
 public static class SolaceCustom
 {
-    public static void Apply()
-    {
-        On.PlayerProgression.ClearOutSaveStateFromMemory += PlayerProgressionOnClearOutSaveStateFromMemory;
-        On.PlayerProgression.WipeSaveState += PlayerProgressionOnWipeSaveState;
-    }
-
     private static string SolaceSaveDataPath => Application.persistentDataPath + Path.DirectorySeparatorChar + Plugin.MOD_ID;
     private static readonly Dictionary<string, string> MalnourishedSaveData;
 
@@ -118,13 +112,13 @@ public static class SolaceCustom
 
     //-----
 
-    private static void PlayerProgressionOnClearOutSaveStateFromMemory(On.PlayerProgression.orig_ClearOutSaveStateFromMemory orig, PlayerProgression self)
+    internal static void PlayerProgressionOnClearOutSaveStateFromMemory(On.PlayerProgression.orig_ClearOutSaveStateFromMemory orig, PlayerProgression self)
     {
         orig(self);
         MalnourishedSaveData.Clear();
     }
 
-    private static void PlayerProgressionOnWipeSaveState(On.PlayerProgression.orig_WipeSaveState orig, PlayerProgression self, SlugcatStats.Name savestatenumber)
+    internal static void PlayerProgressionOnWipeSaveState(On.PlayerProgression.orig_WipeSaveState orig, PlayerProgression self, SlugcatStats.Name savestatenumber)
     {
         orig(self, savestatenumber);
         var savePath = GetStorySavePath(savestatenumber);

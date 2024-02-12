@@ -39,15 +39,6 @@ public class FirecrackerFix
             c.EmitDelegate((int defaultLumps, FirecrackerPlant self) => GetLumpsLeft(self.abstractPhysicalObject) > 0 ? GetLumpsLeft(self.abstractPhysicalObject) : defaultLumps);
         }
     }
-    public static void Apply()
-    {
-        On.SaveState.AbstractPhysicalObjectFromString += SaveState_AbstractPhysicalObjectFromString;
-        On.SaveState.SetCustomData_AbstractPhysicalObject_string += SaveState_SetCustomData_AbstractPhysicalObject_string;
-        On.SaveUtils.PopulateUnrecognizedStringAttrs += SaveUtils_PopulateUnrecognizedStringAttrs;
-
-        On.FirecrackerPlant.Update += FirecrackerPlant_Update;
-        IL.FirecrackerPlant.ctor += FirecrackerPlant_ctor;
-    }
 
     public static string SaveState_SetCustomData_AbstractPhysicalObject_string(On.SaveState.orig_SetCustomData_AbstractPhysicalObject_string orig, AbstractPhysicalObject apo, string baseString)
     {

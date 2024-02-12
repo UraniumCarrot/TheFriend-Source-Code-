@@ -13,7 +13,8 @@ public partial class NoirCatto
     }
 
     private const string StartingRoom = "SI_B12";
-    private static void SaveStateOnsetDenPosition(On.SaveState.orig_setDenPosition orig, SaveState self)
+
+    public static void SaveStateOnsetDenPosition(On.SaveState.orig_setDenPosition orig, SaveState self)
     {
         orig(self);
 
@@ -25,7 +26,7 @@ public partial class NoirCatto
         }
     }
 
-    private static void RainWorldGameOnctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
+    public static void RainWorldGameOnctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
     {
         orig(self, manager);
 

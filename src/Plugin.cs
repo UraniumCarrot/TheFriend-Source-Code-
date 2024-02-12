@@ -1,40 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
 using SlugBase.Features;
 using static SlugBase.Features.FeatureTypes;
 using System.Security.Permissions;
-using Fisobs.Core;
 using System.Security;
-using TheFriend.WorldChanges;
-using TheFriend.Objects.BoulderObject;
-using TheFriend.Objects.LittleCrackerObject;
-using TheFriend.Objects.BoomMineObject;
 using BepInEx.Logging;
-using TheFriend.CharacterThings;
 using TheFriend.CharacterThings.DelugeThings;
-using ind = Player.AnimationIndex;
-using bod = Player.BodyModeIndex;
-using TheFriend.Creatures.PebblesLLCreature;
-using TheFriend.Creatures.LizardThings;
-using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.SlugcatThings;
-using TheFriend.HudThings;
-using TheFriend.Expedition;
 using TheFriend.RemixMenus;
-using TheFriend.Creatures.FamineCreatures;
 using TheFriend.CharacterThings.NoirThings;
-using TheFriend.Creatures.LizardThings.DragonRideThings;
-using TheFriend.Creatures.LizardThings.MotherLizard;
-using TheFriend.Creatures.LizardThings.PilgrimLizard;
-using TheFriend.Creatures.LizardThings.YoungLizard;
-using TheFriend.Objects.DelugePearlObject;
-using TheFriend.Objects.FakePlayerEdible;
-using TheFriend.Objects.SolaceScarfObject;
-using TheFriend.SaveThings;
-using TheFriend.WorldChanges.ScarfScripts;
-using UnityEngine;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -62,7 +37,7 @@ namespace TheFriend
         public void OnEnable()
         {
             LogSource = Logger;
-            On.RainWorld.OnModsInit += RainWorldOnOnModsInit;
+            On.RainWorld.OnModsInit += Hooks.RainWorldOnOnModsInit;
             On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
 
             On.RainWorld.OnModsDisabled += (orig, self, newlyDisabledMods) =>
@@ -92,64 +67,6 @@ namespace TheFriend
             };
         }
 
-        private bool _modsInit;
-        private void RainWorldOnOnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
-        {
-            orig(self);
-            if (_modsInit) return;
-
-            try
-            {
-                _modsInit = true;
-                LoadResources();
-
-                // Hooks
-                CharacterHooks.Apply();
-                DelugePearlHooks.Apply();
-
-                AbstractObjectType.Apply();
-                //UpdateDeleteCWT.Apply();
-                SolaceSaveData.Apply();
-                SolaceCustom.Apply();
-
-                LizardRideControl.Apply();
-                YoungLizardAI.Apply();
-                Hooks.Apply();
-                SnowSpiderGraphics.Apply();
-                PebblesLL.Apply();
-                SolaceScarfDyes.Apply();
-
-                HudHooks.Apply();
-                MotherKillTracker.Apply();
-                MainMenu.Apply();
-                ExpeditionHooks.Apply();
-
-                FriendWorldState.Apply();
-                DelugeWorldState.Apply();
-                SLOracleHandler.Apply();
-                FamineWorld.Apply();
-                FamineCreatures.Apply();
-                DangerTypes.Apply();
-                RoomScript.Apply();
-
-                // Fisobs
-                Content.Register(new PebblesLLCritob());
-                Content.Register(new MotherLizardCritob());
-                Content.Register(new PilgrimLizardCritob());
-                Content.Register(new YoungLizardCritob());
-                Content.Register(new SnowSpiderCritob());
-                Content.Register(new BoulderFisob());
-                Content.Register(new LittleCrackerFisob());
-                Content.Register(new BoomMineFisob());
-                Content.Register(new SolaceScarfFisob());
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError(ex);
-                Logger.LogError(ex);
-            }
-        }
-
         private bool _postModsInit;
         private void RainWorldOnPostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
         {
@@ -177,7 +94,7 @@ namespace TheFriend
             }
         }
 
-        private void LoadResources()
+        internal static void LoadResources()
         {
             MachineConnector.SetRegisteredOI("thefriend", new RemixMain());
             Futile.atlasManager.LoadAtlas("atlases/friendsprites");

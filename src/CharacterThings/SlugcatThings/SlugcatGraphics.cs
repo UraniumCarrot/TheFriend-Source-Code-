@@ -21,25 +21,13 @@ namespace TheFriend.SlugcatThings;
 
 public class SlugcatGraphics
 {
-    public static void Apply()
-    {
-        On.PlayerGraphics.ApplyPalette += PlayerGraphics_ApplyPalette;
-        On.PlayerGraphics.Update += PlayerGraphics_Update;
-        On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
-        On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
-        On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
-        On.PlayerGraphics.ctor += PlayerGraphics_ctor;
-        On.GraphicsModule.HypothermiaColorBlend += GraphicsModule_HypothermiaColorBlend;
-    }
-
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
     public static readonly SlugcatStats.Name DelugeName = Plugin.DelugeName;
     public static readonly SlugcatStats.Name BelieverName = Plugin.BelieverName;
     
-    public static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
+    public static void PlayerGraphics_Update(PlayerGraphics self)
     { // Cosmetic movement
-        orig(self);
         if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendGraphicsUpdate(self);
 
@@ -58,9 +46,8 @@ public class SlugcatGraphics
         return orig(self, oldCol);
     }
     
-    public static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
+    public static void PlayerGraphics_ctor(PlayerGraphics self, PhysicalObject ow)
     { // Implement CustomTail
-        orig(self, ow);
         if (self.player.TryGetFriend(out _))
             FriendGraphics.FriendTailCtor(self);
     }
@@ -74,9 +61,8 @@ public class SlugcatGraphics
         else if (self.player.TryGetBeliever(out _))
             BelieverGraphics.BelieverSpritesInit(self, sLeaser, rCam);
     }
-    public static void PlayerGraphics_ApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    public static void PlayerGraphics_ApplyPalette(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        orig(self, sLeaser, rCam, palette);
         if (self.player.TryGetPoacher(out _))
             PoacherGraphics.PoacherPalette(self, sLeaser, rCam, palette);
         
@@ -95,9 +81,8 @@ public class SlugcatGraphics
             BelieverGraphics.BelieverSpritesContainer(self, sLeaser, rCam, newContainer);
     }
     // Implement FriendHead, Poacher graphics
-    public static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public static void PlayerGraphics_DrawSprites(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
-        orig(self, sLeaser, rCam, timeStacker, camPos);
         var head = sLeaser.sprites[3];
         var legs = sLeaser.sprites[4];
         var face = sLeaser.sprites[9];

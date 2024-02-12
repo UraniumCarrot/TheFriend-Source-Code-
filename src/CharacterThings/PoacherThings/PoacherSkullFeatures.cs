@@ -8,15 +8,6 @@ namespace TheFriend.PoacherThings;
 
 public class PoacherSkullFeatures
 {
-    public static void Apply()
-    {
-        On.Player.SpearStick += Player_SpearStick;
-        On.Creature.LoseAllGrasps += Creature_LoseAllGrasps;
-        On.Player.Grabbed += Player_Grabbed;
-        On.Creature.Violence += CreatureOnViolence;
-        On.HUD.TextPrompt.UpdateGameOverString += TextPrompt_UpdateGameOverString;
-    }
-
     public static void TextPrompt_UpdateGameOverString(On.HUD.TextPrompt.orig_UpdateGameOverString orig, TextPrompt self, Options.ControlSetup.Preset controllerType)
     { // Custom gameover text
         orig(self, controllerType);

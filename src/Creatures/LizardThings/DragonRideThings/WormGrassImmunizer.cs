@@ -2,11 +2,6 @@
 
 public class WormGrassImmunizer
 {
-    public static void Apply()
-    {
-        On.WormGrass.WormGrassPatch.Update += WormGrassPatch_Update;
-    }
-
     public static void WormGrassPatch_Update(On.WormGrass.WormGrassPatch.orig_Update orig, WormGrass.WormGrassPatch self)
     {
         orig(self);

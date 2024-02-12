@@ -11,15 +11,6 @@ namespace TheFriend;
 
 public class MainMenu
 {
-    public static void Apply()
-    {
-        On.MenuMicrophone.PlaySound_SoundID_float_float_float += MenuMicrophoneOnPlaySound_SoundID_float_float_float;
-        On.Menu.RainEffect.ctor += RainEffectOnctor;
-        On.Menu.RainEffect.GrafUpdate += RainEffectOnGrafUpdate; 
-        On.Menu.Menu.Update += MenuOnUpdate;
-        On.Menu.IntroRoll.ctor += IntroRollOnctor;
-    }
-
     private static float blizzardTicker = 0f;
     private static MenuMicrophone.MenuSoundLoop BlizzLoop;
     public static bool blizzardFinished = false;
@@ -41,9 +32,8 @@ public class MainMenu
         self.illustrations[2].sprite.isVisible = true;
     }
     
-    public static void MenuOnUpdate(On.Menu.Menu.orig_Update orig, Menu.Menu self)
+    public static void MenuOnUpdate(Menu.Menu self)
     { // Handles blizzard's audio
-        orig(self);
         IntroOrSelect = self is IntroRoll || self is SlugcatSelectMenu;
         if ((self is IntroRoll && !Configs.IntroBlizzard) ||
             (self is SlugcatSelectMenu && !Configs.IntroBlizzard))

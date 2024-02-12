@@ -6,7 +6,7 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {
-    private static PhysicalObject PlayerOnPickupCandidate(On.Player.orig_PickupCandidate orig, Player self, float favorspears)
+    public static PhysicalObject PlayerOnPickupCandidate(On.Player.orig_PickupCandidate orig, Player self, float favorspears)
     {
         if (self.SlugCatClass != Plugin.NoirName) return orig(self, favorspears);
 
@@ -36,9 +36,8 @@ public partial class NoirCatto
         return orig(self, favorspears);
     }
 
-    private static void PlayerOnGrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
+    internal static void PlayerOnGrabUpdate(Player self, bool eu)
     {
-        orig(self, eu);
         if (self.SlugCatClass != Plugin.NoirName) return;
         NoirMaul(self, eu);
     }

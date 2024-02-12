@@ -2,7 +2,4 @@
 
 public class DelugeGraphics
 {
-    public static void Apply()
-    {
-    }
 }

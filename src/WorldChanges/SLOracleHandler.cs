@@ -13,18 +13,6 @@ namespace TheFriend.WorldChanges;
 
 public partial class SLOracleHandler
 {
-    public static void Apply()
-    {
-        On.SLOrcacleState.ForceResetState += SLOrcacleState_ForceResetState;
-        On.SLOracleBehavior.Update += SLOracleBehavior_Update;
-        On.SLOracleBehavior.Move += SLOracleBehavior_Move;
-        On.SLOracleBehaviorNoMark.Update += SLOracleBehaviorNoMark_Update;
-        On.SLOracleBehaviorHasMark.MoonConversation.AddEvents += MoonConversationOnAddEvents;
-        On.RainWorldGame.IsMoonActive += RainWorldGame_IsMoonActive;
-        On.RainWorldGame.MoonHasRobe += RainWorldGame_MoonHasRobe;
-        On.RainWorldGame.IsMoonHeartActive += RainWorldGame_IsMoonHeartActive;
-    }
-
     // Simple Moon fixes
     public static bool RainWorldGame_IsMoonActive(On.RainWorldGame.orig_IsMoonActive orig, RainWorldGame self)
     {

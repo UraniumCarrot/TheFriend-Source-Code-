@@ -1,6 +1,7 @@
 ﻿using TheFriend.SlugcatThings;
 using UnityEngine;
 using System.Linq;
+using On.JollyCoop.JollyMenu;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 
@@ -9,11 +10,6 @@ namespace TheFriend.FriendThings;
 
 public class FriendGraphics
 {
-    public static void Apply()
-    {
-        
-    }
-
     public static void FriendDrawSprites(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, FSprite head, FSprite legs)
     {
         if (!self.RenderAsPup)

@@ -12,18 +12,6 @@ namespace TheFriend.Creatures.FamineCreatures;
 
 public static class FamineEggBug
 {
-    public static void Apply()
-    {
-        On.EggBug.ctor += EggBugOnctor;
-        On.EggBugEgg.ctor += EggBugEggOnctor;
-        On.EggBugGraphics.ctor += EggBugGraphicsOnctor;
-        On.EggBugGraphics.EggColors += EggBugGraphicsOnEggColors;
-        On.EggBugGraphics.InitiateSprites += EggBugGraphicsOnInitiateSprites;
-        On.EggBugGraphics.DrawSprites += EggBugGraphicsOnDrawSprites;
-        On.EggBugGraphics.ApplyPalette += EggBugGraphicsOnApplyPalette;
-        IL.EggBugGraphics.ApplyPalette += EggBugGraphicsILApplyPalette;
-    }
-
     #region EggBugCWT
     public static readonly ConditionalWeakTable<EggBug, EggBugData> EggBugDeets = new ConditionalWeakTable<EggBug, EggBugData>();
     public static EggBugData GetEggBugData(this EggBug eggBug) => EggBugDeets.GetValue(eggBug, _ => new(eggBug));
@@ -41,14 +29,14 @@ public static class FamineEggBug
     }
     #endregion
 
-    private static void EggBugOnctor(On.EggBug.orig_ctor orig, EggBug self, AbstractCreature abstractcreature, World world)
+    internal static void EggBugOnctor(On.EggBug.orig_ctor orig, EggBug self, AbstractCreature abstractcreature, World world)
     {
         orig(self, abstractcreature, world);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
         self.hue += (self.GetEggBugData().naturalSickness) ? Random.Range(0.05f, 0.25f) : Random.Range(-0.05f, -0.3f);
     }
 
-    private static void EggBugGraphicsOnctor(On.EggBugGraphics.orig_ctor orig, EggBugGraphics self, PhysicalObject ow)
+    internal static void EggBugGraphicsOnctor(On.EggBugGraphics.orig_ctor orig, EggBugGraphics self, PhysicalObject ow)
     {
         orig(self, ow);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
@@ -63,7 +51,7 @@ public static class FamineEggBug
         }
     }
 
-    private static void EggBugEggOnctor(On.EggBugEgg.orig_ctor orig, EggBugEgg self, AbstractPhysicalObject abstractphysicalobject)
+    internal static void EggBugEggOnctor(On.EggBugEgg.orig_ctor orig, EggBugEgg self, AbstractPhysicalObject abstractphysicalobject)
     {
         orig(self, abstractphysicalobject);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
@@ -79,7 +67,8 @@ public static class FamineEggBug
     }
 
     private const int TotalNewSprites = 4;
-    private static void EggBugGraphicsOnInitiateSprites(On.EggBugGraphics.orig_InitiateSprites orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam)
+
+    internal static void EggBugGraphicsOnInitiateSprites(On.EggBugGraphics.orig_InitiateSprites orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam)
     {
         orig(self, sleaser, rcam);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
@@ -106,7 +95,7 @@ public static class FamineEggBug
         self.AddToContainer(sleaser, rcam, null);
     }
 
-    private static void EggBugGraphicsOnDrawSprites(On.EggBugGraphics.orig_DrawSprites orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
+    internal static void EggBugGraphicsOnDrawSprites(On.EggBugGraphics.orig_DrawSprites orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
     {
         orig(self, sleaser, rcam, timestacker, campos);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
@@ -139,7 +128,7 @@ public static class FamineEggBug
         }
     }
 
-    private static void EggBugGraphicsOnApplyPalette(On.EggBugGraphics.orig_ApplyPalette orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
+    internal static void EggBugGraphicsOnApplyPalette(On.EggBugGraphics.orig_ApplyPalette orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
     {
         orig(self, sleaser, rcam, palette);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
@@ -163,7 +152,7 @@ public static class FamineEggBug
         }
     }
 
-    private static void EggBugGraphicsILApplyPalette(ILContext il)
+    internal static void EggBugGraphicsILApplyPalette(ILContext il)
     {
         try
         {
@@ -187,7 +176,7 @@ public static class FamineEggBug
         }
     }
 
-    private static Color[] EggBugGraphicsOnEggColors(On.EggBugGraphics.orig_EggColors orig, RoomPalette palette, float hue, float darkness)
+    internal static Color[] EggBugGraphicsOnEggColors(On.EggBugGraphics.orig_EggColors orig, RoomPalette palette, float hue, float darkness)
     {
         var color = orig(palette, hue, darkness);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return color;

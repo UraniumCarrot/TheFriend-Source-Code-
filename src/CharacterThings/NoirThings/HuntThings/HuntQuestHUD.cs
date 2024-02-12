@@ -11,9 +11,8 @@ namespace TheFriend.CharacterThings.NoirThings.HuntThings;
 
 public partial class HuntQuestThings
 {
-    private static void HUDOnInitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam)
+    internal static void HUDOnInitSinglePlayerHud(HUD.HUD self, RoomCamera cam)
     {
-        orig(self, cam);
         if (cam.room.game.IsStorySession && !cam.room.game.rainWorld.ExpeditionMode &&
             self.owner is Player && cam.room.game.StoryCharacter == Plugin.NoirName)
         {

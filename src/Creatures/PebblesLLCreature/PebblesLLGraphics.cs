@@ -5,13 +5,6 @@ namespace TheFriend.Creatures.PebblesLLCreature;
 
 public class PebblesLLGraphics : DaddyGraphics
 {
-    public static void Apply()
-    {
-        On.DaddyGraphics.DaddyTubeGraphic.ApplyPalette += DaddyTubeGraphic_ApplyPalette;
-        On.DaddyGraphics.DaddyDeadLeg.ApplyPalette += DaddyDeadLeg_ApplyPalette;
-        On.DaddyGraphics.DaddyDeadLeg.DrawSprite += DaddyDeadLeg_DrawSprite;
-        On.DaddyGraphics.DaddyDangleTube.ApplyPalette += DaddyDangleTube_ApplyPalette;
-    }
     public PebblesLLGraphics(PhysicalObject ow) : base(ow)
     {
     }

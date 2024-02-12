@@ -9,11 +9,6 @@ namespace TheFriend.CharacterThings.DelugeThings;
 
 public class DelugeGameplay
 {
-    public static void Apply()
-    {
-        On.DeafLoopHolder.Update += DeafLoopHolderOnUpdate;
-    }
-
     public static void DelugeUpdate(Player self, bool eu)
     {
         var scug = self.GetDeluge();

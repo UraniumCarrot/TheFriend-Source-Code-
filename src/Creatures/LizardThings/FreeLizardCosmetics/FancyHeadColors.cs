@@ -8,11 +8,6 @@ namespace TheFriend.Creatures.LizardThings.FreeLizardCosmetics;
 
 public class FancyHeadColors
 {
-    public static void Apply()
-    {
-        new Hook(typeof(LizardGraphics).GetProperty(nameof(LizardGraphics.HeadColor1), BindingFlags.Instance | BindingFlags.NonPublic)!.GetGetMethod(true), FancyHeadColor1);
-    }
-
     public delegate Color orig_HeadColor1(LizardGraphics self);
     public static Color FancyHeadColor1(orig_HeadColor1 orig, LizardGraphics self)
     {

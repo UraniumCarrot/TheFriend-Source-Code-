@@ -7,9 +7,8 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {
-    private static void PlayerOnUpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
+    public static void PlayerOnUpdateBodyMode(Player self)
     {
-        orig(self);
         if (!self.TryGetNoir(out var noirData)) return;
 
         if (self.bodyMode == Player.BodyModeIndex.Crawl)
@@ -23,9 +22,8 @@ public partial class NoirCatto
         UpdateSlideCounter(noirData);
     }
 
-    private static void PlayerOnUpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
+    internal static void PlayerOnUpdateAnimation(Player self)
     {
-        orig(self);
         if (!self.TryGetNoir(out var noirData)) return;
 
         if (self.animation == Player.AnimationIndex.StandOnBeam)
@@ -46,7 +44,7 @@ public partial class NoirCatto
         }
     }
     
-    private static void PlayerOnMovementUpdate(On.Player.orig_MovementUpdate orig, Player self, bool eu)
+    public static void PlayerOnMovementUpdate(On.Player.orig_MovementUpdate orig, Player self, bool eu)
     {
         if (!self.TryGetNoir(out var noirData))
         {
@@ -110,7 +108,7 @@ public partial class NoirCatto
     {
         return patch_Player.IsStuckOrWedged(player);
     }
-    private static void PlayerOnJump(On.Player.orig_Jump orig, Player self)
+    internal static void PlayerOnJump(On.Player.orig_Jump orig, Player self)
     {
         if (!self.TryGetNoir(out var noirData) || RotundWorld && IsStuckOrWedged(self))
         {

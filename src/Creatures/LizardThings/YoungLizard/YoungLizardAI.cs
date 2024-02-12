@@ -6,12 +6,6 @@ namespace TheFriend.Creatures.LizardThings.YoungLizard;
 
 public class YoungLizardAI : LizardAI
 {
-    public static void Apply()
-    {
-        On.Creature.SuckedIntoShortCut += CreatureOnSuckedIntoShortCut;
-        //On.Lizard.SpitOutOfShortCut += LizardOnSpitOutOfShortCut;
-    }
-
     public static void LizardOnSpitOutOfShortCut(On.Lizard.orig_SpitOutOfShortCut orig, Lizard self, IntVector2 pos, Room newroom, bool spitoutallsticks)
     {
         orig(self, pos, newroom, spitoutallsticks);

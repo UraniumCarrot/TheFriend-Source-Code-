@@ -33,11 +33,9 @@ public partial class NoirCatto
     
     #region Sleep-Screen Purr
     private static MenuMicrophone.MenuSoundLoop PurrLoop;
-    
-    private static void MenuOnUpdate(On.Menu.Menu.orig_Update orig, Menu.Menu self)
-    {
-        orig(self);
 
+    internal static void MenuOnUpdate(Menu.Menu self)
+    {
         if (self.manager.oldProcess is not RainWorldGame game) return;
         if (game.StoryCharacter != Plugin.NoirName) return;
         if (self is not Menu.SleepAndDeathScreen sleep) return;
@@ -61,7 +59,7 @@ public partial class NoirCatto
         }
     }
 
-    private static void MenuOnCommunicateWithUpcomingProcess(On.Menu.Menu.orig_CommunicateWithUpcomingProcess orig, Menu.Menu self, MainLoopProcess nextprocess)
+    internal static void MenuOnCommunicateWithUpcomingProcess(On.Menu.Menu.orig_CommunicateWithUpcomingProcess orig, Menu.Menu self, MainLoopProcess nextprocess)
     {
         orig(self, nextprocess);
         

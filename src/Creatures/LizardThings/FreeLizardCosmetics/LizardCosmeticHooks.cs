@@ -8,15 +8,6 @@ namespace TheFriend.Creatures.LizardThings.FreeLizardCosmetics;
 
 public class LizardCosmeticHooks
 {
-    public static void Apply()
-    {
-        On.LizardCosmetics.BodyScales.GeneratePatchPattern += BodyScales_GeneratePatchPattern;
-        On.LizardCosmetics.BodyScales.GenerateSegments += BodyScales_GenerateSegments;
-        On.LizardCosmetics.LongBodyScales.DrawSprites += LongBodyScales_DrawSprites;
-
-        FancyHeadColors.Apply();
-    }
-
     public static void BodyScales_GeneratePatchPattern(On.LizardCosmetics.BodyScales.orig_GeneratePatchPattern orig, BodyScales self, float startPoint, int numOfScales, float maxLength, float lengthExponent)
     {
         if (self.lGraphics.lizard.Template.type == CreatureTemplateType.MotherLizard)

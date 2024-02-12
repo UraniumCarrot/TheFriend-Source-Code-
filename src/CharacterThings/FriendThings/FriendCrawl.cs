@@ -6,15 +6,8 @@ namespace TheFriend.FriendThings;
 // FriendCrawl code kindly given to me by Noir, thank you so much Noir!!! DO NOT use this code without his permission.
 public class FriendCrawl
 {
-    public static void Apply()
+    public static void PlayerGraphics_Update(PlayerGraphics self)
     {
-        On.PlayerGraphics.Update += PlayerGraphics_Update;
-        On.SlugcatHand.EngageInMovement += SlugcatHand_EngageInMovement;
-    }
-
-    public static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
-    {
-        orig(self);
         if (!self.player.TryGetFriend(out _) || !Configs.FriendPoleCrawl) return;
 
         var angle = Custom.AimFromOneVectorToAnother(self.player.bodyChunks[0].pos, self.player.bodyChunks[1].pos);
@@ -115,11 +108,11 @@ public class FriendCrawl
         }
         else self.player.GetFriend().poleCrawlState = false;
     }
-    public static bool SlugcatHand_EngageInMovement(On.SlugcatHand.orig_EngageInMovement orig, SlugcatHand self)
+    public static bool? SlugcatHand_EngageInMovement(SlugcatHand self)
     {
         var player = (Player)self.owner.owner;
 
-        if (player.slugcatStats.name != Plugin.FriendName || !Configs.FriendPoleCrawl) return orig(self);
+        if (player.slugcatStats.name != Plugin.FriendName || !Configs.FriendPoleCrawl) return null;
 
         if (player.animation == Player.AnimationIndex.StandOnBeam && player.input[0].y < 1)
         {
@@ -133,6 +126,6 @@ public class FriendCrawl
             }
             return false;
         }
-        return orig(self);
+        return null;
     }
 }

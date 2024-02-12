@@ -9,11 +9,6 @@ namespace TheFriend.Expedition;
 
 public class ExpeditionGeneral
 {
-    public static void Apply()
-    {
-        On.Menu.UnlockDialog.TogglePerk += UnlockDialogOnTogglePerk;
-    }
-
     public static void UnlockDialogOnTogglePerk(UnlockDialog.orig_TogglePerk orig, Menu.UnlockDialog self, string message)
     {
         var player = ExpeditionData.slugcatPlayer;

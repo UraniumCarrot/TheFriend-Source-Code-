@@ -13,10 +13,6 @@ namespace TheFriend.CharacterThings.BelieverThings;
 
 public class BelieverGameplay
 {
-    public static void Apply()
-    {
-    }
-
     public static void PacifistThrow(Player self, int grasp, bool eu)
     {
         #region throwvalues

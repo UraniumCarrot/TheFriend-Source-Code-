@@ -307,14 +307,13 @@ public static partial class NoirCatto // Noir master class
 
     public const float DefaultFirstChunkMass = 0.315f;
 
-    private static void PlayerOnUpdate(On.Player.orig_Update orig, Player self, bool eu)
+    internal static void PlayerOnUpdate(Player self, bool eu)
     {
-        orig(self, eu);
         if (!self.TryGetNoir(out var noirData)) return;
         noirData.Update();
     }
-    
-    private static void RainWorldOnUpdate(On.RainWorld.orig_Update orig, RainWorld self)
+
+    public static void RainWorldOnUpdate(On.RainWorld.orig_Update orig, RainWorld self)
     {
         orig(self);
         if (self.processManager?.currentMainLoop is not RainWorldGame game) return;

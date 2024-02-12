@@ -76,30 +76,7 @@ public partial class NoirCatto
             }
         }
     }
-
-    private static void PlayerILUpdateAnimation(ILContext il)
-    {
-        try
-        {
-            var c = new ILCursor(il);
-            ILLabel label = null;
-            c.GotoNext(
-                i => i.MatchLdsfld<Player.AnimationIndex>("CrawlTurn"),
-                i => i.MatchCall(out _),
-                i => i.MatchBrfalse(out label)
-            );
-            c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate(CustomCrawlTurn);
-            c.Emit(OpCodes.Brtrue, label);
-        }
-        catch (Exception ex)
-        {
-            Plugin.LogSource.LogError("ILHook failed - Noir's CrawlTurn");
-            Plugin.LogSource.LogError(ex);
-        }
-    }
-    private static bool CustomCrawlTurn(Player self)
+    public static bool CustomCrawlTurn(Player self)
     {
         if (self.animation != Player.AnimationIndex.CrawlTurn) return false;
         if (!self.TryGetNoir(out var noirData)) return false;

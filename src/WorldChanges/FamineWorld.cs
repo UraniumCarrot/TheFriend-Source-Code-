@@ -8,18 +8,6 @@ using TheFriend.Creatures.FamineCreatures;
 namespace TheFriend.WorldChanges;
 public abstract class FamineWorld
 {
-    public static void Apply()
-    {
-        On.SlugcatStats.NourishmentOfObjectEaten += SlugcatStats_NourishmentOfObjectEaten;
-        On.DangleFruit.ApplyPalette += DangleFruit_ApplyPalette;
-        On.DangleFruit.DrawSprites += DangleFruit_DrawSprites;
-        On.MoreSlugcats.LillyPuck.ApplyPalette += LillyPuck_ApplyPalette;
-        On.MoreSlugcats.LillyPuck.Update += LillyPuck_Update;
-        On.MoreSlugcats.GooieDuck.ApplyPalette += GooieDuck_ApplyPalette;
-        On.MoreSlugcats.DandelionPeach.ctor += DandelionPeach_ctor;
-        On.MoreSlugcats.DandelionPeach.ApplyPalette += DandelionPeach_ApplyPalette;
-    }
-
     public static void HasFamines(RainWorldGame self)
     {
         if (FriendWorldState.SolaceWorldstate && !Configs.NoFamine) FamineBool = true;

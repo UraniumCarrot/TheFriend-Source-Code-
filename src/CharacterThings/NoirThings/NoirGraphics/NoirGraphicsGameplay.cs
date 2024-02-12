@@ -6,9 +6,8 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto //Animations + drawing position adjustments are here
 {
-    private static void PlayerGraphicsOnUpdate(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
+    public static void PlayerGraphicsOnUpdate(PlayerGraphics self)
     {
-        orig(self);
         if (!self.player.TryGetNoir(out var noirData)) return;
 
         PoleCrawl(noirData);
@@ -21,10 +20,10 @@ public partial class NoirCatto //Animations + drawing position adjustments are h
         noirData.LastHeadRotation = self.head.connection.Rotation;
     }
 
-    private static bool SlugcatHandOnEngageInMovement(On.SlugcatHand.orig_EngageInMovement orig, SlugcatHand self)
+    public static bool? SlugcatHandOnEngageInMovement(SlugcatHand self)
     {
         var player = (Player)self.owner.owner;
-        if (!player.TryGetNoir(out var noirData)) return orig(self);
+        if (!player.TryGetNoir(out var noirData)) return null;
 
         if (noirData.CanCrawlOnBeam())
         {
@@ -38,12 +37,11 @@ public partial class NoirCatto //Animations + drawing position adjustments are h
             }
             return false;
         }
-        return orig(self);
+        return null;
     }
 
-    private static void PlayerOnGraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyviewed, bool eu)
+    internal static void PlayerOnGraphicsModuleUpdated(Player self, bool actuallyviewed, bool eu)
     {
-        orig(self, actuallyviewed, eu);
         if (!actuallyviewed) return;
         if (!self.TryGetNoir(out var noirData)) return;
 

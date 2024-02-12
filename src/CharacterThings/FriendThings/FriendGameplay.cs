@@ -16,11 +16,6 @@ namespace TheFriend.CharacterThings.FriendThings;
 
 public class FriendGameplay
 {
-    public static void Apply()
-    {
-        IL.Player.ThrowObject += Player_ThrowObject;
-    }
-
     #region movement
     public static void FriendLeapController(Player self, int timer)
     {

@@ -13,10 +13,6 @@ namespace TheFriend.PoacherThings;
 
 public class PoacherGraphics
 {
-    public static void Apply()
-    {
-        
-    }
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
     
     public static Color blackColor;

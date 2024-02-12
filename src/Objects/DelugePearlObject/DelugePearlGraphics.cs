@@ -7,11 +7,6 @@ namespace TheFriend.Objects.DelugePearlObject;
 
 public class DelugePearlGraphics
 {
-    public static void Apply()
-    {
-        On.DataPearl.DrawSprites += DataPearlOnDrawSprites;
-    }
-
     public static void DataPearlOnDrawSprites(On.DataPearl.orig_DrawSprites orig, DataPearl self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
     {
         orig(self, sleaser, rcam, timestacker, campos);

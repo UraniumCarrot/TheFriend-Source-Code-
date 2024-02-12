@@ -71,7 +71,7 @@ public partial class NoirCatto
     }
 
     //Saving and restoring from abstract state
-    private static void SeedCobOnPlaceInRoom(On.SeedCob.orig_PlaceInRoom orig, SeedCob self, Room placeroom)
+    public static void SeedCobOnPlaceInRoom(On.SeedCob.orig_PlaceInRoom orig, SeedCob self, Room placeroom)
     {
         orig(self, placeroom);
         var seedCobData = self.AbstractCob.GetSeedCobData();
@@ -79,7 +79,7 @@ public partial class NoirCatto
             self.seedsPopped = seedCobData.SeedsPopped;
     }
 
-    private static void AbstractPhysicalObjectOnAbstractize(On.AbstractPhysicalObject.orig_Abstractize orig, AbstractPhysicalObject self, WorldCoordinate coord)
+    public static void AbstractPhysicalObjectOnAbstractize(On.AbstractPhysicalObject.orig_Abstractize orig, AbstractPhysicalObject self, WorldCoordinate coord)
     {
         if (self is SeedCob.AbstractSeedCob abstractSeedCob)
         {
@@ -93,7 +93,7 @@ public partial class NoirCatto
 
     //ILHooks
     //Disabling the ability to eat from popcorn plants which do not have seeds
-    private static void SeedCobILUpdate(ILContext il)
+    internal static void SeedCobILUpdate(ILContext il)
     {
         try
         {
@@ -123,7 +123,7 @@ public partial class NoirCatto
     }
 
     //Skipping the canBeHitByWeapons check
-    private static void WeaponILUpdate(ILContext il)
+    internal static void WeaponILUpdate(ILContext il)
     {
         try
         {
@@ -169,7 +169,7 @@ public partial class NoirCatto
         }
     }
 
-    private static void SharedPhysicsILTraceProjectileAgainstBodyChunks(ILContext il)
+    internal static void SharedPhysicsILTraceProjectileAgainstBodyChunks(ILContext il)
     {
         try
         {

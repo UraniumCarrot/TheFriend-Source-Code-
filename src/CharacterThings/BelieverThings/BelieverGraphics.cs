@@ -12,10 +12,6 @@ namespace TheFriend.CharacterThings.BelieverThings;
 
 public class BelieverGraphics
 {
-    public static void Apply()
-    {
-    }
-
     public static void BelieverSpritesInit(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         Array.Resize<FSprite>(ref sLeaser.sprites, sLeaser.sprites.Length + 1);

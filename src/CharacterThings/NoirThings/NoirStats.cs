@@ -2,10 +2,8 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {
-    private static void SlugcatStatsOnctor(On.SlugcatStats.orig_ctor orig, SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
+    public static void SlugcatStatsOnctor(SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
     {
-        orig(self, slugcat, malnourished);
-        
         if (slugcat == Plugin.NoirName)
         {
             self.generalVisibilityBonus = -0.2f;
@@ -25,7 +23,7 @@ public partial class NoirCatto
     }
 
     private const float NoirCrawlSpeedFac = 2.5f;
-    private static bool PlayerOnAllowGrabbingBatflys(On.Player.orig_AllowGrabbingBatflys orig, Player self)
+    public static bool PlayerOnAllowGrabbingBatflys(On.Player.orig_AllowGrabbingBatflys orig, Player self)
     {
         if (self.SlugCatClass == Plugin.NoirName) return false;
         return orig(self);

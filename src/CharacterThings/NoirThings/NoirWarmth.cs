@@ -30,7 +30,7 @@ public partial class NoirCatto
         }
     }
 
-    private static void RoomOnAddObject(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
+    public static void RoomOnAddObject(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
     {
         orig(self, obj);
         if (obj is Player pl && pl.SlugCatClass == Plugin.NoirName)

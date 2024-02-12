@@ -8,20 +8,6 @@ namespace TheFriend.Creatures.LizardThings.DragonRideThings;
 
 public class LizardRideFixes
 {
-    public static void Apply()
-    {
-        WormGrassImmunizer.Apply();
-        
-        On.LizardAI.SocialEvent += LizardAI_SocialEvent;
-        On.Weapon.HitThisObject += Weapon_HitThisObject;
-        On.Creature.NewRoom += Creature_NewRoom;
-        On.Creature.SpitOutOfShortCut += CreatureOnSpitOutOfShortCut;
-        On.Player.IsCreatureLegalToHoldWithoutStun += Player_IsCreatureLegalToHoldWithoutStun;
-        On.Creature.Grab += Creature_Grab;
-        On.Player.GraphicsModuleUpdated += Player_GraphicsModuleUpdated;
-        On.Player.ReleaseGrasp += PlayerOnReleaseGrasp;
-    }
-
     public static void PlayerOnReleaseGrasp(On.Player.orig_ReleaseGrasp orig, Player self, int grasp)
     { // Explode living creatures from riderFriends if theyve been thrown or dropped
         if (self.GetGeneral().dragonSteed != null)
@@ -49,9 +35,8 @@ public class LizardRideFixes
         }
         return orig(self, obj);
     }
-    public static void Player_GraphicsModuleUpdated(On.Player.orig_GraphicsModuleUpdated orig, Player self, bool actuallyViewed, bool eu)
+    public static void Player_GraphicsModuleUpdated(Player self, bool actuallyViewed, bool eu)
     { // Spear pointing while riding a lizard
-        orig(self, actuallyViewed, eu);
         if (self == null) return;
         try
         {

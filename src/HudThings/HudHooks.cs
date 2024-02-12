@@ -12,19 +12,8 @@ namespace TheFriend.HudThings;
 
 public class HudHooks
 {
-    public static void Apply()
+    public static void HUDOnInitSinglePlayerHud(HUD.HUD self, RoomCamera cam)
     {
-        On.Menu.SleepAndDeathScreen.GetDataFromGame += SleepAndDeathScreen_GetDataFromGame;
-        On.HUD.RainMeter.Draw += RainMeter_Draw;
-        On.HUD.RainMeter.ctor += RainMeter_ctor;
-        On.HUD.RainMeter.Update += RainMeter_Update;
-        
-        On.HUD.HUD.InitSinglePlayerHud += HUDOnInitSinglePlayerHud;
-    }
-
-    public static void HUDOnInitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam)
-    {
-        orig(self, cam);
         if ((self.owner as Player)?.room.world.game.StoryCharacter == Plugin.FriendName || 
             (self.owner as Player)?.room.world.game.StoryCharacter == Plugin.DragonName || 
             Configs.RepMeterAll)

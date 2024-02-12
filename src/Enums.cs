@@ -70,11 +70,7 @@ public static class CreatureTemplateType
 
 public static class AbstractObjectType
 {
-    public static void Apply()
-    {
-        On.AbstractPhysicalObject.Realize += AbstractPhysicalObjectOnRealize;
-    }
-    private static void AbstractPhysicalObjectOnRealize(On.AbstractPhysicalObject.orig_Realize orig, AbstractPhysicalObject self)
+    internal static void AbstractPhysicalObjectOnRealize(On.AbstractPhysicalObject.orig_Realize orig, AbstractPhysicalObject self)
     {
         orig(self);
         if (self.type == CatSlash)

@@ -12,7 +12,7 @@ public partial class HuntQuestThings
         SleepScreen
     }
 
-    private static void RainWorldGameOnWin(On.RainWorldGame.orig_Win orig, RainWorldGame self, bool malnourished)
+    internal static void RainWorldGameOnWin(On.RainWorldGame.orig_Win orig, RainWorldGame self, bool malnourished)
     {
         if (self.manager.upcomingProcess != null)
         {
@@ -33,7 +33,7 @@ public partial class HuntQuestThings
         if (flag) Master.SaveQuestProgress(); //Save after orig so malnourished is fetched properly
     }
 
-    private static void ProcessManagerOnRequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID id)
+    internal static void ProcessManagerOnRequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID id)
     {
         if (id == ProcessManager.ProcessID.MainMenu || id == ProcessManager.ProcessID.SlugcatSelect)
         {
@@ -54,7 +54,7 @@ public partial class HuntQuestThings
         orig(self, id);
     }
 
-    private static void KarmaLadderScreenOnSingal(On.Menu.KarmaLadderScreen.orig_Singal orig, Menu.KarmaLadderScreen self, Menu.MenuObject sender, string message)
+    internal static void KarmaLadderScreenOnSingal(On.Menu.KarmaLadderScreen.orig_Singal orig, Menu.KarmaLadderScreen self, Menu.MenuObject sender, string message)
     {
         if (self is Menu.GhostEncounterScreen && message is "CONTINUE" && Master != null && Master.NextRewardPhase == RewardPhase.SleepScreen)
         {
@@ -65,7 +65,7 @@ public partial class HuntQuestThings
             orig(self, sender, message);
     }
 
-    private static void KarmaLadderOnctor(On.Menu.KarmaLadder.orig_ctor orig, Menu.KarmaLadder self, Menu.Menu menu, Menu.MenuObject owner, Vector2 pos, HUD.HUD hud, IntVector2 displaykarma, bool reinforced)
+    internal static void KarmaLadderOnctor(On.Menu.KarmaLadder.orig_ctor orig, Menu.KarmaLadder self, Menu.Menu menu, Menu.MenuObject owner, Vector2 pos, HUD.HUD hud, IntVector2 displaykarma, bool reinforced)
     {
         if (Master != null && Master.NextRewardPhase == RewardPhase.SleepScreen)
         {

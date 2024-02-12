@@ -8,14 +8,6 @@ namespace TheFriend.Creatures.PebblesLLCreature;
 
 public class PebblesLL : DaddyLongLegs
 {
-    public static void Apply()
-    {
-        PebblesLLGraphics.Apply();
-        On.AbstractCreature.ctor += AbstractCreature_ctor;
-        IL.DaddyLongLegs.ctor += DaddyLongLegs_ctor;
-        IL.Spear.Update += Spear_Update;
-    }
-
     public static void Spear_Update(ILContext il)
     {
         try

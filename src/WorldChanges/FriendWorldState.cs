@@ -19,25 +19,6 @@ public class FriendWorldState
     }
     public static bool SolaceWorldstate;
 
-    public static void Apply()
-    {
-        // General world hooks
-        On.Room.SlugcatGamemodeUniqueRoomSettings += Room_SlugcatGamemodeUniqueRoomSettings;
-        On.WorldLoader.ctor_RainWorldGame_Name_bool_string_Region_SetupValues += WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues;
-        On.Region.ctor += Region_ctor;
-
-        // Shaded Citadel hooks
-        On.Room.Loaded += Room_Loaded;
-
-        // Creature hooks
-        On.AbstractCreature.setCustomFlags += AbstractCreature_setCustomFlags;
-        On.ScavengerAbstractAI.InitGearUp += ScavengerAbstractAI_InitGearUp;
-        On.FireFly.ctor += FireFly_ctor;
-        On.CreatureCommunities.InfluenceCell += CreatureCommunitiesOnInfluenceCell;
-        On.CreatureCommunities.LoadDefaultCommunityAlignments += CreatureCommunitiesOnLoadDefaultCommunityAlignments;
-        On.RoomSpecificScript.SU_A43SuperJumpOnly.Update += SU_A43SuperJumpOnlyOnUpdate;
-    }
-
     public static void SU_A43SuperJumpOnlyOnUpdate(On.RoomSpecificScript.SU_A43SuperJumpOnly.orig_Update orig, RoomSpecificScript.SU_A43SuperJumpOnly self, bool eu)
     { // Cure for that ANNOYING outskirts room that forces you to leap.
         orig(self, eu);

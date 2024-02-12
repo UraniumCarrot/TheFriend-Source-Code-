@@ -13,15 +13,8 @@ namespace TheFriend.SaveThings;
 
 public class SolaceSaveData
 {
-    public static void Apply()
+    public static void PlayerOnUpdate(Player self, bool eu)
     {
-        On.Creature.Die += CreatureOnDie;
-        On.Player.Update += PlayerOnUpdate;
-    }
-
-    public static void PlayerOnUpdate(On.Player.orig_Update orig, Player self, bool eu)
-    {
-        orig(self, eu);
         if (self.room == null) return;
         if (!self.room.game.IsStorySession) return;
         if (self.room.game.GetStorySession.saveState.miscWorldSaveData.GetSlugBaseData()
@@ -33,9 +26,8 @@ public class SolaceSaveData
         else FriendWorldState.customLock = false;
     }
 
-    public static void CreatureOnDie(On.Creature.orig_Die orig, Creature self)
+    public static void CreatureOnDie(Creature self)
     {
-        orig(self);
         if (self.room == null) return;
         if (!self.room.game.IsStorySession) return;
 

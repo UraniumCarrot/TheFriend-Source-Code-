@@ -12,10 +12,6 @@ namespace TheFriend.Objects.SolaceScarfObject;
 
 public class SolaceScarfDyes
 {
-    public static void Apply()
-    {
-    }
-
     public static bool SolaceScarfCanDyeCheck(Player self)
     {
         if (self.grasps.Count(x => x.grabbed is SolaceScarf) == 2) return false;

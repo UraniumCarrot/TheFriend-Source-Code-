@@ -32,14 +32,9 @@ public class DragonCrafts
         return null;
     }
     #endregion
-    public static void Apply()
+    public static void InitRecipes()
     {
         //On.Player.CraftingResults += Player_CraftingResults;
-        On.Player.SpitUpCraftedObject += Player_SpitUpCraftedObject;
-        On.Player.GraspsCanBeCrafted += Player_GraspsCanBeCrafted;
-        On.Player.ThrownSpear += Player_ThrownSpear;
-        On.Weapon.NewRoom += Weapon_NewRoom;
-
         AddRecipe(LittleCrackerFisob.LittleCracker, ObjType.Rock, BoomMineFisob.BoomMine);
         AddRecipe(ObjType.Lantern, ObjType.Rock, BoomMineFisob.BoomMine);
         AddRecipe(ObjType.FlareBomb, ObjType.Rock, BoomMineFisob.BoomMine);
@@ -66,9 +61,8 @@ public class DragonCrafts
     }
 
     #region Firespear changes
-    public static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
+    public static void Player_ThrownSpear(Player self, Spear spear)
     {
-        orig(self, spear);
         if (FriendWorldState.SolaceWorldstate && self.room.world.region.name != "HR" && spear.bugSpear)
             spear.spearDamageBonus *= 0.4f;
     }

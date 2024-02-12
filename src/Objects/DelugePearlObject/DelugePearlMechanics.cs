@@ -9,20 +9,8 @@ namespace TheFriend.Objects.DelugePearlObject;
 
 public class DelugePearlMechanics
 {
-    public static void Apply()
+    public static void PlayerOnUpdate(Player self, bool eu)
     {
-        On.Player.Grabability += PlayerOnGrabability;
-        On.Player.NewRoom += PlayerOnNewRoom;
-        On.Player.Update += PlayerOnUpdate;
-        On.DataPearl.Update += DataPearlOnUpdate;
-        On.DataPearl.ctor += DataPearlOnctor;
-        On.PhysicalObject.Grabbed += PhysicalObjectOnGrabbed;
-        On.SaveState.SessionEnded += SaveStateOnSessionEnded;
-    }
-
-    public static void PlayerOnUpdate(On.Player.orig_Update orig, Player self, bool eu)
-    {
-        orig(self, eu);
         if (self.slugcatStats.name == Plugin.DelugeName && 
             self.GetDeluge().pearl == null && 
             self.room != null && 
@@ -114,7 +102,7 @@ public class DelugePearlMechanics
         catch { Debug.Log("Solace: Something went wrong in making new bauble!"); }
     }
     
-    public static Player.ObjectGrabability PlayerOnGrabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
+    public static Player.ObjectGrabability? PlayerOnGrabability(Player self, PhysicalObject obj)
     {
         try
         {
@@ -129,7 +117,7 @@ public class DelugePearlMechanics
             // }
         }
         catch { Debug.Log("Solace: Failed to make bauble ungrabbable");}
-        return orig(self, obj);
+        return null;
     }
 
     public static void DataPearlOnUpdate(On.DataPearl.orig_Update orig, DataPearl self, bool eu)

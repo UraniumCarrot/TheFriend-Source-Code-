@@ -15,25 +15,6 @@ public class DangerTypes
     /*
      I'm having to hook so much stuff for FloodAndAerie to act like an actual flood.
      */
-    
-    
-    public static void Apply()
-    {
-        new Hook(typeof(RoomRain).GetProperty(nameof(RoomRain.OutsidePushAround))!.GetGetMethod(), ChillyOutsidePushAround);
-        new ILHook(typeof(RoomRain).GetProperty(nameof(RoomRain.FloodLevel))!.GetGetMethod(), ChillyFloodLevel);
-
-        // Hooks that ensure FloodAndAerie is treated like FloodAndRain
-        On.RoomRain.ctor += RoomRainOnctor;
-        On.RoomRain.Update += RoomRainOnUpdate;
-        On.AbstractCreature.DrainWorldDenFlooded += AbstractCreatureOnDrainWorldDenFlooded;
-        On.Water.ctor += WaterOnctor;
-        On.ShelterDoor.Update += ShelterDoorOnUpdate;
-        IL.RoomCamera.Update += RoomCameraOnUpdate;
-        
-        // Minor hooks
-        
-    }
-
     public static void RoomCameraOnUpdate(ILContext il)
     { // Stops FloodAndBlizzard from getting deleted and remade every update
         try

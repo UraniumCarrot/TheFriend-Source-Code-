@@ -6,14 +6,8 @@ namespace TheFriend.WorldChanges.ScarfScripts;
 
 public abstract class RoomScript : UpdatableAndDeletable
 {
-    public static void Apply()
-    {
-        On.StoryGameSession.ctor += StoryGameSessionOnctor;
-        On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScriptOnAddRoomSpecificScript;
-    }
-    public static void StoryGameSessionOnctor(On.StoryGameSession.orig_ctor orig, StoryGameSession self, SlugcatStats.Name savestatenumber, RainWorldGame game)
+    public static void StoryGameSessionOnctor(StoryGameSession self, SlugcatStats.Name savestatenumber, RainWorldGame game)
     { // Add to list of rooms that will have new scripts
-        orig(self, savestatenumber, game);
         ScarfScript.FindVistaRooms(self);
     }
     public static void RoomSpecificScriptOnAddRoomSpecificScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)

@@ -19,24 +19,6 @@ namespace TheFriend.SlugcatThings;
 
 public class SlugcatGameplay
 {
-    public static void Apply()
-    {
-        On.Player.Update += Player_Update;
-        On.Player.ThrowObject += PlayerOnThrowObject;
-        On.Player.WallJump += Player_WallJump;
-        On.Player.Jump += Player_Jump;
-        On.Player.ctor += Player_ctor;
-        On.Player.Grabability += Player_Grabability;
-        On.Player.GrabUpdate += Player_GrabUpdate;
-        On.Player.UpdateBodyMode += Player_UpdateBodyMode;
-        On.Player.UpdateAnimation += Player_UpdateAnimation;
-        On.Player.checkInput += Player_checkInput;
-        On.SlugcatStats.SlugcatCanMaul += SlugcatStats_SlugcatCanMaul;
-        On.SlugcatStats.ctor += SlugcatStats_ctor;
-        
-        IL.Player.MovementUpdate += PlayerOnMovementUpdate;
-    }
-
     public static void PlayerOnMovementUpdate(ILContext il)
     {
         var cursor = new ILCursor(il);
@@ -68,10 +50,8 @@ public class SlugcatGameplay
         orig(self, grasp, eu);
         if (mine != null) mine.ExplodeTimer = 5;  // Boommine cooldown reduction if thrown
     }
-    public static void Player_GrabUpdate(On.Player.orig_GrabUpdate orig, Player self, bool eu)
+    public static void Player_GrabUpdate(Player self, bool eu)
     { // Makes player ride lizard
-        orig(self, eu);
-        
         for (int i = 0; i < 2; i++)
             if (self.grasps[i] != null && self.grasps[i].grabbed.TryGetLiz(out var data))
                 if (data.RideEnabled &&
@@ -87,7 +67,7 @@ public class SlugcatGameplay
             DragonCrafts.PoacherQuickCraft(self);
     }
 
-    public static Player.ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
+    public static Player.ObjectGrabability? Player_Grabability(Player self, PhysicalObject obj)
     { 
         if (obj is SolaceScarf scarf) 
             if (scarf.wearer != null) return Player.ObjectGrabability.CantGrab;
@@ -97,19 +77,17 @@ public class SlugcatGameplay
             var grab = LizardRideFixes.LizardGrabability(self, liz);
             
             if (grab == Player.ObjectGrabability.TwoHands)
-                return orig(self, obj);
+                return null;
             else return grab;
         }
         
         if (obj is Player pl && pl.GetGeneral().dragonSteed != null) return Player.ObjectGrabability.CantGrab;
         if (self.TryGetPoacher(out var poacher) && poacher.IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
         if (obj is FakePlayerEdible edible) return edible.grabability;
-        return orig(self, obj);
+        return null;
     }
-    public static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+    public static void Player_Update(Player self, bool eu)
     {
-        orig(self, eu);
-        
         if (self.GetGeneral().iHaveSenses) 
             SensoryHolograms.PlayerSensesUpdate(self);
         
@@ -192,9 +170,8 @@ public class SlugcatGameplay
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
     }
-    public static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
+    public static void Player_UpdateBodyMode(Player self)
     { // Friend fast crawl
-        orig(self);
         if (self.TryGetFriend(out _))
             FriendGameplay.FriendMovement(self);
     }
@@ -214,9 +191,8 @@ public class SlugcatGameplay
         else if (self.TryGetDeluge(out _)) 
             DelugeGameplay.DelugeSiezeJump(self);
     }
-    public static void Player_UpdateAnimation(On.Player.orig_UpdateAnimation orig, Player self)
+    public static void Player_UpdateAnimation(Player self)
     { 
-        orig(self);
         if (self.TryGetFriend(out _))
             FriendGameplay.FriendLedgeFix(self); 
     }
@@ -226,17 +202,13 @@ public class SlugcatGameplay
         if (self.TryGetFriend(out _)) 
             FriendGameplay.FriendWalljumpFix(self);
     }
-    public static void SlugcatStats_ctor(On.SlugcatStats.orig_ctor orig, SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
+    public static void SlugcatStats_ctor(SlugcatStats self, SlugcatStats.Name slugcat, bool malnourished)
     { // Friend unnerfs
-        orig(self, slugcat, malnourished);
         if (slugcat == FriendName)
             FriendGameplay.FriendStats(self);
     }
-    public static void Player_checkInput(On.Player.orig_checkInput orig, Player self)
+    public static void Player_checkInput(int timer, Player self)
     {
-        var timer = self.GetFriend().poleSuperJumpTimer;
-        orig(self);
-        
         //Moving all inputs one slot up
         for (var i = self.GetGeneral().UnchangedInputForLizRide.Length - 1; i > 0; i--)
             self.GetGeneral().UnchangedInputForLizRide[i] = self.GetGeneral().UnchangedInputForLizRide[i - 1];

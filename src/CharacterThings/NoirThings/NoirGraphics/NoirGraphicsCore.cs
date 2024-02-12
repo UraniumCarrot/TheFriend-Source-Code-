@@ -11,9 +11,8 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto //Sprite replacement and layer management is here
 {
-    private static void PlayerGraphicsOnctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
+    internal static void PlayerGraphicsOnctor(PlayerGraphics self, PhysicalObject ow)
     {
-        orig(self, ow);
         if (!self.player.TryGetNoir(out var noirData)) return;
 
         foreach (var ear in noirData.Ears)
@@ -47,7 +46,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         self.bodyParts = partsToAdd.ToArray();
     }
 
-    private static void PlayerGraphicsOnInitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam)
+    internal static void PlayerGraphicsOnInitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam)
     {
         if (!self.player.TryGetNoir(out var noirData))
         {
@@ -202,7 +201,8 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         }
 
     }
-    private static void PlayerGraphicsOnAddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, FContainer newcontatiner)
+
+    internal static void PlayerGraphicsOnAddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, FContainer newcontatiner)
     {
         if (!self.player.TryGetNoir(out var noirData))
         {
@@ -253,9 +253,8 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         }
     }
 
-    private static void PlayerGraphicsOnDrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
+    internal static void PlayerGraphicsOnDrawSprites(PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
     {
-        orig(self, sleaser, rcam, timestacker, campos);
         if (!self.player.TryGetNoir(out var noirData)) return;
         if (rcam.room.game.DEBUGMODE) return;
 
@@ -366,9 +365,9 @@ public partial class NoirCatto //Sprite replacement and layer management is here
 
         #endregion
     }
-    private static void PlayerGraphicsOnApplyPalette(On.PlayerGraphics.orig_ApplyPalette orig, PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
+
+    internal static void PlayerGraphicsOnApplyPalette(PlayerGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
     {
-        orig(self, sleaser, rcam, palette);
         if (!self.player.TryGetNoir(out var noirData)) return;
 
         var playerNum = self.player.playerState.playerNumber;
@@ -429,7 +428,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         }
     }
 
-    private static void PlayerGraphicsOnReset(On.PlayerGraphics.orig_Reset orig, PlayerGraphics self)
+    internal static void PlayerGraphicsOnReset(On.PlayerGraphics.orig_Reset orig, PlayerGraphics self)
     {
         orig(self);
         if (!self.player.TryGetNoir(out var noirData)) return;

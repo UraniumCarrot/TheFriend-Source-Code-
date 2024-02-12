@@ -14,34 +14,9 @@ using Random = UnityEngine.Random;
 using Color = UnityEngine.Color;
 
 namespace TheFriend.Creatures.LizardThings;
-public class Hooks
+public class LizardHooks
 {
-    public static void Apply()
-    {
-        On.LizardLimb.ctor += LizardLimb_ctor;
-        On.LizardVoice.GetMyVoiceTrigger += LizardVoice_GetMyVoiceTrigger;
-
-        On.LizardBreeds.BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate += LizardBreeds_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate;
-        On.Lizard.ctor += Lizard_ctor;
-        On.Lizard.Bite += Lizard_Bite;
-        On.Lizard.Update += Lizard_Update;
-        On.LizardAI.IUseARelationshipTracker_UpdateDynamicRelationship += LizardAI_IUseARelationshipTracker_UpdateDynamicRelationship;
-
-        On.LizardGraphics.ctor += LizardGraphics_ctor;
-        On.LizardGraphics.ApplyPalette += LizardGraphics_ApplyPalette;
-        On.LizardGraphics.BodyColor += LizardGraphics_BodyColor;
-        On.LizardGraphics.DynamicBodyColor += LizardGraphics_DynamicBodyColor;
-        On.LizardGraphics.InitiateSprites += LizardGraphics_InitiateSprites;
-        On.LizardGraphics.AddToContainer += LizardGraphics_AddToContainer;
-        On.LizardGraphics.DrawSprites += LizardGraphics_DrawSprites;
-        
-        LizardRideFixes.Apply();
-        LizardCosmeticHooks.Apply();
-
-        IL.SaveState.SessionEnded += HandleYoungLizardMotherPassage;
-    }
-
-    private static void HandleYoungLizardMotherPassage(ILContext il)
+    internal static void HandleYoungLizardMotherPassage(ILContext il)
     {
         var c = new ILCursor(il);
         if (c.TryGotoNext(MoveType.After,
@@ -166,9 +141,8 @@ public class Hooks
         
         return relationship;
     }
-    public static void Lizard_Update(On.Lizard.orig_Update orig, Lizard self, bool eu)
+    public static void Lizard_Update(Lizard self, bool eu)
     {
-        orig(self, eu);
         if (self.room == null) return;
         if (self.Template.type == CreatureTemplateType.PilgrimLizard) self.Destroy(); // TODO: GET RID OF THIS LATER
         

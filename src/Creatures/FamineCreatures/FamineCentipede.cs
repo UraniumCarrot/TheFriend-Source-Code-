@@ -14,17 +14,6 @@ namespace TheFriend.Creatures.FamineCreatures;
 
 public abstract class FamineCentipede
 {
-    public static void Apply()
-    {
-        On.CentipedeGraphics.ctor += CentipedeGraphics_ctor;
-        On.CentipedeGraphics.InitiateSprites += CentipedeGraphics_InitiateSprites;
-        On.CentipedeGraphics.DrawSprites += CentipedeGraphics_DrawSprites;
-        On.Centipede.Violence += Centipede_Violence;
-        On.Centipede.ShortCutColor += Centipede_ShortCutColor;
-        //On.Centipede.ctor += Centipede_ctor;
-        IL.Player.EatMeatUpdate += Player_EatMeatUpdate;
-    }
-
      // Diseased Centipede
     public static Color Centipede_ShortCutColor(On.Centipede.orig_ShortCutColor orig, Centipede self)
     {

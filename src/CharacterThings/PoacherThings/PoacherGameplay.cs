@@ -10,14 +10,6 @@ namespace TheFriend.PoacherThings;
 
 public class PoacherGameplay
 {
-    public static void Apply()
-    {
-        On.Player.ObjectEaten += PlayerOnObjectEaten;
-        On.Player.HeavyCarry += Player_HeavyCarry;
-        On.DangleFruit.Update += DangleFruit_Update;
-        On.LanternMouse.Update += LanternMouse_Update;
-        On.MoreSlugcats.DandelionPeach.Update += DandelionPeach_Update;
-    }
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
 
     #region main mechanics

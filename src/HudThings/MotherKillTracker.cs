@@ -10,11 +10,6 @@ namespace TheFriend.HudThings;
 
 public class MotherKillTracker : PositionedMenuObject
 {
-    public static void Apply()
-    {
-        
-    }
-
     public FSprite[] circleSprites;
     public FContainer container;
     public CollectiblesTracker tracker;

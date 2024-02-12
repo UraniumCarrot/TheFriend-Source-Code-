@@ -8,7 +8,7 @@ namespace TheFriend.CharacterThings.NoirThings;
 public partial class NoirCatto
 {
     //Spear not embed into wall fix
-    private static void SpearILUpdate(ILContext il)
+    internal static void SpearILUpdate(ILContext il)
     {
         try
         {
@@ -43,7 +43,8 @@ public partial class NoirCatto
     }
 
     #region Ghosts
-    private static void GhostWorldPresenceILSpawnGhost(ILContext il)
+
+    internal static void GhostWorldPresenceILSpawnGhost(ILContext il)
     {
         try
         {
@@ -81,7 +82,7 @@ public partial class NoirCatto
         }
     }
 
-    private static void KarmaLadderScreenILGetDataFromGame(ILContext il)
+    internal static void KarmaLadderScreenILGetDataFromGame(ILContext il)
     {
         try
         {

@@ -27,17 +27,6 @@ public class DelugeWorldState
     }
     public static bool Deluge;
     
-    public static void Apply()
-    {
-        IL.Creature.HypothermiaUpdate += CreatureOnHypothermiaUpdate;
-        On.Room.Update += RoomOnUpdate;
-        On.Room.ctor += RoomOnctor;
-        ColdRoom.ColdBreath.Update += ColdBreathOnUpdate;
-        On.RoofTopView.DustpuffSpawner.DustPuff.Update += DustPuffOnUpdate;
-        On.FlyAI.RoomNotACycleHazard += FlyAIOnRoomNotACycleHazard;
-    }
-
-    
     public static bool FlyAIOnRoomNotACycleHazard(On.FlyAI.orig_RoomNotACycleHazard orig, Room room)
     {
         if (room.roomSettings.DangerType == RoomRain.DangerType.AerieBlizzard && Deluge)

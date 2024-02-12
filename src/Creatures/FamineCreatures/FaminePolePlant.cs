@@ -9,22 +9,16 @@ namespace TheFriend.Creatures.FamineCreatures;
 
 public abstract class FaminePolePlant
 {
-    public static void Apply()
-    {
-        On.PoleMimic.ctor += PoleMimicOnctor;
-        On.PoleMimicGraphics.DrawSprites += PoleMimicGraphicsOnDrawSprites;
-        IL.PoleMimicGraphics.InitiateSprites += PoleMimicGraphicsILInitiateSprites;
-    }
-
     private const float SpawnChance = 0.85f;
-    private static void PoleMimicOnctor(On.PoleMimic.orig_ctor orig, PoleMimic self, AbstractCreature abstractcreature, World world)
+
+    internal static void PoleMimicOnctor(On.PoleMimic.orig_ctor orig, PoleMimic self, AbstractCreature abstractcreature, World world)
     {
         orig(self, abstractcreature, world);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
         if (Random.value > SpawnChance) self.Destroy();
     }
 
-    private static void PoleMimicGraphicsOnDrawSprites(On.PoleMimicGraphics.orig_DrawSprites orig, PoleMimicGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
+    internal static void PoleMimicGraphicsOnDrawSprites(On.PoleMimicGraphics.orig_DrawSprites orig, PoleMimicGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
     {
         orig(self, sleaser, rcam, timestacker, campos);
         if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
@@ -43,7 +37,7 @@ public abstract class FaminePolePlant
         }
     }
 
-    private static void PoleMimicGraphicsILInitiateSprites(ILContext il)
+    internal static void PoleMimicGraphicsILInitiateSprites(ILContext il)
     {
         try
         {
