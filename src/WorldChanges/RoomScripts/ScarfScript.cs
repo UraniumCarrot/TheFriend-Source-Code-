@@ -33,7 +33,7 @@ public class ScarfScript : RoomScript
                 ListOfPos.AddRange(ChallengeTools.VistaLocations.Values);
             }
         }
-        self.ScriptData().RoomsWithNewScripts.AddRange(ListOfRooms);
+        self.SessionData().RoomsWithNewScripts.AddRange(ListOfRooms);
     }
 
     public SolaceScarfAbstract scarf;
