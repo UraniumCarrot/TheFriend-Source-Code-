@@ -152,7 +152,7 @@ public class DragonCrafts
     public static void CraftFail(Player self)
     {
         self.room.PlaySound(SoundID.Big_Needle_Worm_Impale_Terrain, self.firstChunk, loop: false, 1f, 1f);
-        self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, color: new Color(1f, 1f, 1f), null, 20, 50));
+        self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50));
     }
     public static void TearFirecracker(Player self, int lumps, List<PhysicalObject> ingredients)
     {
@@ -289,7 +289,7 @@ public class DragonCrafts
         {
             case RecipeType.MakeSpearFire: 
                 result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false, 0.5f);
-                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), color: new Color(1f, 0.4f, 0.3f), null, 7, 17);
+                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), new Color(1f, 0.4f, 0.3f), null, 7, 17);
                 sound = SoundID.Firecracker_Burn;
                 volume = 0.2f;
                 break;
