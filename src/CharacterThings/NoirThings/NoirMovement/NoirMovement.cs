@@ -106,11 +106,11 @@ public partial class NoirCatto
 
     private static bool IsStuckOrWedged(Player player)
     {
-        return patch_Player.IsStuckOrWedged(player);
+        return RotundWorld.patch_Player.IsStuckOrWedged(player);
     }
     internal static void PlayerOnJump(On.Player.orig_Jump orig, Player self)
     {
-        if (!self.TryGetNoir(out var noirData) || RotundWorld && IsStuckOrWedged(self))
+        if (!self.TryGetNoir(out var noirData) || Plugin.RotundWorld && IsStuckOrWedged(self))
         {
             orig(self);
             return;
