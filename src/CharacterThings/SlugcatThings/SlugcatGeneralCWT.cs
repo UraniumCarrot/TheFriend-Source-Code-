@@ -26,6 +26,7 @@ public static class SlugcatGeneralCWT
         // General player variables
         public bool squint;
         public bool iHaveSenses;
+        public bool isMakingPoppers;
         
         public bool JustGotMoonMark;
         public bool MoonMarkPassed;

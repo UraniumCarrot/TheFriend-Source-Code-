@@ -2,6 +2,7 @@
 using UnityEngine;
 using TheFriend.CharacterThings;
 using TheFriend.Creatures.LizardThings.DragonRideThings;
+using TheFriend.SlugcatThings;
 using Random = UnityEngine.Random;
 using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
@@ -23,7 +24,7 @@ public class PoacherGameplay
     
     public static void PoacherUpdate(Player self, bool eu)
     {
-        if (self.input[0].y < 1 || !self.input[0].pckp) self.GetPoacher().isMakingPoppers = false;
+        if (self.input[0].y < 1 || !self.input[0].pckp) self.GetGeneral().isMakingPoppers = false;
         self.Hypothermia += self.HypothermiaGain * (Configs.PoacherFreezeFaster ? 1.2f : 0.2f);
         PoacherGameplay.PoacherEats(self);
         if (self.dangerGraspTime > 0)

@@ -12,7 +12,6 @@ public static class PoacherCWT
         public int sleepCounter;
         public bool IsSkullVisible;
         public bool IsInIntro;
-        public bool isMakingPoppers;
         public Poacher(AbstractCreature player)
         {
             
