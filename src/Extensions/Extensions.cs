@@ -151,12 +151,12 @@ public static partial class Extensions
     public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> list)
     {
         foreach (var element in list)
-            set.Add(element);
+            if (!set.Contains(element)) set.Add(element);
     }
     public static void RemoveRange<T>(this HashSet<T> set, IEnumerable<T> list)
     {
         foreach (var element in list)
-            set.Remove(element);
+            if (set.Contains(element)) set.Remove(element);
     }
     #endregion
 
