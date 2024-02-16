@@ -278,13 +278,20 @@ public class DragonCrafts
         float pitch = 1f; // pitch of cosmetic sound
         var spear = ingredients.Find(x => x is Spear) as Spear;
 
-        if (spear == null || spear is ExplosiveSpear || spear.bugSpear)
+        if (spear?.abstractSpear == null)
         {
             Debug.Log("Solace: Spearcraft failed");
             CraftFail(self);
             return;
         }
-        
+        bool isANormalSpear = spear is not ExplosiveSpear && spear is not ElectricSpear && !spear.bugSpear;
+        if (!isANormalSpear && recipe != RecipeType.ArmSpearEle)
+        {
+            Debug.Log("Solace: Spearcraft failed, this spear can't be crafted with");
+            CraftFail(self);
+            return;
+        }
+
         switch (recipe)
         {
             case RecipeType.MakeSpearFire: 
@@ -314,40 +321,34 @@ public class DragonCrafts
                     CraftFail(self);
                     return;
                 }
+
                 switch (ingredients.Find(x => x is not Spear))
                 {
-                    case JellyFish a:
-                        spear.abstractSpear.electricCharge = 3; 
-                        ingredients.Remove(a);
-                        break;
-                    case Centipede a: 
-                        spear.abstractSpear.electricCharge = 3; 
-                        ingredients.Remove(a);
-                        break;
-                    case FlareBomb a: 
-                        spear.abstractSpear.electricCharge = 1; 
+                    case JellyFish: spear.abstractSpear.electricCharge += 3; break;
+                    case Centipede: spear.abstractSpear.electricCharge += 3; break;
+                    case FlareBomb a: spear.abstractSpear.electricCharge += 1; 
                         a.StartBurn();
-                        ingredients.Remove(a);
                         break;
                     default:
                         Debug.Log("Solace: Failed to charge electric spear, invalid charger");
                         CraftFail(self);
                         return;
                 }
+                ingredients.Remove(ingredients.Find(x => x is not Spear));
                 sound = SoundID.Zapper_Zap;
                 effect = new Explosion.ExplosionLight(self.bodyChunks[0].pos, 200f, 1f, 4, new Color(0.8f, 0.8f, 1f));
                 if (ingredients.Contains(spear)) ingredients.Remove(spear);
                 break;
         }
         MakeCosmeticEffects(self, sound, effect, volume, pitch);
-        MakeCraftedItem(self, result, ingredients, ingredients.IndexOf(spear));
+        MakeCraftedItem(self, result, ingredients, -1, self.grasps.IndexOf(self.grasps.First(x => x.grabbed == spear)));
     }
     public static void MakeMineItem(Player self, List<PhysicalObject> ingredients)
     {
         CosmeticSprite effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50);
         var mine = ingredients.Find(x => x is BoomMine) as BoomMine;
         var notMine = ingredients.Find(x => x is not BoomMine);
-
+        float pitch = 3f + Random.value;
         int red = 1;
         int green = 2;
         int blue = 3;
@@ -370,26 +371,32 @@ public class DragonCrafts
         else { Debug.Log("Solace: Mine cannot take more ammo"); CraftFail(self); return; }
         
         if (ingredients.Contains(mine)) ingredients.Remove(mine);
-        MakeCosmeticEffects(self, SoundID.Gate_Clamp_Lock, effect, 0.5f, 3f + Random.value);
-        MakeCraftedItem(self, null, ingredients, ingredients.IndexOf(mine));
+        switch (notMine)
+        {
+            case JellyFish: if (ingredients.Contains(notMine)) ingredients.Remove(notMine); break;
+            case Centipede: if (ingredients.Contains(notMine)) ingredients.Remove(notMine); break;
+        }
+        MakeCosmeticEffects(self, SoundID.Gate_Clamp_Lock, effect, 0.5f, pitch);
+        MakeCraftedItem(self, null, ingredients, self.grasps.IndexOf(self.grasps.First(x => x.grabbed == notMine)));
     }
 
-    public static void MakeCraftedItem(Player self, AbstractPhysicalObject result, List<PhysicalObject> ingredients, int graspOverride = -1)
+    public static void MakeCraftedItem(Player self, AbstractPhysicalObject result, List<PhysicalObject> ingredients, int releaseOverride = -1, int grabOverride = -1)
     {
-        foreach (PhysicalObject obj in ingredients) // Remove materials
-        {
-            if (self.room.world.game.IsStorySession)
-                (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(obj.abstractPhysicalObject);
-            obj.RemoveFromRoom();
-            self.room.abstractRoom.RemoveEntity(obj.abstractPhysicalObject);
-            self.ReleaseGrasp(ingredients.IndexOf(obj));
-        }
+        if (ingredients.Any() && !ingredients.All(x => x == null))
+            foreach (PhysicalObject obj in ingredients) // Remove materials
+            {
+                if (self.room.world.game.IsStorySession)
+                    (self.room.game.session as StoryGameSession)?.RemovePersistentTracker(obj.abstractPhysicalObject);
+                obj.RemoveFromRoom();
+                self.room.abstractRoom.RemoveEntity(obj.abstractPhysicalObject);
+                self.ReleaseGrasp((releaseOverride != -1) ? releaseOverride : ingredients.IndexOf(obj));
+            }
         if (result != null) // Realize result
         {
             self.room.abstractRoom.AddEntity(result);
             result.RealizeInRoom();
             if (self.FreeHand() != -1)
-            { self.SlugcatGrab(result.realizedObject, (graspOverride != -1) ? graspOverride : self.FreeHand()); }
+            { self.SlugcatGrab(result.realizedObject, (grabOverride != -1) ? grabOverride : self.FreeHand()); }
         }
     }
 
