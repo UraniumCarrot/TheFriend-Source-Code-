@@ -220,6 +220,8 @@ namespace TheFriend
                 On.PlayerGraphics.InitiateSprites += SlugcatGraphics.PlayerGraphics_InitiateSprites;
                 On.PlayerGraphics.JollyFaceColorMenu += SlugcatGraphics.JollyFaceColorMenu;
                 On.PlayerGraphics.JollyUniqueColorMenu += SlugcatGraphics.JollyUniqueColorMenu;
+                On.JollyCoop.JollyMenu.SymbolButtonTogglePupButton.HasUniqueSprite += SlugcatGraphics.HasUniqueSprite;
+                On.JollyCoop.JollyMenu.JollyPlayerSelector.GetPupButtonOffName += SlugcatGraphics.GetPupButtonOffName;
                 #endregion
                 #region Poacher
                 #region FirecrackerFix

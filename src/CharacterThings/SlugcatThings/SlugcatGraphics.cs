@@ -16,6 +16,7 @@ using bod = Player.BodyModeIndex;
 using ind = Player.AnimationIndex;
 using JollyColorMode = Options.JollyColorMode;
 using TheFriend.PoacherThings;
+using On.JollyCoop.JollyMenu;
 
 namespace TheFriend.SlugcatThings;
 
@@ -117,6 +118,39 @@ public class SlugcatGraphics
         }
         self.Squint(sLeaser);
     }
+    #region jolly coop character previews
+    // used for third layer (after body, face) for characters that have extras
+    internal static bool HasUniqueSprite(SymbolButtonTogglePupButton.orig_HasUniqueSprite orig, JollyCoop.JollyMenu.SymbolButtonTogglePupButton self)
+    {
+        if (self.symbol.fileName.Contains("on"))
+            return orig(self);
+        
+        return self.symbolNameOff.Contains("noir") || 
+               self.symbolNameOff.Contains("poacher") || 
+               self.symbolNameOff.Contains("deluge") || 
+               self.symbolNameOff.Contains("believer") || 
+               orig(self);
+    }
+
+    // inject file names for our characters
+    internal static string GetPupButtonOffName(JollyPlayerSelector.orig_GetPupButtonOffName orig, JollyCoop.JollyMenu.JollyPlayerSelector self)
+    {
+        var playerClass = self.JollyOptions(self.index).playerClass;
+        if (playerClass == null || self.JollyOptions(self.index).isPup) return orig(self);
+        if (!self.JollyOptions(self.index).isPup)
+        {
+            return playerClass.value switch
+            {
+                "Friend" => "friend_pup_off",
+                "NoirCatto" => "noir_pup_off",
+                "FriendDragonslayer" => "poacher_pup_off",
+                "FriendBeliever" => "believer_pup_off",
+                "FriendDeluge" => "deluge_pup_off",
+                _ => orig(self)
+            };
+        }
+        return orig(self);
+    }
     
     // Fix for default colors in jolly select menu
     internal static Color JollyUniqueColorMenu(On.PlayerGraphics.orig_JollyUniqueColorMenu orig, SlugcatStats.Name slugname, SlugcatStats.Name reference, int playernumber)
@@ -144,4 +178,5 @@ public class SlugcatGraphics
         if (slugname == Plugin.DelugeName) return Custom.hexToColor("F0F0FF");
         return orig(slugname, reference, playernumber);
     }
+    #endregion
 }
