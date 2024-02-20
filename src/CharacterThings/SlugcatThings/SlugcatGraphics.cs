@@ -117,4 +117,31 @@ public class SlugcatGraphics
         }
         self.Squint(sLeaser);
     }
+    
+    // Fix for default colors in jolly select menu
+    internal static Color JollyUniqueColorMenu(On.PlayerGraphics.orig_JollyUniqueColorMenu orig, SlugcatStats.Name slugname, SlugcatStats.Name reference, int playernumber)
+    {
+        if (Custom.rainWorld.options.jollyColorMode != JollyColorMode.DEFAULT)
+            return orig(slugname, reference, playernumber);
+            
+        if (slugname == Plugin.NoirName) return CharacterThings.NoirThings.NoirCatto.NoirWhite;
+        if (slugname == Plugin.DragonName) return Custom.hexToColor("735a7f");
+        if (slugname == Plugin.DelugeName) return Custom.hexToColor("FF6700");
+        if (slugname == Plugin.BelieverName) return Custom.hexToColor("FF6600");
+        return orig(slugname, reference, playernumber);
+    }
+
+    // Fix for default colors in jolly select menu
+    internal static Color JollyFaceColorMenu(On.PlayerGraphics.orig_JollyFaceColorMenu orig, SlugcatStats.Name slugname, SlugcatStats.Name reference, int playernumber)
+    {
+        if (Custom.rainWorld.options.jollyColorMode != JollyColorMode.DEFAULT)
+            return orig(slugname, reference, playernumber);
+            
+        if (slugname == Plugin.NoirName) return CharacterThings.NoirThings.NoirCatto.NoirBlueEyesDefault;
+        if (slugname == Plugin.DragonName) return Custom.hexToColor("6d3868");
+        if (slugname == Plugin.FriendName || 
+            slugname == Plugin.BelieverName) return Custom.hexToColor("101010");
+        if (slugname == Plugin.DelugeName) return Custom.hexToColor("F0F0FF");
+        return orig(slugname, reference, playernumber);
+    }
 }

@@ -5,6 +5,7 @@
 
 	"features": 
 	{
+        "color": "2f2e34",
 		"custom_colors": 
 		[
 			{ "name": "Body", "story": "2f2e34" },

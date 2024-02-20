@@ -218,6 +218,8 @@ namespace TheFriend
                 On.GraphicsModule.HypothermiaColorBlend += SlugcatGraphics.GraphicsModule_HypothermiaColorBlend;
                 On.PlayerGraphics.AddToContainer += SlugcatGraphics.PlayerGraphics_AddToContainer;
                 On.PlayerGraphics.InitiateSprites += SlugcatGraphics.PlayerGraphics_InitiateSprites;
+                On.PlayerGraphics.JollyFaceColorMenu += SlugcatGraphics.JollyFaceColorMenu;
+                On.PlayerGraphics.JollyUniqueColorMenu += SlugcatGraphics.JollyUniqueColorMenu;
                 #endregion
                 #region Poacher
                 #region FirecrackerFix
