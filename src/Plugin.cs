@@ -6,7 +6,6 @@ using static SlugBase.Features.FeatureTypes;
 using System.Security.Permissions;
 using System.Security;
 using BepInEx.Logging;
-using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.SlugcatThings;
 using TheFriend.RemixMenus;
 using TheFriend.CharacterThings.NoirThings;
@@ -104,7 +103,6 @@ namespace TheFriend
             Futile.atlasManager.LoadAtlas("atlases/solacesymbols");
             Futile.atlasManager.LoadAtlas("atlases/ForeheadSpots");
             Futile.atlasManager.LoadAtlas("atlases/CentipedeLegB_Fade");
-            DelugeSounds.LoadSounds();
             NoirCatto.LoadSounds();
             NoirCatto.LoadAtlases();
         }
@@ -113,8 +111,6 @@ namespace TheFriend
         public static readonly SlugcatStats.Name FriendName = new SlugcatStats.Name("Friend", false); // Makes Friend's campaign more accessible to me
         public static readonly SlugcatStats.Name DragonName = new SlugcatStats.Name("FriendDragonslayer", false); // Makes Poacher's campaign more accessible to me
         public static readonly SlugcatStats.Name NoirName = new SlugcatStats.Name("NoirCatto", false);
-        public static readonly SlugcatStats.Name DelugeName = new SlugcatStats.Name("FriendDeluge", false);
-        public static readonly SlugcatStats.Name BelieverName = new SlugcatStats.Name("FriendBeliever", false);
         
         public const string MothersKilled = "MothersKilledInRegionStr";
         public const string MotherKillNum = "MotherKillCount";

@@ -11,8 +11,7 @@ public static partial class Extensions
     #region RainWorld Specific
     public static bool IsSolaceName(this SlugcatStats.Name name)
     {
-        return name.value == Plugin.FriendName.value || name.value == Plugin.NoirName.value || name.value == Plugin.DragonName.value || name.value == Plugin.DelugeName.value ||
-               name.value == Plugin.BelieverName.value;
+        return name.value == Plugin.FriendName.value || name.value == Plugin.NoirName.value || name.value == Plugin.DragonName.value;
     }
 
     public static bool IsSmallerThanMe(this Player self, Creature crit) => crit.Template.smallCreature || self.TotalMass > crit.TotalMass;

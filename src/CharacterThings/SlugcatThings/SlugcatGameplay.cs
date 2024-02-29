@@ -3,8 +3,6 @@ using System.Linq;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RWCustom;
-using TheFriend.CharacterThings.BelieverThings;
-using TheFriend.CharacterThings.DelugeThings;
 using TheFriend.CharacterThings.FriendThings;
 using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.FriendThings;
@@ -40,13 +38,10 @@ public class SlugcatGameplay
 
     public static readonly SlugcatStats.Name FriendName = Plugin.FriendName;
     public static readonly SlugcatStats.Name DragonName = Plugin.DragonName;
-    
+
     public static void PlayerOnThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
     {
         var mine = self.grasps[grasp].grabbed as BoomMine;
-        if (self.TryGetBeliever(out _)) 
-            BelieverGameplay.PacifistThrow(self, grasp, eu);
-        
         orig(self, grasp, eu);
         if (mine != null) mine.ExplodeTimer = 5;  // Boommine cooldown reduction if thrown
     }
@@ -98,9 +93,6 @@ public class SlugcatGameplay
         
         if (self.TryGetFriend(out _))
             FriendGameplay.FriendUpdate(self, eu);
-        
-        if (self.TryGetDeluge(out _))
-            DelugeGameplay.DelugeUpdate(self, eu);
         
         //var coord = self.abstractCreature.pos;
         //Debug.Log("Your room coordinate is: room " + coord.room + ", x " + coord.x + ", y " + coord.y + ", abstractNode " + coord.abstractNode);
@@ -164,9 +156,6 @@ public class SlugcatGameplay
             
             if (self.TryGetPoacher(out _))
                 PoacherGameplay.PoacherConstructor(self);
-            
-            if (self.TryGetDeluge(out _))
-                DelugeGameplay.DelugeConstructor(self);
         }
         catch (Exception e) { Debug.Log("Solace: Player.ctor hook failed" + e); }
     }
@@ -188,8 +177,6 @@ public class SlugcatGameplay
             PoacherGameplay.PoacherJump(self);
         else if (isFriend)
             FriendGameplay.FriendJump2(self);
-        else if (self.TryGetDeluge(out _)) 
-            DelugeGameplay.DelugeSiezeJump(self);
     }
     public static void Player_UpdateAnimation(Player self)
     { 
@@ -226,8 +213,5 @@ public class SlugcatGameplay
 
         if (self.TryGetFriend(out _)) 
             FriendGameplay.FriendLeapController(self, timer);
-
-        if (self.TryGetDeluge(out _)) 
-            DelugeGameplay.DelugeSprintCheck(self);
     }
 }

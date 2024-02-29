@@ -26,7 +26,6 @@ public partial class RemixMain : OptionInterface
         RemixFriend();
         RemixPoacher();
         RemixNoirCatto();
-        RemixDeluge();
     }
 
     public override void Update()
@@ -36,7 +35,6 @@ public partial class RemixMain : OptionInterface
         RemixFriendUpdate();
         RemixPoacherUpdate();
         RemixNoirCattoUpdate();
-        RemixDelugeUpdate();
     }
     
     // X values - Width presets
@@ -57,7 +55,6 @@ public partial class RemixMain : OptionInterface
         RemixFriendInit();
         RemixPoacherInit();
         RemixNoirCattoInit();
-        RemixDelugeInit();
         
         base.Initialize();
         Tabs = tabsList.ToArray();
@@ -66,7 +63,6 @@ public partial class RemixMain : OptionInterface
         RemixFriendLayout();
         RemixPoacherLayout();
         RemixNoirCattoLayout();
-        RemixDelugeLayout();
 
         foreach (OpTab tab in Tabs)
         {
