@@ -56,7 +56,7 @@ public class PoacherGraphics
         {
             Color jolly = PlayerGraphics.JollyColor(self.player.playerState.playerNumber, 2);
             color = new Color(jolly.r - 0.4f, jolly.b - 0.4f, jolly.g - 0.4f);
-            Color colorvar = CharacterTools.ColorMaker(0.3f, 1f, 0.5f, CharacterTools.colormode.add, CharacterTools.colormode.set, CharacterTools.colormode.set, jolly);
+            Color colorvar = CharacterTools.ColorMaker(0.3f, 1f, 0.5f, ToolMethods.MathMode.add, ToolMethods.MathMode.set, ToolMethods.MathMode.set, jolly);
             color2 = colorvar;
         }
 

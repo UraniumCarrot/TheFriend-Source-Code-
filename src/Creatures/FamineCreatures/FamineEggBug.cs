@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using TheFriend.WorldChanges;
+using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,7 +18,7 @@ public static class FamineEggBug
     public static EggBugData GetEggBugData(this EggBug eggBug) => EggBugDeets.GetValue(eggBug, _ => new(eggBug));
     public class EggBugData
     {
-        public bool naturalSickness => !FamineWorld.FamineBurdenBool && FriendWorldState.SolaceWorldstate;
+        public bool naturalSickness => !FamineWorld.FamineBurdenBool && QuickWorldData.SolaceCampaign;
         public int TotalSprites;
         public int[] SpriteIndex;
         public HashSet<(int, int)> EggsToRemove;

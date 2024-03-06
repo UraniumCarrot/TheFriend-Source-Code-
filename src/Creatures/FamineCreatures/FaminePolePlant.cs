@@ -2,6 +2,7 @@ using System;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using TheFriend.WorldChanges;
+using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -26,7 +27,7 @@ public abstract class FaminePolePlant
         {
             for (var j = 0; j < 2; j++)
             {
-                bool naturalSickness = (!FamineWorld.FamineBurdenBool && FriendWorldState.SolaceWorldstate);
+                bool naturalSickness = (!FamineWorld.FamineBurdenBool && QuickWorldData.SolaceCampaign);
                 var color1 = (naturalSickness) ? Color.cyan : new Color(0.3f,0.2f,0.1f);
                 var color2 = (naturalSickness) ? Color.white : self.blackColor;
                 if (i >= self.decoratedLeafPairs) continue;

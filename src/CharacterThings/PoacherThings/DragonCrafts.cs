@@ -13,8 +13,33 @@ using TheFriend.Objects.BoomMineObject;
 using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.SlugcatThings;
 using TheFriend.WorldChanges;
+using TheFriend.WorldChanges.WorldStates.General;
 
 namespace TheFriend.PoacherThings;
+
+public class RecipeType : ExtEnum<RecipeType>
+{
+    public RecipeType(string name, bool register = false) : base(name,register)
+    {
+    }
+    public static readonly RecipeType None = new(nameof(None), true);
+    public static readonly RecipeType Wash = new(nameof(Wash), true);
+
+    public static readonly RecipeType MakeMine = new(nameof(MakeMine), true);
+    public static readonly RecipeType MakeSpear = new(nameof(MakeSpear), true);
+    public static readonly RecipeType MakeSpearEle = new(nameof(MakeSpearEle), true);
+    public static readonly RecipeType MakeSpearFire = new(nameof(MakeSpearFire), true);
+    public static readonly RecipeType MakeSpearExpl = new(nameof(MakeSpearExpl), true);
+    public static readonly RecipeType MakeLantern = new(nameof(MakeLantern), true);
+    public static readonly RecipeType MakeBomb = new(nameof(MakeBomb), true);
+    public static readonly RecipeType MakeLittleCracker = new(nameof(MakeLittleCracker), true);
+    
+    public static readonly RecipeType ArmMine = new(nameof(ArmMine), true);
+    public static readonly RecipeType ArmSpearEle = new(nameof(ArmSpearEle), true);
+
+    public static List<RecipeType> MakeSpecialSpear = [ArmSpearEle, MakeSpearEle, MakeSpearExpl, MakeSpearFire];
+}
+
 public class DragonCrafts
 {
     #region Crafting dictionary
@@ -61,29 +86,15 @@ public class DragonCrafts
         AddRecipe(ObjType.FirecrackerPlant, ObjType.Spear, RecipeType.MakeLittleCracker);
         AddRecipe(ObjType.FirecrackerPlant, ObjType.Rock, RecipeType.MakeBomb);
         AddRecipe(LittleCrackerFisob.LittleCracker, ObjType.DangleFruit, RecipeType.MakeLantern);
-    }
-
-    public enum RecipeType
-    {
-        None,
-        MakeMine,
-        MakeSpear,
-        MakeSpearEle,
-        MakeSpearFire,
-        MakeSpearExpl,
-        MakeLantern,
-        MakeBomb,
-        MakeLittleCracker,
         
-        ArmMine,
-        ArmSpearEle
+        AddRecipe(ObjType.WaterNut, ObjType.ScavengerBomb, RecipeType.Wash);
+        AddRecipe(ObjType.WaterNut, ObjType.Spear, RecipeType.Wash);
     }
-    
     
     #region Firespear changes
     public static void Player_ThrownSpear(Player self, Spear spear)
     {
-        if (FriendWorldState.SolaceWorldstate && self.room.world.region.name != "HR" && spear.bugSpear)
+        if (QuickWorldData.SolaceCampaign && self.room.world.region.name != "HR" && spear.bugSpear)
             spear.spearDamageBonus *= 0.4f;
     }
     public static void Weapon_NewRoom(On.Weapon.orig_NewRoom orig, Weapon self, Room newRoom)
@@ -195,26 +206,19 @@ public class DragonCrafts
         [self.grasps[0].grabbed, 
             self.grasps[1].grabbed];
         var search = GetResult(ingredients[0].abstractPhysicalObject.type, ingredients[1].abstractPhysicalObject.type);
-        
-        switch (search)
+
+        if (search == RecipeType.None)
         {
-            case RecipeType.None: 
-                Debug.Log("Solace: Dragoncraft failure! These items have no recipe for Poacher! Working as intended. Generic.");
-                CraftFail(self); 
-                return;
-            case RecipeType.ArmSpearEle or 
-                RecipeType.MakeSpearFire or 
-                RecipeType.MakeSpearEle or 
-                RecipeType.MakeSpearFire:
-                MakeSpearItem(self,ingredients,search);
-                return;
-            case RecipeType.ArmMine:
-                MakeMineItem(self,ingredients);
-                return;
-            default:
-                MakeUtilityItem(self,ingredients,search);
-                return;
+            Debug.Log("Solace: Dragoncraft failure! These items have no recipe for Poacher! Working as intended. Generic.");
+            CraftFail(self);
         }
+        else if (RecipeType.MakeSpecialSpear.Contains(search))
+            MakeSpearItem(self, ingredients, search);
+        else if (search == RecipeType.ArmMine)
+            MakeMineItem(self, ingredients);
+        else if (search == RecipeType.Wash)
+            WashItem(self, ingredients);
+        else MakeUtilityItem(self, ingredients, search);
     }
 
     public static void MakeUtilityItem(Player self, List<PhysicalObject> ingredients, RecipeType recipe)
@@ -225,47 +229,46 @@ public class DragonCrafts
         float volume = 1f; // Volume of cosmetic sound
         float pitch = 1f; // pitch of cosmetic sound
 
-        switch (recipe)
+        if (recipe == RecipeType.MakeBomb)
         {
-            case RecipeType.MakeBomb:
-                result = new AbstractPhysicalObject(self.room.world, ObjType.ScavengerBomb, null, self.abstractCreature.pos, self.room.game.GetNewID());
-                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), new Color(1f, 0.4f, 0.3f), null, 7, 17);
-                sound = SoundID.Firecracker_Burn;
-                volume = 0.2f;
-                break;
-            case RecipeType.MakeLantern: 
-                result = new AbstractPhysicalObject(self.room.world, ObjType.Lantern, null, self.abstractCreature.pos, self.room.game.GetNewID());
-                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), new Color(1f, 0.4f, 0.3f), null, 7, 17);
-                sound = SoundID.Snail_Warning_Click;
-                break;
-            case RecipeType.MakeMine:
-                result = new BoomMineAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
-                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50);
-                sound = SoundID.Gate_Clamp_Lock;
-                volume = 0.5f;
-                pitch = 3f + Random.value;
-                break;
-            case RecipeType.MakeSpear: 
-                result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false);
-                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50);
-                sound = SoundID.Spear_Bounce_Off_Creauture_Shell;
-                break;
-            
-            case RecipeType.MakeLittleCracker:
-                self.GetGeneral().isMakingPoppers = true;
-                var plant = ingredients.Find(x => x is FirecrackerPlant) as FirecrackerPlant;
-                if (plant != null)
-                {
-                    int lumps = plant.lumpsPopped.Count(x => !x);
-                    TearFirecracker(self, lumps, ingredients);
-                    return;
-                }
-                break;
+            result = new AbstractPhysicalObject(self.room.world, ObjType.ScavengerBomb, null, self.abstractCreature.pos, self.room.game.GetNewID());
+            effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), new Color(1f, 0.4f, 0.3f), null, 7, 17);
+            sound = SoundID.Firecracker_Burn;
+            volume = 0.2f;
         }
-        if (recipe != RecipeType.MakeLittleCracker) self.GetGeneral().isMakingPoppers = false;
+        else if (recipe == RecipeType.MakeLantern)
+        {
+            result = new AbstractPhysicalObject(self.room.world, ObjType.Lantern, null, self.abstractCreature.pos, self.room.game.GetNewID());
+            effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), new Color(1f, 0.4f, 0.3f), null, 7, 17);
+            sound = SoundID.Snail_Warning_Click;
+        }
+        else if (recipe == RecipeType.MakeMine)
+        {
+            result = new BoomMineAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID());
+            effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50);
+            sound = SoundID.Gate_Clamp_Lock;
+            volume = 0.5f;
+            pitch = 3f + Random.value;
+        }
+        else if (recipe == RecipeType.MakeSpear)
+        {
+            result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false);
+            effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50);
+            sound = SoundID.Spear_Bounce_Off_Creauture_Shell;
+        }
+        else if (recipe == RecipeType.MakeLittleCracker)
+        {
+            self.GetGeneral().isMakingPoppers = true;
+            var plant = ingredients.Find(x => x is FirecrackerPlant) as FirecrackerPlant;
+            if (plant != null)
+            {
+                int lumps = plant.lumpsPopped.Count(x => !x);
+                TearFirecracker(self, lumps, ingredients);
+                return;
+            }
+        }
+        self.GetGeneral().isMakingPoppers = false;
         
-        self.room.PlaySound(sound, self.firstChunk, loop: false, volume, 1f);
-        self.room.AddObject(effect);
         MakeCosmeticEffects(self, sound, effect, volume, pitch);
         MakeCraftedItem(self, result, ingredients);
     }
@@ -280,7 +283,7 @@ public class DragonCrafts
 
         if (spear?.abstractSpear == null)
         {
-            Debug.Log("Solace: Spearcraft failed");
+            Debug.Log("Solace: Spearcraft failed, no abstract");
             CraftFail(self);
             return;
         }
@@ -292,54 +295,52 @@ public class DragonCrafts
             return;
         }
 
-        switch (recipe)
+        if (recipe == RecipeType.MakeSpearFire)
         {
-            case RecipeType.MakeSpearFire: 
-                result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false, 0.5f);
-                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), new Color(1f, 0.4f, 0.3f), null, 7, 17);
-                sound = SoundID.Firecracker_Burn;
-                volume = 0.2f;
-                break;
-            
-            case RecipeType.MakeSpearEle:
-                result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false)
+            result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false, 0.5f);
+            effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value), new Color(1f, 0.4f, 0.3f), null, 7, 17);
+            sound = SoundID.Firecracker_Burn;
+            volume = 0.2f;
+        }
+        else if (recipe == RecipeType.MakeSpearEle)
+        {
+            result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false)
                 { electric = true, electricCharge = 0 };
-                effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50);
-                sound = SoundID.Spear_Bounce_Off_Creauture_Shell;
-                break;
-            
-            case RecipeType.MakeSpearExpl: 
-                result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), true);
-                sound = SoundID.Vulture_Wing_Woosh_LOOP;
-                Debug.Log("Solace: Somehow, an explosive spear was crafted. While we're here, does it actually work? Do tell.");
-                break;
-            
-            case RecipeType.ArmSpearEle:
-                if (spear is not ElectricSpear || spear.abstractSpear.electricCharge >= 3)
-                {
-                    Debug.Log("Solace: Failed to charge electric spear, invalid spear");
+            effect = new Spark(self.bodyChunks[0].pos, Custom.RNV() * 60f * Random.value, Color.white, null, 20, 50);
+            sound = SoundID.Spear_Bounce_Off_Creauture_Shell;
+        }
+        else if (recipe == RecipeType.MakeSpearExpl)
+        {
+            result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), true);
+            sound = SoundID.Vulture_Wing_Woosh_LOOP;
+        }
+        else if (recipe == RecipeType.ArmSpearEle)
+        {
+            if (spear is not ElectricSpear || spear.abstractSpear.electricCharge >= 3)
+            {
+                Debug.Log("Solace: Failed to charge electric spear, invalid spear");
+                CraftFail(self);
+                return;
+            }
+
+            switch (ingredients.Find(x => x is not Spear))
+            {
+                case JellyFish: spear.abstractSpear.electricCharge += 3; break;
+                case Centipede: spear.abstractSpear.electricCharge += 3; break;
+                case FlareBomb a: spear.abstractSpear.electricCharge += 1; 
+                    a.StartBurn();
+                    break;
+                default:
+                    Debug.Log("Solace: Failed to charge electric spear, invalid charger");
                     CraftFail(self);
                     return;
-                }
-
-                switch (ingredients.Find(x => x is not Spear))
-                {
-                    case JellyFish: spear.abstractSpear.electricCharge += 3; break;
-                    case Centipede: spear.abstractSpear.electricCharge += 3; break;
-                    case FlareBomb a: spear.abstractSpear.electricCharge += 1; 
-                        a.StartBurn();
-                        break;
-                    default:
-                        Debug.Log("Solace: Failed to charge electric spear, invalid charger");
-                        CraftFail(self);
-                        return;
-                }
-                ingredients.Remove(ingredients.Find(x => x is not Spear));
-                sound = SoundID.Zapper_Zap;
-                effect = new Explosion.ExplosionLight(self.bodyChunks[0].pos, 200f, 1f, 4, new Color(0.8f, 0.8f, 1f));
-                if (ingredients.Contains(spear)) ingredients.Remove(spear);
-                break;
+            }
+            ingredients.Remove(ingredients.Find(x => x is not Spear));
+            sound = SoundID.Zapper_Zap;
+            effect = new Explosion.ExplosionLight(self.bodyChunks[0].pos, 200f, 1f, 4, new Color(0.8f, 0.8f, 1f));
+            if (ingredients.Contains(spear)) ingredients.Remove(spear);
         }
+        
         MakeCosmeticEffects(self, sound, effect, volume, pitch);
         MakeCraftedItem(self, result, ingredients, -1, self.grasps.IndexOf(self.grasps.First(x => x.grabbed == spear)));
     }
@@ -380,6 +381,31 @@ public class DragonCrafts
         MakeCraftedItem(self, null, ingredients, self.grasps.IndexOf(self.grasps.First(x => x.grabbed == notMine)));
     }
 
+    public static void WashItem(Player self, List<PhysicalObject> ingredients)
+    {
+        AbstractPhysicalObject result = null;
+        CosmeticSprite effect = new WaterDrip(
+            self.firstChunk.pos,
+            Custom.RNV() * Mathf.Lerp(5f, 11f, Random.value),
+            waterColor: true);
+        
+        if (ingredients.Any(x => x is ScavengerBomb))
+            result = new AbstractPhysicalObject(self.room.world, ObjType.Rock,null, self.abstractCreature.pos, self.room.game.GetNewID());
+        if (ingredients.Any(x => x is Spear spr && spr.bugSpear))
+            result = new AbstractSpear(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), false);
+        
+        if (!ingredients.Any(x => x is SwollenWaterNut) || result == null)
+        {
+            Debug.Log("Solace: Make sure your bubblefruit is popped. If it is, it cannot wash this item. ");
+            CraftFail(self);
+            return;
+        }
+        
+        MakeCosmeticEffects(self, SoundID.Swollen_Water_Nut_Terrain_Impact, null);
+        ToolMethods.Repeat(()=> MakeCosmeticEffects(self, null, effect), 4);
+        MakeCraftedItem(self, result, ingredients, -1, self.grasps.IndexOf(self.grasps.First(x => x.grabbed is not SwollenWaterNut)));
+    }
+    
     public static void MakeCraftedItem(Player self, AbstractPhysicalObject result, List<PhysicalObject> ingredients, int releaseOverride = -1, int grabOverride = -1)
     {
         if (ingredients.Any() && !ingredients.All(x => x == null))

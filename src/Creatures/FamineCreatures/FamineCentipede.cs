@@ -7,6 +7,7 @@ using MoreSlugcats;
 using RWCustom;
 using SlugBase;
 using TheFriend.WorldChanges;
+using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -161,7 +162,7 @@ public static class CentiCWT
 {
     public class CentiData
     {
-        public bool naturalSickness => !FamineWorld.FamineBurdenBool && FriendWorldState.SolaceWorldstate;
+        public bool naturalSickness => !FamineWorld.FamineBurdenBool && QuickWorldData.SolaceCampaign;
         public float sickHue;
         public float sickSat;
         public CentiData(Centipede self)

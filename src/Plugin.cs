@@ -80,7 +80,7 @@ namespace TheFriend
                 if (ModManager.ActiveMods.Any(x => x.id == "willowwisp.bellyplus"))
                 {
                     RotundWorld = true;
-                    Logger.LogInfo("Rotund World detected! Cats gonna be chonky...");
+                    Logger.LogInfo("Solace: Rotund World detected! Cats gonna be chonky...");
                 }
                 else
                 {

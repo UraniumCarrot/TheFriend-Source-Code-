@@ -4,13 +4,14 @@ using Expedition;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
 using TheFriend.Creatures.FamineCreatures;
+using TheFriend.WorldChanges.WorldStates.General;
 
 namespace TheFriend.WorldChanges;
 public abstract class FamineWorld
 {
     public static void HasFamines(RainWorldGame self)
     {
-        if (FriendWorldState.SolaceWorldstate && !Configs.NoFamine) FamineBool = true;
+        if (QuickWorldData.SolaceCampaign && !Configs.NoFamine) FamineBool = true;
         
         if (self.rainWorld.ExpeditionMode &&
             ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))

@@ -33,16 +33,10 @@ public static class CharacterTools
         foreach (int i in indexesToChange)
             sLeaser.sprites[i].color = color;
     }
-
-    public enum colormode
-    {
-        set,
-        mult,
-        add
-    }
+    
     public static Color ColorMaker(
         float hue, float sat, float val,
-        colormode hueMode, colormode satMode, colormode valMode,
+        ToolMethods.MathMode hueMode, ToolMethods.MathMode satMode, ToolMethods.MathMode valMode,
         Color origCol = new Color(), Vector3 origHSL = new Vector3())
     {   // This method is pretty much exclusively for easy Jolly Co-op autocoloring
         // Negative floats can be used to preserve the original value
@@ -55,23 +49,23 @@ public static class CharacterTools
 
         color.x = hueMode switch
         {
-            colormode.set => newhue = (hue < 0) ? color.x : hue,
-            colormode.add => newhue += (hue < 0) ? 0 : hue,
-            colormode.mult => newhue *= (hue < 0) ? 1 : hue,
+            ToolMethods.MathMode.set => newhue = (hue < 0) ? color.x : hue,
+            ToolMethods.MathMode.add => newhue += (hue < 0) ? 0 : hue,
+            ToolMethods.MathMode.mult => newhue *= (hue < 0) ? 1 : hue,
             _ => newhue = 0
         };
         color.y = satMode switch
         {
-            colormode.set => newsat = (sat < 0) ? color.y : sat,
-            colormode.add => newsat += (sat < 0) ? 0 : sat,
-            colormode.mult => newsat *= (sat < 0) ? 1 : sat,
+            ToolMethods.MathMode.set => newsat = (sat < 0) ? color.y : sat,
+            ToolMethods.MathMode.add => newsat += (sat < 0) ? 0 : sat,
+            ToolMethods.MathMode.mult => newsat *= (sat < 0) ? 1 : sat,
             _ => newsat = 0
         };
         color.z = valMode switch
         {
-            colormode.set => newval = (val < 0) ? color.z : val,
-            colormode.add => newval += (val < 0) ? 0 : val,
-            colormode.mult => newval *= (val < 0) ? 1 : val,
+            ToolMethods.MathMode.set => newval = (val < 0) ? color.z : val,
+            ToolMethods.MathMode.add => newval += (val < 0) ? 0 : val,
+            ToolMethods.MathMode.mult => newval *= (val < 0) ? 1 : val,
             _ => newval = 0
         };
 

@@ -6,6 +6,7 @@ using On.MoreSlugcats;
 using SlugBase.SaveData;
 using TheFriend.SlugcatThings;
 using TheFriend.WorldChanges;
+using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 
 namespace TheFriend.HudThings;
@@ -52,14 +53,14 @@ public class HudHooks
     { // Makes solace rain timer function like Saint's
         orig(self);
         if (self.hud.owner is Player && 
-             FriendWorldState.SolaceWorldstate &&
+            QuickWorldData.SolaceCampaign &&
             self.hud.map.RegionName != "HR") self.halfTimeShown = true;
     } 
     public static void RainMeter_ctor(On.HUD.RainMeter.orig_ctor orig, RainMeter self, HUD.HUD hud, FContainer fContainer)
     { // Makes solace rain timer function like Saint's
         orig(self, hud, fContainer);
         if (self.hud.owner is Player &&
-             FriendWorldState.SolaceWorldstate &&
+            QuickWorldData.SolaceCampaign &&
             self.hud.map.RegionName != "HR") self.halfTimeShown = true;
     } 
     public static void RainMeter_Draw(On.HUD.RainMeter.orig_Draw orig, RainMeter self, float timeStacker)
@@ -71,7 +72,7 @@ public class HudHooks
         {
             if (self.hud.map.RegionName != "HR")
             {
-                if (FriendWorldState.SolaceWorldstate)
+                if (QuickWorldData.SolaceCampaign)
                 {
                     owner.GetGeneral().RainTimerExists = false;
                     for (int i = 0; i < self.circles.Length; i++)

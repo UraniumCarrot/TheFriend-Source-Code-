@@ -1,5 +1,6 @@
 ﻿using MoreSlugcats;
 using TheFriend.WorldChanges.ScarfScripts;
+using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 using Color = UnityEngine.Color;
 using Random = UnityEngine.Random;
@@ -8,57 +9,39 @@ namespace TheFriend.WorldChanges;
 
 public class FriendWorldState
 {
-    public static bool FaminePlayer(RainWorldGame game) // Applies actual room changes 
-    {
-        if ((game?.StoryCharacter == Plugin.FriendName || 
-             game?.StoryCharacter == Plugin.DragonName || 
-             game?.StoryCharacter == Plugin.NoirName) && 
-            game != null && !game.IsArenaSession) 
-        { SolaceWorldstate = true; return true; }
-        else { SolaceWorldstate = false; return false; }
-    }
-    public static bool SolaceWorldstate;
-
     public static void SU_A43SuperJumpOnlyOnUpdate(On.RoomSpecificScript.SU_A43SuperJumpOnly.orig_Update orig, RoomSpecificScript.SU_A43SuperJumpOnly self, bool eu)
     { // Cure for that ANNOYING outskirts room that forces you to leap.
         orig(self, eu);
-        if (SolaceWorldstate) self.Destroy();
+        if (self.GetSessionData(out var data) && data.TrueSolaceCampaign) self.Destroy();
     }
 
     public static void Room_SlugcatGamemodeUniqueRoomSettings(On.Room.orig_SlugcatGamemodeUniqueRoomSettings orig, Room self, RainWorldGame game)
     {
         orig(self, game);
-        if (game.IsStorySession)
+        if (QuickWorldData.SolaceCampaign)
         {
-            if (SolaceWorldstate)
-            {
-                if (self.world.region.name == "SH")
-                {
-                    if (self.roomSettings.DangerType == RoomRain.DangerType.Flood)
-                        self.roomSettings.RainIntensity = 0f;
-                }
-                self.roomSettings.wetTerrain = false;
-                self.roomSettings.CeilingDrips = 0f;
-            }
+            if (self.world.region.name == "SH")
+                if (self.roomSettings.DangerType == RoomRain.DangerType.Flood)
+                    self.roomSettings.RainIntensity = 0f;
+            self.roomSettings.wetTerrain = false;
+            self.roomSettings.CeilingDrips = 0f;
         }
     } // Default room settings
     public static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
     {
         RoomScript.ScriptMaker(self);
         orig(self);
-        if (SolaceWorldstate && self.world.region.name == "SH")
-        {
-            if (self.lightSources.Count > 0)
-                for (int i = 0; i < self.lightSources.Count; i++) self.lightSources[i].fadeWithSun = false;
-        }
+        if (QuickWorldData.SolaceCampaign && self.world.region.name == "SH")
+            foreach (LightSource light in self.lightSources)
+            {
+                light.fadeWithSun = false;
+                light.nightFade = 0;
+            }
     }
     public static void WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues(On.WorldLoader.orig_ctor_RainWorldGame_Name_bool_string_Region_SetupValues orig, WorldLoader self, RainWorldGame game, SlugcatStats.Name playerCharacter, bool singleRoomWorld, string worldName, Region region, RainWorldGame.SetupValues setupValues)
     {
-        FaminePlayer(game);
         if (game != null)
-        {
             FamineWorld.HasFamines(game);
-        }
         orig(self, game, playerCharacter, singleRoomWorld, worldName, region, setupValues);
     }
 
@@ -66,7 +49,7 @@ public class FriendWorldState
     {
         //FamineName(storyIndex);
         orig(self, name, firstRoomIndex, regionNumber, storyIndex);
-        if (SolaceWorldstate)
+        if (QuickWorldData.SolaceCampaign)
         {
             Debug.Log("Applying regional changes...");
             var regionParams = self.regionParams;
@@ -90,8 +73,8 @@ public class FriendWorldState
     public static void ScavengerAbstractAI_InitGearUp(On.ScavengerAbstractAI.orig_InitGearUp orig, ScavengerAbstractAI self)
     {
         orig(self);
-        bool random = (Random.value > 0.7) ? true : false;
-        if (self.world.game.IsStorySession && SolaceWorldstate && random && self.world.region.name != "SH" && self.world.region.name != "SB")
+        bool random = Random.value > 0.7;
+        if (QuickWorldData.SolaceCampaign && random && self.world.region.name != "SH" && self.world.region.name != "SB")
         {
             AbstractPhysicalObject obj = new AbstractPhysicalObject(self.world, AbstractPhysicalObject.AbstractObjectType.Lantern, null, self.parent.pos, self.world.game.GetNewID());
             self.world.GetAbstractRoom(self.parent.pos).AddEntity(obj);
@@ -102,7 +85,7 @@ public class FriendWorldState
     {
         orig(self);
         if (self.creatureTemplate.type == CreatureTemplateType.YoungLizard) self.Winterized = true;
-        if (SolaceWorldstate)
+        if (QuickWorldData.SolaceCampaign)
         {
             var type = self.creatureTemplate;
             if (type.type == CreatureTemplateType.YoungLizard || 
@@ -127,13 +110,13 @@ public class FriendWorldState
     public static void FireFly_ctor(On.FireFly.orig_ctor orig, FireFly self, Room room, Vector2 pos)
     {
         orig(self, room, pos);
-        if (self.col != null && SolaceWorldstate) self.col = new Color(0.8f, Random.Range(0.8f, 1f), 1f); ;
+        if (self.col != null && QuickWorldData.SolaceCampaign) self.col = new Color(0.8f, Random.Range(0.8f, 1f), 1f); ;
     } // Silver fireflies
 
     public static bool customLock;
     public static void CreatureCommunitiesOnInfluenceCell(On.CreatureCommunities.orig_InfluenceCell orig, CreatureCommunities self, int comm, int reg, int plr, float infl)
     {
-        if (SolaceWorldstate &&
+        if (QuickWorldData.SolaceCampaign &&
             self.session.characterStats.name == Plugin.FriendName &&
             self.session.game.GetStorySession.saveState.cycleNumber == 0 &&
             comm == 2 &&
@@ -141,7 +124,7 @@ public class FriendWorldState
             return;
         // Cycle 0 lizard rep lock
 
-        if (SolaceWorldstate || Configs.LocalRepAll || customLock)
+        if (QuickWorldData.SolaceCampaign || Configs.LocalRepAll || customLock)
         {
             if (comm == 2 && reg == 0)
                 return;
@@ -154,14 +137,8 @@ public class FriendWorldState
     {
         orig(self, savestatenumber);
         if (savestatenumber == Plugin.FriendName)
-        {
             for (int i = 1; i < self.playerOpinions.GetLength(1); i++) // region
-            {
                 for (int a = 0; a < self.playerOpinions.GetLength(2); a++) // player
-                {
                     self.playerOpinions[2, i, a] = Mathf.Lerp(self.playerOpinions[2, i, a], 1,1);
-                }
-            }
-        }
     } // Sets game-start reputation without slugbase's help (lizard global starts at 0 but rest start at 1)
 }

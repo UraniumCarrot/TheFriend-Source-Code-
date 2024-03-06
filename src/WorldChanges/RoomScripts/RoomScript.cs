@@ -11,7 +11,7 @@ public abstract class RoomScript : UpdatableAndDeletable
     public static void RoomSpecificScriptOnAddRoomSpecificScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)
     { // Create custom scripts for new rooms
         orig(room);
-        if (ScarfScript.ListOfRooms.Contains(room.abstractRoom.name)) // Generate scarves
+        if (ScarfScript.ListOfRooms.Contains(room.abstractRoom.name)) // Generate scarf scripts
             room.AddObject(new ScarfScript(
                 room,
                 ScarfScript.ListOfPos
