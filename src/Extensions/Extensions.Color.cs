@@ -262,5 +262,17 @@ public partial class Extensions
         return new Color(r, g, b);
     }
 
+    public static Color RecolorMagically(this Color from, Color to)
+    {
+        var lch = from.RGBtoLCH();
+        var targetLch = to.RGBtoLCH();
+        lch.z = targetLch.z;
+        Color.RGBToHSV(lch.LCHtoRGB(), out var h, out var s, out var v);
+        Color.RGBToHSV(to, out var targetH, out var targetS, out var targetV);
+        v = targetV;
+        s = s - 0.5f + targetS;
+        return Color.HSVToRGB(h, s, v);
+    }
+
     #endregion
 }

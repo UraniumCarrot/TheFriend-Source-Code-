@@ -616,14 +616,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         for (var i = 0; i < colors.Length; i++)
         {
             if (from.Contains(colors[i]))
-            {
-                var lch = ((Color)colors[i]).RGBtoLCH();
-                var targetLch = to.RGBtoLCH();
-                lch.z = targetLch.z;
-                Color.RGBToHSV(lch.LCHtoRGB(), out var h, out var s, out var v);
-                Color.RGBToHSV(to, out _, out _, out v);
-                colors[i] = Color.HSVToRGB(h, s, v);
-            }
+                colors[i] = Extensions.RecolorMagically(colors[i], to);
         }
         texture.SetPixels32(colors);
         texture.Apply();
