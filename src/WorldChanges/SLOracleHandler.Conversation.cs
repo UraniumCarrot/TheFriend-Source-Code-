@@ -1,3 +1,4 @@
+using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 
 namespace TheFriend.WorldChanges;
@@ -6,7 +7,7 @@ public partial class SLOracleHandler
 {
     internal static void MoonConversationOnAddEvents(On.SLOracleBehaviorHasMark.MoonConversation.orig_AddEvents orig, SLOracleBehaviorHasMark.MoonConversation self)
     {
-        if (!FriendWorldState.SolaceWorldstate)
+        if (!QuickWorldData.SolaceCampaign)
         {
             orig(self);
             return;

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Text;
 using MoreSlugcats;
 using RWCustom;
 using SlugBase.SaveData;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using TheFriend.SlugcatThings;
-using MoreSlugcatsEnums = IL.MoreSlugcats.MoreSlugcatsEnums;
+using TheFriend.WorldChanges.WorldStates.General;
 
 namespace TheFriend.WorldChanges;
 
@@ -17,22 +16,22 @@ public partial class SLOracleHandler
     public static bool RainWorldGame_IsMoonActive(On.RainWorldGame.orig_IsMoonActive orig, RainWorldGame self)
     {
         orig(self);
-        if (FriendWorldState.SolaceWorldstate && self.GetStorySession.saveState.miscWorldSaveData.SLOracleState.neuronsLeft > 0) return true;
+        if (QuickWorldData.SolaceCampaign && self.GetStorySession.saveState.miscWorldSaveData.SLOracleState.neuronsLeft > 0) return true;
         return orig(self);
     }
     public static bool RainWorldGame_IsMoonHeartActive(On.RainWorldGame.orig_IsMoonHeartActive orig, RainWorldGame self)
     {
-        if (FriendWorldState.SolaceWorldstate) return true;
+        if (QuickWorldData.SolaceCampaign) return true;
         return orig(self);
     }
     public static void SLOrcacleState_ForceResetState(On.SLOrcacleState.orig_ForceResetState orig, SLOrcacleState self, SlugcatStats.Name saveStateNumber)
     {
         orig(self, saveStateNumber);
-        if (FriendWorldState.SolaceWorldstate) self.neuronsLeft = 7;
+        if (QuickWorldData.SolaceCampaign) self.neuronsLeft = 7;
     }
     public static bool RainWorldGame_MoonHasRobe(On.RainWorldGame.orig_MoonHasRobe orig, RainWorldGame self)
     {
-        if (FriendWorldState.SolaceWorldstate) return true;
+        if (QuickWorldData.SolaceCampaign) return true;
         return orig(self);
     }
 
@@ -49,7 +48,7 @@ public partial class SLOracleHandler
 
         try 
         {
-            if (FriendWorldState.SolaceWorldstate)
+            if (QuickWorldData.SolaceCampaign)
             {
                 var moondata = self.MoonCutsceneData();
                 var room = self.oracle.room;
@@ -218,7 +217,7 @@ public partial class SLOracleHandler
     {
         orig(self,eu);
         int counter = self.MoonCutsceneData().counter;
-        if (FriendWorldState.SolaceWorldstate && counter > 300 && counter < 1300)
+        if (QuickWorldData.SolaceCampaign && counter > 300 && counter < 1300)
         {
             self.lookPoint = ((self.showMediaPos.x <= self.oracle.room.PixelWidth * 0.85f) ?
                             new Vector2(self.showMediaPos.x + 100f, self.showMediaPos.y + 150f) :
@@ -229,7 +228,7 @@ public partial class SLOracleHandler
     {
         orig(self);
         int counter = self.MoonCutsceneData().counter;
-        if (FriendWorldState.SolaceWorldstate && counter > 300 && counter < 1300)
+        if (QuickWorldData.SolaceCampaign && counter > 300 && counter < 1300)
         {
             self.lookPoint = ((self.showMediaPos.x <= self.oracle.room.PixelWidth * 0.85f) ?
                             new Vector2(self.showMediaPos.x + 100f, self.showMediaPos.y + 150f) :
