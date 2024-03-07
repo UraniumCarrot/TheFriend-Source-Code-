@@ -16,7 +16,7 @@ public class Configs
 
     public static bool CharSnow => RemixMain.GeneralCharselectSnow.Value;
     public static bool IntroBlizzard => RemixMain.GeneralIntroRollBlizzard.Value;
-    public static bool CharHeight => RemixMain.GeneralCharCustomHeights.Value;
+    public static bool CharHeight => false; //RemixMain.GeneralCharCustomHeights.Value;
     public static bool BlizzTimer => RemixMain.GeneralSolaceBlizzTimer.Value;
     public static bool TitleCards => RemixMain.GeneralSolaceTitleCards.Value;
     

@@ -18,7 +18,7 @@ public partial class RemixMain
     
     public static Configurable<bool> GeneralIntroRollBlizzard;
     public static Configurable<bool> GeneralCharselectSnow;
-    public static Configurable<bool> GeneralCharCustomHeights;
+    //public static Configurable<bool> GeneralCharCustomHeights;
     public static Configurable<bool> GeneralSolaceBlizzTimer;
     public static Configurable<bool> GeneralSolaceTitleCards;
 
@@ -45,7 +45,7 @@ public partial class RemixMain
         
         GeneralIntroRollBlizzard = config.Bind("SolaceIntroRollBlizzard", true, new ConfigAcceptableList<bool>(true, false));
         GeneralCharselectSnow = config.Bind("SolaceCharselectSnow", true, new ConfigAcceptableList<bool>(true, false));
-        GeneralCharCustomHeights = config.Bind("SolaceCharHeights", false, new ConfigAcceptableList<bool>(true, false));
+        //GeneralCharCustomHeights = config.Bind("SolaceCharHeights", false, new ConfigAcceptableList<bool>(true, false));
         GeneralSolaceBlizzTimer = config.Bind("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
         GeneralSolaceTitleCards = config.Bind("SolaceTitleCards", true, new ConfigAcceptableList<bool>(true, false));
 
@@ -152,11 +152,11 @@ public partial class RemixMain
                 description =
                     Translate("Replaces the intro's rain with a blizzard effect")
             },
-            new OpCheckboxLabelled(GeneralCharCustomHeights, gencolumn, row-(rowMult*2), "Custom Height")
-            {
-                description =
-                    Translate("Gives some characters a custom height. Disable if physics break too much")
-            },
+            //new OpCheckboxLabelled(GeneralCharCustomHeights, gencolumn, row-(rowMult*2), "Custom Height")
+            //{
+            //    description =
+            //        Translate("Gives some characters a custom height. Disable if physics break too much")
+            //},
             new OpCheckboxLabelled(GeneralSolaceBlizzTimer, gencolumn, row-(rowMult*3), "Blizzard Cycle Timer")
             {
                 description =
