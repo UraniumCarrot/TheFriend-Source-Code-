@@ -14,8 +14,8 @@ public class Configs
     public static bool LocalRepAll => RemixMain.GeneralLocalizedLizRepForAll.Value;
     public static bool LizRideAll => RemixMain.GeneralLizRideAll.Value;
 
-    public static bool CharSnow => RemixMain.GeneralCharselectSnow.Value;
-    public static bool IntroBlizzard => RemixMain.GeneralIntroRollBlizzard.Value;
+    public static bool CharSnow => false; //RemixMain.GeneralCharselectSnow.Value;
+    public static bool IntroBlizzard => false; //RemixMain.GeneralIntroRollBlizzard.Value;
     public static bool CharHeight => false; //RemixMain.GeneralCharCustomHeights.Value;
     public static bool BlizzTimer => RemixMain.GeneralSolaceBlizzTimer.Value;
     public static bool TitleCards => RemixMain.GeneralSolaceTitleCards.Value;

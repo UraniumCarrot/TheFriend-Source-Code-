@@ -16,8 +16,8 @@ public partial class RemixMain
     public static Configurable<bool> GeneralLizRideAll;
     public static Configurable<bool> GeneralLizRepMeterForAll;
     
-    public static Configurable<bool> GeneralIntroRollBlizzard;
-    public static Configurable<bool> GeneralCharselectSnow;
+    //public static Configurable<bool> GeneralIntroRollBlizzard;
+    //public static Configurable<bool> GeneralCharselectSnow;
     //public static Configurable<bool> GeneralCharCustomHeights;
     public static Configurable<bool> GeneralSolaceBlizzTimer;
     public static Configurable<bool> GeneralSolaceTitleCards;
@@ -43,8 +43,8 @@ public partial class RemixMain
         GeneralLizRideAll = config.Bind("SolaceLizRideAll", false, new ConfigAcceptableList<bool>(true, false));
         GeneralLizRepMeterForAll = config.Bind("SolaceLizRepMeterForAll", false, new ConfigAcceptableList<bool>(true, false));
         
-        GeneralIntroRollBlizzard = config.Bind("SolaceIntroRollBlizzard", true, new ConfigAcceptableList<bool>(true, false));
-        GeneralCharselectSnow = config.Bind("SolaceCharselectSnow", true, new ConfigAcceptableList<bool>(true, false));
+        //GeneralIntroRollBlizzard = config.Bind("SolaceIntroRollBlizzard", true, new ConfigAcceptableList<bool>(true, false));
+        //GeneralCharselectSnow = config.Bind("SolaceCharselectSnow", true, new ConfigAcceptableList<bool>(true, false));
         //GeneralCharCustomHeights = config.Bind("SolaceCharHeights", false, new ConfigAcceptableList<bool>(true, false));
         GeneralSolaceBlizzTimer = config.Bind("SolaceBlizzTimer", false, new ConfigAcceptableList<bool>(true, false));
         GeneralSolaceTitleCards = config.Bind("SolaceTitleCards", true, new ConfigAcceptableList<bool>(true, false));
@@ -142,27 +142,27 @@ public partial class RemixMain
     { // TODO: implement these
         GenMiscelList.AddRange(new UIelement[]
         {
-            new OpCheckboxLabelled(GeneralCharselectSnow, gencolumn, row, "Snow in Character Select")
-            {
-                description =
-                    Translate("Solace characters (or characters in cold areas) have snow on their Character Select page")
-            },
-            new OpCheckboxLabelled(GeneralIntroRollBlizzard, gencolumn, row-(rowMult), "Intro Roll Blizzard")
-            {
-                description =
-                    Translate("Replaces the intro's rain with a blizzard effect")
-            },
+            //new OpCheckboxLabelled(GeneralCharselectSnow, gencolumn, row, "Snow in Character Select")
+            //{
+            //    description =
+            //        Translate("Solace characters (or characters in cold areas) have snow on their Character Select page")
+            //},
+            //new OpCheckboxLabelled(GeneralIntroRollBlizzard, gencolumn, row-(rowMult), "Intro Roll Blizzard")
+            //{
+            //    description =
+            //        Translate("Replaces the intro's rain with a blizzard effect")
+            //},
             //new OpCheckboxLabelled(GeneralCharCustomHeights, gencolumn, row-(rowMult*2), "Custom Height")
             //{
             //    description =
             //        Translate("Gives some characters a custom height. Disable if physics break too much")
             //},
-            new OpCheckboxLabelled(GeneralSolaceBlizzTimer, gencolumn, row-(rowMult*3), "Blizzard Cycle Timer")
+            new OpCheckboxLabelled(GeneralSolaceBlizzTimer, gencolumn, row, "Blizzard Cycle Timer")
             {
                 description =
                     Translate("Makes Saint and Solace characters able to see the cycle timer")
             },
-            new OpCheckboxLabelled(GeneralSolaceTitleCards, gencolumn, row-(rowMult*4), "Solace Title Cards")
+            new OpCheckboxLabelled(GeneralSolaceTitleCards, gencolumn, row-(rowMult), "Solace Title Cards")
             {
                 description =
                     Translate("Replaces all Downpour title cards with Solace ones")
