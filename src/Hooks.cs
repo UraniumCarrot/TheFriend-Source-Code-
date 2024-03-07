@@ -299,8 +299,8 @@ namespace TheFriend
                 #endregion
                 
                 #region SolaceScarf
-                On.RoomSpecificScript.AddRoomSpecificScript += WorldChanges.ScarfScripts.RoomScript.RoomSpecificScriptOnAddRoomSpecificScript;
-                Content.Register(new SolaceScarfFisob());
+                //On.RoomSpecificScript.AddRoomSpecificScript += WorldChanges.ScarfScripts.RoomScript.RoomSpecificScriptOnAddRoomSpecificScript;
+                //Content.Register(new SolaceScarfFisob());
                 #endregion
                 
                 #region MainMenu
@@ -420,7 +420,7 @@ namespace TheFriend
                 {
                     orig(self, savestatenumber, game);
                     HuntQuestThings.StoryGameSessionOnctor(self, savestatenumber, game);
-                    WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
+                    //WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
                 };
                 
                 // Crawl turn IL Hook for Friend & Noir
