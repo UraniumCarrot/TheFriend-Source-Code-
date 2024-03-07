@@ -124,18 +124,18 @@ namespace TheFriend
                 #endregion
                 
                 #region Expedition
-                On.Expedition.ExpeditionProgression.BurdenMenuColor += ExpeditionBurdens.ExpeditionProgressionOnBurdenMenuColor;
-                On.Expedition.ExpeditionProgression.SetupBurdenGroups += ExpeditionBurdens.ExpeditionProgressionOnSetupBurdenGroups;
-                On.Expedition.ExpeditionProgression.BurdenName += ExpeditionBurdens.ExpeditionProgressionOnBurdenName;
-                On.Expedition.ExpeditionProgression.BurdenManualDescription += ExpeditionBurdens.ExpeditionProgressionOnBurdenManualDescription;
-                On.Expedition.ExpeditionProgression.BurdenScoreMultiplier += ExpeditionBurdens.ExpeditionProgressionOnBurdenScoreMultiplier;
-                On.Expedition.ExpeditionProgression.CountUnlockables += ExpeditionBurdens.ExpeditionProgressionOnCountUnlockables;
+                //On.Expedition.ExpeditionProgression.BurdenMenuColor += ExpeditionBurdens.ExpeditionProgressionOnBurdenMenuColor;
+                //On.Expedition.ExpeditionProgression.SetupBurdenGroups += ExpeditionBurdens.ExpeditionProgressionOnSetupBurdenGroups;
+                //On.Expedition.ExpeditionProgression.BurdenName += ExpeditionBurdens.ExpeditionProgressionOnBurdenName;
+                //On.Expedition.ExpeditionProgression.BurdenManualDescription += ExpeditionBurdens.ExpeditionProgressionOnBurdenManualDescription;
+                //On.Expedition.ExpeditionProgression.BurdenScoreMultiplier += ExpeditionBurdens.ExpeditionProgressionOnBurdenScoreMultiplier;
+                //On.Expedition.ExpeditionProgression.CountUnlockables += ExpeditionBurdens.ExpeditionProgressionOnCountUnlockables;
                 On.Menu.UnlockDialog.TogglePerk += ExpeditionGeneral.UnlockDialogOnTogglePerk;
-                On.Menu.UnlockDialog.UpdateBurdens += ExpeditionBurdens.UnlockDialogOnUpdateBurdens;
-                On.Menu.UnlockDialog.SetUpBurdenDescriptions += ExpeditionBurdens.UnlockDialogOnSetUpBurdenDescriptions;
-                On.Menu.UnlockDialog.Update += ExpeditionBurdens.UnlockDialogOnUpdate;
-                On.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
-                IL.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
+                //On.Menu.UnlockDialog.UpdateBurdens += ExpeditionBurdens.UnlockDialogOnUpdateBurdens;
+                //On.Menu.UnlockDialog.SetUpBurdenDescriptions += ExpeditionBurdens.UnlockDialogOnSetUpBurdenDescriptions;
+                //On.Menu.UnlockDialog.Update += ExpeditionBurdens.UnlockDialogOnUpdate;
+                //On.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
+                //IL.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
                 #endregion
                 
                 #region FriendWorldState
