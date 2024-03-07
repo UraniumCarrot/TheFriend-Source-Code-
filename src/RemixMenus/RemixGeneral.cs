@@ -23,10 +23,10 @@ public partial class RemixMain
     public static Configurable<bool> GeneralSolaceTitleCards;
 
     public static Configurable<string> pageValue;
-    public static Configurable<string> cosmetic;
+    //public static Configurable<string> cosmetic;
 
     private static OpListBox page;
-    private static OpResourceSelector slugcatSettings;
+    //private static OpResourceSelector slugcatSettings;
 
     public List<UIelement> GenFamineList;
     public List<UIelement> GenLizardList;
@@ -50,7 +50,7 @@ public partial class RemixMain
         GeneralSolaceTitleCards = config.Bind("SolaceTitleCards", true, new ConfigAcceptableList<bool>(true, false));
 
         pageValue = config.Bind<string>(null, "Famines");
-        cosmetic = config.Bind<string>(null, "Survivor");
+        //cosmetic = config.Bind<string>(null, "Survivor");
     }
     
     public void RemixGeneralUpdate()
@@ -79,11 +79,11 @@ public partial class RemixMain
                 new ListItem(StrMiscel)
             });
 
-        slugcatSettings = new OpResourceSelector(
-            cosmetic, 
-            new Vector2(gencolumn + (columnMult - 30), row-(rowMult*12)), 
-            100,
-            (OpResourceSelector.SpecialEnum)6);
+        //slugcatSettings = new OpResourceSelector(
+        //    cosmetic, 
+        //    new Vector2(gencolumn + (columnMult - 30), row-(rowMult*12)), 
+        //    100,
+        //    (OpResourceSelector.SpecialEnum)6);
         
         tabsList.Add(OpTabGeneral);
         OpTabGeneral.AddItems(GenSprites);
@@ -98,16 +98,16 @@ public partial class RemixMain
     {
         //GenSprites.container.AddChild();
 
-        OpTabGeneral.AddItems(page,slugcatSettings,
-            new OpLabel(gencolumn,row+25,"Universal",true) { alpha = 0.8f },
-            new OpLabel(
-                    gencolumn,
-                    row-(rowMult*12),  
-                    "Editing settings for:", true) 
-                { alpha = 0.8f }
+        OpTabGeneral.AddItems(page,/*slugcatSettings,*/
+            new OpLabel(gencolumn,row+25,"Universal",true) { alpha = 0.8f }
+            //new OpLabel(
+            //        gencolumn,
+            //        row-(rowMult*12),  
+            //        "Editing settings for:", true) 
+            //    { alpha = 0.8f }
             );
-        var rowseparator1 = MakeLine(new Vector2(gencolumn*2.72f,row-(rowMult*11)), false);
-        GenSprites.container.AddChild(rowseparator1);
+        //var rowseparator1 = MakeLine(new Vector2(gencolumn*2.72f,row-(rowMult*11)), false);
+        //GenSprites.container.AddChild(rowseparator1);
 
         GeneralFamine();
         GeneralMiscel();
