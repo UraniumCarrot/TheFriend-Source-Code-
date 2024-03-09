@@ -38,10 +38,6 @@ public class FriendWorldState
                 light.nightFade = 0;
             }
     }
-    public static void WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues(On.WorldLoader.orig_ctor_RainWorldGame_Name_bool_string_Region_SetupValues orig, WorldLoader self, RainWorldGame game, SlugcatStats.Name playerCharacter, bool singleRoomWorld, string worldName, Region region, RainWorldGame.SetupValues setupValues)
-    {
-        orig(self, game, playerCharacter, singleRoomWorld, worldName, region, setupValues);
-    }
 
     public static void Region_ctor(On.Region.orig_ctor orig, Region self, string name, int firstRoomIndex, int regionNumber, SlugcatStats.Name storyIndex) // Adjusts region parameters
     {
