@@ -12,8 +12,8 @@ public class FancyHeadColors
     public static Color FancyHeadColor1(orig_HeadColor1 orig, LizardGraphics self)
     {
         if (self.lizard.Liz().MyHeadDoesntFlash) return self.effectColor;
-        if (self.lizard.Template.type == CreatureTemplateType.YoungLizard)
-            return YoungLizardGraphics.YoungLizardFlashColor(self);
+        //if (self.lizard.Template.type == CreatureTemplateType.YoungLizard)
+            //return YoungLizardGraphics.YoungLizardFlashColor(self);
         
         return orig(self);
     }

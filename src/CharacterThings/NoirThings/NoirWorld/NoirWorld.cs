@@ -26,10 +26,8 @@ public partial class NoirCatto
         }
     }
 
-    public static void RainWorldGameOnctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
+    public static void RainWorldGameOnctor(RainWorldGame self, ProcessManager manager)
     {
-        orig(self, manager);
-
         if (!self.IsStorySession) return;
         if (self.StoryCharacter != Plugin.NoirName) return;
         if (Custom.rainWorld.ExpeditionMode && RemixMain.NoirUseCustomStart.Value != CustomStartMode.StoryAndExpedition) return;

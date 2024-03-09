@@ -1,7 +1,6 @@
 using System;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using TheFriend.WorldChanges;
 using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,19 +14,19 @@ public abstract class FaminePolePlant
     internal static void PoleMimicOnctor(On.PoleMimic.orig_ctor orig, PoleMimic self, AbstractCreature abstractcreature, World world)
     {
         orig(self, abstractcreature, world);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
         if (Random.value > SpawnChance) self.Destroy();
     }
 
     internal static void PoleMimicGraphicsOnDrawSprites(On.PoleMimicGraphics.orig_DrawSprites orig, PoleMimicGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
     {
         orig(self, sleaser, rcam, timestacker, campos);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
         for (var i = 0; i < self.leafPairs; i++)
         {
             for (var j = 0; j < 2; j++)
             {
-                bool naturalSickness = (!FamineWorld.FamineBurdenBool && QuickWorldData.SolaceCampaign);
+                bool naturalSickness = QuickWorldData.NaturalFamines;
                 var color1 = (naturalSickness) ? Color.cyan : new Color(0.3f,0.2f,0.1f);
                 var color2 = (naturalSickness) ? Color.white : self.blackColor;
                 if (i >= self.decoratedLeafPairs) continue;
@@ -49,7 +48,7 @@ public abstract class FaminePolePlant
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate((PoleMimicGraphics self) =>
             {
-                if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+                if (!QuickWorldData.FaminesExist) return;
                 self.decoratedLeafPairs = self.leafPairs;
             });
         }

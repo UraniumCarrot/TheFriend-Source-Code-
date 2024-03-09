@@ -40,8 +40,6 @@ public class FriendWorldState
     }
     public static void WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues(On.WorldLoader.orig_ctor_RainWorldGame_Name_bool_string_Region_SetupValues orig, WorldLoader self, RainWorldGame game, SlugcatStats.Name playerCharacter, bool singleRoomWorld, string worldName, Region region, RainWorldGame.SetupValues setupValues)
     {
-        if (game != null)
-            FamineWorld.HasFamines(game);
         orig(self, game, playerCharacter, singleRoomWorld, worldName, region, setupValues);
     }
 

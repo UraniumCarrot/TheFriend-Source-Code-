@@ -26,16 +26,22 @@ public class ExpeditionBurdens
     {
         var player = ExpeditionData.slugcatPlayer;
         if (key == famine)
-        { // If this character can eat corpses, the score bonus takes a big penalty
+        {
             float score = 0;
             if (SlugBaseCharacter.TryGet(player, out var chara) && 
                 SlugBase.Features.PlayerFeatures.Diet.TryGet(chara, out var diet))
             {
-                if (diet.Corpses > 0 || 
-                    diet.CreatureOverrides.TryGetValue(CreatureTemplate.Type.LizardTemplate, out var liz) && liz > 0)
-                    score = 10f;
-                if (diet.Meat <= 0 && diet.Corpses <= 0)
-                    score = 120f; // vegetarians who use this burden are SCREWED lol. if they beat it, they've earned it
+                if (diet.Corpses > 0) score -= diet.Corpses * 70;
+                else 
+                {
+                    if (diet.CreatureOverrides.TryGetValue(CreatureTemplate.Type.LizardTemplate, out var liz))
+                        score -= (liz-1).Abs() * 10;
+                    if (diet.CreatureOverrides.TryGetValue(CreatureTemplate.Type.BigSpider, out var spid))
+                        score -= (spid-1).Abs() * 10;
+                }
+                score -= (diet.CreatureOverrides.TryGetValue(CreatureTemplate.Type.Centipede, out var centi)) ? centi * 40f : 40f;
+                
+                score += 120f; // vegetarians who use this burden are SCREWED lol. if they beat it, they've earned it
             }
             
             switch (player.value)
@@ -47,6 +53,11 @@ public class ExpeditionBurdens
                 case nameof(SlugcatStats.Name.Red): score = 10f; break;
             }
             if (score == 0) score = 80f;
+            if (score < 0) score = 5f;
+            
+            score = Mathf.Round(score);
+            score -= (score % 5);
+            
             return score;
         }
         return orig(key);

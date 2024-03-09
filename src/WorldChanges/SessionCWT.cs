@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Expedition;
 using UnityEngine;
 
 namespace TheFriend.WorldChanges;
@@ -14,6 +15,12 @@ public static class SessionCWT
         public bool TrueSolaceCampaign => game.StoryCharacter == Plugin.FriendName ||
                                           game.StoryCharacter == Plugin.DragonName ||
                                           game.StoryCharacter == Plugin.NoirName;
+
+        public bool UnnaturalFamines => RWCustom.Custom.rainWorld.ExpeditionMode &&
+                                        ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine) 
+                                        && !TrueSolaceCampaign;
+        public bool NaturalFamines => TrueSolaceCampaign && (!Configs.NoFamine || ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine));
+        
         public GameCWT(StoryGameSession game)
         {
             Plugin.LogSource.LogWarning("Solace: GameCWT constructed");

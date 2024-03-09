@@ -126,7 +126,7 @@ public abstract class FamineCentipede
             return false;
         if (plGrasp.Template.type == CreatureTemplate.Type.RedCentipede ||
             plGrasp.Template.type == MoreSlugcatsEnums.CreatureTemplateType.AquaCenti ||
-            !(FamineWorld.FamineBool || FamineWorld.FamineBurdenBool))
+            !(QuickWorldData.FaminesExist))
             return false;
 
         if ((SlugBaseCharacter.TryGet(pl.SlugCatClass, out var chara) &&
@@ -162,7 +162,7 @@ public static class CentiCWT
 {
     public class CentiData
     {
-        public bool naturalSickness => !FamineWorld.FamineBurdenBool && QuickWorldData.SolaceCampaign;
+        public bool naturalSickness => QuickWorldData.NaturalFamines;
         public float sickHue;
         public float sickSat;
         public CentiData(Centipede self)
@@ -194,8 +194,7 @@ public static class CentiCWT
 
     public static bool TryGet(this Centipede self, out CentiData data)
     {
-        if ((FamineWorld.FamineBool || 
-            FamineWorld.FamineBurdenBool) && 
+        if (QuickWorldData.FaminesExist && 
             !self.abstractCreature.IsVoided() &&
             !self.AquaCenti)
         {
