@@ -32,12 +32,10 @@ public class YoungLizardGraphics
         List<LizColorMode> mode1 = [LizColorMode.HSL, LizColorMode.RGB];
 
         var num = self.startOfExtraSprites + self.extraSprites;
-        /*num = self.AddCosmetic(num, new FreeAntennae(self, num, 3, colorer, colorer2, true, false));
+        num = self.AddCosmetic(num, new FreeAntennae(self, num, 3, colorer, colorer2, true, false));
         if (Random.value < 0.2f)
             num = self.AddCosmetic(num, new FreeTailTuft(self, num, mode1,null, colorlist, new Vector2(0.1f,0.1f), pulseWithHead));
         else num = self.AddCosmetic(num, new FreeAxolotlGills(self, num, mode1,null, colorlist2) {colored = true});
-        num = self.AddCosmetic(num, new FreeSpineSpikes(self, num, mode1,null, colorlist, new Vector2(0.1f,0.1f), true));*/
-        if (Random.value < 0.2f)
-            num = self.AddCosmetic(num, new TailTuft(self, num));
+        num = self.AddCosmetic(num, new FreeSpineSpikes(self, num, mode1,null, colorlist, new Vector2(0.1f,0.1f), true));
     }
 }
