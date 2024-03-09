@@ -9,22 +9,6 @@ using TheFriend.WorldChanges.WorldStates.General;
 namespace TheFriend.WorldChanges;
 public abstract class FamineWorld
 {
-    public static void HasFamines(RainWorldGame self)
-    {
-        if (QuickWorldData.SolaceCampaign && !Configs.NoFamine) FamineBool = true;
-        
-        if (self.rainWorld.ExpeditionMode &&
-            ExpeditionGame.activeUnlocks.Contains(Expedition.ExpeditionBurdens.famine))
-            FamineBurdenBool = true;
-        else FamineBurdenBool = false;
-
-        if (Configs.NoFamine) FamineBool = false;
-    }
-
-    // Helps majority of the code here tell slugcat has famines
-    public static bool FamineBool; // Global bool used to tell if the world has Solace famines, has no requirements unlike above
-    public static bool FamineBurdenBool;
-
     public static bool IsDiseased(PhysicalObject consumable) => IsDiseased(consumable.abstractPhysicalObject);
     public static bool IsDiseased(AbstractPhysicalObject consumable) // General disease bool handler
     {
@@ -39,18 +23,18 @@ public abstract class FamineWorld
             switch (consumable.type.value)
             {
                 case nameof(AbstractPhysicalObject.AbstractObjectType.DangleFruit): 
-                    value = FamineBurdenBool || Random.value > 0.2; break;
+                    value = QuickWorldData.GuaranteedFamined || Random.value > 0.2; break;
                 case nameof(MoreSlugcatsEnums.AbstractObjectType.LillyPuck): 
-                    value = FamineBurdenBool || Random.value > 0.05; break;
+                    value = QuickWorldData.GuaranteedFamined || Random.value > 0.05; break;
                 case nameof(MoreSlugcatsEnums.AbstractObjectType.GooieDuck): 
-                    value = FamineBurdenBool || Random.value > 0.9; break;
+                    value = QuickWorldData.GuaranteedFamined || Random.value > 0.9; break;
                 case nameof(MoreSlugcatsEnums.AbstractObjectType.DandelionPeach): 
-                    value = FamineBurdenBool || Random.value > 0.4; break;
+                    value = QuickWorldData.GuaranteedFamined || Random.value > 0.4; break;
                     default: return false;
             }
             if (consumable is not AbstractConsumable) value = false;
-            if (!FamineBool && !FamineBurdenBool) value = false;
-            if (region == "UG" && !FamineBurdenBool) value = false;
+            if (!QuickWorldData.FaminesExist) value = false;
+            if (region == "UG" && !QuickWorldData.FaminesExist) value = false;
             
             return value;
         }
@@ -63,33 +47,27 @@ public abstract class FamineWorld
     // Diseased food value
     public static int SlugcatStats_NourishmentOfObjectEaten(On.SlugcatStats.orig_NourishmentOfObjectEaten orig, SlugcatStats.Name slugcatIndex, IPlayerEdible eatenobject)
     {
-        var num = orig(slugcatIndex, eatenobject);
+        var foodGiven = orig(slugcatIndex, eatenobject);
         var quarters1 = eatenobject.FoodPoints;
-        if (eatenobject is GlowWeed && slugcatIndex == Plugin.DragonName) num = 4;
-        if (!FamineBool && !FamineBurdenBool) return num;
+        if (eatenobject is GlowWeed && slugcatIndex == Plugin.DragonName) foodGiven = 4;
 
         if (eatenobject is PhysicalObject obj && IsDiseased(obj))
         {
-            if (slugcatIndex == SlugcatStats.Name.Red || slugcatIndex == MoreSlugcatsEnums.SlugcatStatsName.Artificer || num == 0)
-            {
-                num = 0;
-            }
+            if (slugcatIndex == SlugcatStats.Name.Red || slugcatIndex == MoreSlugcatsEnums.SlugcatStatsName.Artificer || foodGiven == 0)
+                foodGiven = 0;
             else if (Random.value > 0.50)
             {
                 if (quarters1 >= 2)
-                {
-                    num = quarters1 / 2;
-                }
+                    foodGiven = quarters1 / 2;
+                
                 if (quarters1 < 2)
-                {
-                    num = 0;
-                }
+                    foodGiven = 0;
             }
-            else num = quarters1;
+            else foodGiven = quarters1;
         }
 
-        FamineCentipede.NourishmentOfCentiEaten(slugcatIndex, eatenobject, ref num);
-        return num;
+        FamineCentipede.NourishmentOfCentiEaten(slugcatIndex, eatenobject, ref foodGiven);
+        return foodGiven;
     }
 
     // Diseased DangleFruit

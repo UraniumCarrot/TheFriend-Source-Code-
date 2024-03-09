@@ -25,8 +25,11 @@ using TheFriend.Objects.BoulderObject;
 using TheFriend.Objects.LittleCrackerObject;
 using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.WorldChanges;
+using TheFriend.WorldChanges.Oracles;
+using TheFriend.WorldChanges.WorldStates.General;
 using ColdRoom = On.MoreSlugcats.ColdRoom;
 using Debug = UnityEngine.Debug;
+using SLOracle = TheFriend.WorldChanges.Oracles.LooksToTheMoon.SLOracle;
 
 namespace TheFriend
 {
@@ -194,14 +197,16 @@ namespace TheFriend
                 #endregion
                 
                 #region SLOracleHandler
-                On.SLOrcacleState.ForceResetState += SLOracleHandler.SLOrcacleState_ForceResetState;
-                On.SLOracleBehavior.Update += SLOracleHandler.SLOracleBehavior_Update;
-                On.SLOracleBehavior.Move += SLOracleHandler.SLOracleBehavior_Move;
-                On.SLOracleBehaviorNoMark.Update += SLOracleHandler.SLOracleBehaviorNoMark_Update;
-                On.SLOracleBehaviorHasMark.MoonConversation.AddEvents += SLOracleHandler.MoonConversationOnAddEvents;
-                On.RainWorldGame.IsMoonActive += SLOracleHandler.RainWorldGame_IsMoonActive;
-                On.RainWorldGame.IsMoonHeartActive += SLOracleHandler.RainWorldGame_IsMoonHeartActive;
-                On.RainWorldGame.MoonHasRobe += SLOracleHandler.RainWorldGame_MoonHasRobe;
+                On.Oracle.ctor += OracleTools.OracleBehaviorOverride;
+                On.SLOrcacleState.ForceResetState += SLOracle.SLOrcacleState_ForceResetState;
+                On.SLOracleBehavior.Update += SLOracle.SLOracleBehavior_Update;
+                On.SLOracleBehavior.Move += SLOracle.SLOracleBehavior_Move;
+                On.SLOracleBehaviorHasMark.Update += SLOracle.SLOracleBehaviorHasMark_Update;
+                On.SLOracleBehaviorNoMark.Update += SLOracle.SLOracleBehaviorNoMark_Update;
+                On.SLOracleBehaviorHasMark.MoonConversation.AddEvents += SLOracle.MoonConversationOnAddEvents;
+                On.RainWorldGame.IsMoonActive += SLOracle.RainWorldGame_IsMoonActive;
+                On.RainWorldGame.IsMoonHeartActive += SLOracle.RainWorldGame_IsMoonHeartActive;
+                On.RainWorldGame.MoonHasRobe += SLOracle.RainWorldGame_MoonHasRobe;
                 #endregion
                 
                 #region Slugcat Hooks
@@ -269,7 +274,6 @@ namespace TheFriend
                 On.PlayerGraphics.InitiateSprites += NoirCatto.PlayerGraphicsOnInitiateSprites;
                 On.PlayerGraphics.Reset += NoirCatto.PlayerGraphicsOnReset;
                 On.RainWorld.Update += NoirCatto.RainWorldOnUpdate;
-                On.RainWorldGame.ctor += NoirCatto.RainWorldGameOnctor;
                 On.Room.AddObject += NoirCatto.RoomOnAddObject;
                 On.SaveState.setDenPosition += NoirCatto.SaveStateOnsetDenPosition;
                 IL.GhostWorldPresence.SpawnGhost += NoirCatto.GhostWorldPresenceILSpawnGhost;
@@ -421,6 +425,12 @@ namespace TheFriend
                     orig(self, savestatenumber, game);
                     HuntQuestThings.StoryGameSessionOnctor(self, savestatenumber, game);
                     //WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
+                };
+                On.RainWorldGame.ctor += (orig, self, manager) =>
+                {
+                    orig(self, manager);
+                    NoirCatto.RainWorldGameOnctor(self, manager);
+                    QuickWorldData.RainWorldGameOnctor(self, manager);
                 };
                 
                 // Crawl turn IL Hook for Friend & Noir

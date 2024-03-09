@@ -18,7 +18,7 @@ public static class FamineEggBug
     public static EggBugData GetEggBugData(this EggBug eggBug) => EggBugDeets.GetValue(eggBug, _ => new(eggBug));
     public class EggBugData
     {
-        public bool naturalSickness => !FamineWorld.FamineBurdenBool && QuickWorldData.SolaceCampaign;
+        public bool naturalSickness => QuickWorldData.NaturalFamines;
         public int TotalSprites;
         public int[] SpriteIndex;
         public HashSet<(int, int)> EggsToRemove;
@@ -33,14 +33,14 @@ public static class FamineEggBug
     internal static void EggBugOnctor(On.EggBug.orig_ctor orig, EggBug self, AbstractCreature abstractcreature, World world)
     {
         orig(self, abstractcreature, world);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
         self.hue += (self.GetEggBugData().naturalSickness) ? Random.Range(0.05f, 0.25f) : Random.Range(-0.05f, -0.3f);
     }
 
     internal static void EggBugGraphicsOnctor(On.EggBugGraphics.orig_ctor orig, EggBugGraphics self, PhysicalObject ow)
     {
         orig(self, ow);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
 
         var eggBugData = self.bug.GetEggBugData();
         var removeHowMany = Random.Range(0, 6); // 0-5
@@ -55,7 +55,7 @@ public static class FamineEggBug
     internal static void EggBugEggOnctor(On.EggBugEgg.orig_ctor orig, EggBugEgg self, AbstractPhysicalObject abstractphysicalobject)
     {
         orig(self, abstractphysicalobject);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
 
         var abstractBug = self.abstractBugEgg.Room.entities.FirstOrDefault(x => x is AbstractCreature crit && crit.realizedCreature is EggBug bug && bug.hue == self.abstractBugEgg.hue);
         if (abstractBug == null) return;
@@ -72,7 +72,7 @@ public static class FamineEggBug
     internal static void EggBugGraphicsOnInitiateSprites(On.EggBugGraphics.orig_InitiateSprites orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam)
     {
         orig(self, sleaser, rcam);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
 
         if (!self.bug.FireBug)
         {
@@ -99,7 +99,7 @@ public static class FamineEggBug
     internal static void EggBugGraphicsOnDrawSprites(On.EggBugGraphics.orig_DrawSprites orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, float timestacker, Vector2 campos)
     {
         orig(self, sleaser, rcam, timestacker, campos);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
 
         var eggBugData = self.bug.GetEggBugData();
 
@@ -132,7 +132,7 @@ public static class FamineEggBug
     internal static void EggBugGraphicsOnApplyPalette(On.EggBugGraphics.orig_ApplyPalette orig, EggBugGraphics self, RoomCamera.SpriteLeaser sleaser, RoomCamera rcam, RoomPalette palette)
     {
         orig(self, sleaser, rcam, palette);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+        if (!QuickWorldData.FaminesExist) return;
 
         var eggBugData = self.bug.GetEggBugData();
         if (!eggBugData.naturalSickness) return;
@@ -166,7 +166,7 @@ public static class FamineEggBug
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate((EggBugGraphics self) =>
             {
-                if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return;
+                if (!QuickWorldData.FaminesExist) return;
                 self.blackColor.ChangeHue(self.blackColor.Hue() + 0.6f);
             });
         }
@@ -180,7 +180,7 @@ public static class FamineEggBug
     internal static Color[] EggBugGraphicsOnEggColors(On.EggBugGraphics.orig_EggColors orig, RoomPalette palette, float hue, float darkness)
     {
         var color = orig(palette, hue, darkness);
-        if (!FamineWorld.FamineBool && !FamineWorld.FamineBurdenBool) return color;
+        if (!QuickWorldData.FaminesExist) return color;
         // color[0] = Color.white; //Base they connect to
         color[1] = Color.Lerp(color[1], Color.white, 0.40f); //Egg color
         color[2] = Color.Lerp(color[2], Color.white, 0.85f); //The inner dot color
