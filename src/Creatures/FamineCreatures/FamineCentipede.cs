@@ -29,12 +29,13 @@ public abstract class FamineCentipede
     public static void CentipedeGraphics_InitiateSprites(On.CentipedeGraphics.orig_InitiateSprites orig, CentipedeGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
-        if (self.centipede != null && self.centipede.TryGet(out _) && !self.centipede.Red)
+        if (self.centipede != null && self.centipede.TryGet(out _))
         {
             for (int i = 0; i < self.owner.bodyChunks.Count(); i++)
             {
-                sLeaser.sprites[self.SegmentSprite(i)].scaleY *= 0.8f;
-                sLeaser.sprites[self.SegmentSprite(i)].scaleX *= 1.5f;
+                sLeaser.sprites[self.SegmentSprite(i)].element =
+                    Futile.atlasManager.GetElementWithName("HeadB0");
+                if (!self.centipede.Red) sLeaser.sprites[self.SegmentSprite(i)].scaleY *= 0.8f;
             }
         }
     }
@@ -42,10 +43,16 @@ public abstract class FamineCentipede
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         if (self.centipede == null) return;
-        if (self.centipede.TryGet(out _))
+        if (self.centipede.TryGet(out _) && !self.centipede.Red)
             for (var i = 0; i < self.owner?.bodyChunks?.Count(); i++)
-                sLeaser.sprites[self.SegmentSprite(i)].element =
-                    Futile.atlasManager.GetElementWithName("LizardHead3.0");
+            {
+                float newsize = 0.5f;
+                sLeaser.sprites[self.SegmentSprite(i)].scaleX *= newsize+0.2f;
+                sLeaser.sprites[self.ShellSprite(i,0)].scaleX *= newsize;
+                //sLeaser.sprites[self.ShellSprite(i,1)].scaleX *= newsize;
+                if (i > 0)
+                    sLeaser.sprites[self.SecondarySegmentSprite(i - 1)].scaleX *= newsize;
+            }
         else return;
 
         if (!self.centipede.Red) return; // Iridescipede
@@ -63,18 +70,6 @@ public abstract class FamineCentipede
                 if (hue > 1f) hue -= 1f;
                 col.ChangeHue(hue);
                 sprite.color = col;
-            }
-        }
-    }
-    public static void Centipede_ctor(On.Centipede.orig_ctor orig, Centipede self, AbstractCreature abstractCreature, World world)
-    {
-        orig(self, abstractCreature, world);
-        if (self.TryGet(out _))
-        {
-            for (int i = 0; i < self.bodyChunks?.Count(); i++)
-            {
-                self.bodyChunks[i].rad *= 0.6f;
-                self.bodyChunks[i].mass *= 0.4f;
             }
         }
     }
@@ -135,26 +130,20 @@ public abstract class FamineCentipede
         {
             if (SlugBase.Features.PlayerFeatures.Diet.TryGet(chara, out var diet0) &&
                 diet0.GetMeatMultiplier(pl, plGrasp) < 0.5f)
-            {
                 if (Random.value > 0.75f) pl.AddQuarterFood();
-            }
             else if (Random.value > 0.5f) pl.AddQuarterFood();
         }
-        else
-        {
-            pl.AddQuarterFood();
-        }
-
+        else pl.AddQuarterFood();
+        
         return true;
     }
     //From FamineWorld.cs
     public static void NourishmentOfCentiEaten(SlugcatStats.Name slugcatIndex, IPlayerEdible eatenobject, ref int num)
     {
         if (eatenobject is Centipede centi && centi.Small)
-        {
-            if (slugcatIndex == SlugcatStats.Name.Red || slugcatIndex == MoreSlugcatsEnums.SlugcatStatsName.Artificer) num = 1;
+            if (slugcatIndex == SlugcatStats.Name.Red || slugcatIndex == MoreSlugcatsEnums.SlugcatStatsName.Artificer) 
+                num = 1;
             else num = centi.FoodPoints;
-        }
     }
 }
 

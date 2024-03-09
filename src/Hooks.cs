@@ -151,7 +151,7 @@ namespace TheFriend
                 On.Room.SlugcatGamemodeUniqueRoomSettings                             += FriendWorldState.Room_SlugcatGamemodeUniqueRoomSettings;
                 On.FireFly.ctor                                                       += FriendWorldState.FireFly_ctor;
                 On.RoomSpecificScript.SU_A43SuperJumpOnly.Update                      += FriendWorldState.SU_A43SuperJumpOnlyOnUpdate;
-                On.WorldLoader.ctor_RainWorldGame_Name_bool_string_Region_SetupValues += FriendWorldState.WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues;
+                //On.WorldLoader.ctor_RainWorldGame_Name_bool_string_Region_SetupValues += FriendWorldState.WorldLoader_ctor_RainWorldGame_Name_bool_string_Region_SetupValues;
                 #endregion
                 
                 #region FamineWorld
@@ -173,19 +173,19 @@ namespace TheFriend
                 IL.Player.EatMeatUpdate += FamineCentipede.Player_EatMeatUpdate;
                 #endregion
                 #region FamineEggBug
-                On.EggBug.ctor += FamineEggBug.EggBugOnctor;
+                /*On.EggBug.ctor += FamineEggBug.EggBugOnctor;
                 On.EggBugGraphics.ApplyPalette += FamineEggBug.EggBugGraphicsOnApplyPalette;
                 On.EggBugGraphics.ctor += FamineEggBug.EggBugGraphicsOnctor;
                 On.EggBugGraphics.DrawSprites += FamineEggBug.EggBugGraphicsOnDrawSprites;
                 On.EggBugGraphics.EggColors += FamineEggBug.EggBugGraphicsOnEggColors;
                 On.EggBugGraphics.InitiateSprites += FamineEggBug.EggBugGraphicsOnInitiateSprites;
                 On.EggBugEgg.ctor += FamineEggBug.EggBugEggOnctor;
-                IL.EggBugGraphics.ApplyPalette += FamineEggBug.EggBugGraphicsILApplyPalette;
+                IL.EggBugGraphics.ApplyPalette += FamineEggBug.EggBugGraphicsILApplyPalette;*/
                 #endregion
                 #region FaminePolePlant
-                On.PoleMimic.ctor += FaminePolePlant.PoleMimicOnctor;
+                /*On.PoleMimic.ctor += FaminePolePlant.PoleMimicOnctor;
                 On.PoleMimicGraphics.DrawSprites += FaminePolePlant.PoleMimicGraphicsOnDrawSprites;
-                IL.PoleMimicGraphics.InitiateSprites += FaminePolePlant.PoleMimicGraphicsILInitiateSprites;
+                IL.PoleMimicGraphics.InitiateSprites += FaminePolePlant.PoleMimicGraphicsILInitiateSprites;*/
                 #endregion
                 #endregion
                 
