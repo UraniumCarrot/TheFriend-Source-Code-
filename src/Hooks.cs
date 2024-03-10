@@ -6,7 +6,6 @@ using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using TheFriend.SlugcatThings;
 using TheFriend.CharacterThings.NoirThings;
-using TheFriend.CharacterThings.NoirThings.HuntThings;
 using TheFriend.Creatures.FamineCreatures;
 using TheFriend.PoacherThings;
 using TheFriend.FriendThings;
@@ -279,13 +278,6 @@ namespace TheFriend
                 IL.Spear.Update += NoirCatto.SpearILUpdate;
                 IL.Weapon.Update += NoirCatto.WeaponILUpdate;
                 #endregion
-                #region HuntQuest
-                On.Menu.KarmaLadder.ctor += HuntQuestThings.KarmaLadderOnctor;
-                On.Menu.KarmaLadderScreen.Singal += HuntQuestThings.KarmaLadderScreenOnSingal;
-                On.PlayerSessionRecord.AddEat += HuntQuestThings.PlayerSessionRecordOnAddEat;
-                On.ProcessManager.RequestMainProcessSwitch_ProcessID += HuntQuestThings.ProcessManagerOnRequestMainProcessSwitch_ProcessID;
-                On.RainWorldGame.Win += HuntQuestThings.RainWorldGameOnWin;
-                #endregion
                 #endregion
                 #region Friend
                 On.Player.MovementUpdate += FriendCrawlTurn.PlayerOnMovementUpdate;
@@ -313,14 +305,12 @@ namespace TheFriend
                 #region Shared Hooks
                 On.Creature.Die += (orig, creature) =>
                 {
-                    HuntQuestThings.CreatureOnDie(creature);
                     orig(creature);
                     SaveThings.SolaceSaveData.CreatureOnDie(creature);
                 };
                 On.HUD.HUD.InitSinglePlayerHud += (orig, hud, cam) => 
                 { 
                     orig(hud, cam);
-                    HuntQuestThings.HUDOnInitSinglePlayerHud(hud, cam);
                     HudHooks.HUDOnInitSinglePlayerHud(hud, cam);
                 };
                 On.Menu.Menu.Update += (orig, menu) =>
@@ -419,7 +409,6 @@ namespace TheFriend
                 On.StoryGameSession.ctor += (orig, self, savestatenumber, game) =>
                 {
                     orig(self, savestatenumber, game);
-                    HuntQuestThings.StoryGameSessionOnctor(self, savestatenumber, game);
                     WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
                 };
                 On.RainWorldGame.ctor += (orig, self, manager) =>

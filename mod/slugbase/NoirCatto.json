@@ -15,7 +15,7 @@
 			{ "name": "Paws", "story": "2e2d33" }
 		],
 
-		"karma_cap": 0,
+		"karma_cap": 2,
 		"can_maul": true,
 		"diet": 
 		{
