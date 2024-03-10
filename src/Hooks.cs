@@ -449,7 +449,6 @@ namespace TheFriend
             }
             catch (Exception ex)
             {
-                Debug.LogError(ex);
                 Plugin.LogSource.LogError(ex);
             }
         }

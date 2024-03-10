@@ -15,25 +15,25 @@ public class ScarfScript : RoomScript
     
     public static void FindVistaRooms(StoryGameSession self)
     {
-        if (ListOfRooms.Count < 1 || ListOfPos.Count < 1)
-        {
-            ListOfRooms.Clear();
-            ListOfPos.Clear();
-            if (ChallengeTools.VistaLocations == null)
-            {
-                ChallengeTools.GenerateVistaLocations();
-                ListOfRooms.AddRange(ChallengeTools.VistaLocations!.Keys);
-                ListOfPos.AddRange(ChallengeTools.VistaLocations.Values);
-                ChallengeTools.VistaLocations.Clear();
-                ChallengeTools.VistaLocations = null;
-            }
-            else
-            {
-                ListOfRooms.AddRange(ChallengeTools.VistaLocations.Keys);
-                ListOfPos.AddRange(ChallengeTools.VistaLocations.Values);
-            }
-        }
-        self.SessionData().RoomsWithNewScripts.AddRange(ListOfRooms);
+    //    if (ListOfRooms.Count < 1 || ListOfPos.Count < 1)
+    //    {
+    //        ListOfRooms.Clear();
+    //        ListOfPos.Clear();
+    //        if (ChallengeTools.VistaLocations == null)
+    //        {
+    //            ChallengeTools.GenerateVistaLocations();
+    //            ListOfRooms.AddRange(ChallengeTools.VistaLocations!.Keys);
+    //            ListOfPos.AddRange(ChallengeTools.VistaLocations.Values);
+    //            ChallengeTools.VistaLocations.Clear();
+    //            ChallengeTools.VistaLocations = null;
+    //        }
+    //        else
+    //        {
+    //            ListOfRooms.AddRange(ChallengeTools.VistaLocations.Keys);
+    //            ListOfPos.AddRange(ChallengeTools.VistaLocations.Values);
+    //        }
+    //    }
+    //    self.SessionData().RoomsWithNewScripts.AddRange(ListOfRooms);
     }
 
     public SolaceScarfAbstract scarf;
