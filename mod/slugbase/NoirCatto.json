@@ -8,11 +8,11 @@
         "color": "2f2e34",
 		"custom_colors": 
 		[
-			{ "name": "Body", "story": "2f2e34" },
-			{ "name": "Eyes", "story": "6b8de5" },
-			{ "name": "Fluff", "story": "e6e1e5" },
-			{ "name": "Nose", "story": "6f5569" },
-			{ "name": "Paws", "story": "2e2d33" }
+			{ "name": "Body", "story": "2f2e34", "arena": [ "FFFFFF", "FF0000", "00FF00", "0000FF" ] },
+			{ "name": "Eyes", "story": "6b8de5", "arena": [ "0000FF", "FFFFFF", "FF0000", "00FF00" ] },
+			{ "name": "Fluff", "story": "e6e1e5", "arena": [ "00FF00", "0000FF", "FFFFFF", "FF0000" ] },
+			{ "name": "Nose", "story": "6f5569", "arena": [ "FF0000", "00FF00", "0000FF", "FFFFFF" ] },
+			{ "name": "Paws", "story": "2e2d33", "arena": [ "ABCDEF", "012345", "FEDABC", "543012" ] },
 		],
 
 		"karma_cap": 2,
