@@ -52,12 +52,12 @@ namespace TheFriend
                 On.DaddyGraphics.DaddyDangleTube.ApplyPalette += PebblesLLGraphics.DaddyDangleTube_ApplyPalette;
                 IL.DaddyLongLegs.ctor += PebblesLL.DaddyLongLegs_ctor;
                 IL.Spear.Update += PebblesLL.Spear_Update;
-                Content.Register(new PebblesLLCritob());
+                //Content.Register(new PebblesLLCritob());
                 #endregion
                 #region SnowSpider
                 On.BigSpiderGraphics.ScaleAttachPos += SnowSpiderGraphics.BigSpiderGraphics_ScaleAttachPos;
                 On.BigSpider.Violence += SnowSpiderGraphics.BigSpider_Violence;
-                Content.Register(new SnowSpiderCritob());
+               // Content.Register(new SnowSpiderCritob());
                 #endregion
                 #region Lizards
                 On.Lizard.Update += (update, lizard, eu) =>
@@ -74,12 +74,12 @@ namespace TheFriend
                 On.Player.IsCreatureLegalToHoldWithoutStun += LizardRideFixes.Player_IsCreatureLegalToHoldWithoutStun;
                 On.Player.ReleaseGrasp += LizardRideFixes.PlayerOnReleaseGrasp;
                 On.Weapon.HitThisObject += LizardRideFixes.Weapon_HitThisObject;
-                
+                //
                 On.Lizard.Bite += LizardHooks.Lizard_Bite;
                 On.Lizard.ctor += LizardHooks.Lizard_ctor;
                 On.LizardAI.IUseARelationshipTracker_UpdateDynamicRelationship += LizardHooks.LizardAI_IUseARelationshipTracker_UpdateDynamicRelationship;
-                On.LizardBreeds.BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate += 
-                    LizardHooks.LizardBreeds_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate;
+                //On.LizardBreeds.BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate += 
+                //    LizardHooks.LizardBreeds_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate;
                 On.LizardGraphics.ctor += LizardHooks.LizardGraphics_ctor;
                 On.LizardGraphics.AddToContainer += LizardHooks.LizardGraphics_AddToContainer;
                 On.LizardGraphics.ApplyPalette += LizardHooks.LizardGraphics_ApplyPalette;
@@ -102,9 +102,9 @@ namespace TheFriend
                 On.Creature.SuckedIntoShortCut += YoungLizardAI.CreatureOnSuckedIntoShortCut;
                 On.WormGrass.WormGrassPatch.Update += WormGrassImmunizer.WormGrassPatch_Update;
                 
-                Content.Register(new MotherLizardCritob());
-                Content.Register(new PilgrimLizardCritob());
-                Content.Register(new YoungLizardCritob());
+                //Content.Register(new MotherLizardCritob());
+                //Content.Register(new PilgrimLizardCritob());
+                //Content.Register(new YoungLizardCritob());
                 #endregion
                 #endregion
                 
@@ -135,7 +135,7 @@ namespace TheFriend
                 On.Menu.UnlockDialog.SetUpBurdenDescriptions += ExpeditionBurdens.UnlockDialogOnSetUpBurdenDescriptions;
                 On.Menu.UnlockDialog.Update += ExpeditionBurdens.UnlockDialogOnUpdate;
                 On.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
-                IL.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
+                //IL.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
                 #endregion
                 
                 #region FriendWorldState
@@ -250,9 +250,9 @@ namespace TheFriend
                 On.Weapon.NewRoom += DragonCrafts.Weapon_NewRoom;
                 DragonCrafts.InitRecipes();
                 #endregion
-                Content.Register(new BoulderFisob());
-                Content.Register(new LittleCrackerFisob());
-                Content.Register(new BoomMineFisob());
+                //Content.Register(new BoulderFisob());
+                //Content.Register(new LittleCrackerFisob());
+                //Content.Register(new BoomMineFisob());
                 #endregion
                 #region Noir
                 #region NoirCatto
@@ -292,7 +292,7 @@ namespace TheFriend
                 
                 #region SolaceScarf
                 On.RoomSpecificScript.AddRoomSpecificScript += WorldChanges.ScarfScripts.RoomScript.RoomSpecificScriptOnAddRoomSpecificScript;
-                Content.Register(new SolaceScarfFisob());
+                //Content.Register(new SolaceScarfFisob());
                 #endregion
                 
                 #region MainMenu
