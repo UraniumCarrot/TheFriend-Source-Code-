@@ -6,9 +6,18 @@ using static SlugBase.Features.FeatureTypes;
 using System.Security.Permissions;
 using System.Security;
 using BepInEx.Logging;
+using Fisobs.Core;
 using TheFriend.SlugcatThings;
 using TheFriend.RemixMenus;
 using TheFriend.CharacterThings.NoirThings;
+using TheFriend.Creatures.LizardThings.MotherLizard;
+using TheFriend.Creatures.LizardThings.PilgrimLizard;
+using TheFriend.Creatures.LizardThings.YoungLizard;
+using TheFriend.Creatures.PebblesLLCreature;
+using TheFriend.Creatures.SnowSpiderCreature;
+using TheFriend.Objects.BoomMineObject;
+using TheFriend.Objects.BoulderObject;
+using TheFriend.Objects.LittleCrackerObject;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -36,6 +45,16 @@ namespace TheFriend
         public void OnEnable()
         {
             LogSource = Logger;
+            // needs its own function because type load errors can make the entire OnEnable fail without catching the exception otherwise
+            try
+            {
+                RegisterFisobs();
+            } 
+            catch (Exception e)
+            {
+                LogSource.LogError($"Exception while Registering Fisobs: {e}");
+            }
+            
             On.RainWorld.OnModsInit += Hooks.RainWorldOnOnModsInit;
             On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
 
@@ -64,6 +83,17 @@ namespace TheFriend
                     }
                 }
             };
+        }
+        public static void RegisterFisobs()
+        {
+            Content.Register(new PebblesLLCritob());
+            Content.Register(new SnowSpiderCritob());
+            Content.Register(new MotherLizardCritob());
+            Content.Register(new PilgrimLizardCritob());
+            Content.Register(new YoungLizardCritob());
+            Content.Register(new BoulderFisob());
+            Content.Register(new LittleCrackerFisob());
+            Content.Register(new BoomMineFisob());
         }
 
         private bool _postModsInit;
