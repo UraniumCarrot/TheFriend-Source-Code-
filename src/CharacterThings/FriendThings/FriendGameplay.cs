@@ -265,17 +265,34 @@ public class FriendGameplay
 
     #endregion
     
+    /*Surrounding IL***************************************************************************************
+    // if (animation == AnimationIndex.Flip && flag && input[0].x == 0)
+	IL_010d: ldarg.0
+	IL_010e: ldfld class Player/AnimationIndex Player::animation
+	
+	---- First TryGotoNext Lands here ----
+	IL_0113: ldsfld class Player/AnimationIndex Player/AnimationIndex::Flip
+	IL_0118: call bool class ExtEnum`1<class Player/AnimationIndex>::op_Equality(class ExtEnum`1<!0>, class ExtEnum`1<!0>)
+	
+	---- Second TryGotoNext Lands here ----
+	IL_011d: ldloc.1
+	        ^---- MoveAfterLabels lands here? ----
+	IL_011e: and
+	IL_011f: brfalse.s IL_0163
+    *******************************************************************************************************/
     public static void Player_ThrowObject(ILContext il)
     {
         var cursor = new ILCursor(il);
 
         if (!cursor.TryGotoNext(MoveType.Before, i => i.MatchLdsfld<Player.AnimationIndex>("Flip")))
         {
+            Plugin.LogSource.LogError($"Failed to Hook Player_ThrowObject, Pt1!");
             return;
         }
 
         if (!cursor.TryGotoNext(MoveType.Before, i => i.MatchLdloc(1)))
         {
+            Plugin.LogSource.LogError($"Failed to Hook Player_ThrowObject, Pt2!");
             return;
         }
 

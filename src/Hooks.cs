@@ -124,7 +124,7 @@ namespace TheFriend
                 //On.Expedition.ExpeditionProgression.BurdenManualDescription += ExpeditionBurdens.ExpeditionProgressionOnBurdenManualDescription;
                 //On.Expedition.ExpeditionProgression.BurdenScoreMultiplier += ExpeditionBurdens.ExpeditionProgressionOnBurdenScoreMultiplier;
                 //On.Expedition.ExpeditionProgression.CountUnlockables += ExpeditionBurdens.ExpeditionProgressionOnCountUnlockables;
-                On.Menu.UnlockDialog.TogglePerk += ExpeditionGeneral.UnlockDialogOnTogglePerk;
+                //On.Menu.UnlockDialog.TogglePerk += ExpeditionGeneral.UnlockDialogOnTogglePerk;
                 //On.Menu.UnlockDialog.UpdateBurdens += ExpeditionBurdens.UnlockDialogOnUpdateBurdens;
                 //On.Menu.UnlockDialog.SetUpBurdenDescriptions += ExpeditionBurdens.UnlockDialogOnSetUpBurdenDescriptions;
                 //On.Menu.UnlockDialog.Update += ExpeditionBurdens.UnlockDialogOnUpdate;
@@ -410,6 +410,19 @@ namespace TheFriend
                 };
                 
                 // Crawl turn IL Hook for Friend & Noir
+                
+                /*Surrounding IL****************************************************************************************
+                // if (animation == AnimationIndex.CrawlTurn)
+                ---- GotoPrev lands here ----
+                //IL_007a: ldarg.0
+                //IL_007b: ldfld class Player/AnimationIndex Player::animation
+                
+                ---- Start of GotoNext match ----
+                IL_0080: ldsfld class Player/AnimationIndex Player/AnimationIndex::CrawlTurn
+                IL_0085: call bool class ExtEnum`1<class Player/AnimationIndex>::op_Equality(class ExtEnum`1<!0>, class ExtEnum`1<!0>)
+                IL_008a: brfalse IL_01cd
+                ---- End of GoToNext match ----
+                *******************************************************************************************************/
                 IL.Player.UpdateAnimation += il =>
                 {
                     try
