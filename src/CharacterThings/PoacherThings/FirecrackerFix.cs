@@ -37,8 +37,8 @@ public class FirecrackerFix
     public static void FirecrackerPlant_ctor(ILContext il)
     { // Forces the plant to have the lumps amount set by above if lumps isnt default
         var c = new ILCursor(il);
-        if (!c.TryGotoNext(MoveType.After, x => x.MatchNewarr<FirecrackerPlant.Part>()) && 
-             c.TryGotoNext(x => x.MatchNewarr<FirecrackerPlant.Part>()))
+        if (!(c.TryGotoNext(MoveType.After, x => x.MatchNewarr<FirecrackerPlant.Part>()) && 
+             c.TryGotoNext(x => x.MatchNewarr<FirecrackerPlant.Part>())))
         {
             Plugin.LogSource.LogError($"ILHook failed for FirecrackerPlant_ctor");
             return;
