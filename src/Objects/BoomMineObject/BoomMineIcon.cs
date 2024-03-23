@@ -21,6 +21,6 @@ public class BoomMineIcon : Icon
     }
     public override string SpriteName(int data)
     {
-        return "icon_boommine";
+        return "icon_BoomMine";
     }
 } // DONE (TECHNICALLY)
