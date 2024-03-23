@@ -8,6 +8,33 @@ namespace TheFriend.CharacterThings.NoirThings;
 public partial class NoirCatto
 {
     //Spear not embed into wall fix
+    
+    /*Surrounding IL***************************************************************************************
+    // if (ModManager.MMF && base.firstChunk.vel.magnitude < 10f && !alwaysStickInWalls)
+    ---- First GotoNext Lands Here ----
+	IL_0aa1: ldsfld bool ModManager::MMF
+	IL_0aa6: brfalse.s IL_0aca
+
+	IL_0aa8: ldarg.0
+	IL_0aa9: call instance class BodyChunk PhysicalObject::get_firstChunk()
+	IL_0aae: ldflda valuetype [UnityEngine.CoreModule]UnityEngine.Vector2 BodyChunk::vel
+	IL_0ab3: call instance float32 [UnityEngine.CoreModule]UnityEngine.Vector2::get_magnitude()
+	IL_0ab8: ldc.r4 10
+	IL_0abd: bge.un.s IL_0aca
+
+	IL_0abf: ldarg.0
+	IL_0ac0: ldfld bool Spear::alwaysStickInWalls
+	IL_0ac5: brtrue.s IL_0aca
+
+	// flag = false;
+	IL_0ac7: ldc.i4.0
+	IL_0ac8: stloc.s 5
+
+	// if (flag)
+	IL_0aca: ldloc.s 5
+	IL_0acc: brfalse.s IL_0b2a
+	---- Second GotoNext Lands Here ----
+    *******************************************************************************************************/
     internal static void SpearILUpdate(ILContext il)
     {
         try
@@ -44,6 +71,22 @@ public partial class NoirCatto
 
     #region Ghosts
 
+    /*Surrounding IL****************************************************************************************
+	// return false;
+	IL_008c: ldc.i4.0
+	IL_008d: ret
+
+	// switch (karmaCap)
+	IL_008e: ldarg.2
+	IL_008f: ldc.i4.4
+	IL_0090: beq.s IL_0098
+	---- GotoNext Lands Here ----
+
+	// (no C# code)
+	IL_0092: ldarg.2
+	IL_0093: ldc.i4.6
+	IL_0094: beq.s IL_00a0
+    *******************************************************************************************************/
     internal static void GhostWorldPresenceILSpawnGhost(ILContext il)
     {
         try
@@ -81,7 +124,24 @@ public partial class NoirCatto
             Plugin.LogSource.LogError(ex);
         }
     }
+    
+    /*Surrounding IL****************************************************************************************
+    // preGhostEncounterKarmaCap = 0;
+    IL_0117: ldarg.0
+    IL_0118: ldc.i4.0
+    IL_0119: stfld int32 Menu.KarmaLadderScreen::preGhostEncounterKarmaCap
+    // else if (saveState.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Saint)
+    IL_011e: br IL_01cb
 
+    IL_0123: ldarg.0
+    ---- GotoPrev Lands Here ----
+    IL_0124: ldfld class SaveState Menu.KarmaLadderScreen::saveState
+    IL_0129: ldfld class SlugcatStats/Name SaveState::saveStateNumber
+    IL_012e: ldsfld class SlugcatStats/Name MoreSlugcats.MoreSlugcatsEnums/SlugcatStatsName::Saint
+    IL_0133: call bool class ExtEnum`1<class SlugcatStats/Name>::op_Equality(class ExtEnum`1<!0>, class ExtEnum`1<!0>)
+    ---- GotoNext Lands Here ----
+    IL_0138: brfalse IL_01cb
+    *******************************************************************************************************/
     internal static void KarmaLadderScreenILGetDataFromGame(ILContext il)
     {
         try

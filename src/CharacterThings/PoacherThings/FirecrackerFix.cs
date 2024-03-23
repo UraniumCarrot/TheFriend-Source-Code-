@@ -30,14 +30,21 @@ public class FirecrackerFix
         int amount = self.lumpsPopped.Count(i => i == false);
         if (GetLumpsLeft(self.abstractPhysicalObject) != amount) SetLumpsLeft(self.abstractPhysicalObject, amount);
     }
+    
+    /*Surrounding IL****************************************************************************************
+    
+    *******************************************************************************************************/
     public static void FirecrackerPlant_ctor(ILContext il)
     { // Forces the plant to have the lumps amount set by above if lumps isnt default
         var c = new ILCursor(il);
-        if (c.TryGotoNext(MoveType.After, x => x.MatchNewarr<FirecrackerPlant.Part>()) && c.TryGotoNext(x => x.MatchNewarr<FirecrackerPlant.Part>()))
+        if (!c.TryGotoNext(MoveType.After, x => x.MatchNewarr<FirecrackerPlant.Part>()) && 
+             c.TryGotoNext(x => x.MatchNewarr<FirecrackerPlant.Part>()))
         {
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate((int defaultLumps, FirecrackerPlant self) => GetLumpsLeft(self.abstractPhysicalObject) > 0 ? GetLumpsLeft(self.abstractPhysicalObject) : defaultLumps);
+            Plugin.LogSource.LogError($"ILHook failed for FirecrackerPlant_ctor");
+            return;
         }
+        c.Emit(OpCodes.Ldarg_0);
+        c.EmitDelegate((int defaultLumps, FirecrackerPlant self) => GetLumpsLeft(self.abstractPhysicalObject) > 0 ? GetLumpsLeft(self.abstractPhysicalObject) : defaultLumps);
     }
 
     public static string SaveState_SetCustomData_AbstractPhysicalObject_string(On.SaveState.orig_SetCustomData_AbstractPhysicalObject_string orig, AbstractPhysicalObject apo, string baseString)

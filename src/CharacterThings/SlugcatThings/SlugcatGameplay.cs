@@ -17,15 +17,39 @@ namespace TheFriend.SlugcatThings;
 
 public class SlugcatGameplay
 {
+    /*Surrounding IL****************************************************************************************
+	// UpdateBodyMode();
+	IL_1580: ldarg.0
+	IL_1581: call instance void Player::UpdateBodyMode()
+	// int num6 = ((isSlugpup && playerState.isPup) ? 12 : 17);
+	IL_1586: ldarg.0
+	IL_1587: call instance bool Player::get_isSlugpup()
+	IL_158c: brfalse.s IL_159b
+
+	IL_158e: ldarg.0
+	IL_158f: call instance class PlayerState Player::get_playerState()
+	IL_1594: ldfld bool PlayerState::isPup
+	IL_1599: brtrue.s IL_159f
+
+	// (no C# code)
+	IL_159b: ldc.i4.s 17
+	---- GotoNext Lands Here ----
+	IL_159d: br.s IL_15a1
+	        ^---- MoveAfterLabels Lands Here ----
+    *******************************************************************************************************/
     public static void PlayerOnMovementUpdate(ILContext il)
     {
         var cursor = new ILCursor(il);
 
-        cursor.GotoNext(MoveType.After,
-            i => i.MatchCallOrCallvirt<Player>("get_playerState"),
-            i => i.MatchLdfld<PlayerState>(nameof(PlayerState.isPup)),
-            i => i.MatchBrtrue(out _),
-            i => i.MatchLdcI4(out _));
+        if (!cursor.TryGotoNext(MoveType.After,
+                i => i.MatchCallOrCallvirt<Player>("get_playerState"),
+                i => i.MatchLdfld<PlayerState>(nameof(PlayerState.isPup)),
+                i => i.MatchBrtrue(out _),
+                i => i.MatchLdcI4(out _)))
+        {
+            Plugin.LogSource.LogError($"ILHook failed for PlayerOnMovementUpdate");
+            return;
+        }
 
         cursor.MoveAfterLabels();
 

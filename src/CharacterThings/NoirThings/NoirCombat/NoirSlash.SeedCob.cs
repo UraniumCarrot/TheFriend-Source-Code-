@@ -92,7 +92,22 @@ public partial class NoirCatto
     }
 
     //ILHooks
+    
     //Disabling the ability to eat from popcorn plants which do not have seeds
+    
+    /*Surrounding IL***************************************************************************************
+    // if (AbstractCob.dead || !(open > 0.8f))
+            v---- GotoNext Lands here ----
+	IL_0870: ldarg.0
+	IL_0871: call instance class SeedCob/AbstractSeedCob SeedCob::get_AbstractCob()
+	IL_0876: ldfld bool SeedCob/AbstractSeedCob::dead
+	IL_087b: brtrue IL_0b52
+
+	IL_0880: ldarg.0
+	IL_0881: ldfld float32 SeedCob::open
+	IL_0886: ldc.r4 0.8
+	IL_088b: ble.un IL_0b52
+    *******************************************************************************************************/
     internal static void SeedCobILUpdate(ILContext il)
     {
         try
@@ -123,6 +138,33 @@ public partial class NoirCatto
     }
 
     //Skipping the canBeHitByWeapons check
+    
+    /*Surrounding IL***************************************************************************************
+	// if (room.physicalObjects[0][num7] == this || !room.physicalObjects[0][num7].canBeHitByWeapons)
+	IL_105d: br IL_14f4
+	// loop start (head: IL_14f4)
+		IL_1062: ldarg.0
+		IL_1063: ldfld class Room UpdatableAndDeletable::room
+		IL_1068: ldfld class [mscorlib]System.Collections.Generic.List`1<class PhysicalObject>[] Room::physicalObjects
+		IL_106d: ldc.i4.0
+		IL_106e: ldelem.ref
+		IL_106f: ldloc.s 20
+		IL_1071: callvirt instance !0 class [mscorlib]System.Collections.Generic.List`1<class PhysicalObject>::get_Item(int32)
+		IL_1076: ldarg.0
+		IL_1077: beq IL_14ee
+
+        ---- GotoPrev Lands Here ----
+		IL_107c: ldarg.0
+		IL_107d: ldfld class Room UpdatableAndDeletable::room
+		IL_1082: ldfld class [mscorlib]System.Collections.Generic.List`1<class PhysicalObject>[] Room::physicalObjects
+		IL_1087: ldc.i4.0
+		IL_1088: ldelem.ref
+		IL_1089: ldloc.s 20
+		IL_108b: callvirt instance !0 class [mscorlib]System.Collections.Generic.List`1<class PhysicalObject>::get_Item(int32)
+		IL_1090: ldfld bool PhysicalObject::canBeHitByWeapons
+		IL_1095: brfalse IL_14ee
+		---- GotoNext Lands Here ----
+    *******************************************************************************************************/
     internal static void WeaponILUpdate(ILContext il)
     {
         try
@@ -167,8 +209,27 @@ public partial class NoirCatto
             Plugin.LogSource.LogError("ILHook failed - Weapon Update");
             Plugin.LogSource.LogError(ex);
         }
-    }
+    }                
+    
+    /*Surrounding IL****************************************************************************************
+    IL_004c: ldloca.s 5
+    IL_004e: call instance !0 valuetype [mscorlib]System.Collections.Generic.List`1/Enumerator<class PhysicalObject>::get_Current()
+    IL_0053: stloc.s 6
+    // if (item == exemptObject || !item.canBeHitByWeapons || (projTracer != null && !projTracer.HitThisObject(item)))
+    IL_0055: ldloc.s 6
+    IL_0057: ldarg.s exemptObject
+    IL_0059: beq IL_0352
+    
+    ---- GotoPrev Lands Here ----
+    IL_005e: ldloc.s 6
+    IL_0060: ldfld bool PhysicalObject::canBeHitByWeapons
+    IL_0065: brfalse IL_0352
+    ---- GotoNext Lands Here ----
 
+    // (no C# code)
+    IL_006a: ldarg.0
+    IL_006b: brfalse.s IL_007a
+    *******************************************************************************************************/
     internal static void SharedPhysicsILTraceProjectileAgainstBodyChunks(ILContext il)
     {
         try
