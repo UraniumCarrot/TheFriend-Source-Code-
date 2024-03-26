@@ -140,7 +140,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
             Color? fluffColor = null;
             var playerNum = self.player.playerState.playerNumber;
 
-            if (PlayerGraphics.CustomColorsEnabled())
+            if (PlayerGraphics.CustomColorsEnabled() || self.player.room?.game.IsArenaSession == true)
             {
                 eyeColor = PlayerColor.GetCustomColor(self, CustomColorEyes);
                 bodyColor = PlayerColor.GetCustomColor(self, CustomColorBody);
@@ -327,7 +327,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
         Color? fluffColor = null;
         var playerNum = self.player.playerState.playerNumber;
 
-        if (PlayerGraphics.CustomColorsEnabled())
+        if (PlayerGraphics.CustomColorsEnabled() || self.player.room?.game.IsArenaSession == true)
         {
             eyeColor = PlayerColor.GetCustomColor(self, CustomColorEyes);
             bodyColor = PlayerColor.GetCustomColor(self, CustomColorBody);
@@ -379,7 +379,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                 index == HeadSpr || index == LegsSpr ||
                 index == ArmSpr || index == ArmSpr2)
             {
-                if (PlayerGraphics.CustomColorsEnabled())
+                if (PlayerGraphics.CustomColorsEnabled() || self.player.room?.game.IsArenaSession == true)
                     sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorBody);
                 else if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorBody, out var color))
                     sleaser.sprites[index].color = color;
@@ -396,7 +396,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                  index == noirData.SlugSpr[LightArmSpr2] ||
                  index == noirData.SlugSpr[LightFaceSpr])
             {
-                if (PlayerGraphics.CustomColorsEnabled())
+                if (PlayerGraphics.CustomColorsEnabled() || self.player.room?.game.IsArenaSession == true)
                     sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorFluff);
                 else if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorFluff, out var color))
                     sleaser.sprites[index].color = color;
@@ -408,7 +408,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
                 index == noirData.SlugSpr[LightPawArmSpr2] ||
                 index == noirData.SlugSpr[LightPawLegsSpr])
             {
-                if (PlayerGraphics.CustomColorsEnabled())
+                if (PlayerGraphics.CustomColorsEnabled() || self.player.room?.game.IsArenaSession == true)
                     sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorPaws);
                 else if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorPaws, out var color))
                     sleaser.sprites[index].color = color;
@@ -418,7 +418,7 @@ public partial class NoirCatto //Sprite replacement and layer management is here
 
             if (index == noirData.SlugSpr[LightNoseFaceSpr])
             {
-                if (PlayerGraphics.CustomColorsEnabled())
+                if (PlayerGraphics.CustomColorsEnabled() || self.player.room?.game.IsArenaSession == true)
                     sleaser.sprites[index].color = PlayerColor.GetCustomColor(self, CustomColorNose);
                 else if (CharacterTools.TryGetCustomJollyColor(playerNum, CustomColorNose, out var color))
                     sleaser.sprites[index].color = color;
