@@ -87,7 +87,7 @@ namespace TheFriend
                 On.LizardGraphics.InitiateSprites += LizardHooks.LizardGraphics_InitiateSprites;
                 On.LizardLimb.ctor += LizardHooks.LizardLimb_ctor;
                 On.LizardVoice.GetMyVoiceTrigger += LizardHooks.LizardVoice_GetMyVoiceTrigger;
-                IL.SaveState.SessionEnded += LizardHooks.HandleYoungLizardMotherPassage;
+                //IL.SaveState.SessionEnded += LizardHooks.HandleYoungLizardMotherPassage;
                 
                 On.LizardCosmetics.BodyScales.GeneratePatchPattern += LizardCosmeticHooks.BodyScales_GeneratePatchPattern;
                 On.LizardCosmetics.BodyScales.GenerateSegments += LizardCosmeticHooks.BodyScales_GenerateSegments;
@@ -211,10 +211,10 @@ namespace TheFriend
                 On.GraphicsModule.HypothermiaColorBlend += SlugcatGraphics.GraphicsModule_HypothermiaColorBlend;
                 On.PlayerGraphics.AddToContainer += SlugcatGraphics.PlayerGraphics_AddToContainer;
                 On.PlayerGraphics.InitiateSprites += SlugcatGraphics.PlayerGraphics_InitiateSprites;
-                On.PlayerGraphics.JollyFaceColorMenu += SlugcatGraphics.JollyFaceColorMenu;
-                On.PlayerGraphics.JollyUniqueColorMenu += SlugcatGraphics.JollyUniqueColorMenu;
-                On.JollyCoop.JollyMenu.SymbolButtonTogglePupButton.HasUniqueSprite += SlugcatGraphics.HasUniqueSprite;
-                On.JollyCoop.JollyMenu.JollyPlayerSelector.GetPupButtonOffName += SlugcatGraphics.GetPupButtonOffName;
+                //On.PlayerGraphics.JollyFaceColorMenu += SlugcatGraphics.JollyFaceColorMenu;
+                //On.PlayerGraphics.JollyUniqueColorMenu += SlugcatGraphics.JollyUniqueColorMenu;
+                //On.JollyCoop.JollyMenu.SymbolButtonTogglePupButton.HasUniqueSprite += SlugcatGraphics.HasUniqueSprite;
+                //On.JollyCoop.JollyMenu.JollyPlayerSelector.GetPupButtonOffName += SlugcatGraphics.GetPupButtonOffName;
                 #endregion
                 #region Poacher
                 #region FirecrackerFix
