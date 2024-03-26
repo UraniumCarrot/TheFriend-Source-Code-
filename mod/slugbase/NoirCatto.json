@@ -8,11 +8,11 @@
         "color": "2f2e34",
 		"custom_colors": 
 		[
-			{ "name": "Body", "story": "2f2e34", "arena": [ "FFFFFF", "FF0000", "00FF00", "0000FF" ] },
-			{ "name": "Eyes", "story": "6b8de5", "arena": [ "0000FF", "FFFFFF", "FF0000", "00FF00" ] },
-			{ "name": "Fluff", "story": "e6e1e5", "arena": [ "00FF00", "0000FF", "FFFFFF", "FF0000" ] },
-			{ "name": "Nose", "story": "6f5569", "arena": [ "FF0000", "00FF00", "0000FF", "FFFFFF" ] },
-			{ "name": "Paws", "story": "2e2d33", "arena": [ "ABCDEF", "012345", "FEDABC", "543012" ] },
+			{ "name": "Body", "story": "2f2e34", "arena": [ "2f2e34", "2f2e17", "2f1517", "212434" ] },
+			{ "name": "Eyes", "story": "6b8de5", "arena": [ "6b8de5", "6b8de5", "6b8de5", "6b8de5" ] },
+			{ "name": "Fluff", "story": "e6e1e5", "arena": [ "f0f0ff", "ffff73", "ff7373", "a1afe5" ] },
+			{ "name": "Nose", "story": "6f5569", "arena": [ "6f5569", "6f5569", "6f5569", "6f5569" ] },
+			{ "name": "Paws", "story": "2e2d33", "arena": [ "2e2d33", "2e2d17", "2e1417", "1d1f2e" ] }
 		],
 
 		"karma_cap": 2,
