@@ -121,7 +121,7 @@ public class PoacherGameplay
                 if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out _))
                 {
                     if (player.animation == ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.firstChunk.mass = 0.34f; }
-                    else self.firstChunk.mass = 0.0001f;
+                    else self.firstChunk.mass = 0.005f;
                 }
             }
         }
@@ -137,7 +137,7 @@ public class PoacherGameplay
                 if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out _))
                 {
                     if (player.animation != ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.bodyChunks[0].mass = 0.2f; self.bodyChunks[1].mass = 0.2f; }
-                    else { self.bodyChunks[0].mass = 0.0001f; self.bodyChunks[1].mass = 0.0001f; }
+                    else { self.bodyChunks[0].mass = 0.005f; self.bodyChunks[1].mass = 0.005f; }
                 }
             }
         }
@@ -154,7 +154,7 @@ public class PoacherGameplay
                 if (self.grabbedBy[i].grabber is Player player && player.TryGetPoacher(out _))
                 {
                     if (player.animation == ind.None && player.bodyMode != bod.Stand && player.bodyMode != bod.Swimming && player.Submersion == 0) { self.firstChunk.mass = 0.2f; }
-                    else self.firstChunk.mass = 0.0001f;
+                    else self.firstChunk.mass = 0.005f;
                 }
             }
         }
