@@ -51,8 +51,8 @@ public class LizardHooks
         orig(self, owner, connectionChunk, num, rad, sfFric, aFric, huntSpeed, quickness, otherLimbInPair);
         if (owner is LizardGraphics l)
         {
-            if (l.lizard?.Template.type == CreatureTemplateType.MotherLizard || 
-                l.lizard?.Template.type == CreatureTemplateType.PilgrimLizard)
+            if (l.lizard?.Template.type == CreatureTemplateType.MotherLizard/* || 
+                l.lizard?.Template.type == CreatureTemplateType.PilgrimLizard*/)
             {
                 self.grabSound = SoundID.Lizard_Green_Foot_Grab;
                 self.releaseSeound = SoundID.Lizard_Green_Foot_Release;
@@ -73,7 +73,7 @@ public class LizardHooks
             {
                 case nameof(CreatureTemplateType.MotherLizard): return MotherLizardCritob.MotherLizardVoice(self.lizard, res);
                 case nameof(CreatureTemplateType.YoungLizard): return YoungLizardCritob.YoungLizardVoice(self.lizard, res);
-                case nameof(CreatureTemplateType.PilgrimLizard): return PilgrimLizardCritob.PilgrimLizardVoice(self.lizard, res);
+                //case nameof(CreatureTemplateType.PilgrimLizard): return PilgrimLizardCritob.PilgrimLizardVoice(self.lizard, res);
                 default: return res;
             }
         }
@@ -97,13 +97,13 @@ public class LizardHooks
             temp.type = type;
             return YoungLizardMethods.YoungLizardStats(temp, breedParams);
         }
-        if (type == CreatureTemplateType.PilgrimLizard)
-        {
-            var temp = orig(CreatureTemplate.Type.PinkLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
-            var breedParams = (temp.breedParameters as LizardBreedParams)!;
-            temp.type = type;
-            return  PilgrimLizardMethods.PilgrimLizardStats(temp, breedParams);
-        }
+        //if (type == CreatureTemplateType.PilgrimLizard)
+        //{
+        //    var temp = orig(CreatureTemplate.Type.PinkLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
+        //    var breedParams = (temp.breedParameters as LizardBreedParams)!;
+        //    temp.type = type;
+        //    return  PilgrimLizardMethods.PilgrimLizardStats(temp, breedParams);
+        //}
         return orig(type, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
     }
     public static void Lizard_ctor(On.Lizard.orig_ctor orig, Lizard self, AbstractCreature abstractCreature, World world)
@@ -120,8 +120,8 @@ public class LizardHooks
             MotherLizardCritob.MotherLizardCtor(self, abstractCreature, world);
         else if (self.Template.type == CreatureTemplateType.YoungLizard)
             YoungLizardCritob.YoungLizardCtor(self, abstractCreature, world);
-        else if (self.Template.type == CreatureTemplateType.PilgrimLizard)
-            PilgrimLizardCritob.PilgrimLizardCtor(self, abstractCreature, world);
+        //else if (self.Template.type == CreatureTemplateType.PilgrimLizard)
+        //    PilgrimLizardCritob.PilgrimLizardCtor(self, abstractCreature, world);
     }
     public static void Lizard_Bite(On.Lizard.orig_Bite orig, Lizard self, BodyChunk chunk)
     {
@@ -150,7 +150,7 @@ public class LizardHooks
     public static void Lizard_Update(Lizard self, bool eu)
     {
         if (self.room == null) return;
-        if (self.Template.type == CreatureTemplateType.PilgrimLizard) self.Destroy(); // TODO: GET RID OF THIS LATER
+        //if (self.Template.type == CreatureTemplateType.PilgrimLizard) self.Destroy(); // TODO: GET RID OF THIS LATER
         
         if (!self.dead && self.LizardState?.health > 0f && self.Template?.type == CreatureTemplateType.YoungLizard)
             self.LizardState.health = Mathf.Min(0.5f, self.LizardState.health + 0.001f); // young lizard health regen
