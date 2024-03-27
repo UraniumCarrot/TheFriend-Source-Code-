@@ -45,13 +45,13 @@ namespace TheFriend
                 
                 #region Creatures
                 #region PebblesLL
-                On.AbstractCreature.ctor += PebblesLL.AbstractCreature_ctor;
-                On.DaddyGraphics.DaddyTubeGraphic.ApplyPalette += PebblesLLGraphics.DaddyTubeGraphic_ApplyPalette;
-                On.DaddyGraphics.DaddyDeadLeg.ApplyPalette += PebblesLLGraphics.DaddyDeadLeg_ApplyPalette;
-                On.DaddyGraphics.DaddyDeadLeg.DrawSprite += PebblesLLGraphics.DaddyDeadLeg_DrawSprite;
-                On.DaddyGraphics.DaddyDangleTube.ApplyPalette += PebblesLLGraphics.DaddyDangleTube_ApplyPalette;
-                IL.DaddyLongLegs.ctor += PebblesLL.DaddyLongLegs_ctor;
-                IL.Spear.Update += PebblesLL.Spear_Update;
+                //On.AbstractCreature.ctor += PebblesLL.AbstractCreature_ctor;
+                //On.DaddyGraphics.DaddyTubeGraphic.ApplyPalette += PebblesLLGraphics.DaddyTubeGraphic_ApplyPalette;
+                //On.DaddyGraphics.DaddyDeadLeg.ApplyPalette += PebblesLLGraphics.DaddyDeadLeg_ApplyPalette;
+                //On.DaddyGraphics.DaddyDeadLeg.DrawSprite += PebblesLLGraphics.DaddyDeadLeg_DrawSprite;
+                //On.DaddyGraphics.DaddyDangleTube.ApplyPalette += PebblesLLGraphics.DaddyDangleTube_ApplyPalette;
+                //IL.DaddyLongLegs.ctor += PebblesLL.DaddyLongLegs_ctor;
+                //IL.Spear.Update += PebblesLL.Spear_Update;
                 #endregion
                 #region SnowSpider
                 On.BigSpiderGraphics.ScaleAttachPos += SnowSpiderGraphics.BigSpiderGraphics_ScaleAttachPos;

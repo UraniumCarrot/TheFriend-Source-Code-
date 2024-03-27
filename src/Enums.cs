@@ -18,7 +18,7 @@ namespace TheFriend;
 //}
 public static class CreatureTemplateType
 {
-    [AllowNull] public static CreatureTemplate.Type PebblesLL = new(nameof(PebblesLL), true);
+    //[AllowNull] public static CreatureTemplate.Type PebblesLL = new(nameof(PebblesLL), true);
     [AllowNull] public static CreatureTemplate.Type MotherLizard = new(nameof(MotherLizard), true);
     [AllowNull] public static CreatureTemplate.Type YoungLizard = new(nameof(YoungLizard), true);
     [AllowNull] public static CreatureTemplate.Type PilgrimLizard = new(nameof(PilgrimLizard), true);
@@ -26,11 +26,11 @@ public static class CreatureTemplateType
 
     public static void UnregisterValues()
     {
-        if (PebblesLL != null)
-        {
-            PebblesLL.Unregister();
-            PebblesLL = null;
-        }
+        //if (PebblesLL != null)
+        //{
+        //    PebblesLL.Unregister();
+        //    PebblesLL = null;
+        //}
         if (MotherLizard != null)
         {
             MotherLizard.Unregister();

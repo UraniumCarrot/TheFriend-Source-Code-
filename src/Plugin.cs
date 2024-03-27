@@ -86,7 +86,7 @@ namespace TheFriend
         }
         public static void RegisterFisobs()
         {
-            Content.Register(new PebblesLLCritob());
+            //Content.Register(new PebblesLLCritob());
             Content.Register(new SnowSpiderCritob());
             Content.Register(new MotherLizardCritob());
             Content.Register(new PilgrimLizardCritob());
