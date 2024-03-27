@@ -3,19 +3,19 @@ using TheFriend.CharacterThings.NoirThings;
 
 namespace TheFriend;
 
-public static class DangerType
-{
-    [AllowNull] public static RoomRain.DangerType FloodAndAerie = new(nameof(FloodAndAerie), true);
-
-    public static void UnregisterValues()
-    {
-        if (FloodAndAerie != null)
-        {
-            FloodAndAerie.Unregister();
-            FloodAndAerie = null;
-        }
-    }
-}
+//public static class DangerType
+//{
+//    [AllowNull] public static RoomRain.DangerType FloodAndAerie = new(nameof(FloodAndAerie), true);
+//
+//    public static void UnregisterValues()
+//    {
+//        if (FloodAndAerie != null)
+//        {
+//            FloodAndAerie.Unregister();
+//            FloodAndAerie = null;
+//        }
+//    }
+//}
 public static class CreatureTemplateType
 {
     [AllowNull] public static CreatureTemplate.Type PebblesLL = new(nameof(PebblesLL), true);

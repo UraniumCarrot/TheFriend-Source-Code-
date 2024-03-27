@@ -30,8 +30,8 @@ public class SlugcatGraphics
 
         if (self.player.room.world.rainCycle.RainApproaching < 1f &&
             UnityEngine.Random.value > self.player.room.world.rainCycle.RainApproaching &&
-            UnityEngine.Random.value < 1f / 102f &&
-            (self.player.room.roomSettings.DangerType == DangerType.FloodAndAerie)) 
+            UnityEngine.Random.value < 1f / 102f/* &&
+            (self.player.room.roomSettings.DangerType == DangerType.FloodAndAerie)*/) 
             self.LookAtRain();
     }
     

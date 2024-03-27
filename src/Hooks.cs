@@ -103,18 +103,18 @@ namespace TheFriend
                 #endregion
                 
                 #region DangerTypes
-                On.AbstractCreature.DrainWorldDenFlooded += DangerTypes.AbstractCreatureOnDrainWorldDenFlooded;
-                On.RoomRain.ctor += DangerTypes.RoomRainOnctor;
-                On.RoomRain.Update += DangerTypes.RoomRainOnUpdate;
-                new Hook(typeof(RoomRain)
-                    .GetProperty(nameof(RoomRain.OutsidePushAround))!
-                    .GetGetMethod(), DangerTypes.ChillyOutsidePushAround);
-                On.ShelterDoor.Update += DangerTypes.ShelterDoorOnUpdate;
-                On.Water.ctor += DangerTypes.WaterOnctor;
-                IL.RoomCamera.Update += DangerTypes.RoomCameraOnUpdate;
-                new ILHook(typeof(RoomRain)
-                    .GetProperty(nameof(RoomRain.FloodLevel))!
-                    .GetGetMethod(), DangerTypes.ChillyFloodLevel);
+                //On.AbstractCreature.DrainWorldDenFlooded += DangerTypes.AbstractCreatureOnDrainWorldDenFlooded;
+                //On.RoomRain.ctor += DangerTypes.RoomRainOnctor;
+                //On.RoomRain.Update += DangerTypes.RoomRainOnUpdate;
+                //new Hook(typeof(RoomRain)
+                //    .GetProperty(nameof(RoomRain.OutsidePushAround))!
+                //    .GetGetMethod(), DangerTypes.ChillyOutsidePushAround);
+                //On.ShelterDoor.Update += DangerTypes.ShelterDoorOnUpdate;
+                //On.Water.ctor += DangerTypes.WaterOnctor;
+                //IL.RoomCamera.Update += DangerTypes.RoomCameraOnUpdate;
+                //new ILHook(typeof(RoomRain)
+                //    .GetProperty(nameof(RoomRain.FloodLevel))!
+                //    .GetGetMethod(), DangerTypes.ChillyFloodLevel);
                 #endregion
                 
                 #region Expedition
