@@ -221,7 +221,6 @@ namespace TheFriend
                 On.FirecrackerPlant.Update += FirecrackerFix.FirecrackerPlant_Update;
                 On.SaveState.AbstractPhysicalObjectFromString += FirecrackerFix.SaveState_AbstractPhysicalObjectFromString;
                 On.SaveState.SetCustomData_AbstractPhysicalObject_string += FirecrackerFix.SaveState_SetCustomData_AbstractPhysicalObject_string;
-                On.SaveUtils.PopulateUnrecognizedStringAttrs += FirecrackerFix.SaveUtils_PopulateUnrecognizedStringAttrs;
                 IL.FirecrackerPlant.ctor += FirecrackerFix.FirecrackerPlant_ctor;
                 #endregion
                 #region PoacherSkullFeatures
