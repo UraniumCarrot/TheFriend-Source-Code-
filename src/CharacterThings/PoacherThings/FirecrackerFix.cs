@@ -77,27 +77,4 @@ public class FirecrackerFix
         }
         return obj;
     }
-
-
-
-    // fixes a bug, if this gets fixed in a rainworld update later then get rid of it
-    public static string[] SaveUtils_PopulateUnrecognizedStringAttrs(On.SaveUtils.orig_PopulateUnrecognizedStringAttrs orig, string[] normalStringSplit, int fromIndex)
-    {
-        var list = new List<string>();
-        if (fromIndex < normalStringSplit.Length)
-        {
-            for (int i = fromIndex; i < normalStringSplit.Length; i++)
-            {
-                if (normalStringSplit[i].Trim().Length != 0)
-                {
-                    list.Add(normalStringSplit[i]);
-                }
-            }
-        }
-        if (list.Count == 0)
-        {
-            return null;
-        }
-        return list.ToArray();
-    }
 }
