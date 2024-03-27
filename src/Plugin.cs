@@ -91,7 +91,7 @@ namespace TheFriend
             Content.Register(new MotherLizardCritob());
             //Content.Register(new PilgrimLizardCritob());
             Content.Register(new YoungLizardCritob());
-            Content.Register(new BoulderFisob());
+            //Content.Register(new BoulderFisob());
             Content.Register(new LittleCrackerFisob());
             Content.Register(new BoomMineFisob());
         }
