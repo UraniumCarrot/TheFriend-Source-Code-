@@ -287,9 +287,9 @@ namespace TheFriend
                 
                 #region MainMenu
                 On.Menu.IntroRoll.ctor += MainMenu.IntroRollOnctor;
-                On.Menu.RainEffect.ctor += MainMenu.RainEffectOnctor;
-                On.Menu.RainEffect.GrafUpdate += MainMenu.RainEffectOnGrafUpdate; 
-                On.MenuMicrophone.PlaySound_SoundID_float_float_float += MainMenu.MenuMicrophoneOnPlaySound_SoundID_float_float_float;
+                //On.Menu.RainEffect.ctor += MainMenu.RainEffectOnctor;
+                //On.Menu.RainEffect.GrafUpdate += MainMenu.RainEffectOnGrafUpdate; 
+                //On.MenuMicrophone.PlaySound_SoundID_float_float_float += MainMenu.MenuMicrophoneOnPlaySound_SoundID_float_float_float;
                 #endregion
                 
                 #region Shared Hooks
@@ -396,11 +396,11 @@ namespace TheFriend
                     SlugcatGameplay.SlugcatStats_ctor(self, slugcat, malnourished);
                     NoirCatto.SlugcatStatsOnctor(self, slugcat, malnourished);
                 };
-                On.StoryGameSession.ctor += (orig, self, savestatenumber, game) =>
-                {
-                    orig(self, savestatenumber, game);
-                    //WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
-                };
+                //On.StoryGameSession.ctor += (orig, self, savestatenumber, game) =>
+                //{
+                //    orig(self, savestatenumber, game);
+                //    //WorldChanges.ScarfScripts.RoomScript.StoryGameSessionOnctor(self, savestatenumber, game);
+                //};
                 On.RainWorldGame.ctor += (orig, self, manager) =>
                 {
                     orig(self, manager);
