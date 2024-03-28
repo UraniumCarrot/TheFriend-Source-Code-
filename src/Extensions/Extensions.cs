@@ -16,6 +16,35 @@ public static partial class Extensions
 
     public static bool IsSmallerThanMe(this Player self, Creature crit) => crit.Template.smallCreature || self.TotalMass > crit.TotalMass;
     public static bool IsSmallerThanMe(this Creature self, Creature crit) => self.TotalMass > crit.TotalMass;
+
+    public static Vector2 AveragedPosition(this PhysicalObject self)
+    {
+        Vector2 positionSum = new Vector2();
+        if (self.bodyChunks.Length == 0)
+        {
+            Plugin.LogSource.LogWarning("Solace: This PhysicalObject does not have any bodychunks for AveragedPosition to check.");
+            return Vector2.zero;
+        }
+        foreach (BodyChunk chunk in self.bodyChunks)
+            positionSum += chunk.pos;
+        return positionSum / self.bodyChunks.Length;
+    }
+
+    public static float GetLikeOfObject(this Creature self, PhysicalObject obj)
+    {
+        var a = self.abstractCreature.state.socialMemory.relationShips.Find(x => x.subjectID == obj.abstractPhysicalObject.ID);
+        if (a != null) return a.like;
+        return 0;
+    }
+
+    public static bool ImAggressiveToYou(this ArtificialIntelligence self, AbstractCreature obj)
+    { // doesnt work
+        var a = self.DynamicRelationship(obj).type == CreatureTemplate.Relationship.Type.Attacks;
+        var b = self.DynamicRelationship(obj).type == CreatureTemplate.Relationship.Type.Eats;
+        var c = self.DynamicRelationship(obj).type == CreatureTemplate.Relationship.Type.AgressiveRival;
+        var d = self.DynamicRelationship(obj).type == CreatureTemplate.Relationship.Type.Antagonizes;
+        return a || b || c || d;
+    }
     #endregion
 
     #region Custom values extensions

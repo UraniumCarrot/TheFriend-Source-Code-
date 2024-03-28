@@ -65,7 +65,6 @@ public class DragonRiding
 
         // Drop it!
         if (input[0].y < 0)
-        {
             if (!(input[1].y < 0))
                 for (int i = 2; i < input.Length - 1; i++)
                     if (input[i].y < 0 && !(input[i + 1].y < 0))
@@ -76,7 +75,6 @@ public class DragonRiding
                         rider.room.PlaySound(SoundID.Vulture_Grab_Player, rider.firstChunk.pos,0.5f,1);
                         rider.room.AddObject(new ExplosionSpikes(rider.room, rider.bodyChunks[1].pos + new Vector2(0.0f, -rider.bodyChunks[1].rad), 8, 7f, 5f, 5.5f, 40f, new Color(1f, 1f, 1f, 0.5f)));
                     }
-        }
     }
 
     public static void DragonRideTerrainReset(Lizard self)

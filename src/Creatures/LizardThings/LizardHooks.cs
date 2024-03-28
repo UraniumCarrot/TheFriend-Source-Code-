@@ -154,7 +154,16 @@ public class LizardHooks
         try
         {
             var data = self.Liz();
-            
+
+            if (data.TemporaryFriendshipTimer > 0) data.TemporaryFriendshipTimer--;
+            if (data.TemporaryFriendshipTimer <= 0 && self.AI.friendTracker.friendRel != null)
+            {
+                self.AI.friendTracker.friendRel.like = 0;
+                self.AI.friendTracker.friendRel.tempLike = 0;
+                self.AI.friendTracker.friend = null;
+                self.AI.friendTracker.friendRel = null;
+                Debug.Log("Solace: Artificially tamed lizard has stopped following");
+            }
             if (data.seats.Any())
                 foreach (DragonRiderSeat seat in data.seats) seat.Update(eu);
             

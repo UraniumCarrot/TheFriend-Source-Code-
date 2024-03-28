@@ -83,9 +83,6 @@ public class SlugcatGameplay
     }
     public static void Player_Update(Player self, bool eu)
     {
-        if (self.GetGeneral().iHaveSenses) 
-            SensoryHolograms.PlayerSensesUpdate(self);
-        
         if (self?.room == null) { Debug.Log("Solace: Player returned null, cancelling PlayerUpdate code"); return; }
         
         if (self.TryGetPoacher(out _))
@@ -93,22 +90,6 @@ public class SlugcatGameplay
         
         if (self.TryGetFriend(out _))
             FriendGameplay.FriendUpdate(self, eu);
-        
-        //var coord = self.abstractCreature.pos;
-        //Debug.Log("Your room coordinate is: room " + coord.room + ", x " + coord.x + ", y " + coord.y + ", abstractNode " + coord.abstractNode);
-        // Moon mark
-        if (self.GetGeneral().JustGotMoonMark && !self.GetGeneral().MoonMarkPassed)
-        {
-            self.Stun(20);
-            self.GetGeneral().MarkExhaustion = (int)((1 / self.slugcatStats.bodyWeightFac) * 200); self.GetGeneral().MoonMarkPassed = true;
-        }
-        if (self.GetGeneral().MarkExhaustion > 0 && self.GetGeneral().JustGotMoonMark)
-        {
-            self.GetGeneral().MarkExhaustion--;
-            self.exhausted = true;
-            self.aerobicLevel = (self.slugcatStats.bodyWeightFac < 0.5f) ? 1.5f : 1.1f;
-            (self.graphicsModule as PlayerGraphics)!.head.vel += Custom.RNV() * 0.2f;
-        }
         
         // Dragonriding
         if (self.GetGeneral().isRidingLizard && self.GetGeneral().dragonSteed != null)
@@ -199,9 +180,12 @@ public class SlugcatGameplay
         //Moving all inputs one slot up
         for (var i = self.GetGeneral().UnchangedInputForLizRide.Length - 1; i > 0; i--)
             self.GetGeneral().UnchangedInputForLizRide[i] = self.GetGeneral().UnchangedInputForLizRide[i - 1];
+        for (var i = self.GetGeneral().ExtendedInput.Length - 1; i > 0; i--)
+            self.GetGeneral().ExtendedInput[i] = self.GetGeneral().ExtendedInput[i - 1];
         
-        //Copying original unmodified input
+        //Copying original unmodified inputs
         self.GetGeneral().UnchangedInputForLizRide[0] = self.input[0];
+        self.GetGeneral().ExtendedInput[0] = self.GetGeneral().UnchangedInputForLizRide[0];
         // Elliot note: Thanks Noir <3
 
         if (self.GetGeneral().isRidingLizard)

@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using MoreSlugcats;
+using TheFriend.CharacterThings.FriendThings;
 
 namespace TheFriend.FriendThings;
 
@@ -7,6 +8,7 @@ public static class FriendCWT
 {
     public class Friend
     {
+        public FriendVoice voice;
         public bool poleCrawlState;
         public bool longjump;
         public bool polejump;
@@ -19,10 +21,13 @@ public static class FriendCWT
         public bool HighJumped;
         public int CrawlTurnCounter;
         public int AfterCrawlTurnCounter;
+        public int VoiceCooldown;
+        public int TalkEffectCounter;
         public Player.AnimationIndex LastAnimation;
         public Overseer Iggy; // Yellow / 1
         public Overseer Wiggy; // Blue / 0
         public bool TriedSpawningOverseerInThisRoom;
+        
         public Friend(AbstractCreature player)
         {
             
