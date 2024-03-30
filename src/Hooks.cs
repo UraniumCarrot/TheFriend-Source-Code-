@@ -129,7 +129,7 @@ namespace TheFriend
                 On.Menu.UnlockDialog.SetUpBurdenDescriptions += ExpeditionBurdens.UnlockDialogOnSetUpBurdenDescriptions;
                 On.Menu.UnlockDialog.Update += ExpeditionBurdens.UnlockDialogOnUpdate;
                 On.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
-                IL.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
+                //IL.Menu.UnlockDialog.ctor += ExpeditionBurdens.UnlockDialogOnctor;
                 #endregion
                 
                 #region FriendWorldState
