@@ -30,7 +30,7 @@ namespace TheFriend
     public class Plugin : BaseUnityPlugin
     {
         public const string MOD_ID = "thefriend";
-        public const string MOD_VERSION = "0.3.1.0";
+        public const string MOD_VERSION = "0.3.0.5";
 
         public static readonly PlayerFeature<float> SuperJump = PlayerFloat("friend/super_jump");
         public static readonly PlayerFeature<float> SuperCrawl = PlayerFloat("friend/super_crawl");

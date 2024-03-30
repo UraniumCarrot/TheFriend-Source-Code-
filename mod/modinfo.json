@@ -1,7 +1,7 @@
 {
 	"id": "thefriend",
 	"name": "Solace",
-	"version": "0.3.0.1",
+	"version": "0.3.0.5",
 	"authors": "MusicalMiracle, Noir",
 	"description": "Face the winter storm as three new custom slugcats: the Friend, the Stalker (NoirCatto) , and the Poacher! All set between the Rivulet and the Saint. Beta, campaigns planned but mostly unimplemented.",
 	"requirements": ["slime-cubed.slugbase", "fisobs", "moreslugcats"],
