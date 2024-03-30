@@ -48,16 +48,14 @@ public class PoacherSkullFeatures
         else return original;
     }
 
-    public static void Player_Grabbed(On.Player.orig_Grabbed orig, Player self, Creature.Grasp grasp)
+    public static void Player_Grabbed(Player self, Creature.Grasp grasp)
     { // Poacher skull flicker from grabs
-        orig(self, grasp);
         if (!self.TryGetPoacher(out _)) return;
         if (grasp.grabber is not Player && grasp.grabber is not DaddyLongLegs)
             PoacherGraphics.PoacherFlicker(self);
     }
-    public static void CreatureOnViolence(On.Creature.orig_Violence orig, Creature self, BodyChunk source, Vector2? directionandmomentum, BodyChunk hitchunk, PhysicalObject.Appendage.Pos hitappendage, Creature.DamageType type, float damage, float stunbonus)
+    public static void CreatureOnViolence(Creature self, BodyChunk source)
     { // Poacher skull flicker from rocks
-        orig(self, source, directionandmomentum, hitchunk, hitappendage, type, damage, stunbonus);
         if (self is Player pl && pl.TryGetPoacher(out _))
             if (source?.owner is Rock && source?.owner is not LittleCracker)
             {

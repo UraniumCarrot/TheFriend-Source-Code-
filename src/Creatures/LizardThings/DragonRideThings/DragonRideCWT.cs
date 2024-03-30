@@ -15,6 +15,7 @@ public class DragonData
     public bool blockCosmetics;
     public float dark;
 
+    public int TemporaryFriendshipTimer;
     public Vector2? lastOutsideTerrainPos;
     public bool aquatic => myTemplate.waterRelationship == CreatureTemplate.WaterRelationship.Amphibious;
     public bool RideEnabled; // Could become rideable if tamed, must pass DoILikeYou check tho

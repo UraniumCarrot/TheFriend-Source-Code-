@@ -25,12 +25,8 @@ public static class SlugcatGeneralCWT
         
         // General player variables
         public bool squint;
-        public bool iHaveSenses;
         public bool isMakingPoppers;
         
-        public bool JustGotMoonMark;
-        public bool MoonMarkPassed;
-        public int MarkExhaustion;
         public bool isRidingLizard;
         public float pointDir0;
         public float pointDir1;
@@ -39,6 +35,8 @@ public static class SlugcatGeneralCWT
         
         
         public readonly Player.InputPackage[] UnchangedInputForLizRide;
+        public readonly Player.InputPackage[] ExtendedInput;
+
         public GenericObjectStick rideStick;
         public Lizard dragonSteed;
         public int riderAnimChangeTimer;
@@ -47,12 +45,12 @@ public static class SlugcatGeneralCWT
         {
             var player = crit.realizedCreature as Player;
             UnchangedInputForLizRide = new Player.InputPackage[player.input.Length];
+            ExtendedInput = new Player.InputPackage[UnchangedInputForLizRide.Length * 4];
             riderAnimChangeTimer = 20;
         }
     }
     
     public static readonly ConditionalWeakTable<AbstractCreature, GeneralCWT> CWT = new();
-    //public static GeneralCWT GetGeneral(this AbstractCreature crit) => CWT.GetValue(crit, _ => new(crit));
     public static GeneralCWT GetGeneral(this Player crit) => CWT.GetValue(crit.abstractCreature, _ => new GeneralCWT(crit.abstractCreature));
     
     public static bool TryGetGeneral(this AbstractCreature crit, out GeneralCWT data)

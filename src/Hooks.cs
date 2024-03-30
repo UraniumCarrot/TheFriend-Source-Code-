@@ -4,6 +4,7 @@ using Fisobs.Core;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
+using TheFriend.CharacterThings.FriendThings;
 using TheFriend.SlugcatThings;
 using TheFriend.CharacterThings.NoirThings;
 using TheFriend.Creatures.FamineCreatures;
@@ -225,9 +226,7 @@ namespace TheFriend
                 #endregion
                 #region PoacherSkullFeatures
                 On.Creature.LoseAllGrasps += PoacherSkullFeatures.Creature_LoseAllGrasps;
-                On.Creature.Violence += PoacherSkullFeatures.CreatureOnViolence;
                 On.HUD.TextPrompt.UpdateGameOverString += PoacherSkullFeatures.TextPrompt_UpdateGameOverString;
-                On.Player.Grabbed += PoacherSkullFeatures.Player_Grabbed;
                 On.Player.SpearStick += PoacherSkullFeatures.Player_SpearStick;
                 #endregion
                 #region PoacherGameplay
@@ -297,6 +296,12 @@ namespace TheFriend
                     orig(creature);
                     SaveThings.SolaceSaveData.CreatureOnDie(creature);
                 };
+                On.Creature.Violence += (orig, self, source, directionandmomentum, hitchunk, hitappendage, type, damage, stunbonus) =>
+                {
+                    orig(self, source, directionandmomentum, hitchunk, hitappendage, type, damage, stunbonus);
+                    PoacherSkullFeatures.CreatureOnViolence(self, source);
+                    
+                };
                 On.HUD.HUD.InitSinglePlayerHud += (orig, hud, cam) => 
                 { 
                     orig(hud, cam);
@@ -319,6 +324,12 @@ namespace TheFriend
                 {
                     Player.ObjectGrabability? result = SlugcatGameplay.Player_Grabability(player, obj);
                     return result ?? orig(player, obj);
+                };
+                On.Player.Grabbed += (orig, self, grasp) =>
+                {
+                    orig(self, grasp);
+                    PoacherSkullFeatures.Player_Grabbed(self,grasp);
+                    FriendVoiceCommands.FriendGrabAlerter(self);
                 };
                 On.Player.GraphicsModuleUpdated += (orig, player, actuallyviewed, eu) =>
                 {

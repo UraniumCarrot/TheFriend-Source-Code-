@@ -1,9 +1,9 @@
 using TheFriend.WorldChanges.WorldStates.General;
 using UnityEngine;
 
-namespace TheFriend.WorldChanges;
+namespace TheFriend.WorldChanges.Oracles.LooksToTheMoon;
 
-public partial class SLOracleHandler
+public partial class SLOracle
 {
     internal static void MoonConversationOnAddEvents(On.SLOracleBehaviorHasMark.MoonConversation.orig_AddEvents orig, SLOracleBehaviorHasMark.MoonConversation self)
     {
@@ -28,7 +28,7 @@ public partial class SLOracleHandler
         }
         #endregion
 
-        if (self.currentSaveFile == Plugin.NoirName) //todo: Update dialogue to match Solace
+        if (self.currentSaveFile == Plugin.NoirName)
         {
             if (self.id == Conversation.ID.MoonFirstPostMarkConversation)
             {

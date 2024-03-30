@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RWCustom;
 using TheFriend.SlugcatThings;
 using UnityEngine;
@@ -16,6 +17,112 @@ public static class CharacterTools
                 Futile.atlasManager.GetElementWithName(face.element.name.Remove(face.element.name.Length-2, 2) + "Stunned");
     }
 
+    public static bool CanGrabSafely(this Player self)
+    {
+        bool result = true;
+
+        bool notHoldingAnything =
+            self.grasps[0]?.grabbed == null &&
+            self.grasps[1]?.grabbed == null;
+        
+        bool notHoldingSwallowables = 
+            !self.CanBeSwallowed(self.grasps[0]?.grabbed) &&
+            !self.CanBeSwallowed(self.grasps[1]?.grabbed);
+        
+        bool notHoldingFoods = 
+            self.grasps[0]?.grabbed is not IPlayerEdible &&
+            self.grasps[1]?.grabbed is not IPlayerEdible;
+
+        if (self.input[0].y != 0) result = false;
+        if (notHoldingAnything && self.pickUpCandidate != null) result = false;
+        if (!notHoldingFoods && !self.ImFull()) result = false;
+        if (!notHoldingSwallowables && self.objectInStomach != null) result = false;
+        return result || self.dontGrabStuff > 0;
+    }
+
+    public static bool ImFull(this Player self)
+    {
+        return self.FoodInStomach >= self.MaxFoodInStomach;
+    }
+
+    public static void InputTapCheck(Player self, string inputToCheck, out int taps)
+    { // Code by Slime_Cubed. DUDE IS AWESOME.
+        var inputList = self.GetGeneral().ExtendedInput;
+        
+        int i = 0;
+        taps = 0;
+        int tapsTemp = 0;
+    
+        // Skip leading trues
+        while (i < inputList.Length && GetInputFromString(inputList[i], inputToCheck).Abs() == 1)
+            i += 1;
+    
+        while (i < inputList.Length)
+        {
+            // Find the start of a press
+            while (i < inputList.Length && GetInputFromString(inputList[i], inputToCheck) == 0)
+                i += 1;
+        
+            // Measure the length of a press
+            int length = 0;
+            while (i < inputList.Length && GetInputFromString(inputList[i], inputToCheck).Abs() == 1)
+            {
+                i += 1;
+                length += 1;
+            }
+        
+            // Check if the press is short enough and doesn't hit the right side
+            if (i < inputList.Length && length < 6)
+                tapsTemp += 1;
+        }
+
+        if (GetInputFromString(inputList[0], inputToCheck) == 0 &&
+            GetInputFromString(inputList[1], inputToCheck) == 0 &&
+            GetInputFromString(inputList[2], inputToCheck) == 0 &&
+            GetInputFromString(inputList[3], inputToCheck) == 0 &&
+            GetInputFromString(inputList[4], inputToCheck) == 0 &&
+            GetInputFromString(inputList[5], inputToCheck) == 0)
+            taps = tapsTemp;
+    }
+    public static int GetInputFromString(Player.InputPackage package, string input)
+    {
+        switch (input.ToLower())
+        {
+            case "y": return package.y;
+            case "x": return package.x;
+            case "grab" or "grb": return package.pckp ? 1 : 0;
+            case "pickup" or "pckp": return package.pckp ? 1 : 0;
+            case "jump" or "jmp": return package.jmp ? 1 : 0;
+            case "map" or "mp": return package.mp ? 1 : 0;
+            case "throw" or "thrw": return package.thrw ? 1 : 0;
+        }
+        Plugin.LogSource.LogWarning("Solace: GetInputsFromString was fed an invalid string: " + input);
+        return 0;
+    }
+    public static bool CompareInputs(Player.InputPackage one, Player.InputPackage two, string input)
+    {
+        switch (input.ToLower())
+        {
+            case "grab" or "grb": input = "pckp"; break;
+            case "pickup": input = "pckp"; break;
+            case "jump": input = "jmp"; break;
+            case "map": input = "mp"; break;
+            case "throw": input = "thrw"; break;
+            default: input = input.ToLower(); break;
+        }
+        switch (input)
+        {
+            case "x": return one.x == two.x;
+            case "y": return one.y == two.y;
+            case "pckp": return one.pckp == two.pckp;
+            case "jmp": return one.jmp == two.jmp;
+            case "mp": return one.mp == two.mp;
+            case "thrw": return one.thrw == two.thrw;
+        }
+        Plugin.LogSource.LogWarning("Solace: CompareInputs was fed an invalid string: " + input);
+        return false;
+    }
+    
     public static void HeadShiver(this PlayerGraphics self, float intensity)
     {
         self.head.vel += Custom.RNV() * intensity;

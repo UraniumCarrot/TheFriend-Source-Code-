@@ -10,7 +10,7 @@ namespace TheFriend.FriendThings;
 
 public class FriendGraphics
 {
-    public static void FriendDrawSprites(PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, FSprite head, FSprite legs)
+    public static void FriendDrawSprites(PlayerGraphics self, FSprite head, FSprite legs)
     {
         if (!self.RenderAsPup)
         {

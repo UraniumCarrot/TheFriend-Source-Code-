@@ -11,6 +11,7 @@ using ind = Player.AnimationIndex;
 using Random = UnityEngine.Random;
 using JollyColorMode = Options.JollyColorMode;
 using TheFriend.SlugcatThings;
+using TheFriend.WorldChanges.WorldStates.General;
 
 namespace TheFriend.CharacterThings.FriendThings;
 
@@ -213,9 +214,30 @@ public class FriendGameplay
     #endregion
     public static void FriendUpdate(Player self, bool eu)
     {
+        var data = self.GetFriend();
+
+        if (data.voice != null)
+        {
+            data.voice.Update();
+            if (data.TalkEffectCounter > 0) data.TalkEffectCounter--;
+            else FriendVoiceCommands.FriendTalk(self.graphicsModule as PlayerGraphics);
+            if (data.VoiceCooldown > 0) data.VoiceCooldown--;
+            if (!self.room.game.IsArenaSession)
+            {
+                CharacterTools.InputTapCheck(self, "y", out int taps);
+                if (data.VoiceCooldown <= 0)
+                    if (taps > 1)
+                        data.VoiceCooldown = 80;
+        
+                if (data.VoiceCooldown > 30 && taps > 0)
+                    FriendVoiceCommands.FriendCommandingBark(self, data, taps);
+            }
+            if (self.Stunned && self.grabbedBy.Any()) FriendVoiceCommands.FriendWhimperWhileStunLoop(self, data);
+            else data.voice.pitchOverride = null;
+        }
         AbstractCreature guide0;
         AbstractCreature guide1;
-        if (self?.room?.world?.overseersWorldAI?.playerGuide == null && !self.room.world.game.IsArenaSession)
+        if (self.room.world.overseersWorldAI?.playerGuide == null && !self.room.world.game.IsArenaSession && QuickWorldData.SolaceCampaign)
         {   // overseer code made with HUGE help from Leo, creator of the Lost!
             WorldCoordinate pos = new WorldCoordinate(self.room.world.offScreenDen.index, -1, -1, 0);
             guide0 = new AbstractCreature(self.room.game.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, pos, new EntityID());
@@ -228,10 +250,10 @@ public class FriendGameplay
             (guide1.abstractAI as OverseerAbstractAI)!.SetAsPlayerGuide(1);
             (guide0.abstractAI as OverseerAbstractAI)!.BringToRoomAndGuidePlayer(self.room.abstractRoom.index);
             (guide1.abstractAI as OverseerAbstractAI)!.BringToRoomAndGuidePlayer(self.room.abstractRoom.index);
-            if (self.GetFriend().Wiggy == null) self.GetFriend().Wiggy = guide0.realizedCreature as Overseer;
-            if (self.GetFriend().Iggy == null) self.GetFriend().Iggy = guide1.realizedCreature as Overseer;
+            if (data.Wiggy == null) data.Wiggy = guide0.realizedCreature as Overseer;
+            if (data.Iggy == null) data.Iggy = guide1.realizedCreature as Overseer;
         }
-        if (self.animation != ind.RocketJump && self.GetFriend().HighJumped) self.GetFriend().HighJumped = false;
+        if (self.animation != ind.RocketJump && data.HighJumped) data.HighJumped = false;
     }
 
     #region World's smallest adjustments
@@ -239,6 +261,7 @@ public class FriendGameplay
     {
         if (Configs.FriendBackspear)
             self.spearOnBack = new Player.SpearOnBack(self);
+        self.GetFriend().voice = new FriendVoice(self);
     }
     public static void FriendStats(SlugcatStats self)
     {

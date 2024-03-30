@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MoreSlugcats;
 using RWCustom;
 using TheFriend.CharacterThings;
 using TheFriend.FriendThings;
@@ -86,9 +87,9 @@ public class SlugcatGraphics
             sLeaser.sprites[4].isVisible = false;
             sLeaser.sprites[0].rotation = 0;
         }
-
+        
         if (self.player.TryGetFriend(out _))
-            FriendGraphics.FriendDrawSprites(self, sLeaser, head, legs);
+            FriendGraphics.FriendDrawSprites(self, head, legs);
         
         else if (self.player.TryGetPoacher(out _))
         {
