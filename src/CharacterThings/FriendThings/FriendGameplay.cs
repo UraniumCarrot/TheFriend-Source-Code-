@@ -219,8 +219,11 @@ public class FriendGameplay
         if (data.voice != null)
         {
             data.voice.Update();
-            if (data.TalkEffectCounter > 0) data.TalkEffectCounter--;
-            else FriendVoiceCommands.FriendTalk(self.graphicsModule as PlayerGraphics);
+            if (data.TalkEffectCounter > 0)
+            {
+                data.TalkEffectCounter--;
+                FriendVoiceCommands.FriendTalk(self.graphicsModule as PlayerGraphics);
+            }
             if (data.VoiceCooldown > 0) data.VoiceCooldown--;
             if (!self.room.game.IsArenaSession)
             {
