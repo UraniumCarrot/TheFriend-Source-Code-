@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TheFriend.SaveThings;
 
-public static class SolaceCustom
+public static partial class SolaceCustom
 {
     private static string SolaceSaveDataPath => Application.persistentDataPath + Path.DirectorySeparatorChar + Plugin.MOD_ID;
     private static readonly Dictionary<string, string> MalnourishedSaveData;

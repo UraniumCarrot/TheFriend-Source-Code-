@@ -20,6 +20,7 @@ using TheFriend.Creatures.PebblesLLCreature;
 using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.Expedition;
 using TheFriend.HudThings;
+using TheFriend.Objects;
 using TheFriend.Objects.BoomMineObject;
 using TheFriend.Objects.BoulderObject;
 using TheFriend.Objects.LittleCrackerObject;
@@ -98,7 +99,7 @@ namespace TheFriend
                 new Hook(typeof(LizardGraphics)
                     .GetProperty(nameof(LizardGraphics.HeadColor1), BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetGetMethod(true), FancyHeadColors.FancyHeadColor1);
-                
+
                 On.Creature.SuckedIntoShortCut += YoungLizardAI.CreatureOnSuckedIntoShortCut;
                 On.WormGrass.WormGrassPatch.Update += WormGrassImmunizer.WormGrassPatch_Update;
                 #endregion
@@ -244,12 +245,10 @@ namespace TheFriend
                 DragonCrafts.InitRecipes();
                 #endregion
                 #endregion
-                #region Noir
                 #region NoirCatto
                 On.AbstractPhysicalObject.Abstractize += NoirCatto.AbstractPhysicalObjectOnAbstractize;
                 On.Menu.Menu.CommunicateWithUpcomingProcess += NoirCatto.MenuOnCommunicateWithUpcomingProcess;
                 On.SeedCob.PlaceInRoom += NoirCatto.SeedCobOnPlaceInRoom;
-                On.Spear.Update += NoirCatto.SpearOnUpdate;
                 On.Player.AllowGrabbingBatflys += NoirCatto.PlayerOnAllowGrabbingBatflys;
                 On.Player.Jump += NoirCatto.PlayerOnJump;
                 On.Player.MovementUpdate += NoirCatto.PlayerOnMovementUpdate;
@@ -259,15 +258,10 @@ namespace TheFriend
                 On.PlayerGraphics.InitiateSprites += NoirCatto.PlayerGraphicsOnInitiateSprites;
                 On.PlayerGraphics.Reset += NoirCatto.PlayerGraphicsOnReset;
                 On.RainWorld.Update += NoirCatto.RainWorldOnUpdate;
-                On.Room.AddObject += NoirCatto.RoomOnAddObject;
                 On.SaveState.setDenPosition += NoirCatto.SaveStateOnsetDenPosition;
-                IL.GhostWorldPresence.SpawnGhost += NoirCatto.GhostWorldPresenceILSpawnGhost;
-                IL.Menu.KarmaLadderScreen.GetDataFromGame += NoirCatto.KarmaLadderScreenILGetDataFromGame;
                 IL.SharedPhysics.TraceProjectileAgainstBodyChunks += NoirCatto.SharedPhysicsILTraceProjectileAgainstBodyChunks;
                 IL.SeedCob.Update += NoirCatto.SeedCobILUpdate;
-                IL.Spear.Update += NoirCatto.SpearILUpdate;
                 IL.Weapon.Update += NoirCatto.WeaponILUpdate;
-                #endregion
                 #endregion
                 #region Friend
                 On.Player.MovementUpdate += FriendCrawlTurn.PlayerOnMovementUpdate;
@@ -278,19 +272,30 @@ namespace TheFriend
                 #region SolaceCustom
                 On.PlayerProgression.ClearOutSaveStateFromMemory += SaveThings.SolaceCustom.PlayerProgressionOnClearOutSaveStateFromMemory;
                 On.PlayerProgression.WipeSaveState += SaveThings.SolaceCustom.PlayerProgressionOnWipeSaveState;
+                On.RainWorldGame.Win += SaveThings.SolaceCustom.RainWorldGameOnWin;
+                On.StoryGameSession.ctor += SaveThings.SolaceCustom.StoryGameSessionOnctor;
                 #endregion
-                
+
+                #region Objects
+                IL.Room.Update += DisableCollision.RoomILUpdate;
+                IL.Spear.Update += SpearMisc.SpearILUpdate;
+                IL.Weapon.Update += LanternSpear.WeaponILUpdate;
+                On.Room.ShortCutsReady += LanternSpear.RoomOnShortCutsReady;
+                On.Spear.ChangeMode += LanternSpear.SpearOnChangeMode;
+                On.SharedPhysics.TraceProjectileAgainstBodyChunks += DisableCollision.SharedPhysicsOnTraceProjectileAgainstBodyChunks;
+                #endregion
+
                 #region SolaceScarf
                 On.RoomSpecificScript.AddRoomSpecificScript += WorldChanges.ScarfScripts.RoomScript.RoomSpecificScriptOnAddRoomSpecificScript;
                 #endregion
-                
+
                 #region MainMenu
                 On.Menu.IntroRoll.ctor += MainMenu.IntroRollOnctor;
                 On.Menu.RainEffect.ctor += MainMenu.RainEffectOnctor;
-                On.Menu.RainEffect.GrafUpdate += MainMenu.RainEffectOnGrafUpdate; 
+                On.Menu.RainEffect.GrafUpdate += MainMenu.RainEffectOnGrafUpdate;
                 On.MenuMicrophone.PlaySound_SoundID_float_float_float += MainMenu.MenuMicrophoneOnPlaySound_SoundID_float_float_float;
                 #endregion
-                
+
                 #region Shared Hooks
                 On.Creature.Die += (orig, creature) =>
                 {
@@ -301,10 +306,10 @@ namespace TheFriend
                 {
                     orig(self, source, directionandmomentum, hitchunk, hitappendage, type, damage, stunbonus);
                     PoacherSkullFeatures.CreatureOnViolence(self, source);
-                    
+
                 };
-                On.HUD.HUD.InitSinglePlayerHud += (orig, hud, cam) => 
-                { 
+                On.HUD.HUD.InitSinglePlayerHud += (orig, hud, cam) =>
+                {
                     orig(hud, cam);
                     HudHooks.HUDOnInitSinglePlayerHud(hud, cam);
                 };
@@ -348,6 +353,7 @@ namespace TheFriend
                 {
                     orig(self, spear);
                     DragonCrafts.Player_ThrownSpear(self, spear);
+                    LanternSpear.PlayerOnThrownSpear(self, spear);
                     NoirCatto.PlayerOnThrownSpear(self, spear);
                 };
                 On.Player.UpdateAnimation += (orig, self) =>
@@ -395,6 +401,12 @@ namespace TheFriend
                     FriendCrawl.PlayerGraphics_Update(self);
                     NoirCatto.PlayerGraphicsOnUpdate(self);
                 };
+                On.Spear.Update += (orig, self, eu) =>
+                {
+                    NoirCatto.SpearOnUpdate(self, eu);
+                    orig(self, eu);
+                    LanternSpear.SpearOnUpdate(self, eu);
+                };
                 On.SlugcatHand.EngageInMovement += (orig, self) =>
                 {
                     bool? result = FriendCrawl.SlugcatHand_EngageInMovement(self);
@@ -407,6 +419,14 @@ namespace TheFriend
                     SlugcatGameplay.SlugcatStats_ctor(self, slugcat, malnourished);
                     NoirCatto.SlugcatStatsOnctor(self, slugcat, malnourished);
                 };
+                On.Room.AddObject += (orig, self, obj) =>
+                {
+                    if (self.updateList.Contains(obj))
+                        return; //If another mod adds stuff to Room twice deliberately, they're doing something marginally wrong
+
+                    orig(self, obj);
+                    NoirCatto.RoomOnAddObject(self, obj);
+                };
                 On.StoryGameSession.ctor += (orig, self, savestatenumber, game) =>
                 {
                     orig(self, savestatenumber, game);
@@ -418,15 +438,15 @@ namespace TheFriend
                     NoirCatto.RainWorldGameOnctor(self, manager);
                     QuickWorldData.RainWorldGameOnctor(self, manager);
                 };
-                
+
                 // Crawl turn IL Hook for Friend & Noir
-                
+
                 /*Surrounding IL****************************************************************************************
                 // if (animation == AnimationIndex.CrawlTurn)
                 ---- GotoPrev lands here ----
                 //IL_007a: ldarg.0
                 //IL_007b: ldfld class Player/AnimationIndex Player::animation
-                
+
                 ---- Start of GotoNext match ----
                 IL_0080: ldsfld class Player/AnimationIndex Player/AnimationIndex::CrawlTurn
                 IL_0085: call bool class ExtEnum`1<class Player/AnimationIndex>::op_Equality(class ExtEnum`1<!0>, class ExtEnum`1<!0>)
@@ -458,7 +478,6 @@ namespace TheFriend
                     }
                 };
                 #endregion
-                
                 On.AbstractPhysicalObject.Realize += AbstractObjectType.AbstractPhysicalObjectOnRealize;
             }
             catch (Exception ex)

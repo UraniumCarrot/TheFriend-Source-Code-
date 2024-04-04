@@ -103,6 +103,7 @@ public class SlugcatGameplay
         if (obj is Player pl && pl.GetGeneral().dragonSteed != null) return Player.ObjectGrabability.CantGrab;
         if (self.TryGetPoacher(out var poacher) && poacher.IsInIntro && obj is Weapon) return Player.ObjectGrabability.CantGrab;
         if (obj is FakePlayerEdible edible) return edible.grabability;
+        if (LanternSpear.CantGrab(obj)) return Player.ObjectGrabability.CantGrab;
         return null;
     }
     public static void Player_Update(Player self, bool eu)

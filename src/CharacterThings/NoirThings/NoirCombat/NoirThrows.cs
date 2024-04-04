@@ -49,8 +49,8 @@ public partial class NoirCatto
         if (!self.TryGetNoir(out var noirData)) return;
 
         noirData.SpearThrownAnimation = self.animation;
-
-        spear.exitThrownModeSpeed = 10f;
+        if (spear.exitThrownModeSpeed > 10f)
+            spear.exitThrownModeSpeed = 10f;
         spear.spearDamageBonus = 0.4f;
 
         if (spear.abstractSpear.explosive || spear.abstractSpear.electric)
@@ -67,7 +67,7 @@ public partial class NoirCatto
         }
     }
 
-    public static void SpearOnUpdate(On.Spear.orig_Update orig, Spear self, bool eu)
+    public static void SpearOnUpdate(Spear self, bool eu)
     {
         if (self.thrownBy is Player pl && pl.TryGetNoir(out var noirData))
         {
@@ -80,6 +80,5 @@ public partial class NoirCatto
                 self.alwaysStickInWalls = false;
             }
         }
-        orig(self, eu);
     }
 }

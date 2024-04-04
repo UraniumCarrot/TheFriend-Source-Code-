@@ -30,9 +30,8 @@ public partial class NoirCatto
         }
     }
 
-    public static void RoomOnAddObject(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
+    public static void RoomOnAddObject(Room self, UpdatableAndDeletable obj)
     {
-        orig(self, obj);
         if (obj is Player pl && pl.SlugCatClass == Plugin.NoirName)
         {
             self.AddObject(new CatFur(pl)); // Kitty adapts to the cold

@@ -30,6 +30,7 @@ public class RecipeType : ExtEnum<RecipeType>
     public static readonly RecipeType MakeSpearEle = new(nameof(MakeSpearEle), true);
     public static readonly RecipeType MakeSpearFire = new(nameof(MakeSpearFire), true);
     public static readonly RecipeType MakeSpearExpl = new(nameof(MakeSpearExpl), true);
+    public static readonly RecipeType MakeSpearLantern = new(nameof(MakeSpearLantern), true);
     public static readonly RecipeType MakeLantern = new(nameof(MakeLantern), true);
     public static readonly RecipeType MakeBomb = new(nameof(MakeBomb), true);
     public static readonly RecipeType MakeLittleCracker = new(nameof(MakeLittleCracker), true);
@@ -37,7 +38,7 @@ public class RecipeType : ExtEnum<RecipeType>
     public static readonly RecipeType ArmMine = new(nameof(ArmMine), true);
     public static readonly RecipeType ArmSpearEle = new(nameof(ArmSpearEle), true);
 
-    public static List<RecipeType> MakeSpecialSpear = [ArmSpearEle, MakeSpearEle, MakeSpearExpl, MakeSpearFire];
+    public static readonly List<RecipeType> MakeSpecialSpear = [ArmSpearEle, MakeSpearEle, MakeSpearExpl, MakeSpearFire, MakeSpearLantern];
 }
 
 public class DragonCrafts
@@ -78,6 +79,7 @@ public class DragonCrafts
         AddRecipe(ObjType.Rock, ObjType.Rock, RecipeType.MakeSpear);
         AddRecipe(ObjType.Rock, ObjType.Spear, RecipeType.MakeSpearEle);
         AddRecipe(LittleCrackerFisob.LittleCracker, ObjType.Spear, RecipeType.MakeSpearFire);
+        AddRecipe(ObjType.Spear, ObjType.Lantern, RecipeType.MakeSpearLantern);
 
         AddRecipe(ObjType.FlareBomb, ObjType.Spear, RecipeType.ArmSpearEle);
         AddRecipe(ObjType.JellyFish, ObjType.Spear, RecipeType.ArmSpearEle);
@@ -288,9 +290,9 @@ public class DragonCrafts
             return;
         }
         bool isANormalSpear = spear is not ExplosiveSpear && spear is not ElectricSpear && !spear.bugSpear;
-        if (!isANormalSpear && recipe != RecipeType.ArmSpearEle)
+        if (!isANormalSpear && (recipe != RecipeType.ArmSpearEle && recipe != RecipeType.MakeSpearLantern))
         {
-            Debug.Log("Solace: Spearcraft failed, this spear can't be crafted with");
+            Debug.Log("Solace: Spearcraft failed, invalid recipe");
             CraftFail(self);
             return;
         }
@@ -340,9 +342,23 @@ public class DragonCrafts
             effect = new Explosion.ExplosionLight(self.bodyChunks[0].pos, 200f, 1f, 4, new Color(0.8f, 0.8f, 1f));
             if (ingredients.Contains(spear)) ingredients.Remove(spear);
         }
+        else if (recipe == RecipeType.MakeSpearLantern)
+        {
+            var lantern = ingredients.OfType<Lantern>().FirstOrDefault();
+            if (lantern == null)
+            {
+                Debug.Log("Solace: Failed to make SpearLantern, Lantern is null");
+                CraftFail(self);
+                return;
+            }
+            LanternSpear.FromExisting(spear, lantern);
+            ingredients.Clear(); //Prevent deleting the spear, we will use it
+            sound = SoundID.Slime_Mold_Terrain_Impact;
+            effect = new WaterDrip(spear.firstChunk.pos, new Vector2(Random.value, Random.value) * Random.Range(1f, 10f), false);
+        }
         
         MakeCosmeticEffects(self, sound, effect, volume, pitch);
-        MakeCraftedItem(self, result, ingredients, -1, self.grasps.IndexOf(self.grasps.First(x => x.grabbed == spear)));
+        MakeCraftedItem(self, result, ingredients, -1, self.grasps.IndexOf(self.grasps.First(x => x?.grabbed == spear)));
     }
     public static void MakeMineItem(Player self, List<PhysicalObject> ingredients)
     {
