@@ -286,7 +286,7 @@ namespace TheFriend
                 #endregion
                 
                 #region MainMenu
-                On.Menu.IntroRoll.ctor += MainMenu.IntroRollOnctor;
+                //On.Menu.IntroRoll.ctor += MainMenu.IntroRollOnctor;
                 //On.Menu.RainEffect.ctor += MainMenu.RainEffectOnctor;
                 //On.Menu.RainEffect.GrafUpdate += MainMenu.RainEffectOnGrafUpdate; 
                 //On.MenuMicrophone.PlaySound_SoundID_float_float_float += MainMenu.MenuMicrophoneOnPlaySound_SoundID_float_float_float;
