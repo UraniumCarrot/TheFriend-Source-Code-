@@ -38,7 +38,7 @@ public static partial class Extensions
     }
 
     public static bool ImAggressiveToYou(this ArtificialIntelligence self, AbstractCreature obj)
-    { // doesnt work
+    {
         var a = self.DynamicRelationship(obj).type == CreatureTemplate.Relationship.Type.Attacks;
         var b = self.DynamicRelationship(obj).type == CreatureTemplate.Relationship.Type.Eats;
         var c = self.DynamicRelationship(obj).type == CreatureTemplate.Relationship.Type.AgressiveRival;

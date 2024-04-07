@@ -1,56 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using LizardCosmetics;
+﻿using LizardCosmetics;
 using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Dependencies;
-using static TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Dependencies.FreedCosmeticMethods;
-using UnityEngine;
 
 namespace TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Common;
 
-public class FreeSpineSpikes : SpineSpikes, IFreedDownLength, IHaveSizeBonus
+public class FreeSpineSpikes : FreedCosmeticTemplate
 {
-    public LizColorMode[] colorMode => new LizColorMode[2];
-    public bool ImColored { get; }
-    public List<Color> FadeColors { get; set; }
-    public List<Color> BaseColors { get; set; }
-    public bool darkenWithHead { get; }
-    public float dark { get; set; }
-    public Vector2? sizeBonus { get; set; }
-
-    public FreeSpineSpikes(
-        LizardGraphics lGraphics, 
-        int startSprite, 
-        IList<LizColorMode> colorMath, 
-        IList<Color> baseColors = null, 
-        IList<Color> fadeColors = null, 
-        Vector2? SizeBonus = default, 
-        bool pulseWithHead = false) : base(lGraphics,startSprite)
+    public FreeSpineSpikes(SpineSpikes template) : base(template)
     {
-        ColorModeGetter(this,colorMath);
-        ImColored = colored > 0;
-        BaseColors = new List<Color>();
-        FadeColors = new List<Color>();
-        darkenWithHead = pulseWithHead;
-        if (SizeBonus.HasValue)
-            sizeBonus = new Vector2(Mathf.Abs(SizeBonus.Value.x + 1), Mathf.Abs(SizeBonus.Value.y + 1));
-        else sizeBonus = null;
-        if (baseColors != null && baseColors.Any())
-            BaseColors.AddRange(baseColors);
-        if (fadeColors != null && fadeColors.Any())
-            FadeColors.AddRange(fadeColors);
+        ImColored = template.colored > 0;
     }
-
-    public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette rPalette)
+    public FreeSpineSpikes(LizardGraphics lGraphics, int startSprite) : base(lGraphics, startSprite)
     {
-        base.ApplyPalette(sLeaser, rCam, rPalette);
-        FreedCosmeticDrawGeneric(this, this, sLeaser, bumps);
+        ImColored = (owner as SpineSpikes)!.colored > 0;
     }
-    
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
-        base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
-        if (sizeBonus != null) SizeBonusDraw(this, sizeBonus.Value, sLeaser, true, true);
-        FreedCosmeticTick(this, this, sLeaser);
+        base.InitiateSprites(sLeaser, rCam);
+        RectifySizeBonusForDraw("Y");
+    }
+    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    {
+        var newCosmetic = new SpineSpikes(lGraphics, startSprite);
+        liz.AddCosmetic(startSprite, newCosmetic);
+        return newCosmetic;
     }
 }

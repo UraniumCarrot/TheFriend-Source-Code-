@@ -37,7 +37,7 @@ public class FriendVoiceCommands
             FriendGetEmotionDirection(self),
             "FriendA"));
         foreach (Lizard liz in FriendFindReactors(self, 1000, 800))
-            if (liz.TryGetLiz(out var data))
+            if (liz.TryGetLiz(out var data) && !liz.AI.ImAggressiveToYou(self.abstractCreature))
             {
                 var relation = liz.abstractCreature.state.socialMemory.GetOrInitiateRelationship(self.abstractCreature.ID);
                 if (relation.like > 0.5f && data.TemporaryFriendshipTimer == 0) return;
@@ -189,7 +189,7 @@ public class FriendVoiceCommands
         self.GetFriend().voice.FriendMakeSound(FriendVoice.FriendEmotion.Whimper);
         
         foreach (Lizard liz in FriendFindReactors(self, 500, 200))
-            if (liz.TryGetLiz(out var lizdata))
+            if (liz.TryGetLiz(out var lizdata) && !liz.AI.ImAggressiveToYou(self.abstractCreature))
             {
                 var relation = liz.abstractCreature.state.socialMemory.GetOrInitiateRelationship(self.abstractCreature.ID);
                 if (relation.like > 0.5f && lizdata.TemporaryFriendshipTimer == 0) return;
@@ -210,7 +210,7 @@ public class FriendVoiceCommands
             FriendGetEmotionDirection(self),
             "SurvivorA"));
         foreach (Lizard liz in FriendFindReactors(self, 500, 200))
-            if (liz.TryGetLiz(out var data))
+            if (liz.TryGetLiz(out var data) && !liz.AI.ImAggressiveToYou(self.abstractCreature))
             {
                 var relation = liz.abstractCreature.state.socialMemory.GetOrInitiateRelationship(self.abstractCreature.ID);
                 if (relation.like > 0.5f && data.TemporaryFriendshipTimer == 0) return;

@@ -5,7 +5,7 @@ using LizardCosmetics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Custom;
+namespace TheFriend.Creatures.LizardThings.FreeLizardCosmetics.CustomTemps;
 
 public class SpineFluff : Template
 { // unfinished and non functional, do not use

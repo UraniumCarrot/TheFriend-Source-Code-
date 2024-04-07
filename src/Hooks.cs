@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Fisobs.Core;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
@@ -13,22 +12,14 @@ using TheFriend.FriendThings;
 using TheFriend.Creatures.LizardThings;
 using TheFriend.Creatures.LizardThings.DragonRideThings;
 using TheFriend.Creatures.LizardThings.FreeLizardCosmetics;
-using TheFriend.Creatures.LizardThings.MotherLizard;
-using TheFriend.Creatures.LizardThings.PilgrimLizard;
 using TheFriend.Creatures.LizardThings.YoungLizard;
 using TheFriend.Creatures.PebblesLLCreature;
 using TheFriend.Creatures.SnowSpiderCreature;
 using TheFriend.Expedition;
 using TheFriend.HudThings;
-using TheFriend.Objects.BoomMineObject;
-using TheFriend.Objects.BoulderObject;
-using TheFriend.Objects.LittleCrackerObject;
-using TheFriend.Objects.SolaceScarfObject;
 using TheFriend.WorldChanges;
 using TheFriend.WorldChanges.Oracles.LooksToTheMoon;
 using TheFriend.WorldChanges.WorldStates.General;
-using ColdRoom = On.MoreSlugcats.ColdRoom;
-using Debug = UnityEngine.Debug;
 
 namespace TheFriend
 {
@@ -271,7 +262,7 @@ namespace TheFriend
                 #endregion
                 #region Friend
                 On.Player.MovementUpdate += FriendCrawlTurn.PlayerOnMovementUpdate;
-                IL.Player.ThrowObject += CharacterThings.FriendThings.FriendGameplay.Player_ThrowObject;
+                IL.Player.ThrowObject += FriendGameplay.Player_ThrowObject;
                 #endregion
                 #endregion
                 
@@ -301,7 +292,6 @@ namespace TheFriend
                 {
                     orig(self, source, directionandmomentum, hitchunk, hitappendage, type, damage, stunbonus);
                     PoacherSkullFeatures.CreatureOnViolence(self, source);
-                    
                 };
                 On.HUD.HUD.InitSinglePlayerHud += (orig, hud, cam) => 
                 { 
@@ -463,7 +453,7 @@ namespace TheFriend
             }
             catch (Exception ex)
             {
-                Debug.LogError(ex);
+                UnityEngine.Debug.LogError(ex);
                 Plugin.LogSource.LogError(ex);
             }
         }

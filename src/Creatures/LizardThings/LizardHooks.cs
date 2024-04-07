@@ -249,7 +249,7 @@ public class LizardHooks
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         
-        // just... Don't touch this.
+        // just... Don't touch this. Tracks a lizard's flashing head
         float dark = 1f - Mathf.Pow(0.5f + 0.5f * Mathf.Sin(Mathf.Lerp(self.lastBlink, self.blink, timeStacker) * 2f * (float)Math.PI), 1.5f + self.lizard.AI.excitement * 1.5f);
         if (self.headColorSetter != 0f)
             dark = Mathf.Lerp(dark, (self.headColorSetter > 0f) ? 1f : 0f, Mathf.Abs(self.headColorSetter));
@@ -261,11 +261,6 @@ public class LizardHooks
         // Motherlizard custom head
         if (self.lizard.Template.type == CreatureTemplateType.MotherLizard)
             MotherLizardGraphics.MotherLizardDrawSprites(self,sLeaser);
-        
-        // Allow head and whiskers to have same reactive coloring
-        var i = self.cosmetics.FirstOrDefault(x => x is FreeWhiskers i && i.IGlow);
-        if (i != null && i is FreeWhiskers whisker)
-            FreeWhiskers.WhiskerDrawSprites(self, whisker, sLeaser, timeStacker);
     }
     #endregion
 }

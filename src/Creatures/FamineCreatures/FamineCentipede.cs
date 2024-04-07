@@ -117,11 +117,9 @@ public abstract class FamineCentipede
     public static bool FamCenti(Player pl, int grasp)
     {
         var plGrasp = pl.grasps[grasp].grabbed as Creature;
-        if (plGrasp is not Centipede)
-            return false;
-        if (plGrasp.Template.type == CreatureTemplate.Type.RedCentipede ||
-            plGrasp.Template.type == MoreSlugcatsEnums.CreatureTemplateType.AquaCenti ||
-            !(QuickWorldData.FaminesExist))
+        if (plGrasp is not Centipede centi || 
+            !centi.TryGet(out _) || 
+            plGrasp.Template.type == CreatureTemplate.Type.RedCentipede)
             return false;
 
         if ((SlugBaseCharacter.TryGet(pl.SlugCatClass, out var chara) &&

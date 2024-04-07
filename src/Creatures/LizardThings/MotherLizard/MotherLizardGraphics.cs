@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using LizardCosmetics;
 using TheFriend.Creatures.LizardThings.DragonRideThings;
-using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Custom;
-using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Dependencies;
-using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Unique;
+using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.CustomTemps;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -56,6 +53,9 @@ public class MotherLizardGraphics
         scale.colored = rCol ? 1 : 0;
         scale.numberOfSprites = scale.colored > 0 ? scale.bumps * 2 : scale.bumps;
         num = self.AddCosmetic(num, scale);
+
+        var tip = new TipScale(self,num);
+        num = self.AddCosmetic(num, tip);
     }
     
     public static void MotherLizardDrawSprites(LizardGraphics self, RoomCamera.SpriteLeaser sLeaser)
