@@ -19,7 +19,7 @@ public abstract class FreedCosmeticTemplate : Template
     
     public bool ImColored; // Does this cosmetic have fade sprites? Prevents Index Out Of Bounds
     public bool ImMirrored; // Does this cosmetic have scales that come in pairs?
-    public bool ImReactive; // Does this cosmetic cycle through colors based on the lizard's head?
+    public bool ImNotGradient; // Does this cosmetic with multiple scales go through colors in a gradient, or are they all the same? Requires non-zero CycleSpeed to cycle colors
     public bool ImFadeTrans; // Does this cosmetic's fadesprites get changed alpha? Automatically false if ImColored is false
 
     public bool HeadColorForBase;
@@ -36,7 +36,7 @@ public abstract class FreedCosmeticTemplate : Template
     public LizColorMode[] colorMode; // 0 for base colors, 1 for fade colors; Effects how the cosmetic's multilerp transitions colors
 
     public float dark; // Unused if ImReactive is false
-    public float CycleSpeed; // Unused if ImReactive is true
+    public float CycleSpeed; // -1 to change with lizard dark, 0 for never change, above 0 for cycling
     public ToolMethods.MathMode sizeMathMode;
     public Vector2 SizeBonus; // Grants a size bonus to a cosmetic's sprites that is applied a single time
     public Vector2 drawSizeBonus; // Grants a size bonus to a cosmetic's sprites that is applied every frame. Doesn't need to be set
@@ -57,6 +57,7 @@ public abstract class FreedCosmeticTemplate : Template
         SizeBonus = Vector2.one;
         newSprite = "l";
         newSpriteFade = "l";
+        CycleSpeed = -1;
     }
 
     public FreedCosmeticTemplate(LizardGraphics lGraphics, int startSprite) : base(lGraphics, startSprite)
@@ -72,6 +73,7 @@ public abstract class FreedCosmeticTemplate : Template
         sizeMathMode = ToolMethods.MathMode.mult;
         newSprite = "l";
         newSpriteFade = "l";
+        CycleSpeed = -1;
     }
 
     public virtual Template ConstructBaseTemplate(LizardGraphics liz, int index)
@@ -100,7 +102,7 @@ public abstract class FreedCosmeticTemplate : Template
         headColor = sLeaser.sprites[lGraphics.SpriteHeadStart].color;
         
         // Controls color/fadesprite reactivity, can be either be synced with lizard's head, staticly at 0, or on a timer
-        if (ImReactive || (ImFadeTrans && CycleSpeed == 0)) dark = lGraphics.lizard.Liz().dark;
+        if (CycleSpeed < 0) dark = lGraphics.lizard.Liz().dark;
         else if (CycleSpeed == 0) dark = 0;
         else
         {
@@ -211,15 +213,21 @@ public abstract class FreedCosmeticTemplate : Template
         float percent = 0;
         for (int i = StartOfFadeSprites; i < EndOfAllSprites; i++)
         {
-            if (ImMirrored)
-            {
-                if ((i - EndOfAllSprites).IsEven())
+            if (!ImNotGradient)
+                if (ImMirrored)
+                {
+                    if ((i - EndOfAllSprites).IsEven())
+                    {
+                        percent = (i - StartOfFadeSprites) / ((float)owner.numberOfSprites/2);
+                        percent += dark;
+                    }
+                }
+                else
+                {
                     percent = (i - StartOfFadeSprites) / ((float)owner.numberOfSprites/2);
-            }
-            else percent = (i - StartOfFadeSprites) / ((float)owner.numberOfSprites/2);
-
-            percent += (ImFadeTrans) ? 0 : dark;
-            if (percent > 1) percent--;
+                    percent += dark;
+                }
+            else percent = (ImFadeTrans) ? 0 : dark;
             
             if (FadeColors.Any()) ColorSprite(sLeaser.sprites[i], colorMode[1], FadeColors, percent);
             else if (HeadColorForFade) sLeaser.sprites[i].color = headColor;

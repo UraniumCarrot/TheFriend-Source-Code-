@@ -260,7 +260,9 @@ public class LizardHooks
 
         // Motherlizard custom head
         if (self.lizard.Template.type == CreatureTemplateType.MotherLizard)
-            MotherLizardGraphics.MotherLizardDrawSprites(self,sLeaser);
+            MotherLizardGraphics.MotherLizardDrawSprites(self, sLeaser);
+        if (self.lizard.Template.type == CreatureTemplateType.YoungLizard)
+            YoungLizardGraphics.YoungLizardDrawSprites(self, sLeaser);
     }
     #endregion
 }

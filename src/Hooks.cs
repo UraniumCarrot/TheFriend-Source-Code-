@@ -88,7 +88,7 @@ namespace TheFriend
                 
                 new Hook(typeof(LizardGraphics)
                     .GetProperty(nameof(LizardGraphics.HeadColor1), BindingFlags.Instance | BindingFlags.NonPublic)!
-                    .GetGetMethod(true), FancyHeadColors.FancyHeadColor1);
+                    .GetGetMethod(true), FancyColors.FancyHeadColor1);
                 
                 On.Creature.SuckedIntoShortCut += YoungLizardAI.CreatureOnSuckedIntoShortCut;
                 On.WormGrass.WormGrassPatch.Update += WormGrassImmunizer.WormGrassPatch_Update;
