@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using LizardCosmetics;
 using UnityEngine;
 using RWCustom;
@@ -14,17 +15,18 @@ public class BlandAntennae : Template
     public float length;
     public float alpha;
     public float shiver;
+    public string shaderReplacement;
     public int Sprite(int side, int part)
     {
         return startSprite + part * 2 + side;
     }
     
-    public BlandAntennae(LizardGraphics lGraphics, int startSprite, float length = 0) : base(lGraphics, startSprite)
+    public BlandAntennae(LizardGraphics lGraphics, int startSprite, int segments = 0) : base(lGraphics, startSprite)
     {
         spritesOverlap = SpritesOverlap.InFront;
-        this.length = (length > 0) ? length : Random.value;
-        segments = Mathf.FloorToInt(Mathf.Lerp(3f, 8f, Mathf.Pow(length, Mathf.Lerp(1f, 6f, length))));
-        antennae = new GenericBodyPart[2, segments];
+        this.length = Random.value;
+        this.segments = (segments != 0) ? segments : Mathf.FloorToInt(Mathf.Lerp(3f, 8f, Mathf.Pow(length, Mathf.Lerp(1f, 6f, length))));
+        antennae = new GenericBodyPart[2, this.segments];
         alpha = length * 0.9f + Random.value * 0.1f;
 
         for (int i = 0; i < segments; i++)
@@ -33,6 +35,7 @@ public class BlandAntennae : Template
             antennae[1, i] = new GenericBodyPart(lGraphics, 1f, 0.6f, 0.9f, lGraphics.lizard.mainBodyChunk);
         }
         numberOfSprites = 4;
+        shaderReplacement = "l";
     }
 
     public override void Reset()
@@ -92,7 +95,7 @@ public class BlandAntennae : Template
 		    for (int a = 0; a < 2; a++)
 			    sLeaser.sprites[Sprite(j, a)] = TriangleMesh.MakeLongMesh(segments, pointyTip: true, customColor: true);
 	    for (int i = 0; i < 2; i++)
-		    sLeaser.sprites[Sprite(i, 1)].shader = rCam.room.game.rainWorld.Shaders["LizardAntenna"];
+		    sLeaser.sprites[Sprite(i, 1)].shader = rCam.room.game.rainWorld.Shaders[shaderReplacement.Length > 2 ? shaderReplacement : "LizardAntenna"];
     }
 	public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 	{
@@ -114,14 +117,14 @@ public class BlandAntennae : Template
 				{
 					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.MoveVertice(i * 4, lastSegmentPos - perpendicular * (lastRad + rad) * 0.5f + dir * dist - camPos);
 					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.MoveVertice(i * 4 + 1, lastSegmentPos + perpendicular * (lastRad + rad) * 0.5f + dir * dist - camPos);
-					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4] = Color.red;
-					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4 + 1] = Color.blue;
-					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4 + 2] = Color.green;
+					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4] = sLeaser.sprites[lGraphics.SpriteHeadStart].color;
+					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4 + 1] = sLeaser.sprites[lGraphics.SpriteHeadStart].color;
+					(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4 + 2] = sLeaser.sprites[lGraphics.SpriteHeadStart].color;
 					if (i < segments - 1)
 					{
 						(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.MoveVertice(i * 4 + 2, segmentDrawPos - perpendicular * rad - dir * dist - camPos);
 						(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.MoveVertice(i * 4 + 3, segmentDrawPos + perpendicular * rad - dir * dist - camPos);
-						(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4 + 3] = Color.yellow;
+						(sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.verticeColors[i * 4 + 3] = sLeaser.sprites[lGraphics.SpriteHeadStart].color;
 					}
 					else (sLeaser.sprites[Sprite(side, a)] as TriangleMesh)!.MoveVertice(i * 4 + 2, segmentDrawPos - camPos);
 				}
@@ -154,17 +157,17 @@ public class BlandAntennae : Template
     #endregion
 }
 
-public class FreeBlandAntennae : BlandAntennae
+public class FlavoredAntennae : BlandAntennae
 {
 	public bool ImReactive;
 	public float dark;
 	public float CycleSpeed;
 	public FreedCosmeticTemplate.LizColorMode colorMode;
 	public List<Color> AntennaeColors;
-	public FreeBlandAntennae(LizardGraphics lGraphics, int startSprite) : base(lGraphics, startSprite)
+	public FlavoredAntennae(LizardGraphics lGraphics, int startSprite, int segments = 0) : base(lGraphics, startSprite, segments)
 	{
 		colorMode = FreedCosmeticTemplate.LizColorMode.HSL;
-		AntennaeColors = [Color.red];
+		AntennaeColors = [];
 	}
 	public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker,
 		Vector2 camPos)
@@ -184,6 +187,10 @@ public class FreeBlandAntennae : BlandAntennae
 	public void FreeAntennaeColor(RoomCamera.SpriteLeaser sLeaser, float timeStacker)
 	{
 		Color col = sLeaser.sprites[lGraphics.SpriteHeadStart].color;
+		List<Color> newCol = new List<Color>();
+		newCol.AddRange(AntennaeColors);
+		for (int a = 0; a < newCol.Count; a++)
+			if (newCol[a] == Color.black) newCol[a] = col;
 		
 		for (int i = 0; i < 2; i++)
 			for (int k = 0; k < 2; k++)
@@ -193,14 +200,12 @@ public class FreeBlandAntennae : BlandAntennae
 					switch (colorMode)
 					{
 						case FreedCosmeticTemplate.LizColorMode.HSL:
-							mesh.verticeColors[a] = Color.Lerp(col,
-								Extensions.HSLMultiLerp(AntennaeColors, ((float)a / mesh.verticeColors.Length) + dark),
-								Mathf.Pow(a / (float)mesh.verticeColors.Length, 1.5f));
+							mesh.verticeColors[a] = Extensions.HSLMultiLerp(newCol,
+								((float)a / mesh.verticeColors.Length) + dark);
 							break;
 						case FreedCosmeticTemplate.LizColorMode.RGB:
-							mesh.verticeColors[a] = Color.Lerp(col,
-								Extensions.RGBMultiLerp(AntennaeColors, ((float)a / mesh.verticeColors.Length) + dark),
-								Mathf.Pow(a / (float)mesh.verticeColors.Length, 1.5f));
+							mesh.verticeColors[a] = Extensions.RGBMultiLerp(newCol,
+								((float)a / mesh.verticeColors.Length) + dark);
 							break;
 					}
 			}

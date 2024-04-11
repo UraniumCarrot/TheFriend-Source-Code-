@@ -7,20 +7,20 @@ public class FreeTailTuft : FreedCosmeticTemplate
 {
     public FreeTailTuft(TailTuft template) : base(template)
     {
+        ImColored = (owner as TailTuft)!.colored;
     }
     public FreeTailTuft(LizardGraphics lGraphics, int startSprite) : base(lGraphics, startSprite)
     {
+        ImColored = (owner as TailTuft)!.colored;
     }
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
-        ImMirrored = (owner as ShortBodyScales)!.scalesPositions.Length.IsEven();
+        ImMirrored = (owner as TailTuft)!.scalesPositions.Length.IsEven();
         base.InitiateSprites(sLeaser, rCam);
         RectifySizeBonusForDraw("Y");
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new TailTuft(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new TailTuft(lGraphics, startSprite);
     }
 }

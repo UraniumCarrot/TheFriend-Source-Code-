@@ -7,9 +7,11 @@ public class FreeLongShoulderScales : FreedCosmeticTemplate
 {
     public FreeLongShoulderScales(LongShoulderScales template) : base(template)
     {
+        ImColored = (owner as LongShoulderScales)!.colored;
     }
     public FreeLongShoulderScales(LizardGraphics lGraphics, int startSprite) : base(lGraphics, startSprite)
     {
+        ImColored = (owner as LongShoulderScales)!.colored;
     }
     
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -18,10 +20,8 @@ public class FreeLongShoulderScales : FreedCosmeticTemplate
         base.InitiateSprites(sLeaser,rCam);
         RectifySizeBonusForDraw("Y");
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new LongShoulderScales(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new LongShoulderScales(lGraphics, startSprite);
     }
 }

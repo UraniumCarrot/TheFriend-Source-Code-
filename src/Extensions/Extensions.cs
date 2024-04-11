@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using TheFriend.Creatures.LizardThings.FreeLizardCosmetics.Dependencies;
 using UnityEngine;
 
 namespace TheFriend;
@@ -9,6 +10,14 @@ namespace TheFriend;
 public static partial class Extensions
 {
     #region RainWorld Specific
+    public static int AddFreeCosmetic(this LizardGraphics self, int spriteIndex, FreedCosmeticTemplate cosmetic)
+    { // For use if a freed cosmetic's owner isnt added to the lizard in the normal way
+        self.cosmetics.Add(cosmetic.owner);
+        self.cosmetics.Add(cosmetic);
+        spriteIndex += cosmetic.owner.numberOfSprites;
+        self.extraSprites += cosmetic.owner.numberOfSprites;
+        return spriteIndex;
+    }
     public static bool IsSolaceName(this SlugcatStats.Name name)
     {
         return name.value == Plugin.FriendName.value || name.value == Plugin.NoirName.value || name.value == Plugin.DragonName.value;

@@ -15,10 +15,8 @@ public class FreeJumpRings : FreedCosmeticTemplate
         ImColored = true;
         ImMirrored = true;
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new JumpRings(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new JumpRings(lGraphics, startSprite);
     }
 }

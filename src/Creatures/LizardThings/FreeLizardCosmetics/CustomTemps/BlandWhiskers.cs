@@ -159,13 +159,13 @@ public class BlandWhiskers : Template
     #endregion
 }
 
-public class FreeBlandWhiskers : BlandWhiskers
+public class FlavoredWhiskers : BlandWhiskers
 {
 	public List<Color> BaseColors;
 	public List<Color> LightUpColors;
 	public FreedCosmeticTemplate.LizColorMode[] colorMode;
 	public BlandWhiskers temp;
-	public FreeBlandWhiskers(BlandWhiskers template) : base(template.lGraphics, template.startSprite)
+	public FlavoredWhiskers(BlandWhiskers template) : base(template.lGraphics, template.startSprite)
 	{
 		temp = template;
 		colorMode = [FreedCosmeticTemplate.LizColorMode.HSL, FreedCosmeticTemplate.LizColorMode.HSL];

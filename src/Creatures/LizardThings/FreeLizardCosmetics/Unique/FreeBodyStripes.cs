@@ -17,10 +17,8 @@ public class FreeBodyStripes : FreedCosmeticTemplate
     {
         ImMirrored = true;
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new BodyStripes(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new BodyStripes(lGraphics, startSprite);
     }
 }

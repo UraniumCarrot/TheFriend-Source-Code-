@@ -128,7 +128,7 @@ public class BlandTailScales : Template
 	}
 }
 
-public class FreedBlandTailScales : BlandTailScales
+public class FlavoredTailScales : BlandTailScales
 {
 	public string newSprite; // Allows a cosmetic's sprites to be overwritten
 	public FreedCosmeticTemplate.LizColorMode[] colorMode = new FreedCosmeticTemplate.LizColorMode[2];
@@ -137,7 +137,7 @@ public class FreedBlandTailScales : BlandTailScales
 	public ToolMethods.MathMode sizeMathMode;
 	public Vector2 drawSizeBonus; // Grants a size bonus to a cosmetic's sprites that is applied every frame
 
-	public FreedBlandTailScales(BlandTailScales template) : base(template.lGraphics, template.startSprite)
+	public FlavoredTailScales(BlandTailScales template) : base(template.lGraphics, template.startSprite)
 	{
 	}
 

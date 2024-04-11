@@ -13,15 +13,8 @@ public class FreeSpineSpikes : FreedCosmeticTemplate
     {
         ImColored = (owner as SpineSpikes)!.colored > 0;
     }
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        base.InitiateSprites(sLeaser, rCam);
-        RectifySizeBonusForDraw("Y");
-    }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
-    {
-        var newCosmetic = new SpineSpikes(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new SpineSpikes(lGraphics, startSprite);
     }
 }

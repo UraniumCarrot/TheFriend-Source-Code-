@@ -19,10 +19,8 @@ public class FreeBumpHawk : FreedCosmeticTemplate
         base.InitiateSprites(sLeaser,rCam);
         RectifySizeBonusForDraw("XY");
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new BumpHawk(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new BumpHawk(lGraphics, startSprite);
     }
 }

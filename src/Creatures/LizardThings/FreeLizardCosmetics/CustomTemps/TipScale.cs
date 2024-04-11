@@ -42,10 +42,8 @@ public class FreedTipScale : FreedCosmeticTemplate
     public FreedTipScale(TipScale template) : base(template)
     {
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new TipScale(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new TipScale(lGraphics, startSprite);
     }
 }

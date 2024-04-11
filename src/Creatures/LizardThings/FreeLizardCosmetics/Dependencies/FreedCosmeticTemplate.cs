@@ -25,10 +25,10 @@ public abstract class FreedCosmeticTemplate : Template
     public bool HeadColorForBase;
     public bool HeadColorForFade;
 
-    public Color headColor;
+    public Color headColor; // Head color of the lizard, if wanted
     public Color skinColor; // Skin color of the lizard, if wanted
     public int EndOfAllSprites => startSprite + owner.numberOfSprites; // FINAL index Ever and Always
-    public int EndOfBaseSprites => startSprite + owner.numberOfSprites/(ImColored ? 2 : 1); // Last index of basesprites
+    public int EndOfBaseSprites => startSprite - 1 + owner.numberOfSprites/(ImColored ? 2 : 1); // Last index of basesprites
     public int StartOfFadeSprites => (ImColored) ? (EndOfBaseSprites + 1) : EndOfAllSprites; // Starting index of fadesprites
     
     public List<Color> BaseColors; // Possible colors of non-fade sprites
@@ -50,24 +50,23 @@ public abstract class FreedCosmeticTemplate : Template
         this.startSprite = cosmetic.startSprite;
         spritesOverlap = cosmetic.spritesOverlap;
 
-        BaseColors = [Color.clear];
-        FadeColors = [lGraphics.effectColor];
+        BaseColors = [];
+        FadeColors = [];
         colorMode = [LizColorMode.HSL, LizColorMode.HSL];
         sizeMathMode = ToolMethods.MathMode.mult;
         SizeBonus = Vector2.one;
         newSprite = "l";
         newSpriteFade = "l";
-        lGraphics.AddCosmetic(startSprite, cosmetic);
     }
 
     public FreedCosmeticTemplate(LizardGraphics lGraphics, int startSprite) : base(lGraphics, startSprite)
-    {
-        var cosmetic = ConstructAndAddBaseTemplate(lGraphics, startSprite);
+    { // Always use AddFreeCosmetic instead of AddCosmetic when using a Freed cosmetic.
+        var cosmetic = ConstructBaseTemplate(lGraphics, startSprite);
         owner = cosmetic;
         this.startSprite = cosmetic.startSprite;
         spritesOverlap = cosmetic.spritesOverlap;
 
-        BaseColors = [Color.clear];
+        BaseColors = [];
         FadeColors = [lGraphics.effectColor];
         colorMode = [LizColorMode.HSL, LizColorMode.HSL];
         sizeMathMode = ToolMethods.MathMode.mult;
@@ -75,11 +74,9 @@ public abstract class FreedCosmeticTemplate : Template
         newSpriteFade = "l";
     }
 
-    public virtual Template ConstructAndAddBaseTemplate(LizardGraphics liz, int index)
+    public virtual Template ConstructBaseTemplate(LizardGraphics liz, int index)
     { // Completely override this, following the code written here
-        var newcosmetic = new TipScale(liz, index);
-        lGraphics.AddCosmetic(startSprite, newcosmetic);
-        return newcosmetic;
+        return new TipScale(liz, index);
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -93,6 +90,7 @@ public abstract class FreedCosmeticTemplate : Template
         if (newSpriteFade.Length > 2)
             for (int i = StartOfFadeSprites; i < EndOfAllSprites; i++)
                 sLeaser.sprites[i].element = Futile.atlasManager.GetElementWithName(newSpriteFade);
+        UnityEngine.Debug.Log($"Solace: Freed {owner} constructed");
     }
     
     public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -102,7 +100,7 @@ public abstract class FreedCosmeticTemplate : Template
         headColor = sLeaser.sprites[lGraphics.SpriteHeadStart].color;
         
         // Controls color/fadesprite reactivity, can be either be synced with lizard's head, staticly at 0, or on a timer
-        if (ImReactive) dark = lGraphics.lizard.Liz().dark;
+        if (ImReactive || (ImFadeTrans && CycleSpeed == 0)) dark = lGraphics.lizard.Liz().dark;
         else if (CycleSpeed == 0) dark = 0;
         else
         {
@@ -151,8 +149,8 @@ public abstract class FreedCosmeticTemplate : Template
                     copyY = drawSizeBonus.y;
                     break;
             }
-            sLeaser.sprites[i].scaleX = Mathf.Lerp(sLeaser.sprites[i].scaleX, copyX, timestacker);
-            sLeaser.sprites[i].scaleY = Mathf.Lerp(sLeaser.sprites[i].scaleY, copyY, timestacker);
+            sLeaser.sprites[i].scaleX = copyX;
+            sLeaser.sprites[i].scaleY = copyY;
         }
     }
 
@@ -185,7 +183,7 @@ public abstract class FreedCosmeticTemplate : Template
     public virtual void AlphaControl(RoomCamera.SpriteLeaser sLeaser)
     { // Only use if ImFadeTrans is true
         for (int i = StartOfFadeSprites; i < EndOfAllSprites; i++)
-            sLeaser.sprites[i].alpha = dark;
+            sLeaser.sprites[i].alpha = Mathf.Lerp(1,0,dark);
     }
 
     public void ColorBaseSprites(RoomCamera.SpriteLeaser sLeaser)
@@ -220,7 +218,7 @@ public abstract class FreedCosmeticTemplate : Template
             }
             else percent = (i - StartOfFadeSprites) / ((float)owner.numberOfSprites/2);
 
-            percent += dark;
+            percent += (ImFadeTrans) ? 0 : dark;
             if (percent > 1) percent--;
             
             if (FadeColors.Any()) ColorSprite(sLeaser.sprites[i], colorMode[1], FadeColors, percent);

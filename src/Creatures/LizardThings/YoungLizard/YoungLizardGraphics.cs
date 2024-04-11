@@ -21,15 +21,14 @@ public class YoungLizardGraphics
     }
     public static void YoungLizardGraphicsCtor(LizardGraphics self, PhysicalObject ow)
     {
-        var bodyList = new List<Color>();
-        bodyList.Add(YoungLizardBodyColor(self));
         var colorer2 = self.effectColor;
         colorer2.ChangeHue(self.effectColor.Hue() + 0.4f);
-        List<Color> colorlist2 = [self.effectColor, colorer2];
 
         var num = self.startOfExtraSprites + self.extraSprites;
-        var gills = new AxolotlGills(self, num);
-        num = self.AddCosmetic(num, new FreeAxolotlGills(gills) { HeadColorForBase = true, FadeColors = colorlist2, SizeBonus = new Vector2(1,1)});
-        //num = self.AddCosmetic(num, new BlandAntennae(self, num, 3) { segments = 3 });
+        num = self.AddCosmetic(num, new FlavoredAntennae(self, num, 2) { AntennaeColors = [Color.black, Color.black, colorer2, colorer2] });
+        if (Random.value < 0.2f)
+            num = self.AddFreeCosmetic(num, new FreeTailTuft(self, num) { FadeColors = [colorer2], SizeBonus = new Vector2(1,1)});
+        else num = self.AddFreeCosmetic(num, new FreeAxolotlGills(self, num) { FadeColors = [colorer2], SizeBonus = new Vector2(1, 1) });
+        num = self.AddFreeCosmetic(num, new FreeSpineSpikes(self, num) { FadeColors = [colorer2], sizeMathMode = ToolMethods.MathMode.add, SizeBonus = new Vector2(1.2f,1.2f) });
     }
 }

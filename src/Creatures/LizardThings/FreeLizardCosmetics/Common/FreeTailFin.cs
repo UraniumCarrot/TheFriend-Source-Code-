@@ -14,10 +14,8 @@ public class FreeTailFin : FreedCosmeticTemplate
     {
         ImColored = (owner as TailFin)!.colored;
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new TailFin(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new TailFin(lGraphics, startSprite);
     }
 }

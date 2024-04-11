@@ -11,10 +11,12 @@ public class FreeLongHeadScales : FreedCosmeticTemplate
     public FreeLongHeadScales(LongHeadScales template) : base(template)
     {
         HeadColorForBase = true;
+        ImColored = (owner as LongHeadScales)!.colored;
     }
     public FreeLongHeadScales(LizardGraphics lGraphics, int startSprite) : base(lGraphics, startSprite)
     {
         HeadColorForBase = true;
+        ImColored = (owner as LongHeadScales)!.colored;
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -23,10 +25,8 @@ public class FreeLongHeadScales : FreedCosmeticTemplate
         base.InitiateSprites(sLeaser,rCam);
         RectifySizeBonusForDraw("Y");
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new LongHeadScales(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new LongHeadScales(lGraphics, startSprite);
     }
 }

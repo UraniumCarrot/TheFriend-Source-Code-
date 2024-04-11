@@ -20,10 +20,8 @@ public class FreeShortBodyScales : FreedCosmeticTemplate
         base.InitiateSprites(sLeaser,rCam);
         RectifySizeBonusForDraw("XY");
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new ShortBodyScales(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new ShortBodyScales(lGraphics, startSprite);
     }
 }

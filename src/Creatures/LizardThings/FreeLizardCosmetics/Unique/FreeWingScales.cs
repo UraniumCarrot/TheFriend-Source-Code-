@@ -21,10 +21,8 @@ public class FreeWingScales : FreedCosmeticTemplate
         ImColored = false;
         drawSizeBonus = new Vector2(0, drawSizeBonus.y);
     }
-    public override Template ConstructAndAddBaseTemplate(LizardGraphics liz, int startsprite)
+    public override Template ConstructBaseTemplate(LizardGraphics liz, int startsprite)
     {
-        var newCosmetic = new WingScales(lGraphics, startSprite);
-        liz.AddCosmetic(startSprite, newCosmetic);
-        return newCosmetic;
+        return new WingScales(lGraphics, startSprite);
     }
 }
