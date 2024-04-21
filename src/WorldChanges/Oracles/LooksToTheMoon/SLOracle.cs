@@ -104,7 +104,7 @@ public partial class SLOracle
     }
     public static void SolaceSLOracleMarkScreenStage(SLOracleBehavior self, SLOracleCWT.Moon data)
     {
-        bool justStarted = data.stageCounter == 0;
+        bool justStarted = data.stageCounter == 1;
         switch (data.miniStage)
         {
             case 0:
