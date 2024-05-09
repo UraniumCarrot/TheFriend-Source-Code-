@@ -11,12 +11,12 @@ public class SlugcatNameFix
 
     private static string SlugcatStatsOngetSlugcatName(On.SlugcatStats.orig_getSlugcatName orig, SlugcatStats.Name name)
     {
-        if (name == NoirName) return "Noir";
+        if (name == NoirName) return Translate("Noir");
         return orig(name);
     }
     private static string MenuOnTranslate_string(On.Menu.Menu.orig_Translate_string orig, Menu.Menu self, string s)
     {
-        if (s == "The Noir") return "The Stalker";
+        if (s == "The Noir") return Translate("The Stalker");
         return orig(self, s);
     }
 }

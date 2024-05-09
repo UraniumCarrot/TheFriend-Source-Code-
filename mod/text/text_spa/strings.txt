@@ -1,0 +1,161 @@
+0thefriend-description|¡Afronta la tormenta invernal como tres de los nuevos gatobabosas personalizados: el Amigo, el Acosador (NoirCatto) y el Cazador Furtivo! Todo entre la línea de tiempo del Riachuelo y el Santo. Beta; campañas planeadas, pero no implementadas en su mayoría.
+THE FRIEND|EL AMIGO
+The Friend|El amigo
+Friend|Amigo
+Beastly in nature yet with a soft heart, you defy the order of life and find alliance among predators. <LINE> In the frozen wastes you call home, you search for those in need of companionship.|De naturaleza fiera pero con un corazón tierno, desafías el orden de la vida y encuentras alianza entre los<LINE>depredadores. En los páramos helados que llamas hogar, buscas a aquellos que necesitan compañía.
+Finding family among their predators, The Friend braves<LINE>a harsh winter to find happiness|Hallando familia entre los depredadores, el Amigo<LINE>se enfrenta a un duro invierno para encontrar la felicidad.
+THE STALKER|EL ACOSADOR
+The Stalker|El acosador
+Noir|Noir
+Thriving in the snow, your ways are primal, tearing through flesh with tooth and claw. <LINE> Your agility is your strength as you scour the land for only the grandest of prey.|Prosperando en la nieve, tus modos son primitivos, desgarrando la carne con dientes y garras.<LINE>Tu agilidad es tu fuerza mientras exploras el mundo en busca de las presas más grandes.
+On the hunt for the sake of thrill,<LINE> The Stalker prowls the snow to the land's end|A la caza en aras de la emoción,<LINE> el Acosador merodea la nieve hasta el fin del mundo.
+THE POACHER|EL CAZADOR FURTIVO
+The Poacher|El cazador furtivo
+Poacher|Cazador furtivo
+Small, weak, yet crafty; set deadly traps to snare and kill your preferred prey.<LINE>Though the cold suits you poorly, you will find new purpose in your pursuits.|Pequeño, débil, pero astuto; coloca trampas mortales para atrapar y matar a tu presa preferida.<LINE>Aunque el frío no te favorezca, encontrarás un nuevo propósito en tus actividades.
+In the destruction of their home, The Poacher<LINE>fights to keep their family's legacy alive|En la destrucción de su hogar, el Cazador Furtivo<LINE>lucha por mantener con vida el legado de su familia.
+Rain World: Solace Config - {tab.name}|Ajustes de Rain World: Solace - {tab.name}
+Version {Plugin.MOD_VERSION}|Versión {Plugin.MOD_VERSION}
+General|General
+Universal|Universal
+Famines|Hambrunas
+Global Famines|Hambrunas globales
+Gives famine mechanics and creatures to every character|Proporciona mecánicas de hambruna y escasez de criaturas a todos los personajes.
+Famine Disable|Desactivar hambruna
+Stops famine mechanics in all modes except for Expedition mode when using the Famished burden, may be broken|Detiene las mecánicas de hambruna para todos los modos excepto el de Expedición al usar el beneficio Famélico, puede estar roto.
+Misc|Miscelánea
+Snow in Character Select|Nieve en la selección de personaje
+Solace characters (or characters in cold areas) have snow on their Character Select page|Los personajes de Solace (o los personajes en áreas frías) tendrán nieve en su página de selección de personaje.
+Intro Roll Blizzard|Ventisca en los títulos
+Replaces the intro's rain with a blizzard effect|Reemplaza la lluvia de la intro con un efecto de ventisca.
+Custom Height|Altura personalizada
+Gives some characters a custom height. Disable if physics break too much|Ofrece a algunos personajes una altura personalizada. Desactívelo si la física se rompe demasiado.
+Blizzard Cycle Timer|Temporizador de ciclo de la ventisca
+Makes Saint and Solace characters able to see the cycle timer|Permite a los personajes de Solace y al Santo ver el temporizador de ciclo.
+Solace Title Cards|Títulos de Solace
+Replaces all Downpour title cards with Solace ones|Reemplaza todos los títulos de Downpour con los de Solace.
+Lizards|Lagartos
+Global Rides|Monturas globales
+Allows any lizard to be ridden if tamed|Permite montar a cualquier lagarto que esté domado.
+Universal Reputation Meter|Medidor de reputación universal
+Shows all characters, not just Solace ones, their lizard reputation in the current region|Muestra a todos los personajes, no solo a los de Solace, su reputación con lagartos en la región actual.
+Localized Reputation|Reputación localizada
+Makes all characters, not just Solace ones, have lizard reputation that is kept entirely within the current region|Hace que todos los personajes, no solo los de Solace, tengan la reputación con lagartos completamente mantenida dentro de la región actual.
+Movement|Movimientos
+Legacy Stats|Estadísticas antiguas
+Changes various Friend stats to be as they were earlier in the mod's development|Cambia varias estadísticas del Amigo para que sean como eran antes en el desarrollo del mod.
+Auto Crouch|Autoagacharse
+Makes Friend crouch automatically after a standing jump, prevented by holding Up|Hace que el Amigo se agache automáticamente después de un salto en pie, puede evitarse manteniendo Arriba.
+Pole Crawl|Arrastrarse sobre postes
+Allows Friend to crawl along the tops of poles|Permite al Amigo arrastrarse por la parte superior de los postes.
+Combat|Combate
+Backspear Enable|Activar portalanza
+Allows Friend to use a backspear like they could earlier in the mod's development|Permite al Amigo llevar una lanza en la espalda como lo hacía antes en el desarrollo del mod.
+Other|Otros
+Rep Lock|Bloquear reputación
+Stops changes to lizard reputation happening on cycle 0 for Friend. Lizard reputation may break if disabled|Detiene los cambios de la reputación con lagartos que ocurren en el ciclo 0 del Amigo. La reputación con lagartos puede romperse si se desactiva.
+Stops NoirCatto from crouching after standing too long, prevented by holding Up|Impide que NoirCatto se agache después de estar mucho tiempo parado, puede evitarse manteniendo Arriba.
+Auto Slash|Autocuchilladas
+Auto-repeat slash when holding throw|Da cuchilladas repetidas veces automáticamente al mantener lanzar.
+Slash Buff|Mejora de cuchilladas
+Buff NoirCatto's slash (stronger stun and damage)|Mejora las cuchilladas de NoirCatto (más aturdimiento y daño).
+Alt Slash|Cuchillada alternativa
+Enables alternative slash conditions, which require NoirCatto's main hand to be empty|Activa las condiciones alternativas de cuchilladas, las cuales requieren que la mano principal de NoirCatto esté vacía.
+Attractive Meows|Maullidos atrayentes
+Makes creatures react to NoirCatto's meows|Hace que las criaturas reacciones a los maullidos de NoirCatto.
+Meow Key|Botón de maullar
+Configure what key makes NoirCatto meow|Configura qué botón hace maullar a NoirCatto.
+Disable Cosmetics|Desactivar cosméticos
+Disables NoirCatto's extra sprite cosmetics, for use with DMS|Desactiva los cosméticos adicionales de sprites de NoirCatto, para usarlo con DMS.
+StoryAndExpedition|Historia y Expedición
+Story|Historia
+Disabled|Desactivado
+Choose whether NoirCatto's intro should be used in Story and Expedition modes, disable if broken|Elije si la introducción de NoirCatto debe usarse en los modos Historia y Expedición, desactívelo si está roto.
+Food Parkour|Parkour de comida
+Allows some food items to affect Poacher's movement when held|Permite que algunos alimentos afecten el movimiento del Cazador Furtivo al sostenerlos.
+Jump Nerf|Debilitación de saltos
+Makes Poacher's jumps accurate to that of a pup's|Hace que los saltos del Cazador Furtivo sean exactamente como los de una cría.
+Allows Poacher to use a backspear like they could earlier in the mod's development|Permite al Cazador Furtivo llevar una lanza en la espalda como lo hacía antes en el desarrollo del mod.
+Pup Acts|Comportamiento de cría
+Allows Poacher to have food preferences and reactions|Permite al Cazador Furtivo tener preferencias y reacciones alimentarias.
+Legacy Cold|Frío antiguo
+Makes Poacher get cold as fast as they did in earlier versions of the mod|Hace que el Cazador Furtivo se enfríe tan rápido como lo hacía en versiones tempranas del mod.
+Ah... Hello little creature.|Ah... Hola, pequeña criatura.
+Sorry, give me a moment. I'm still getting used to this...|Lo siento, dame un segundo. Aún me estoy acostumbrando a esto...
+Thank you. Doing that takes a lot of energy. Can you understand me now?|Gracias. Hacer eso requiere mucha energía. ¿Puedes comprenderme ahora?
+It seems so! I'm sorry if that caused any discomfort.|¡Parece que sí! Lamento si eso ocasionó alguna incomodidad.
+Amazing... three visitors, each right after the other!|Increíble... ¡tres visitantes, uno tras otro!
+Do you know them? There's a little one - I think it may be a child - and a fluffy blue one!|¿Los conoces? ¡Hay uno pequeño, que creo que puede ser una cría, y uno azul peludo!
+Not as fluffy as you, though... your fur is so thick! It's perfectly suited to the blizzard.|Aunque no tan peludo como tú... ¡tu pelaje es muy abundante! Se adapta perfectamente a la ventisca.
+How curious! You're one of their kind, yet you're also so different.<LINE>|¡Qué curioso! Eres uno de los de su especie, pero también eres muy diferente.<LINE>
+You remind me of how felines looked, back when our creators were around.|Me recuerdas a cómo se veían los felinos por la época en que nuestros creadores estaban presentes.
+They were kept as pets, but also were quite capable on their own.|Eran criados como mascotas, pero también podían amañárselas por sí solos.
+I don't think you descended from them, they're surely extinct by now.|No creo que desciendas de ellos, seguro que ya están extintos.
+Do your differences come from evolving in some far-away place?<LINE>|¿Tus diferencias provienen de evolucionar en algún lugar lejano?<LINE>
+Or are you purposed, to look like them?|¿O has sido propuesto a parecerte a ellos?
+What a marvel you are, fluffy one!|¡Qué maravilla eres, peludito!
+I apologize, I don't fully understand the noises you make...<LINE>|Discúlpame, no entiendo del todo los ruidos que haces...<LINE>
+They are very cute though.|Son muy bonitos, sin embargo.
+Hello there! You again!|¡Hola! ¡Tú otra vez!
+I wonder what it is that you want?|Me pregunto qué es lo que necesitas.
+Oh. You.|Oh. Tú.
+I have had scavengers come by before. Scavengers!<LINE>|Ya me había dado con carroñeros antes. ¡Carroñeros!<LINE>
+And they left me alive!<LINE>|¡Y me dejaron vivir!<LINE>
+But... I have told you that already, haven't I?|Pero... ya te había contado eso, ¿verdad?
+You must excuse me if I repeat myself. My memory is bad.<LINE>|Debes disculparme si me reitero. Mi memoria está complicada.<LINE>
+I used to have a pathetic five neurons... And then you ate one.<LINE>|Solía tener cinco patéticas neuronas... Y luego te comiste una.<LINE>
+Maybe I've told you that before as well.|Tal vez ya te haya dicho eso también.
+You again.|Tú otra vez.
+Oh, hello!|¡Oh, hola!
+There is nothing here. Not even my memories remain.|No hay nada aquí. Ni siquiera quedan mis recuerdos.
+Even the scavengers that come here from time to time leave with nothing. But... I have told you that already, haven't I?|Incluso los carroñeros que vienen aquí de vez en cuando se van sin nada. Pero... ya te había contado eso, ¿verdad?
+I do enjoy the company though. You and your family are always welcome here.|Sin embargo, disfruto la compañía. Tú y tu familia siempre serán bienvenidos aquí.
+I do enjoy the company of you and your friend though, <PlayerName>.|Sin embargo, disfruto tu compañía y la de tu amigo, <PlayerName>.
+You're welcome to stay a while, fluffy little thing.|Siéntete libre de quedarte un rato, cosita peluda.
+I do enjoy the company though. You're welcome to stay a while, fluffy little thing.|Sin embargo, disfruto la compañía. Siéntete libre de quedarte un rato, cosita peluda.
+Oh, hello.|Oh, hola.
+It's a piece of sharpened rebar... Others of your kind seemed very proficient at using it,<LINE>|Es una pieza afilada de acero corrugado... Los otros de tu especie parecían muy mañosos con ella,<LINE>
+but given your anatomy, I believe you use different ways to catch your meal!|pero, dada tu anatomía, ¡me parece que utilizas modos diferentes para atrapar tu comida!
+Ah... h-hello.|Ah... h-hola.
+Please... Give me a moment.|Por favor... Dame un segundo.
+Thank you. Sorry, that took a lot of energy... But it seems you can understand me now.<LINE>|Gracias. Eso requirió mucha energía, perdón... Pero parece que puedes comprenderme ahora.
+I hope that didn't hurt.|Espero que eso no haya dolido.
+It is amazing to see more of your kind again. It's been such a long time!|Es asombroso volver a ver más de los de tu especie. ¡Ha pasado tanto tiempo!
+My last regular visitor passed long ago. |Mi último visitante habitual falleció hace mucho tiempo. 
+They looked a lot like you! More aquatic than fluffy, though...|¡Se parecía mucho a ti! Aunque más acuático que peludo...
+They were much older than you.|Era más viejo que tú.
+They helped me a lot. Actually, your kind seems to do that often.|Me ayudó mucho. En realidad, los de tu especie parecen hacer eso a menudo.
+Are you here to help me too? I don't see how you could.|¿Estás aquí para ofrecerme ayuda también? No veo cómo podrías.
+<LINE>But, I know someone else who really needs it.|<LINE>Pero conozco a alguién más que realmente la necesita.
+<LINE>You seem very young to be exploring alone. It's dangerous.|<LINE>Pareces muy joven como para explorar solo. Es peligroso.
+He's my neighbor, Five Pebbles. I... he-he's hurt.|Es mi vecino, Cinco Guijarros. Yo... é-él está herido.
+So badly... My last visitor reinstated my ability to communicate with him.|Muy herido... Mi último visitante restableció mi capacidad para comunicarme con él.
+And now I've lost him. Again.|Y ahora lo he perdido. De nuevo.
+Please... if there's anything you can do, do it for him. He needs help.|Por favor... si hay algo que puedas hacer, hazlo por él. Necesita ayuda.
+Even just keeping him company will do. He is suffering, rotting in his chamber.|Incluso con hacerle compañía será suficiente. Está sufriendo, pudriéndose en su cámara.
+You... may need to make him less dangerous first. Somehow.<LINE>|Quizás... tengas que, de alguna manera, hacerlo menos peligroso primero.<LINE>
+I know he'd appreciate anything at all.|Sé que él agradecería cualquier cosa.
+You are welcome to stay with me as long as you like, but I urge you to seek him instead.<LINE>|Puedes quedarte conmigo todo el tiempo que quieras, pero te insto a que lo busques.<LINE>
+He needs it much more than I.|Él la necesita mucho más que yo.
+You are welcome to stay as long as you like, but be careful, little creature.<LINE>|Puedes quedarte todo el tiempo que quieras, pero ten cuidado, pequeña criatura.<LINE>
+It doesn't seem like the cold suits you well.|No parece que el frío te favorezca.
+Plunges the land in devestating famine, making many food sources less nutritious. Starvation may become a great familiarity.|Sumerge la tierra en una hambruna devastadora, haciendo que muchas fuentes de alimentos sean menos nutritivas. La inanición puede convertirse en una gran familiaridad.
+FAMISHED|FAMÉLICO
+, or find a way to survive| o encuentra una manera de sobrevivir
+Necropolis|Necrópolis
+The Peak|La Cima
+Dermis|Dermis
+Abandoned Post|Puesto Abandonado
+Rotten God|Dios Putrefacto
+Rotten God (Five Pebbles)|Dios Putrefacto (Cinco Guijarros)
+Rotten God (Decaying Modules)|Dios Putrefacto (Módulos en Descomposición)
+Corpse|Cadáver
+Rotten God (Infected Channels)|Dios Putrefacto (Canales Infectados)
+Rotten God (Dead Heart)|Dios Putrefacto (Corazón Muerto)
+Bedrock|Roca Madre
+Frosted Cathedral|Catedral Escarchada
+Dark Bog|Cenagal Oscuro
+The Mountain|La Montaña
+Mudslide|Alud de Lodo
+World's Ceiling|El Techo del Mundo
+Cliffside|Acantilado

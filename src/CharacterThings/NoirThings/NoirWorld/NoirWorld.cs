@@ -5,7 +5,7 @@ namespace TheFriend.CharacterThings.NoirThings;
 
 public partial class NoirCatto
 {
-    public enum CustomStartMode
+    public enum CustomStartMode // Needs to be translatable
     {
         StoryAndExpedition = 0,
         Story = 1,
