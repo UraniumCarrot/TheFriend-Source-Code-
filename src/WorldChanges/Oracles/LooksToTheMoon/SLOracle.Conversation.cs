@@ -16,11 +16,11 @@ public partial class SLOracle
         #region Helpers
         void Say(string text)
         {
-            self.events.Add(new Conversation.TextEvent(self, 0, text, 0));
+            self.events.Add(new Conversation.TextEvent(self, 0, Translate(text), 0));
         }
         void Say2(string text, int initialWait,  int textLinger)
         {
-            self.events.Add(new Conversation.TextEvent(self, initialWait, text, textLinger));
+            self.events.Add(new Conversation.TextEvent(self, initialWait, Translate(text), textLinger));
         }
         void Wait(int initialWait)
         {

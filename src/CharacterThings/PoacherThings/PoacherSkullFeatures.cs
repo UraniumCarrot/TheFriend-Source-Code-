@@ -15,7 +15,7 @@ public class PoacherSkullFeatures
         if (pl != null && pl.room != null && pl.room.game.StoryCharacter == Plugin.DragonName && !pl.room.game.IsArenaSession && !pl.dead)
         {
             Debug.Log("Solace: TextPrompt.UpdateGameOverString hook is trying to run!");
-            self.gameOverString += ", or find a way to survive";
+            self.gameOverString += ", or find a way to survive"; // Needs to be translatable
         }
     }
     public static void Creature_LoseAllGrasps(On.Creature.orig_LoseAllGrasps orig, Creature self)

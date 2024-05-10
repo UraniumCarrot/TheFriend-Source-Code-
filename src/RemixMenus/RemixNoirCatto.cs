@@ -37,7 +37,7 @@ public partial class RemixMain
     public OpContainer NoirCattoSprites;
     public void RemixNoirCattoInit()
     {
-        OpTabNoirCatto = new OpTab(this, "Noir");
+        OpTabNoirCatto = new OpTab(this, Translate("Noir"));
         NoirCattoSprites = new OpContainer(Vector2.zero);
         
         tabsList.Add(OpTabNoirCatto);
@@ -68,8 +68,8 @@ public partial class RemixMain
     public void NoirOpTabMovement()
     {
         OpTabNoirCatto.AddItems(
-            new OpLabel(charcolumn, row + 25, "Movement", true) { alpha = 0.5f },
-            new OpCheckboxLabelled(NoirDisableAutoCrouch, charcolumn, row, "Auto Crouch") 
+            new OpLabel(charcolumn, row + 25, Translate("Movement"), true) { alpha = 0.5f },
+            new OpCheckboxLabelled(NoirDisableAutoCrouch, charcolumn, row, Translate("Auto Crouch")) 
             { 
                 description =  
                     Translate("Stops NoirCatto from crouching after standing too long, prevented by holding Up") 
@@ -79,28 +79,28 @@ public partial class RemixMain
     public void NoirOpTabCombat()
     {
         OpTabNoirCatto.AddItems(
-            new OpLabel(charcolumn + (columnMult * 0.95f), row + 25, "Combat", true) { alpha = 0.5f },
-            new OpCheckboxLabelled(NoirAutoSlash, charcolumn + (columnMult * 0.95f), row, "Auto Slash") 
+            new OpLabel(charcolumn + (columnMult * 0.95f), row + 25, Translate("Combat"), true) { alpha = 0.5f },
+            new OpCheckboxLabelled(NoirAutoSlash, charcolumn + (columnMult * 0.95f), row, Translate("Auto Slash")) 
             { 
                 description =  
                     Translate("Auto-repeat slash when holding throw") 
             },
-            new OpCheckboxLabelled(NoirBuffSlash, charcolumn + (columnMult * 0.95f), row-(rowMult),"Slash Buff") 
+            new OpCheckboxLabelled(NoirBuffSlash, charcolumn + (columnMult * 0.95f), row-(rowMult),Translate("Slash Buff")) 
             { 
                 description =
                     Translate("Buff NoirCatto's slash (stronger stun and damage)") 
             },
-            new OpCheckboxLabelled(NoirAltSlashConditions, charcolumn + (columnMult * 0.95f), row-(rowMult*2),"Alt Slash") 
+            new OpCheckboxLabelled(NoirAltSlashConditions, charcolumn + (columnMult * 0.95f), row-(rowMult*2),Translate("Alt Slash")) 
             { 
                 description = 
                     Translate("Enables alternative slash conditions, which require NoirCatto's main hand to be empty") 
             },
-            new OpCheckboxLabelled(NoirAttractiveMeow, charcolumn + (columnMult * 0.95f), row-(rowMult*3),"Attractive Meows") 
+            new OpCheckboxLabelled(NoirAttractiveMeow, charcolumn + (columnMult * 0.95f), row-(rowMult*3),Translate("Attractive Meows")) 
             { 
                 description = 
                     Translate("Makes creatures react to NoirCatto's meows") 
             },
-            new OpKeyBinderLabelled(NoirMeowKey,new Vector2(charcolumn + (columnMult * 0.92f), row-(rowMult*10)), new Vector2(150f, 30f), "Meow Key")
+            new OpKeyBinderLabelled(NoirMeowKey,new Vector2(charcolumn + (columnMult * 0.92f), row-(rowMult*10)), new Vector2(150f, 30f), Translate("Meow Key"))
             {
                 description = 
                     Translate("Configure what key makes NoirCatto meow")
@@ -110,8 +110,8 @@ public partial class RemixMain
     public void NoirOpTabOther()
     {
         OpTabNoirCatto.AddItems(
-            new OpLabel(charcolumn + (columnMult * 1.96f),row + 25, "Other", true) { alpha = 0.5f },
-            new OpCheckboxLabelled(NoirHideEars, charcolumn + (columnMult * 1.96f), row-(rowMult),"Disable Cosmetics") 
+            new OpLabel(charcolumn + (columnMult * 1.96f),row + 25, Translate("Other"), true) { alpha = 0.5f },
+            new OpCheckboxLabelled(NoirHideEars, charcolumn + (columnMult * 1.96f), row-(rowMult),Translate("Disable Cosmetics")) 
             { 
                 description =
                     Translate("Disables NoirCatto's extra sprite cosmetics, for use with DMS") 

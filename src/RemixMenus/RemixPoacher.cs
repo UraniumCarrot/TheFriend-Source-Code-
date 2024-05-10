@@ -28,7 +28,7 @@ public partial class RemixMain
     public OpContainer PoacherSprites;
     public void RemixPoacherInit()
     {
-        OpTabPoacher = new OpTab(this, "Poacher");
+        OpTabPoacher = new OpTab(this, Translate("Poacher"));
         PoacherSprites = new OpContainer(Vector2.zero);
         
         tabsList.Add(OpTabPoacher);
@@ -59,13 +59,13 @@ public partial class RemixMain
     public void PoacherOpTabMovement()
     {
         OpTabPoacher.AddItems(
-            new OpLabel(charcolumn, row + 25, "Movement", true) { alpha = 0.5f },
-            new OpCheckboxLabelled(PoacherFoodParkour, charcolumn, row, "Food Parkour") 
+            new OpLabel(charcolumn, row + 25, Translate("Movement"), true) { alpha = 0.5f },
+            new OpCheckboxLabelled(PoacherFoodParkour, charcolumn, row, Translate("Food Parkour")) 
             { 
                 description =  
                     Translate("Allows some food items to affect Poacher's movement when held") 
             },
-            new OpCheckboxLabelled(PoacherJumpNerf, charcolumn, row-(rowMult),"Jump Nerf") 
+            new OpCheckboxLabelled(PoacherJumpNerf, charcolumn, row-(rowMult),Translate("Jump Nerf")) 
             { 
                 description =
                     Translate("Makes Poacher's jumps accurate to that of a pup's") 
@@ -75,8 +75,8 @@ public partial class RemixMain
     public void PoacherOpTabCombat()
     {
         OpTabPoacher.AddItems(
-            new OpLabel(charcolumn + (columnMult * 0.95f), row + 25, "Combat", true) { alpha = 0.5f },
-            new OpCheckboxLabelled(PoacherBackspear, charcolumn + (columnMult * 0.95f), row, "Backspear Enable")
+            new OpLabel(charcolumn + (columnMult * 0.95f), row + 25, Translate("Combat"), true) { alpha = 0.5f },
+            new OpCheckboxLabelled(PoacherBackspear, charcolumn + (columnMult * 0.95f), row, Translate("Backspear Enable"))
             { 
                 description = 
                     Translate("Allows Poacher to use a backspear like they could earlier in the mod's development") 
@@ -86,13 +86,13 @@ public partial class RemixMain
     public void PoacherOpTabOther()
     {
         OpTabPoacher.AddItems(
-            new OpLabel(charcolumn + (columnMult * 1.96f),row + 25, "Other", true) { alpha = 0.5f },
-            new OpCheckboxLabelled(PoacherPupActs, charcolumn + (columnMult * 1.96f), row, "Pup Acts") 
+            new OpLabel(charcolumn + (columnMult * 1.96f),row + 25, Translate("Other"), true) { alpha = 0.5f },
+            new OpCheckboxLabelled(PoacherPupActs, charcolumn + (columnMult * 1.96f), row, Translate("Pup Acts")) 
             { 
                 description =  
                     Translate("Allows Poacher to have food preferences and reactions") 
             },
-            new OpCheckboxLabelled(PoacherFreezeFaster, charcolumn + (columnMult * 1.96f), row-(rowMult),"Legacy Cold") 
+            new OpCheckboxLabelled(PoacherFreezeFaster, charcolumn + (columnMult * 1.96f), row-(rowMult),Translate("Legacy Cold")) 
             { 
                 description =
                     Translate("Makes Poacher get cold as fast as they did in earlier versions of the mod") 
