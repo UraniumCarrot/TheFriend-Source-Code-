@@ -22,7 +22,7 @@ Famines|Hambrunas
 Global Famines|Hambrunas globales
 Gives famine mechanics and creatures to every character|Proporciona mecánicas de hambruna y escasez de criaturas a todos los personajes.
 Famine Disable|Desactivar hambruna
-Stops famine mechanics in all modes except for Expedition mode when using the Famished burden, may be broken|Detiene las mecánicas de hambruna para todos los modos excepto el de Expedición al usar el beneficio Famélico, puede estar roto.
+Stops famine mechanics in all modes except for Expedition mode when using the Famished burden, may be broken|Detiene las mecánicas de hambruna para todos los modos excepto el de Expedición al usar el lastre Famélico, puede estar roto.
 Misc|Miscelánea
 Snow in Character Select|Nieve en la selección de personaje
 Solace characters (or characters in cold areas) have snow on their Character Select page|Los personajes de Solace (o los personajes en áreas frías) tendrán nieve en su página de selección de personaje.
